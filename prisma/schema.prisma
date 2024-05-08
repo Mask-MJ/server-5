@@ -1,0 +1,404 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// 用户信息表
+model User {
+  /// 用户ID
+  id           Int            @id @default(autoincrement())
+  /// 状态
+  status       Boolean        @default(true)
+  /// 创建者
+  createBy     String?        @unique
+  creator      User?          @relation("editor", fields: [createBy], references: [account])
+  /// 更新者
+  updateBy     User?          @relation("editor")
+  /// 创建时间
+  createdAt    DateTime       @default(now())
+  /// 更新时间
+  updatedAt    DateTime       @updatedAt
+  /// 备注
+  remark       String         @default("")
+  /// 账号
+  account      String         @unique
+  /// 密码
+  password     String
+  /// 昵称
+  nickname     String?
+  /// 头像路径
+  avatar       String         @default("")
+  /// 邮箱
+  email        String         @unique
+  /// 手机号
+  phonenumber  String         @unique
+  /// 性别（0男 1女 2未知）
+  sex          String         @default("0")
+  /// 最后登录IP
+  loginIp      String         @default("")
+  /// 最后登录时间
+  loginDate    DateTime       @default(now())
+  /// 岗位
+  post         Post[]
+  dept         Dept[]
+  role         Role[]
+  menu         Menu[]
+  dictType     DictType[]
+  dictData     DictData[]
+  operationLog OperationLog[]
+  loginLog     LoginLog[]
+  factory      Factory[]
+  contract     Contract[]
+  device       Device[]
+}
+
+/// 岗位信息表
+model Post {
+  /// 岗位ID
+  id        Int      @id @default(autoincrement())
+  /// 状态
+  status    Boolean  @default(true)
+  /// 创建者
+  createBy  String
+  creator   User     @relation(fields: [createBy], references: [account])
+  /// 更新者
+  updateBy  String?
+  /// 创建时间
+  createdAt DateTime @default(now())
+  /// 更新时间
+  updatedAt DateTime @updatedAt
+  /// 备注
+  remark    String   @default("")
+  /// 岗位编码
+  code      String   @unique
+  /// 岗位名称
+  name      String
+  /// 显示顺序
+  sort      Int      @default(0)
+}
+
+/// 部门信息表
+model Dept {
+  /// 部门ID
+  id        Int      @id @default(autoincrement())
+  /// 状态
+  status    Boolean  @default(true)
+  /// 创建者
+  createBy  String
+  creator   User     @relation(fields: [createBy], references: [account])
+  /// 更新者
+  updateBy  String?
+  /// 创建时间
+  createdAt DateTime @default(now())
+  /// 更新时间
+  updatedAt DateTime @updatedAt
+  /// 父部门id
+  parentId  Int?
+  parent    Dept?    @relation("DeptToDept", fields: [parentId], references: [id])
+  children  Dept[]   @relation("DeptToDept")
+  /// 部门名称
+  name      String
+  /// 显示顺序
+  sort      Int      @default(0)
+  /// 负责人
+  leader    String
+  /// 负责人电话
+  phone     String
+  /// 负责人邮箱
+  email     String
+  Role      Role?    @relation(fields: [roleId], references: [id])
+  roleId    Int?
+}
+
+/// 角色信息表
+model Role {
+  /// 角色ID
+  id        Int       @id @default(autoincrement())
+  /// 状态
+  status    Boolean   @default(true)
+  /// 创建者
+  createBy  String
+  creator   User      @relation(fields: [createBy], references: [account])
+  /// 更新者
+  updateBy  String?
+  /// 创建时间
+  createdAt DateTime  @default(now())
+  /// 更新时间
+  updatedAt DateTime  @updatedAt
+  /// 备注
+  remark    String    @default("")
+  /// 角色名称
+  name      String    @unique
+  /// 角色键值
+  value     String    @unique
+  /// 显示顺序
+  sort      Int       @default(0)
+  /// 关联部门
+  dept      Dept[]
+  /// 关联菜单
+  menu      Menu[]
+  factory   Factory[]
+}
+
+/// 权限模型
+model Permission {
+  id        Int      @id @default(autoincrement())
+  /// 权限名称
+  name      String
+  /// 权限值
+  value     String
+  remark    String   @default("")
+  /// 绑定菜单id
+  menuId    Int?
+  menu      Menu?    @relation(fields: [menuId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// 菜单信息表
+model Menu {
+  /// 角色ID
+  id         Int          @id @default(autoincrement())
+  /// 状态
+  status     Boolean      @default(true)
+  /// 创建者
+  createBy   String
+  creator    User         @relation(fields: [createBy], references: [account])
+  /// 更新者
+  updateBy   String?
+  /// 创建时间
+  createdAt  DateTime     @default(now())
+  /// 更新时间
+  updatedAt  DateTime     @updatedAt
+  /// 备注
+  remark     String       @default("")
+  /// 菜单名称
+  name       String       @unique
+  /// 显示顺序
+  sort       Int          @default(0)
+  /// 菜单路径
+  path       String       @unique
+  /// 菜单图标
+  icon       String       @default("")
+  /// 是否隐藏
+  hidden     Boolean      @default(false)
+  /// 父级菜单ID
+  parentId   Int?
+  parent     Menu?        @relation("MenuToMenu", fields: [parentId], references: [id])
+  children   Menu[]       @relation("MenuToMenu")
+  role       Role[]
+  permission Permission[]
+}
+
+/// 字典类型表
+model DictType {
+  /// 字典类型ID
+  id        Int        @id @default(autoincrement())
+  /// 状态
+  status    Boolean    @default(true)
+  /// 创建者
+  createBy  String
+  creator   User       @relation(fields: [createBy], references: [account])
+  /// 更新者
+  updateBy  String?
+  /// 创建时间
+  createdAt DateTime   @default(now())
+  /// 更新时间
+  updatedAt DateTime   @updatedAt
+  /// 备注
+  remark    String     @default("")
+  /// 字典名称
+  name      String
+  /// 字典键值
+  value     String     @unique
+  dictData  DictData[]
+}
+
+/// 字典数据表
+model DictData {
+  /// 字典数据ID
+  id            Int      @id @default(autoincrement())
+  /// 状态
+  status        Boolean  @default(true)
+  /// 创建者
+  createBy      String
+  creator       User     @relation(fields: [createBy], references: [account])
+  /// 更新者
+  updateBy      String?
+  /// 创建时间
+  createdAt     DateTime @default(now())
+  /// 更新时间
+  updatedAt     DateTime @updatedAt
+  /// 备注
+  remark        String   @default("")
+  /// 字典名称
+  name          String
+  /// 字典键值
+  value         String
+  /// 字典排序
+  sort          Int      @default(0)
+  /// 字典类型
+  dictTypeValue String
+  dictType      DictType @relation(fields: [dictTypeValue], references: [value])
+}
+
+/// 操作日志记录表
+model OperationLog {
+  /// 操作日志ID
+  id           Int      @id @default(autoincrement())
+  /// 状态
+  status       Boolean  @default(true)
+  /// 创建时间
+  createdAt    DateTime @default(now())
+  /// 模块标题
+  title        String
+  /// 业务类型（0其它 1新增 2修改 3删除）
+  businessType Int      @default(1)
+  /// 方法名称
+  method       String
+  /// 操作员账号
+  operatorName String
+  operator     User     @relation(fields: [operatorName], references: [account])
+  /// ip地址
+  ip           String
+  /// ip地址对应的地理位置
+  address      String
+}
+
+/// 登录日志表
+model LoginLog {
+  id        Int      @id @default(autoincrement())
+  /// 创建时间
+  createdAt DateTime @default(now())
+  /// 用户会话id
+  sessionId String
+  /// 登录账号
+  account   String
+  user      User     @relation(fields: [account], references: [account])
+  /// ip地址
+  ip        String
+  /// ip地址对应的地理位置
+  address   String
+}
+
+/// 工厂模型
+model Factory {
+  id        Int        @id @default(autoincrement())
+  /// 工厂名称
+  name      String     @unique
+  /// 工厂状态
+  status    Int        @default(1)
+  /// 工厂地址
+  address   String     @default("")
+  /// 工厂经纬度
+  location  Int[]      @default([])
+  /// 工厂备注
+  remark    String     @default("")
+  children  Factory[]  @relation("FactoryToFactory")
+  parent    Factory?   @relation("FactoryToFactory", fields: [parentId], references: [id])
+  parentId  Int?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  /// 创建者
+  createBy  String
+  creator   User       @relation(fields: [createBy], references: [account])
+  role      Role[]
+  device    Device[]
+  contract  Contract[]
+  valve     Valve[]
+}
+
+/// 项目模型
+model Contract {
+  id             Int      @id @default(autoincrement())
+  /// 项目名称
+  name           String
+  /// 签订合同时间
+  contractTime   DateTime
+  /// 采购阀门总数
+  valveCount     Int
+  /// 高级阀门数量
+  highValveCount Int
+  /// 客户名称
+  customer       String   @default("")
+  /// 客户联系方式
+  customerPhone  String   @default("")
+  /// 销售人员
+  saler          String   @default("")
+  /// 项目备注
+  remark         String   @default("")
+  /// 工厂id
+  factoryId      Int
+  factory        Factory  @relation(fields: [factoryId], references: [id])
+  createBy       String
+  creator        User     @relation(fields: [createBy], references: [account])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+/// 装置模型
+model Device {
+  id        Int      @id @default(autoincrement())
+  /// 装置名称
+  name      String
+  /// 装置状态
+  status    Int      @default(1)
+  /// 装置备注
+  remark    String   @default("")
+  /// 工厂id
+  factoryId Int
+  factory   Factory  @relation(fields: [factoryId], references: [id])
+  /// 关联阀门
+  valves    Valve[]
+  createBy  String
+  creator   User     @relation(fields: [createBy], references: [account])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// 阀门模型
+model Valve {
+  id        Int      @id @default(autoincrement())
+  /// 阀门位号
+  name      String
+  /// 阀门品牌
+  brand     String   @default("")
+  /// 阀门型号
+  model     String   @default("")
+  /// 阀门序列号
+  serial    String   @default("")
+  /// 阀门口径
+  caliber   String   @default("")
+  /// 阀门磅级
+  level     String   @default("")
+  /// 阀体材质
+  material  String   @default("")
+  /// 泄露等级
+  leak      String   @default("")
+  /// 执行机构型号
+  actuator  String   @default("")
+  /// 定位器型号
+  locator   String   @default("")
+  /// 阀门故障位
+  fault     String   @default("")
+  status    Int      @default(1)
+  remark    String   @default("")
+  /// 工厂id
+  factoryId Int
+  factory   Factory  @relation(fields: [factoryId], references: [id])
+  /// 关联装置id
+  deviceId  Int?
+  device    Device?  @relation(fields: [deviceId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
