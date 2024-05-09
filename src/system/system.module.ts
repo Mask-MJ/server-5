@@ -1,10 +1,18 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
-import { UserModule } from './user/user.module';
+import { CustomPrismaModule } from 'nestjs-prisma';
+import { extendedPrismaClient } from 'src/common/pagination/prisma.extension';
 
 @Module({
-  imports: [UserModule],
+  imports: [
+    CustomPrismaModule.forRootAsync({
+      name: 'PrismaService',
+      useFactory: () => {
+        return extendedPrismaClient;
+      },
+    }),
+  ],
   controllers: [UserController],
   providers: [UserService],
 })
