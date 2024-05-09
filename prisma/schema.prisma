@@ -8,10 +8,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator prismaClassGenerator {
-  provider = "prisma-class-generator"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -20,61 +16,50 @@ datasource db {
 /// 用户信息表
 model User {
   /// 用户ID
-  id           Int            @id @default(autoincrement())
-  /// 状态
-  status       Boolean        @default(true)
-  /// 创建者
-  createBy     String?        @unique
-  creator      User?          @relation("editor", fields: [createBy], references: [account])
-  /// 更新者
-  updateBy     User?          @relation("editor")
-  /// 创建时间
-  createdAt    DateTime       @default(now())
-  /// 更新时间
-  updatedAt    DateTime       @updatedAt
-  /// 备注
-  remark       String         @default("")
+  id          Int      @id @default(autoincrement())
   /// 账号
-  account      String         @unique
+  account     String   @unique
   /// 密码
-  password     String
+  password    String
   /// 昵称
-  nickname     String?
+  nickname    String   @default("")
   /// 头像路径
-  avatar       String         @default("")
+  avatar      String   @default("")
   /// 邮箱
-  email        String         @unique
+  email       String   @default("")
   /// 手机号
-  phonenumber  String         @unique
-  /// 性别（0男 1女 2未知）
-  sex          String         @default("0")
-  /// 最后登录IP
-  loginIp      String         @default("")
-  /// 最后登录时间
-  loginDate    DateTime       @default(now())
-  /// 岗位
-  post         Post[]
-  dept         Dept[]
-  role         Role[]
-  menu         Menu[]
-  dictType     DictType[]
-  dictData     DictData[]
-  operationLog OperationLog[]
-  loginLog     LoginLog[]
-  factory      Factory[]
-  contract     Contract[]
-  device       Device[]
+  phoneNumber String   @default("")
+  /// 性别（0女 1男 2未知）
+  sex         Int      @default(1)
+  /// 状态
+  status      Boolean  @default(true)
+  /// 创建者
+  createBy    String?  @unique
+  creator     User?    @relation("editor", fields: [createBy], references: [account])
+  /// 更新者
+  updateBy    User?    @relation("editor")
+  /// 创建时间
+  createdAt   DateTime @default(now())
+  /// 更新时间
+  updatedAt   DateTime @updatedAt
+  /// 备注
+  remark      String   @default("")
+  /// 岗位 (一个用户只能有一个岗位)
+  post        Post[]
+  /// 部门 (一个用户只能有一个部门)
+  dept        Dept[]
+  /// 角色 (一个用户可以有多个角色)
+  role        Role[]
+  /// 菜单 (一个用户可以有多个菜单)
+  menu        Menu[]
 }
 
 /// 岗位信息表
 model Post {
   /// 岗位ID
   id        Int      @id @default(autoincrement())
-  /// 状态
-  status    Boolean  @default(true)
   /// 创建者
   createBy  String
-  creator   User     @relation(fields: [createBy], references: [account])
   /// 更新者
   updateBy  String?
   /// 创建时间
@@ -89,17 +74,16 @@ model Post {
   name      String
   /// 显示顺序
   sort      Int      @default(0)
+  /// 岗位下的用户
+  user      User[]
 }
 
 /// 部门信息表
 model Dept {
   /// 部门ID
   id        Int      @id @default(autoincrement())
-  /// 状态
-  status    Boolean  @default(true)
   /// 创建者
   createBy  String
-  creator   User     @relation(fields: [createBy], references: [account])
   /// 更新者
   updateBy  String?
   /// 创建时间
@@ -122,17 +106,16 @@ model Dept {
   email     String
   Role      Role?    @relation(fields: [roleId], references: [id])
   roleId    Int?
+  /// 部门下的用户
+  user      User[]
 }
 
 /// 角色信息表
 model Role {
   /// 角色ID
   id        Int       @id @default(autoincrement())
-  /// 状态
-  status    Boolean   @default(true)
   /// 创建者
   createBy  String
-  creator   User      @relation(fields: [createBy], references: [account])
   /// 更新者
   updateBy  String?
   /// 创建时间
@@ -152,6 +135,8 @@ model Role {
   /// 关联菜单
   menu      Menu[]
   factory   Factory[]
+  /// 角色下的用户
+  user      User[]
 }
 
 /// 权限模型
@@ -177,7 +162,6 @@ model Menu {
   status     Boolean      @default(true)
   /// 创建者
   createBy   String
-  creator    User         @relation(fields: [createBy], references: [account])
   /// 更新者
   updateBy   String?
   /// 创建时间
@@ -202,17 +186,16 @@ model Menu {
   children   Menu[]       @relation("MenuToMenu")
   role       Role[]
   permission Permission[]
+  /// 菜单下的用户
+  user       User[]
 }
 
 /// 字典类型表
 model DictType {
   /// 字典类型ID
   id        Int        @id @default(autoincrement())
-  /// 状态
-  status    Boolean    @default(true)
   /// 创建者
   createBy  String
-  creator   User       @relation(fields: [createBy], references: [account])
   /// 更新者
   updateBy  String?
   /// 创建时间
@@ -236,7 +219,6 @@ model DictData {
   status        Boolean  @default(true)
   /// 创建者
   createBy      String
-  creator       User     @relation(fields: [createBy], references: [account])
   /// 更新者
   updateBy      String?
   /// 创建时间
@@ -260,8 +242,6 @@ model DictData {
 model OperationLog {
   /// 操作日志ID
   id           Int      @id @default(autoincrement())
-  /// 状态
-  status       Boolean  @default(true)
   /// 创建时间
   createdAt    DateTime @default(now())
   /// 模块标题
@@ -271,8 +251,7 @@ model OperationLog {
   /// 方法名称
   method       String
   /// 操作员账号
-  operatorName String
-  operator     User     @relation(fields: [operatorName], references: [account])
+  account      String
   /// ip地址
   ip           String
   /// ip地址对应的地理位置
@@ -288,7 +267,6 @@ model LoginLog {
   sessionId String
   /// 登录账号
   account   String
-  user      User     @relation(fields: [account], references: [account])
   /// ip地址
   ip        String
   /// ip地址对应的地理位置
@@ -315,7 +293,6 @@ model Factory {
   updatedAt DateTime   @updatedAt
   /// 创建者
   createBy  String
-  creator   User       @relation(fields: [createBy], references: [account])
   role      Role[]
   device    Device[]
   contract  Contract[]
@@ -345,7 +322,6 @@ model Contract {
   factoryId      Int
   factory        Factory  @relation(fields: [factoryId], references: [id])
   createBy       String
-  creator        User     @relation(fields: [createBy], references: [account])
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -365,7 +341,6 @@ model Device {
   /// 关联阀门
   valves    Valve[]
   createBy  String
-  creator   User     @relation(fields: [createBy], references: [account])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

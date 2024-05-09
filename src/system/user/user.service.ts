@@ -1,8 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { CustomPrismaService } from 'nestjs-prisma';
 import type { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
+import { CreateUserDto, UpdateUserDto, QueryUserDto } from './user.dto';
 
 @Injectable()
 export class UserService {
@@ -11,14 +10,42 @@ export class UserService {
     private prismaService: CustomPrismaService<ExtendedPrismaClient>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    const existingUser = await this.prismaService.client.user.findUnique({
+      where: { account: createUserDto.account },
+    });
+    if (existingUser) {
+      throw new ConflictException('账号已存在');
+    }
+    return this.prismaService.client.user.create({
+      data: createUserDto,
+    });
   }
 
-  async findAll() {
+  async findAll(queryUserDto: QueryUserDto) {
+    const {
+      account,
+      nickname,
+      email,
+      phoneNumber,
+      page,
+      pageSize,
+      beginTime,
+      endTime,
+    } = queryUserDto;
+
     const [rows, meta] = await this.prismaService.client.user
-      .paginate()
-      .withPages({ limit: 10, page: 1, includePageCount: true });
+      .paginate({
+        where: {
+          account: { contains: account },
+          nickname: { contains: nickname },
+          email: { contains: email },
+          phoneNumber: { contains: phoneNumber },
+          createdAt: { gte: beginTime, lte: endTime },
+        },
+      })
+      .withPages({ limit: pageSize, page, includePageCount: true });
+
     return {
       rows,
       ...meta,

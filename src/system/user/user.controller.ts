@@ -6,17 +6,18 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import {
   ApiTags,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOperation,
+  ApiOkResponse,
 } from '@nestjs/swagger';
-import { User } from './entities/user.entity';
+import { UserEntity } from './user.entity';
+import { UserService } from './user.service';
+import { CreateUserDto, UpdateUserDto, QueryUserDto } from './user.dto';
 
 @ApiTags('用户管理')
 @ApiBearerAuth('bearer')
@@ -24,16 +25,18 @@ import { User } from './entities/user.entity';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @ApiOperation({ summary: '创建用户' })
-  @ApiCreatedResponse({ type: User })
   @Post()
+  @ApiOperation({ summary: '创建用户' })
+  @ApiCreatedResponse({ type: UserEntity })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  @ApiOperation({ summary: '获取用户列表' })
+  @ApiOkResponse({ type: UserEntity, isArray: true })
+  findAll(@Query() queryUserDto: QueryUserDto) {
+    return this.userService.findAll(queryUserDto);
   }
 
   @Get(':id')
