@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -18,6 +20,7 @@ import {
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto, QueryUserDto } from './user.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('用户管理')
 @ApiBearerAuth('bearer')
@@ -52,5 +55,12 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.userService.remove(id);
+  }
+
+  // @UseGuards(LocalAuthGuard)
+  @UseGuards(AuthGuard('local'))
+  @Post('sign-in')
+  login(@Request() req: any): any {
+    return req.user;
   }
 }

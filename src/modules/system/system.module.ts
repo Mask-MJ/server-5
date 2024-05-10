@@ -3,6 +3,7 @@ import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { CustomPrismaModule } from 'nestjs-prisma';
 import { extendedPrismaClient } from 'src/common/pagination/prisma.extension';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { extendedPrismaClient } from 'src/common/pagination/prisma.extension';
     }),
   ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, AuthModule],
+  exports: [UserService],
 })
 export class SystemModule {}

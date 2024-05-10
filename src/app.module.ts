@@ -8,7 +8,7 @@ import {
   CustomPrismaModule,
   providePrismaClientExceptionFilter,
 } from 'nestjs-prisma';
-import { SystemModule } from './system/system.module';
+import { SystemModule } from './modules/system/system.module';
 import { extendedPrismaClient } from './common/pagination/prisma.extension';
 
 @Module({

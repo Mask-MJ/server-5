@@ -72,6 +72,12 @@ export class UserService {
     return userWithoutPassword;
   }
 
+  findOneByAccount(account: string) {
+    return this.prismaService.client.user.findUnique({
+      where: { account },
+    });
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
