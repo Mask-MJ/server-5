@@ -10,6 +10,17 @@ export class UserService {
     private prismaService: CustomPrismaService<ExtendedPrismaClient>,
   ) {}
 
+  // Exclude keys from user
+  // https://www.prisma.io/docs/orm/prisma-client/queries/excluding-fields
+  private exclude<User, Key extends keyof User>(
+    user: User,
+    keys: Key[],
+  ): Omit<User, Key> {
+    return Object.fromEntries(
+      Object.entries(user).filter(([key]) => !keys.includes(key as Key)),
+    ) as Omit<User, Key>;
+  }
+
   async create(createUserDto: CreateUserDto) {
     const existingUser = await this.prismaService.client.user.findUnique({
       where: { account: createUserDto.account },
@@ -47,13 +58,18 @@ export class UserService {
       .withPages({ limit: pageSize, page, includePageCount: true });
 
     return {
-      rows,
+      rows: rows.map((user) => this.exclude(user, ['password'])),
       ...meta,
     };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const user = await this.prismaService.client.user.findUniqueOrThrow({
+      where: { id },
+      include: { role: true },
+    });
+    const userWithoutPassword = this.exclude(user, ['password']);
+    return userWithoutPassword;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
