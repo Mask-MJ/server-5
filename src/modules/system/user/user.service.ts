@@ -2,12 +2,21 @@ import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { CustomPrismaService } from 'nestjs-prisma';
 import type { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { CreateUserDto, UpdateUserDto, QueryUserDto } from './user.dto';
+import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { HashingService } from 'src/modules/iam/hashing/hashing.service';
+import { MinioService } from 'src/common/minio/minio.service';
+import { OperationLogService } from 'src/modules/monitor/operation-log/operation-log.service';
+import { Request } from 'express';
+import IP2Region from 'ip2region';
 
 @Injectable()
 export class UserService {
   constructor(
     @Inject('PrismaService')
-    private prismaService: CustomPrismaService<ExtendedPrismaClient>,
+    private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
+    private readonly hashingService: HashingService,
+    private readonly minioClient: MinioService,
+    private readonly operationLogService: OperationLogService,
   ) {}
 
   // Exclude keys from user
@@ -30,6 +39,15 @@ export class UserService {
     }
     return this.prismaService.client.user.create({
       data: createUserDto,
+    });
+  }
+
+  findSelf(id: number) {
+    return this.prismaService.client.user.findUniqueOrThrow({
+      where: { id },
+      include: {
+        role: { include: { menu: { include: { permission: true } } } },
+      },
     });
   }
 
@@ -72,17 +90,71 @@ export class UserService {
     return userWithoutPassword;
   }
 
-  findOneByAccount(account: string) {
-    return this.prismaService.client.user.findUnique({
-      where: { account },
+  async changePassword(id: number, password: string, oldPassword: string) {
+    const user = await this.prismaService.client.user.findUnique({
+      where: { id },
+    });
+    if (!user) {
+      throw new ConflictException('用户不存在');
+    }
+    // 判断是否是管理员权限 如果是管理员权限则不需要验证原密码
+    if (user.isAdmin) {
+      return this.prismaService.client.user.update({
+        where: { id },
+        data: { password: await this.hashingService.hash(password) },
+      });
+    }
+    const isPasswordValid = await this.hashingService.compare(
+      oldPassword,
+      user.password,
+    );
+    if (!isPasswordValid) {
+      throw new ConflictException('原密码错误');
+    }
+    const newPassword = await this.hashingService.hash(password);
+    return this.prismaService.client.user.update({
+      where: { id },
+      data: { password: newPassword },
     });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.prismaService.client.user.update({
+      where: { id },
+      data: {
+        ...updateUserDto,
+        role: { connect: updateUserDto.roleIds?.map((id) => ({ id })) },
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(user: ActiveUserData, id: number, request: Request) {
+    const deleteUser = await this.prismaService.client.user.delete({
+      where: { id },
+    });
+    const query = new IP2Region();
+    const addressInfo = query.search(request.ip);
+    const address = addressInfo ? addressInfo.province + addressInfo.city : '';
+
+    await this.operationLogService.create({
+      account: user.account,
+      module: '用户管理',
+      businessType: 1,
+      title: '删除用户',
+      ip: request.ip,
+      address,
+    });
+    return deleteUser;
+  }
+
+  async uploadAvatar(user: ActiveUserData, file: Express.Multer.File) {
+    await this.minioClient.uploadFile('avatar', file.originalname, file.buffer);
+
+    return this.prismaService.client.user.update({
+      where: { id: user.sub },
+      data: {
+        avatar: `http://39.105.100.190:9000/avatar/${file.originalname}`,
+      },
+    });
   }
 }

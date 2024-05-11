@@ -6,6 +6,7 @@ export class UserEntity implements User {
     Object.assign(this, partial);
   }
   id: number;
+  isAdmin: boolean;
   account: string;
   @ApiHideProperty()
   password: string;

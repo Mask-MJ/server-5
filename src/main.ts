@@ -7,6 +7,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 import { PrismaClientExceptionFilter } from 'nestjs-prisma';
+import { NestExpressApplication } from '@nestjs/platform-express';
 // import {
 //   utilities as nestWinstonModuleUtilities,
 //   WinstonModule,
@@ -15,7 +16,7 @@ import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 // import 'winston-daily-rotate-file';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   // 获取环境变量
   const config = app.get(ConfigService);
   const PREFIX = config.get<string>('PREFIX');

@@ -17,6 +17,8 @@ datasource db {
 model User {
   /// 用户ID
   id          Int      @id @default(autoincrement())
+  /// 是否是超级管理员
+  isAdmin     Boolean  @default(false)
   /// 账号
   account     String   @unique
   /// 密码
@@ -139,7 +141,7 @@ model Role {
   user      User[]
 }
 
-/// 权限模型
+/// 权限模型表
 model Permission {
   id        Int      @id @default(autoincrement())
   /// 权限名称
@@ -248,8 +250,8 @@ model OperationLog {
   title        String
   /// 业务类型（0其它 1新增 2修改 3删除）
   businessType Int      @default(1)
-  /// 方法名称
-  method       String
+  /// 模块名称
+  module       String
   /// 操作员账号
   account      String
   /// ip地址
@@ -273,7 +275,7 @@ model LoginLog {
   address   String
 }
 
-/// 工厂模型
+/// 工厂表
 model Factory {
   id        Int        @id @default(autoincrement())
   /// 工厂名称
@@ -299,7 +301,7 @@ model Factory {
   valve     Valve[]
 }
 
-/// 项目模型
+/// 项目表
 model Contract {
   id             Int      @id @default(autoincrement())
   /// 项目名称
@@ -326,7 +328,7 @@ model Contract {
   updatedAt      DateTime @updatedAt
 }
 
-/// 装置模型
+/// 装置表
 model Device {
   id        Int      @id @default(autoincrement())
   /// 装置名称
@@ -345,7 +347,7 @@ model Device {
   updatedAt DateTime @updatedAt
 }
 
-/// 阀门模型
+/// 阀门表
 model Valve {
   id        Int      @id @default(autoincrement())
   /// 阀门位号

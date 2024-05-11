@@ -10,6 +10,11 @@ import {
 } from 'nestjs-prisma';
 import { SystemModule } from './modules/system/system.module';
 import { extendedPrismaClient } from './common/pagination/prisma.extension';
+import { MonitorModule } from './modules/monitor/monitor.module';
+import { ContractModule } from './modules/project/contract/contract.module';
+import { DeviceModule } from './modules/project/device/device.module';
+import { FactoryModule } from './modules/project/factory/factory.module';
+import { ValveModule } from './modules/project/valve/valve.module';
 
 @Module({
   imports: [
@@ -24,9 +29,14 @@ import { extendedPrismaClient } from './common/pagination/prisma.extension';
     RouterModule.register([
       // { path: 'project', module: ProjectModule },
       { path: 'system', module: SystemModule },
-      // { path: 'monitor', module: MonitorModule },
+      { path: 'monitor', module: MonitorModule },
     ]),
     SystemModule,
+    MonitorModule,
+    ContractModule,
+    DeviceModule,
+    FactoryModule,
+    ValveModule,
   ],
   controllers: [],
   providers: [

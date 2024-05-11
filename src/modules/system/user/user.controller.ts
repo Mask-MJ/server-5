@@ -7,7 +7,11 @@ import {
   Param,
   Delete,
   Query,
-  UseGuards,
+  FileTypeValidator,
+  MaxFileSizeValidator,
+  ParseFilePipe,
+  UploadedFile,
+  UseInterceptors,
   Request,
 } from '@nestjs/common';
 import {
@@ -19,8 +23,16 @@ import {
 } from '@nestjs/swagger';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
-import { CreateUserDto, UpdateUserDto, QueryUserDto } from './user.dto';
-import { AuthGuard } from '@nestjs/passport';
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  QueryUserDto,
+  ChangePasswordDto,
+} from './user.dto';
+import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
+import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Request as ExpRequest } from 'express';
 
 @ApiTags('用户管理')
 @ApiBearerAuth('bearer')
@@ -42,25 +54,62 @@ export class UserController {
     return this.userService.findAll(queryUserDto);
   }
 
+  @Get('info')
+  @ApiOperation({ summary: '获取用户信息' })
+  @ApiOkResponse({ type: UserEntity })
+  async findSelf(@ActiveUser() user: ActiveUserData) {
+    return this.userService.findSelf(user.sub);
+  }
+
+  @Patch('changePassword')
+  @ApiOperation({ summary: '修改密码' })
+  @ApiOkResponse({ type: UserEntity })
+  async changePassword(
+    @Body() { id, oldPassword, password }: ChangePasswordDto,
+  ) {
+    return this.userService.changePassword(id, password, oldPassword);
+  }
+
   @Get(':id')
+  @ApiOperation({ summary: '获取用户信息' })
+  @ApiOkResponse({ type: UserEntity })
   findOne(@Param('id') id: number) {
     return this.userService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: '更新用户信息' })
+  @ApiOkResponse({ type: UserEntity })
   update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.userService.remove(id);
+  @ApiOperation({ summary: '删除用户' })
+  @ApiOkResponse({ type: UserEntity })
+  remove(
+    @ActiveUser() user: ActiveUserData,
+    @Param('id') id: number,
+    @Request() request: ExpRequest,
+  ) {
+    return this.userService.remove(user, id, request);
   }
 
-  // @UseGuards(LocalAuthGuard)
-  @UseGuards(AuthGuard('local'))
-  @Post('sign-in')
-  login(@Request() req: any): any {
-    return req.user;
+  @Post('uploadAvatar')
+  @ApiOperation({ summary: '上传用户头像' })
+  @UseInterceptors(FileInterceptor('file'))
+  upload(
+    @ActiveUser() user: ActiveUserData,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 2 }),
+          new FileTypeValidator({ fileType: /image\/(png|jpg|jpeg)/ }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+    return this.userService.uploadAvatar(user, file);
   }
 }
