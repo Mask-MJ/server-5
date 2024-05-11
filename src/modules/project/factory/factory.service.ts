@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFactoryDto } from './dto/create-factory.dto';
-import { UpdateFactoryDto } from './dto/update-factory.dto';
+import { CreateFactoryDto, UpdateFactoryDto } from './factory.dto';
 
 @Injectable()
 export class FactoryService {

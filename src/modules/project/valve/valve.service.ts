@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateValveDto } from './dto/create-valve.dto';
-import { UpdateValveDto } from './dto/update-valve.dto';
+import { CreateValveDto, UpdateValveDto } from './valve.dto';
 
 @Injectable()
 export class ValveService {

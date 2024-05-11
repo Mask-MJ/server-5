@@ -10,12 +10,18 @@ import { HashingService } from '../iam/hashing/hashing.service';
 import { BcryptService } from '../iam/hashing/bcrypt.service';
 import { MinioService } from 'src/common/minio/minio.service';
 import { OperationLogService } from '../monitor/operation-log/operation-log.service';
-import { DeptModule } from './dept/dept.module';
-import { DictTypeModule } from './dict-type/dict-type.module';
-import { DictDataModule } from './dict-data/dict-data.module';
-import { MenuModule } from './menu/menu.module';
-import { RoleModule } from './role/role.module';
-import { PostModule } from './post/post.module';
+import { DeptService } from './dept/dept.service';
+import { DeptController } from './dept/dept.controller';
+import { DictDataService } from './dict-data/dict-data.service';
+import { DictDataController } from './dict-data/dict-data.controller';
+import { DictTypeService } from './dict-type/dict-type.service';
+import { DictTypeController } from './dict-type/dict-type.controller';
+import { MenuService } from './menu/menu.service';
+import { MenuController } from './menu/menu.controller';
+import { RoleService } from './role/role.service';
+import { RoleController } from './role/role.controller';
+import { PostService } from './post/post.service';
+import { PostController } from './post/post.controller';
 
 @Module({
   imports: [
@@ -25,19 +31,27 @@ import { PostModule } from './post/post.module';
       name: 'PrismaService',
       useFactory: () => extendedPrismaClient,
     }),
-    DeptModule,
-    DictTypeModule,
-    DictDataModule,
-    MenuModule,
-    RoleModule,
-    PostModule,
   ],
-  controllers: [UserController],
+  controllers: [
+    UserController,
+    DeptController,
+    DictDataController,
+    DictTypeController,
+    MenuController,
+    RoleController,
+    PostController,
+  ],
   providers: [
     { provide: HashingService, useClass: BcryptService },
     MinioService,
     UserService,
     OperationLogService,
+    DeptService,
+    DictDataService,
+    DictTypeService,
+    MenuService,
+    RoleService,
+    PostService,
   ],
   exports: [UserService],
 })

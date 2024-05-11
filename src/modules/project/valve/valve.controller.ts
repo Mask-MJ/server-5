@@ -8,8 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ValveService } from './valve.service';
-import { CreateValveDto } from './dto/create-valve.dto';
-import { UpdateValveDto } from './dto/update-valve.dto';
+import { CreateValveDto, UpdateValveDto } from './valve.dto';
 
 @Controller('valve')
 export class ValveController {

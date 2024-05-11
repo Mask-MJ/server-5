@@ -8,8 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { FactoryService } from './factory.service';
-import { CreateFactoryDto } from './dto/create-factory.dto';
-import { UpdateFactoryDto } from './dto/update-factory.dto';
+import { CreateFactoryDto, UpdateFactoryDto } from './factory.dto';
 
 @Controller('factory')
 export class FactoryController {
