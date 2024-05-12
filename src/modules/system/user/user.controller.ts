@@ -86,7 +86,6 @@ export class UserController {
 
   @Delete(':id')
   @ApiOperation({ summary: '删除用户' })
-  @ApiOkResponse({ type: UserEntity })
   remove(
     @ActiveUser() user: ActiveUserData,
     @Param('id') id: number,

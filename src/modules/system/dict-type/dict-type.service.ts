@@ -1,25 +1,52 @@
-import { Injectable } from '@nestjs/common';
-import { CreateDictTypeDto, UpdateDictTypeDto } from './dict-type.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import {
+  CreateDictTypeDto,
+  QueryDictTypeDto,
+  UpdateDictTypeDto,
+} from './dict-type.dto';
+import { CustomPrismaService } from 'nestjs-prisma';
+import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
+import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 
 @Injectable()
 export class DictTypeService {
-  create(createDictTypeDto: CreateDictTypeDto) {
-    return 'This action adds a new dictType';
+  constructor(
+    @Inject('PrismaService')
+    private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
+  ) {}
+
+  create(user: ActiveUserData, createDictTypeDto: CreateDictTypeDto) {
+    return this.prismaService.client.dictType.create({
+      data: { ...createDictTypeDto, createBy: user.account },
+    });
   }
 
-  findAll() {
-    return `This action returns all dictType`;
+  async findAll(queryDictTypeDto: QueryDictTypeDto) {
+    const { name, value, page, pageSize } = queryDictTypeDto;
+    const [rows, meta] = await this.prismaService.client.dictType
+      .paginate({
+        where: { name: { contains: name }, value: { contains: value } },
+      })
+      .withPages({ page, limit: pageSize });
+    return { rows, ...meta };
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} dictType`;
+    return this.prismaService.client.dictType.findUnique({ where: { id } });
   }
 
-  update(id: number, updateDictTypeDto: UpdateDictTypeDto) {
-    return `This action updates a #${id} dictType`;
+  update(
+    id: number,
+    user: ActiveUserData,
+    updateDictTypeDto: UpdateDictTypeDto,
+  ) {
+    return this.prismaService.client.dictType.update({
+      where: { id },
+      data: { ...updateDictTypeDto, updateBy: user.account },
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} dictType`;
+    return this.prismaService.client.dictType.delete({ where: { id } });
   }
 }

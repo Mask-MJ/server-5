@@ -1,25 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import { CreateMenuDto, UpdateMenuDto } from './menu.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { CreateMenuDto, QueryMenuDto, UpdateMenuDto } from './menu.dto';
+import { CustomPrismaService } from 'nestjs-prisma';
+import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
+import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 
 @Injectable()
 export class MenuService {
-  create(createMenuDto: CreateMenuDto) {
-    return 'This action adds a new menu';
+  constructor(
+    @Inject('PrismaService')
+    private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
+  ) {}
+  create(user: ActiveUserData, createMenuDto: CreateMenuDto) {
+    return this.prismaService.client.menu.create({
+      data: { ...createMenuDto, createBy: user.account },
+    });
   }
 
-  findAll() {
-    return `This action returns all menu`;
+  async findAll(queryMenuDto: QueryMenuDto) {
+    const { name, page, pageSize } = queryMenuDto;
+    const [rows, meta] = await this.prismaService.client.menu
+      .paginate({
+        where: { name: { contains: name } },
+      })
+      .withPages({ page, limit: pageSize });
+    return { rows, ...meta };
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} menu`;
+    return this.prismaService.client.menu.findUnique({ where: { id } });
   }
 
-  update(id: number, updateMenuDto: UpdateMenuDto) {
-    return `This action updates a #${id} menu`;
+  update(id: number, user: ActiveUserData, updateMenuDto: UpdateMenuDto) {
+    return this.prismaService.client.menu.update({
+      where: { id },
+      data: { ...updateMenuDto, updateBy: user.account },
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} menu`;
+    return this.prismaService.client.menu.delete({ where: { id } });
   }
 }

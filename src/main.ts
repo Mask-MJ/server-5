@@ -8,6 +8,7 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { FormatResponse } from './common/interceptor/response.interceptor';
 // import {
 //   utilities as nestWinstonModuleUtilities,
 //   WinstonModule,
@@ -29,6 +30,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   // 全局异常过滤器
   app.useGlobalFilters(new HttpExceptionFilter());
+  // 时区转换
+  app.useGlobalInterceptors(new FormatResponse());
+
   // prisma 异常过滤器
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));

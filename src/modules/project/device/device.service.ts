@@ -1,25 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import { CreateDeviceDto, UpdateDeviceDto } from './device.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { CreateDeviceDto, QueryDeviceDto, UpdateDeviceDto } from './device.dto';
+import { CustomPrismaService } from 'nestjs-prisma';
+import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
+import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 
 @Injectable()
 export class DeviceService {
-  create(createDeviceDto: CreateDeviceDto) {
-    return 'This action adds a new device';
+  constructor(
+    @Inject('PrismaService')
+    private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
+  ) {}
+  create(user: ActiveUserData, createDeviceDto: CreateDeviceDto) {
+    return this.prismaService.client.device.create({
+      data: { ...createDeviceDto, createBy: user.account },
+    });
   }
 
-  findAll() {
-    return `This action returns all device`;
+  async findAll(queryDeviceDto: QueryDeviceDto) {
+    const { name, page, pageSize } = queryDeviceDto;
+    const [rows, meta] = await this.prismaService.client.device
+      .paginate({
+        where: { name: { contains: name } },
+      })
+      .withPages({ page, limit: pageSize });
+    return { rows, ...meta };
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} device`;
+    return this.prismaService.client.device.findUnique({ where: { id } });
   }
 
-  update(id: number, updateDeviceDto: UpdateDeviceDto) {
-    return `This action updates a #${id} device`;
+  update(id: number, user: ActiveUserData, updateDeviceDto: UpdateDeviceDto) {
+    return this.prismaService.client.device.update({
+      where: { id },
+      data: { ...updateDeviceDto, updateBy: user.account },
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} device`;
+    return this.prismaService.client.device.delete({ where: { id } });
   }
 }

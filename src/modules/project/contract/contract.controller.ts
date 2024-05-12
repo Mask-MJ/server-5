@@ -6,39 +6,68 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ContractService } from './contract.service';
-import { CreateContractDto, UpdateContractDto } from './contract.dto';
-
+import {
+  CreateContractDto,
+  QueryContractDto,
+  UpdateContractDto,
+} from './contract.dto';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOperation,
+  ApiOkResponse,
+} from '@nestjs/swagger';
+import { ContractEntity } from './contract.entity';
+import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
+import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+@ApiTags('合同管理')
+@ApiBearerAuth('bearer')
 @Controller('contract')
 export class ContractController {
   constructor(private readonly contractService: ContractService) {}
 
   @Post()
-  create(@Body() createContractDto: CreateContractDto) {
-    return this.contractService.create(createContractDto);
+  @ApiOperation({ summary: '创建合同' })
+  @ApiCreatedResponse({ type: ContractEntity })
+  create(
+    @ActiveUser() user: ActiveUserData,
+    @Body() createContractDto: CreateContractDto,
+  ) {
+    return this.contractService.create(user, createContractDto);
   }
 
   @Get()
-  findAll() {
-    return this.contractService.findAll();
+  @ApiOperation({ summary: '获取合同列表' })
+  @ApiOkResponse({ type: ContractEntity, isArray: true })
+  findAll(@Query() queryContractDto: QueryContractDto) {
+    return this.contractService.findAll(queryContractDto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.contractService.findOne(+id);
+  @ApiOperation({ summary: '获取合同信息' })
+  @ApiOkResponse({ type: ContractEntity })
+  findOne(@Param('id') id: number) {
+    return this.contractService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: '更新合同信息' })
+  @ApiOkResponse({ type: ContractEntity })
   update(
-    @Param('id') id: string,
+    @Param('id') id: number,
+    @ActiveUser() user: ActiveUserData,
     @Body() updateContractDto: UpdateContractDto,
   ) {
-    return this.contractService.update(+id, updateContractDto);
+    return this.contractService.update(id, user, updateContractDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.contractService.remove(+id);
+  @ApiOperation({ summary: '删除合同' })
+  remove(@Param('id') id: number) {
+    return this.contractService.remove(id);
   }
 }

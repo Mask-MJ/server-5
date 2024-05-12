@@ -1,25 +1,52 @@
-import { Injectable } from '@nestjs/common';
-import { CreateDictDataDto, UpdateDictDataDto } from './dict-data.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import {
+  CreateDictDataDto,
+  QueryDictDataDto,
+  UpdateDictDataDto,
+} from './dict-data.dto';
+import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { CustomPrismaService } from 'nestjs-prisma';
+import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 
 @Injectable()
 export class DictDataService {
-  create(createDictDataDto: CreateDictDataDto) {
-    return 'This action adds a new dictDatum';
+  constructor(
+    @Inject('PrismaService')
+    private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
+  ) {}
+
+  create(user: ActiveUserData, createDictDataDto: CreateDictDataDto) {
+    return this.prismaService.client.dictData.create({
+      data: { ...createDictDataDto, createBy: user.account },
+    });
   }
 
-  findAll() {
-    return `This action returns all dictData`;
+  async findAll(queryDictDataDto: QueryDictDataDto) {
+    const { name, value, page, pageSize } = queryDictDataDto;
+    const [rows, meta] = await this.prismaService.client.dictData
+      .paginate({
+        where: { name: { contains: name }, value: { contains: value } },
+      })
+      .withPages({ page, limit: pageSize });
+    return { rows, ...meta };
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} dictDatum`;
+    return this.prismaService.client.dictData.findUnique({ where: { id } });
   }
 
-  update(id: number, updateDictDataDto: UpdateDictDataDto) {
-    return `This action updates a #${id} dictDatum`;
+  update(
+    id: number,
+    user: ActiveUserData,
+    updateDictDataDto: UpdateDictDataDto,
+  ) {
+    return this.prismaService.client.dictData.update({
+      where: { id },
+      data: { ...updateDictDataDto, updateBy: user.account },
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} dictDatum`;
+    return this.prismaService.client.dictData.delete({ where: { id } });
   }
 }

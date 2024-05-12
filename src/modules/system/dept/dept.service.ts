@@ -1,25 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import { CreateDeptDto, UpdateDeptDto } from './dept.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { CreateDeptDto, QueryDeptDto, UpdateDeptDto } from './dept.dto';
+import { CustomPrismaService } from 'nestjs-prisma';
+import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
+import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 
 @Injectable()
 export class DeptService {
-  create(createDeptDto: CreateDeptDto) {
-    return 'This action adds a new dept';
+  constructor(
+    @Inject('PrismaService')
+    private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
+  ) {}
+  create(user: ActiveUserData, createDeptDto: CreateDeptDto) {
+    return this.prismaService.client.dept.create({
+      data: { ...createDeptDto, createBy: user.account },
+    });
   }
 
-  findAll() {
-    return `This action returns all dept`;
+  async findAll(queryDeptDto: QueryDeptDto) {
+    const { name, page, pageSize } = queryDeptDto;
+    const [rows, meta] = await this.prismaService.client.dept
+      .paginate({
+        where: { name: { contains: name } },
+      })
+      .withPages({ page, limit: pageSize });
+    return { rows, ...meta };
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} dept`;
+    return this.prismaService.client.dept.findUnique({ where: { id } });
   }
 
-  update(id: number, updateDeptDto: UpdateDeptDto) {
-    return `This action updates a #${id} dept`;
+  update(id: number, user: ActiveUserData, updateDeptDto: UpdateDeptDto) {
+    return this.prismaService.client.dept.update({
+      where: { id },
+      data: { ...updateDeptDto, updateBy: user.account },
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} dept`;
+    return this.prismaService.client.dept.delete({ where: { id } });
   }
 }

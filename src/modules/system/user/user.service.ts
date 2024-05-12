@@ -38,7 +38,10 @@ export class UserService {
       throw new ConflictException('账号已存在');
     }
     return this.prismaService.client.user.create({
-      data: createUserDto,
+      data: {
+        ...createUserDto,
+        role: { connect: createUserDto.roleIds?.map((id) => ({ id })) },
+      },
     });
   }
 

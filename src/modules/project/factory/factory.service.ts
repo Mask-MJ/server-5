@@ -1,25 +1,47 @@
-import { Injectable } from '@nestjs/common';
-import { CreateFactoryDto, UpdateFactoryDto } from './factory.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import {
+  CreateFactoryDto,
+  QueryFactoryDto,
+  UpdateFactoryDto,
+} from './factory.dto';
+import { CustomPrismaService } from 'nestjs-prisma';
+import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
+import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 
 @Injectable()
 export class FactoryService {
-  create(createFactoryDto: CreateFactoryDto) {
-    return 'This action adds a new factory';
+  constructor(
+    @Inject('PrismaService')
+    private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
+  ) {}
+  create(user: ActiveUserData, createFactoryDto: CreateFactoryDto) {
+    return this.prismaService.client.factory.create({
+      data: { ...createFactoryDto, createBy: user.account },
+    });
   }
 
-  findAll() {
-    return `This action returns all factory`;
+  async findAll(queryFactoryDto: QueryFactoryDto) {
+    const { name, page, pageSize } = queryFactoryDto;
+    const [rows, meta] = await this.prismaService.client.factory
+      .paginate({
+        where: { name: { contains: name } },
+      })
+      .withPages({ page, limit: pageSize });
+    return { rows, ...meta };
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} factory`;
+    return this.prismaService.client.factory.findUnique({ where: { id } });
   }
 
-  update(id: number, updateFactoryDto: UpdateFactoryDto) {
-    return `This action updates a #${id} factory`;
+  update(id: number, user: ActiveUserData, updateFactoryDto: UpdateFactoryDto) {
+    return this.prismaService.client.device.update({
+      where: { id },
+      data: { ...updateFactoryDto, updateBy: user.account },
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} factory`;
+    return this.prismaService.client.factory.delete({ where: { id } });
   }
 }

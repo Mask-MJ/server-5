@@ -1,4 +1,37 @@
-import { PartialType } from '@nestjs/swagger';
-export class CreatePostDto {}
+import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import { IsString, IsNumber, IsOptional } from 'class-validator';
+import { BaseDto } from 'src/common/dto/base.dto';
+export class CreatePostDto {
+  /**
+   * 部门编码
+   * @example 'tech'
+   */
+  @IsString()
+  code: string;
+  /**
+   * 部门名称
+   * @example '技术部'
+   */
+  @IsString()
+  name: string;
+  /**
+   * 排序
+   * @example 1
+   */
+  @IsNumber()
+  @IsOptional()
+  sort?: number;
+  /**
+   * 备注
+   * @example '这是一个技术部'
+   */
+  @IsString()
+  @IsOptional()
+  remark?: string;
+}
+
+export class QueryPostDto extends PartialType(
+  IntersectionType(PickType(CreatePostDto, ['name', 'code']), BaseDto),
+) {}
 
 export class UpdatePostDto extends PartialType(CreatePostDto) {}

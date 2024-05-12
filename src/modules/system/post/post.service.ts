@@ -1,25 +1,47 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePostDto, UpdatePostDto } from './post.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { CreatePostDto, QueryPostDto, UpdatePostDto } from './post.dto';
+import { CustomPrismaService } from 'nestjs-prisma';
+import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
+import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 
 @Injectable()
 export class PostService {
-  create(createPostDto: CreatePostDto) {
-    return 'This action adds a new post';
+  constructor(
+    @Inject('PrismaService')
+    private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
+  ) {}
+
+  create(user: ActiveUserData, createPostDto: CreatePostDto) {
+    return this.prismaService.client.post.create({
+      data: { ...createPostDto, createBy: user.account },
+    });
   }
 
-  findAll() {
-    return `This action returns all post`;
+  async findAll(queryPostDto: QueryPostDto) {
+    const { name, code, page, pageSize } = queryPostDto;
+    const [rows, meta] = await this.prismaService.client.post
+      .paginate({
+        where: {
+          name: { contains: name },
+          code: { contains: code },
+        },
+      })
+      .withPages({ page, limit: pageSize });
+    return { rows, ...meta };
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} post`;
+    return this.prismaService.client.post.findUnique({ where: { id } });
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  update(id: number, user: ActiveUserData, updatePostDto: UpdatePostDto) {
+    return this.prismaService.client.post.update({
+      where: { id },
+      data: { ...updatePostDto, updateBy: user.account },
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} post`;
+    return this.prismaService.client.post.delete({ where: { id } });
   }
 }
