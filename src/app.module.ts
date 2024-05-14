@@ -8,6 +8,7 @@ import { providePrismaClientExceptionFilter } from 'nestjs-prisma';
 import { SystemModule } from './modules/system/system.module';
 import { MonitorModule } from './modules/monitor/monitor.module';
 import { ProjectModule } from './modules/project/project.module';
+import { IamModule } from './modules/iam/iam.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ProjectModule } from './modules/project/project.module';
       { path: 'system', module: SystemModule },
       { path: 'monitor', module: MonitorModule },
     ]),
+    IamModule,
     SystemModule,
     MonitorModule,
     ProjectModule,

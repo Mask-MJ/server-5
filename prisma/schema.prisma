@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -37,23 +31,18 @@ model User {
   status      Boolean  @default(true)
   /// 创建者
   createBy    String?  @unique
-  creator     User?    @relation("editor", fields: [createBy], references: [account])
-  /// 更新者
-  updateBy    User?    @relation("editor")
   /// 创建时间
   createdAt   DateTime @default(now())
   /// 更新时间
   updatedAt   DateTime @updatedAt
   /// 备注
   remark      String   @default("")
-  /// 岗位 (一个用户只能有一个岗位)
-  post        Post[]
-  /// 部门 (一个用户只能有一个部门)
-  dept        Dept[]
-  /// 角色 (一个用户可以有多个角色)
-  role        Role[]
-  /// 菜单 (一个用户可以有多个菜单)
-  menu        Menu[]
+  creator     User?    @relation("editor", fields: [createBy], references: [account])
+  updateBy    User?    @relation("editor")
+  dept        Dept[]   @relation("DeptToUser")
+  menu        Menu[]   @relation("MenuToUser")
+  post        Post[]   @relation("PostToUser")
+  role        Role[]   @relation("RoleToUser")
 }
 
 /// 岗位信息表
@@ -65,7 +54,7 @@ model Post {
   /// 岗位名称
   name      String
   /// 显示顺序
-  sort      Int      @default(0)
+  sort      Int      @default(1)
   /// 创建者
   createBy  String
   /// 更新者
@@ -76,8 +65,7 @@ model Post {
   updatedAt DateTime @updatedAt
   /// 备注
   remark    String   @default("")
-  /// 岗位下的用户
-  user      User[]
+  user      User[]   @relation("PostToUser")
 }
 
 /// 部门信息表
@@ -87,7 +75,7 @@ model Dept {
   /// 部门名称
   name      String
   /// 显示顺序
-  sort      Int      @default(0)
+  sort      Int      @default(1)
   /// 负责人
   leader    String   @default("")
   /// 负责人电话
@@ -96,8 +84,6 @@ model Dept {
   email     String   @default("")
   /// 父部门id
   parentId  Int?
-  parent    Dept?    @relation("DeptToDept", fields: [parentId], references: [id])
-  children  Dept[]   @relation("DeptToDept")
   /// 创建者
   createBy  String
   /// 更新者
@@ -106,8 +92,9 @@ model Dept {
   createdAt DateTime @default(now())
   /// 更新时间
   updatedAt DateTime @updatedAt
-  /// 部门下的用户
-  user      User[]
+  parent    Dept?    @relation("DeptToDept", fields: [parentId], references: [id])
+  children  Dept[]   @relation("DeptToDept")
+  user      User[]   @relation("DeptToUser")
 }
 
 /// 角色信息表
@@ -119,7 +106,7 @@ model Role {
   /// 角色键值
   value     String    @unique
   /// 显示顺序
-  sort      Int       @default(0)
+  sort      Int       @default(1)
   /// 创建者
   createBy  String
   /// 更新者
@@ -130,11 +117,9 @@ model Role {
   updatedAt DateTime  @updatedAt
   /// 备注
   remark    String    @default("")
-  /// 关联菜单
-  menu      Menu[]
-  factory   Factory[]
-  /// 角色下的用户
-  user      User[]
+  factory   Factory[] @relation("FactoryToRole")
+  menu      Menu[]    @relation("MenuToRole")
+  user      User[]    @relation("RoleToUser")
 }
 
 /// 权限模型表
@@ -147,9 +132,9 @@ model Permission {
   remark    String   @default("")
   /// 绑定菜单id
   menuId    Int?
-  menu      Menu?    @relation(fields: [menuId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  menu      Menu?    @relation(fields: [menuId], references: [id])
 }
 
 /// 菜单信息表
@@ -159,7 +144,7 @@ model Menu {
   /// 菜单名称
   name       String       @unique
   /// 显示顺序
-  sort       Int          @default(0)
+  sort       Int          @default(1)
   /// 菜单路径
   path       String       @unique
   /// 菜单图标
@@ -182,10 +167,9 @@ model Menu {
   parentId   Int?
   parent     Menu?        @relation("MenuToMenu", fields: [parentId], references: [id])
   children   Menu[]       @relation("MenuToMenu")
-  role       Role[]
   permission Permission[]
-  /// 菜单下的用户
-  user       User[]
+  role       Role[]       @relation("MenuToRole")
+  user       User[]       @relation("MenuToUser")
 }
 
 /// 字典类型表
@@ -212,29 +196,29 @@ model DictType {
 /// 字典数据表
 model DictData {
   /// 字典数据ID
-  id        Int      @id @default(autoincrement())
+  id           Int            @id @default(autoincrement())
   /// 字典名称
-  name      String
+  name         String
   /// 字典键值
-  value     String
+  value        String
   /// 字典排序
-  sort      Int      @default(0)
+  sort         Int            @default(1)
   /// 状态
-  status    Boolean  @default(true)
+  status       Boolean        @default(true)
   /// 创建者
-  createBy  String
+  createBy     String
   /// 更新者
-  updateBy  String?
+  updateBy     String?
   /// 创建时间
-  createdAt DateTime @default(now())
+  createdAt    DateTime       @default(now())
   /// 更新时间
-  updatedAt DateTime @updatedAt
+  updatedAt    DateTime       @updatedAt
   /// 备注
-  remark    String   @default("")
-
+  remark       String         @default("")
   /// 字典类型
-  dictTypeId Int
-  dictType   DictType @relation(fields: [dictTypeId], references: [id])
+  dictTypeId   Int
+  AnalysisTask AnalysisTask[]
+  dictType     DictType       @relation(fields: [dictTypeId], references: [id])
 }
 
 /// 操作日志记录表
@@ -274,30 +258,31 @@ model LoginLog {
 
 /// 工厂表
 model Factory {
-  id        Int        @id @default(autoincrement())
+  id           Int            @id @default(autoincrement())
   /// 工厂名称
-  name      String     @unique
+  name         String         @unique
   /// 工厂状态
-  status    Boolean    @default(true)
+  status       Boolean        @default(true)
   /// 工厂地址
-  address   String     @default("")
+  address      String         @default("")
   /// 工厂经纬度
-  location  Int[]      @default([])
+  location     Int[]          @default([])
   /// 工厂备注
-  remark    String     @default("")
-  children  Factory[]  @relation("FactoryToFactory")
-  parent    Factory?   @relation("FactoryToFactory", fields: [parentId], references: [id])
-  parentId  Int?
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  remark       String         @default("")
+  parentId     Int?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
   /// 创建者
-  createBy  String
+  createBy     String
   /// 更新者
-  updateBy  String?
-  role      Role[]
-  device    Device[]
-  contract  Contract[]
-  valve     Valve[]
+  updateBy     String?
+  AnalysisTask AnalysisTask[]
+  contract     Contract[]
+  device       Device[]
+  parent       Factory?       @relation("FactoryToFactory", fields: [parentId], references: [id])
+  children     Factory[]      @relation("FactoryToFactory")
+  valve        Valve[]
+  role         Role[]         @relation("FactoryToRole")
 }
 
 /// 项目表
@@ -315,18 +300,18 @@ model Contract {
   customer       String   @default("")
   /// 客户联系方式
   customerPhone  String   @default("")
-  /// 销售人员
+  /// 销售���员
   saler          String   @default("")
   /// 项目备注
   remark         String   @default("")
   /// 工厂id
   factoryId      Int
-  factory        Factory  @relation(fields: [factoryId], references: [id])
   createBy       String
   /// 更新者
   updateBy       String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  factory        Factory  @relation(fields: [factoryId], references: [id])
 }
 
 /// 装置表
@@ -340,14 +325,13 @@ model Device {
   remark    String   @default("")
   /// 工厂id
   factoryId Int
-  factory   Factory  @relation(fields: [factoryId], references: [id])
-  /// 关联阀门
-  valves    Valve[]
   createBy  String
   /// 更新者
   updateBy  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  factory   Factory  @relation(fields: [factoryId], references: [id])
+  valves    Valve[]
 }
 
 /// 阀门表
@@ -379,10 +363,34 @@ model Valve {
   remark    String   @default("")
   /// 工厂id
   factoryId Int
-  factory   Factory  @relation(fields: [factoryId], references: [id])
   /// 关联装置id
   deviceId  Int?
-  device    Device?  @relation(fields: [deviceId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  device    Device?  @relation(fields: [deviceId], references: [id])
+  factory   Factory  @relation(fields: [factoryId], references: [id])
+}
+
+/// 分析任务表
+model AnalysisTask {
+  id        Int      @id @default(autoincrement())
+  /// 任务名称
+  name      String
+  /// 任务状态 0未开始 1进行中 2已完成
+  status    Int      @default(0)
+  /// pdf文件路径
+  pdfPath   String[]
+  /// 任务备注
+  remark    String   @default("")
+  /// 字典id
+  dictId    Int
+  /// 工厂id
+  factoryId Int
+  createBy  String
+  /// 更新者
+  updateBy  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  dict      DictData @relation(fields: [dictId], references: [id])
+  factory   Factory  @relation(fields: [factoryId], references: [id])
 }

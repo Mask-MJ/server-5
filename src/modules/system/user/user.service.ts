@@ -40,6 +40,7 @@ export class UserService {
     return this.prismaService.client.user.create({
       data: {
         ...createUserDto,
+        password: await this.hashingService.hash(createUserDto.password),
         role: { connect: createUserDto.roleIds?.map((id) => ({ id })) },
       },
     });

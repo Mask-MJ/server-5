@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  server:
+    container_name: basic-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - redis-container
+    env_file:
+      - .env
+    networks:
+      - common-network
+
+  redis-container:
+    image: redis
+    restart: always
+    volumes:
+      - /var/www/basic/redis:/data
+      # - F:/redis:/data
+    networks:
+      - common-network
+
+networks:
+  common-network:
+    driver: bridge
