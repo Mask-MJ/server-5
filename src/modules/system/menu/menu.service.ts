@@ -17,13 +17,15 @@ export class MenuService {
   }
 
   async findAll(queryMenuDto: QueryMenuDto) {
-    const { name, page, pageSize } = queryMenuDto;
-    const [rows, meta] = await this.prismaService.client.menu
-      .paginate({
-        where: { name: { contains: name } },
-      })
-      .withPages({ page, limit: pageSize });
-    return { rows, ...meta };
+    const { name } = queryMenuDto;
+    const data = await this.prismaService.client.menu.findMany({
+      where: {
+        name: { contains: name },
+        parentId: null,
+      },
+      include: { children: true },
+    });
+    return data;
   }
 
   findOne(id: number) {
