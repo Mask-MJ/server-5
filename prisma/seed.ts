@@ -39,7 +39,7 @@ async function main() {
   await prisma.menu.create({
     data: {
       name: '首页',
-      icon: 'dashboard',
+      icon: 'i-ant-design:appstore-outlined',
       sort: 1,
       path: '/dashboard',
       createBy: 'admin',
@@ -47,9 +47,9 @@ async function main() {
         create: [
           {
             name: '工作台',
-            icon: 'workbench',
+            icon: 'i-ant-design:laptop-outlined',
             sort: 1,
-            path: '/dashboard/workbench',
+            path: '/dashboard/workTable',
             createBy: 'admin',
           },
         ],
@@ -59,7 +59,7 @@ async function main() {
   await prisma.menu.create({
     data: {
       name: '系统管理',
-      icon: 'setting',
+      icon: 'i-ant-design:setting-outlined',
       sort: 2,
       path: '/system',
       createBy: 'admin',
@@ -67,49 +67,49 @@ async function main() {
         create: [
           {
             name: '用户管理',
-            icon: 'user',
+            icon: 'i-ant-design:user-outlined',
             sort: 1,
             path: '/system/user',
             createBy: 'admin',
           },
           {
             name: '角色管理',
-            icon: 'team',
+            icon: 'i-ant-design:usergroup-add-outlined',
             sort: 2,
             path: '/system/role',
             createBy: 'admin',
           },
           {
             name: '菜单管理',
-            icon: 'menu',
+            icon: 'i-ant-design:menu-outlined',
             sort: 3,
             path: '/system/menu',
             createBy: 'admin',
           },
           {
             name: '字典管理',
-            icon: 'dictType',
+            icon: 'i-ant-design:medicine-box-outlined',
             sort: 4,
             path: '/system/dictType',
             createBy: 'admin',
           },
           {
             name: '字典数据管理',
-            icon: 'dictData',
+            icon: 'i-ant-design:medicine-box-outlined',
             sort: 5,
             path: '/system/dictData',
             createBy: 'admin',
           },
           {
             name: '部门管理',
-            icon: 'dept',
+            icon: 'i-ant-design:gold-twotone',
             sort: 6,
             path: '/system/dept',
             createBy: 'admin',
           },
           {
             name: '岗位管理',
-            icon: 'post',
+            icon: 'i-ant-design:golden-filled',
             sort: 7,
             path: '/system/post',
             createBy: 'admin',
@@ -121,7 +121,7 @@ async function main() {
   await prisma.menu.create({
     data: {
       name: '系统监控',
-      icon: 'monitor',
+      icon: 'i-ant-design:android-filled',
       sort: 3,
       path: '/monitor',
       createBy: 'admin',
@@ -129,22 +129,22 @@ async function main() {
         create: [
           {
             name: '在线用户',
-            icon: 'online',
+            icon: 'i-ant-design:aim-outlined',
             sort: 1,
             path: '/monitor/online',
             createBy: 'admin',
           },
           {
             name: '登录日志',
-            icon: 'loginLog',
             sort: 2,
+            icon: 'i-ant-design:cloud-sync-outlined',
             path: '/monitor/loginLog',
             createBy: 'admin',
           },
           {
             name: '操作日志',
-            icon: 'operationLog',
             sort: 3,
+            icon: 'i-ant-design:cloud-server-outlined',
             path: '/monitor/operationLog',
             createBy: 'admin',
           },
