@@ -5,7 +5,8 @@ import { OperationLogController } from './operation-log/operation-log.controller
 import { OperationLogService } from './operation-log/operation-log.service';
 import { CustomPrismaModule } from 'nestjs-prisma';
 import { extendedPrismaClient } from 'src/common/pagination/prisma.extension';
-
+import { InfoController } from '../monitor/info/info.controller';
+import { InfoService } from '../monitor/info/info.service';
 @Module({
   imports: [
     CustomPrismaModule.forRootAsync({
@@ -13,7 +14,7 @@ import { extendedPrismaClient } from 'src/common/pagination/prisma.extension';
       useFactory: () => extendedPrismaClient,
     }),
   ],
-  controllers: [OperationLogController, LoginLogController],
-  providers: [OperationLogService, LoginLogService],
+  controllers: [OperationLogController, LoginLogController, InfoController],
+  providers: [OperationLogService, LoginLogService, InfoService],
 })
 export class MonitorModule {}

@@ -148,6 +148,13 @@ async function main() {
             path: '/monitor/operationLog',
             createBy: 'admin',
           },
+          {
+            name: '服务器监控',
+            icon: 'operationLog',
+            sort: 4,
+            path: '/monitor/info',
+            createBy: 'admin',
+          },
         ],
       },
     },

@@ -9,6 +9,7 @@ import { SystemModule } from './modules/system/system.module';
 import { MonitorModule } from './modules/monitor/monitor.module';
 import { ProjectModule } from './modules/project/project.module';
 import { IamModule } from './modules/iam/iam.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { IamModule } from './modules/iam/iam.module';
       { path: 'system', module: SystemModule },
       { path: 'monitor', module: MonitorModule },
     ]),
+    EventEmitterModule.forRoot(),
     IamModule,
     SystemModule,
     MonitorModule,
