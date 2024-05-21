@@ -19,7 +19,6 @@ export class CreateUserDto {
    * @example 'admin'
    */
   @IsString()
-  @MinLength(4)
   account: string;
 
   /**

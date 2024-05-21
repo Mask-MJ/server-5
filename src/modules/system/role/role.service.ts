@@ -11,12 +11,13 @@ export class RoleService {
     private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
   ) {}
   create(user: ActiveUserData, createRoleDto: CreateRoleDto) {
+    const { menuIds, factoryIds, ...rest } = createRoleDto;
     return this.prismaService.client.role.create({
       data: {
-        ...createRoleDto,
+        ...rest,
         createBy: user.account,
-        menu: { connect: createRoleDto.menuIds.map((id) => ({ id })) },
-        factory: { connect: createRoleDto.factoryIds.map((id) => ({ id })) },
+        menu: { connect: menuIds.map((id) => ({ id })) },
+        factory: { connect: factoryIds.map((id) => ({ id })) },
       },
     });
   }
@@ -36,13 +37,14 @@ export class RoleService {
   }
 
   update(id: number, user: ActiveUserData, updateRoleDto: UpdateRoleDto) {
+    const { menuIds, factoryIds, ...rest } = updateRoleDto;
     return this.prismaService.client.role.update({
       where: { id },
       data: {
-        ...updateRoleDto,
+        ...rest,
         updateBy: user.account,
-        menu: { connect: updateRoleDto.menuIds.map((id) => ({ id })) },
-        factory: { connect: updateRoleDto.factoryIds.map((id) => ({ id })) },
+        menu: { connect: menuIds.map((id) => ({ id })) },
+        factory: { connect: factoryIds.map((id) => ({ id })) },
       },
     });
   }

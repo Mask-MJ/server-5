@@ -37,11 +37,12 @@ export class UserService {
     if (existingUser) {
       throw new ConflictException('账号已存在');
     }
+    const { roleIds, ...rest } = createUserDto;
     return this.prismaService.client.user.create({
       data: {
-        ...createUserDto,
+        ...rest,
         password: await this.hashingService.hash(createUserDto.password),
-        role: { connect: createUserDto.roleIds?.map((id) => ({ id })) },
+        role: { connect: roleIds?.map((id) => ({ id })) },
       },
     });
   }
@@ -92,7 +93,10 @@ export class UserService {
       include: { role: true },
     });
     const userWithoutPassword = this.exclude(user, ['password']);
-    return userWithoutPassword;
+    return {
+      ...userWithoutPassword,
+      roleIds: user.role.map((role) => role.id),
+    };
   }
 
   async changePassword(id: number, password: string, oldPassword: string) {
@@ -124,11 +128,13 @@ export class UserService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
+    console.log(updateUserDto);
+    const { roleIds, ...rest } = updateUserDto;
     return this.prismaService.client.user.update({
       where: { id },
       data: {
-        ...updateUserDto,
-        role: { connect: updateUserDto.roleIds?.map((id) => ({ id })) },
+        ...rest,
+        role: { connect: roleIds?.map((id) => ({ id })) },
       },
     });
   }
