@@ -76,6 +76,7 @@ export class UserService {
           phoneNumber: { contains: phoneNumber },
           createdAt: { gte: beginTime, lte: endTime },
         },
+        include: { role: true },
       })
       .withPages({ limit: pageSize, page, includePageCount: true });
 
