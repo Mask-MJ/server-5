@@ -72,7 +72,7 @@ async function bootstrap() {
     `http://localhost:${PORT}/${PREFIX}/`,
     '\n',
     '文档地址',
-    `http://localhost:${PORT}/${PREFIX}/doc/`,
+    `http://localhost:${PORT}/doc/`,
   );
 }
 bootstrap();
