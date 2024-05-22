@@ -1,4 +1,4 @@
-import helmet from 'helmet';
+// import helmet from 'helmet';
 import { mw } from 'request-ip';
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
@@ -38,7 +38,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   // web 安全，防常见漏洞
-  app.use(helmet());
+  // app.use(helmet());
   const swaggerOptions = new DocumentBuilder()
     .setTitle(`${NAME} 接口文档`)
     .setDescription(`The ${NAME} API escription`)
