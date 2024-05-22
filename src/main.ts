@@ -54,7 +54,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerOptions);
   // 项目依赖当前文档功能，最好不要改变当前地址
   // 生产环境使用 nginx 可以将当前文档地址 屏蔽外部访问
-  SwaggerModule.setup(`${PREFIX}/doc`, app, document, {
+  SwaggerModule.setup(`doc`, app, document, {
     swaggerOptions: {
       persistAuthorization: true,
     },
