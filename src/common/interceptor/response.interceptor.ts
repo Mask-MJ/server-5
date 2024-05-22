@@ -6,12 +6,9 @@ import {
 } from '@nestjs/common';
 import dayjs from 'dayjs';
 import { Observable, map } from 'rxjs';
-import { Request } from 'express';
 
 interface Result {
-  code: number;
-  message: string;
-  data: any;
+  rows?: any;
   page?: number;
   pageSize?: number;
   total?: number;
@@ -20,18 +17,13 @@ interface Result {
 @Injectable()
 export class FormatResponse implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const response = context.switchToHttp().getResponse<Request>();
     return next.handle().pipe(
       map((data) => {
-        const res: Result = {
-          code: response.statusCode,
-          message: 'success',
-          data: Array.isArray(data)
-            ? data.map((item) => changeTime(item))
-            : changeTime(data),
-        };
+        let res: Result = Array.isArray(data)
+          ? data.map((item) => changeTime(item))
+          : changeTime(data);
         if (data?.rows) {
-          res.data = {
+          res = {
             rows: data.rows.map((item: any) => changeTime(item)),
             page: data.currentPage,
             pageSize: data.pageCount,
