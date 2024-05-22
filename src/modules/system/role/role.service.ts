@@ -32,8 +32,19 @@ export class RoleService {
     return { rows, ...meta };
   }
 
-  findOne(id: number) {
-    return this.prismaService.client.role.findUnique({ where: { id } });
+  async findOne(id: number) {
+    const role = await this.prismaService.client.role.findUnique({
+      where: { id },
+      include: { menu: true, factory: true },
+    });
+
+    const { menu, factory, ...rest } = role;
+
+    return {
+      ...rest,
+      menuIds: menu.map((menu) => menu.id),
+      factoryIds: factory.map((factory) => factory.id),
+    };
   }
 
   update(id: number, user: ActiveUserData, updateRoleDto: UpdateRoleDto) {

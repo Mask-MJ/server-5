@@ -1,8 +1,9 @@
 import { Transform, Type } from 'class-transformer';
 import { IsNumber } from 'class-validator';
+import { IntersectionType } from '@nestjs/swagger';
 import dayjs from 'dayjs';
 
-export class BaseDto {
+export class PaginateDto {
   /**
    * 页码
    * @example 1
@@ -18,7 +19,9 @@ export class BaseDto {
   @IsNumber()
   @Type(() => Number)
   pageSize: number = 10;
+}
 
+export class TimeDto {
   /**
    * 开始时间
    * @example 1183135260000
@@ -35,3 +38,5 @@ export class BaseDto {
   @Transform(({ value }) => dayjs(value).format(), { toClassOnly: true })
   endTime: string;
 }
+
+export class BaseDto extends IntersectionType(PaginateDto, TimeDto) {}

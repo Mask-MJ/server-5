@@ -1,7 +1,7 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsString, IsBoolean, IsNumber, IsOptional } from 'class-validator';
-import { BaseDto } from 'src/common/dto/base.dto';
+import { TimeDto } from 'src/common/dto/base.dto';
 export class CreateMenuDto {
   /**
    * 菜单名称
@@ -59,7 +59,7 @@ export class CreateMenuDto {
 }
 
 export class QueryMenuDto extends PartialType(
-  IntersectionType(PickType(CreateMenuDto, ['name', 'hidden']), BaseDto),
+  IntersectionType(PickType(CreateMenuDto, ['name', 'hidden']), TimeDto),
 ) {}
 
 export class UpdateMenuDto extends PartialType(CreateMenuDto) {}

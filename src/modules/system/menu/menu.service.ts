@@ -16,16 +16,15 @@ export class MenuService {
     });
   }
 
-  async findAll(queryMenuDto: QueryMenuDto) {
+  findAll(queryMenuDto: QueryMenuDto) {
     const { name } = queryMenuDto;
-    const data = await this.prismaService.client.menu.findMany({
+    return this.prismaService.client.menu.findMany({
       where: {
         name: { contains: name },
         parentId: null,
       },
       include: { children: true },
     });
-    return data;
   }
 
   findOne(id: number) {

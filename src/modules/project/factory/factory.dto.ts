@@ -7,7 +7,7 @@ import {
   IsOptional,
   IsBoolean,
 } from 'class-validator';
-import { BaseDto } from 'src/common/dto/base.dto';
+import { TimeDto } from 'src/common/dto/base.dto';
 
 export class CreateFactoryDto {
   /**
@@ -59,7 +59,7 @@ export class CreateFactoryDto {
 }
 
 export class QueryFactoryDto extends PartialType(
-  IntersectionType(PickType(CreateFactoryDto, ['name']), BaseDto),
+  IntersectionType(PickType(CreateFactoryDto, ['name']), TimeDto),
 ) {}
 
 export class UpdateFactoryDto extends PartialType(CreateFactoryDto) {}

@@ -20,14 +20,15 @@ export class FactoryService {
     });
   }
 
-  async findAll(queryFactoryDto: QueryFactoryDto) {
-    const { name, page, pageSize } = queryFactoryDto;
-    const [rows, meta] = await this.prismaService.client.factory
-      .paginate({
-        where: { name: { contains: name } },
-      })
-      .withPages({ page, limit: pageSize });
-    return { rows, ...meta };
+  findAll(queryFactoryDto: QueryFactoryDto) {
+    const { name, beginTime, endTime } = queryFactoryDto;
+    return this.prismaService.client.factory.findMany({
+      where: {
+        name: { contains: name },
+        createdAt: { gte: beginTime, lte: endTime },
+      },
+      include: { children: true },
+    });
   }
 
   findOne(id: number) {
