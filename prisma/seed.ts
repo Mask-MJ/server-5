@@ -137,7 +137,7 @@ async function main() {
           {
             name: '登录日志',
             sort: 2,
-            icon: 'i-ant-design:cloud-sync-outlined',
+            icon: 'i-ant-design:contacts-outlined',
             path: '/monitor/loginLog',
             createBy: 'admin',
           },
@@ -150,7 +150,7 @@ async function main() {
           },
           {
             name: '服务器监控',
-            icon: 'operationLog',
+            icon: 'i-ant-design:fund-projection-screen-outlined',
             sort: 4,
             path: '/monitor/info',
             createBy: 'admin',
