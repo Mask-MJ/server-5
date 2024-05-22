@@ -31,10 +31,12 @@ export class FormatResponse implements NestInterceptor {
             : changeTime(data),
         };
         if (data?.rows) {
-          res.data = data.rows.map((item: any) => changeTime(item));
-          res.page = data.currentPage;
-          res.pageSize = data.pageCount;
-          res.total = data.totalCount;
+          res.data = {
+            rows: data.rows.map((item: any) => changeTime(item)),
+            page: data.currentPage,
+            pageSize: data.pageCount,
+            total: data.totalCount,
+          };
         }
         return res;
       }),
