@@ -1,12 +1,6 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import {
-  IsString,
-  MinLength,
-  IsNumber,
-  IsOptional,
-  IsBoolean,
-} from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsBoolean } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 
 export class CreateValveDto {
@@ -15,7 +9,6 @@ export class CreateValveDto {
    * @example 'FV-3001B'
    */
   @IsString()
-  @MinLength(1)
   name: string;
 
   /**

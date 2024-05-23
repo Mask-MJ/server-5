@@ -1,5 +1,5 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
-import { IsString, MinLength, IsNumber } from 'class-validator';
+import { IsString, IsNumber } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 export class CreateContractDto {
   /**
@@ -7,7 +7,6 @@ export class CreateContractDto {
    * @example '合同1'
    */
   @IsString()
-  @MinLength(1)
   name: string;
 
   /**

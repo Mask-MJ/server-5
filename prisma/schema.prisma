@@ -221,6 +221,19 @@ model DictData {
   dictType   DictType @relation(fields: [dictTypeId], references: [id])
 }
 
+/// 单位
+model Unit {
+  id        Int      @id @default(autoincrement())
+  /// 单位名称
+  name      String
+  /// 单位值
+  value     String
+  /// 备注
+  remark    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 /// 操作日志记录表
 model OperationLog {
   /// 操作日志ID

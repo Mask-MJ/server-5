@@ -2,7 +2,6 @@ import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsString,
-  MinLength,
   IsNumber,
   IsOptional,
   IsArray,
@@ -16,7 +15,6 @@ export class CreateDeviceDto {
    * @example '装置1'
    */
   @IsString()
-  @MinLength(1)
   name: string;
 
   /**

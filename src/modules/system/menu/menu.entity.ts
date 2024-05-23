@@ -7,7 +7,7 @@ export class MenuEntity implements Menu {
   hidden: boolean;
   status: boolean;
   sort: number;
-  parentId: number;
+  parentId: number | null;
   remark: string;
   createBy: string;
   updateBy: string;

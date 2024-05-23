@@ -1,5 +1,5 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
-import { IsString, MinLength, IsOptional } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 
 export class CreateDictTypeDto {
@@ -8,7 +8,6 @@ export class CreateDictTypeDto {
    * @example '性别'
    */
   @IsString()
-  @MinLength(1)
   name: string;
 
   /**
@@ -16,7 +15,6 @@ export class CreateDictTypeDto {
    * @example '1'
    */
   @IsString()
-  @MinLength(1)
   value: string;
 
   /**

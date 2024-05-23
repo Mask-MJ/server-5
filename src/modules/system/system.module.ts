@@ -24,6 +24,8 @@ import { PostService } from './post/post.service';
 import { PostController } from './post/post.controller';
 import { AnalysisTaskService } from './analysis-task/analysis-task.service';
 import { AnalysisTaskController } from './analysis-task/analysis-task.controller';
+import { UnitService } from './unit/unit.service';
+import { UnitController } from './unit/unit.controller';
 
 @Module({
   imports: [
@@ -43,6 +45,7 @@ import { AnalysisTaskController } from './analysis-task/analysis-task.controller
     RoleController,
     PostController,
     AnalysisTaskController,
+    UnitController,
   ],
   providers: [
     { provide: HashingService, useClass: BcryptService },
@@ -56,6 +59,7 @@ import { AnalysisTaskController } from './analysis-task/analysis-task.controller
     RoleService,
     PostService,
     AnalysisTaskService,
+    UnitService,
   ],
   exports: [UserService],
 })

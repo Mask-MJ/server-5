@@ -1,12 +1,6 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import {
-  IsString,
-  MinLength,
-  IsNumber,
-  IsOptional,
-  IsBoolean,
-} from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsBoolean } from 'class-validator';
 import { TimeDto } from 'src/common/dto/base.dto';
 
 export class CreateFactoryDto {
@@ -15,7 +9,6 @@ export class CreateFactoryDto {
    * @example '工厂1'
    */
   @IsString()
-  @MinLength(1)
   name: string;
 
   /**
