@@ -83,7 +83,6 @@ model Dept {
   /// 负责人邮箱
   email     String   @default("")
   /// 父部门id
-  parentId  Int?
   /// 创建者
   createBy  String
   /// 更新者
@@ -92,6 +91,7 @@ model Dept {
   createdAt DateTime @default(now())
   /// 更新时间
   updatedAt DateTime @updatedAt
+  parentId  Int?
   parent    Dept?    @relation("DeptToDept", fields: [parentId], references: [id])
   children  Dept[]   @relation("DeptToDept")
   user      User[]   @relation("DeptToUser")
@@ -277,21 +277,22 @@ model Factory {
   /// 工厂状态
   status       Boolean        @default(true)
   /// 工厂地址
-  address      String         @default("")
-  /// 工厂经纬度
-  location     Int[]          @default([])
+  address      String?        @default("")
+  /// 工厂经纬度(可选)
+  longitude    String?        @default("")
+  latitude     String?        @default("")
   /// 工厂备注
   remark       String         @default("")
-  parentId     Int?
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   /// 创建者
   createBy     String
   /// 更新者
   updateBy     String?
-  AnalysisTask AnalysisTask[]
+  analysisTask AnalysisTask[]
   contract     Contract[]
   device       Device[]
+  parentId     Int?
   parent       Factory?       @relation("FactoryToFactory", fields: [parentId], references: [id])
   children     Factory[]      @relation("FactoryToFactory")
   valve        Valve[]
@@ -308,12 +309,12 @@ model Contract {
   /// 采购阀门总数
   valveCount     Int
   /// 高级阀门数量
-  highValveCount Int
+  highValveCount Int?     @default(0)
   /// 客户名称
   customer       String   @default("")
   /// 客户联系方式
   customerPhone  String   @default("")
-  /// 销售���员
+  /// 销售员名称
   saler          String   @default("")
   /// 项目备注
   remark         String   @default("")

@@ -25,6 +25,7 @@ export class FactoryService {
     return this.prismaService.client.factory.findMany({
       where: {
         name: { contains: name },
+        parentId: null,
         createdAt: { gte: beginTime, lte: endTime },
       },
       include: { children: true },
@@ -36,7 +37,7 @@ export class FactoryService {
   }
 
   update(id: number, user: ActiveUserData, updateFactoryDto: UpdateFactoryDto) {
-    return this.prismaService.client.device.update({
+    return this.prismaService.client.factory.update({
       where: { id },
       data: { ...updateFactoryDto, updateBy: user.account },
     });

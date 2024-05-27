@@ -23,7 +23,8 @@ export class MenuService {
         name: { contains: name },
         parentId: null,
       },
-      include: { children: true },
+      include: { children: { orderBy: { sort: 'asc' } } },
+      orderBy: { sort: 'asc' },
     });
   }
 

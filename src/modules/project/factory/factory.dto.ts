@@ -1,6 +1,6 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsString, IsNumber, IsOptional, IsBoolean } from 'class-validator';
+import { IsString, IsOptional, IsBoolean, IsNumber } from 'class-validator';
 import { TimeDto } from 'src/common/dto/base.dto';
 
 export class CreateFactoryDto {
@@ -29,11 +29,18 @@ export class CreateFactoryDto {
   address?: string;
 
   /**
-   * 工厂坐标
-   * @example [1, 1]
+   * 工厂坐标(经度)
+   * @example 1.1
    */
-  @IsNumber({}, { each: true })
-  location?: number[] = [];
+  @IsString()
+  longitude?: string = '';
+
+  /**
+   * 工厂坐标(纬度)
+   * @example 1.1
+   */
+  @IsString()
+  latitude?: string = '';
 
   /**
    * 工厂描述

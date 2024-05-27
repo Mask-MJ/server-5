@@ -41,11 +41,11 @@ CREATE TABLE "Dept" (
     "leader" TEXT NOT NULL DEFAULT '',
     "phone" TEXT NOT NULL DEFAULT '',
     "email" TEXT NOT NULL DEFAULT '',
-    "parentId" INTEGER,
     "createBy" TEXT NOT NULL,
     "updateBy" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "parentId" INTEGER,
 
     CONSTRAINT "Dept_pkey" PRIMARY KEY ("id")
 );
@@ -129,6 +129,18 @@ CREATE TABLE "DictData" (
 );
 
 -- CreateTable
+CREATE TABLE "Unit" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "value" TEXT NOT NULL,
+    "remark" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Unit_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "OperationLog" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -159,14 +171,15 @@ CREATE TABLE "Factory" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "status" BOOLEAN NOT NULL DEFAULT true,
-    "address" TEXT NOT NULL DEFAULT '',
-    "location" INTEGER[] DEFAULT ARRAY[]::INTEGER[],
+    "address" TEXT DEFAULT '',
+    "longitude" TEXT DEFAULT '',
+    "latitude" TEXT DEFAULT '',
     "remark" TEXT NOT NULL DEFAULT '',
-    "parentId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "createBy" TEXT NOT NULL,
     "updateBy" TEXT,
+    "parentId" INTEGER,
 
     CONSTRAINT "Factory_pkey" PRIMARY KEY ("id")
 );
@@ -177,7 +190,7 @@ CREATE TABLE "Contract" (
     "name" TEXT NOT NULL,
     "contractTime" TIMESTAMP(3) NOT NULL,
     "valveCount" INTEGER NOT NULL,
-    "highValveCount" INTEGER NOT NULL,
+    "highValveCount" INTEGER DEFAULT 0,
     "customer" TEXT NOT NULL DEFAULT '',
     "customerPhone" TEXT NOT NULL DEFAULT '',
     "saler" TEXT NOT NULL DEFAULT '',
@@ -368,13 +381,13 @@ ALTER TABLE "Contract" ADD CONSTRAINT "Contract_factoryId_fkey" FOREIGN KEY ("fa
 ALTER TABLE "Device" ADD CONSTRAINT "Device_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Valve" ADD CONSTRAINT "Valve_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Valve" ADD CONSTRAINT "Valve_deviceId_fkey" FOREIGN KEY ("deviceId") REFERENCES "Device"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AnalysisTask" ADD CONSTRAINT "AnalysisTask_dictId_fkey" FOREIGN KEY ("dictId") REFERENCES "DictData"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Valve" ADD CONSTRAINT "Valve_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "AnalysisTask" ADD CONSTRAINT "AnalysisTask_dictId_fkey" FOREIGN KEY ("dictId") REFERENCES "DictType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "AnalysisTask" ADD CONSTRAINT "AnalysisTask_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

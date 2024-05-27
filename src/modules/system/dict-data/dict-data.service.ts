@@ -26,6 +26,7 @@ export class DictDataService {
     const [rows, meta] = await this.prismaService.client.dictData
       .paginate({
         where: { name: { contains: name }, value: { contains: value } },
+        orderBy: { sort: 'asc' },
       })
       .withPages({ page, limit: pageSize });
     return { rows, ...meta };

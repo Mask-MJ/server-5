@@ -21,6 +21,7 @@ export class DeptService {
     const [rows, meta] = await this.prismaService.client.dept
       .paginate({
         where: { name: { contains: name } },
+        orderBy: { sort: 'asc' },
       })
       .withPages({ page, limit: pageSize });
     return { rows, ...meta };

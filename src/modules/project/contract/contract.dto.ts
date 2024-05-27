@@ -1,5 +1,5 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
-import { IsString, IsNumber } from 'class-validator';
+import { IsString, IsNumber, IsOptional } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 export class CreateContractDto {
   /**
@@ -27,28 +27,29 @@ export class CreateContractDto {
    * @example 1000
    */
   @IsNumber()
-  highValveCount: number;
+  @IsOptional()
+  highValveCount?: number;
 
   /**
    * 客户名称
    * @example '客户1'
    */
   @IsString()
-  customer: string;
+  customer: string = '';
 
   /**
    * 客户联系方式
    * @example '123456789'
    */
   @IsString()
-  customerPhone: string;
+  customerPhone?: string = '';
 
   /**
    * 销售人员
    * @example '销售1'
    */
   @IsString()
-  saler: string;
+  saler?: string = '';
 
   /**
    * 项目备注

@@ -27,6 +27,7 @@ export class RoleService {
     const [rows, meta] = await this.prismaService.client.role
       .paginate({
         where: { name: { contains: name }, value: { contains: value } },
+        orderBy: { sort: 'asc' },
       })
       .withPages({ page, limit: pageSize });
     return { rows, ...meta };

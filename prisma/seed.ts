@@ -58,9 +58,89 @@ async function main() {
   });
   await prisma.menu.create({
     data: {
+      name: '业务功能',
+      icon: 'i-ant-design:apartment-outlined',
+      sort: 2,
+      path: '/project',
+      createBy: 'admin',
+      children: {
+        create: [
+          {
+            name: '工厂管理',
+            icon: 'i-ant-design:cluster-outlined',
+            sort: 1,
+            path: '/project/factory',
+            createBy: 'admin',
+          },
+          {
+            name: '装置管理',
+            icon: 'i-ant-design:deployment-unit-outlined',
+            sort: 2,
+            path: '/project/device',
+            createBy: 'admin',
+          },
+          {
+            name: '装置列表',
+            icon: 'i-ant-design:deployment-unit-outlined',
+            sort: 3,
+            hidden: true,
+            path: '/project/device/:id',
+            createBy: 'admin',
+          },
+          {
+            name: '阀门管理',
+            icon: 'i-ant-design:dashboard-outlined',
+            sort: 4,
+            path: '/project/valve',
+            createBy: 'admin',
+          },
+          {
+            name: '阀门列表',
+            icon: 'i-ant-design:dashboard-outlined',
+            sort: 5,
+            hidden: true,
+            path: '/project/valve/:id',
+            createBy: 'admin',
+          },
+          {
+            name: '项目管理',
+            icon: 'i-ant-design:cloud-server-outlined',
+            sort: 6,
+            path: '/project/contract',
+            createBy: 'admin',
+          },
+          {
+            name: '项目列表',
+            icon: 'i-ant-design:cloud-server-outlined',
+            sort: 7,
+            hidden: true,
+            path: '/project/contract/:id',
+            createBy: 'admin',
+          },
+          {
+            name: '分析任务',
+            icon: 'i-ant-design:line-chart-outlined',
+            sort: 8,
+            path: '/project/analysisTask',
+            createBy: 'admin',
+          },
+          {
+            name: '任务列表',
+            icon: 'i-ant-design:line-chart-outlined',
+            sort: 9,
+            path: '/project/analysisTask/:id',
+            hidden: true,
+            createBy: 'admin',
+          },
+        ],
+      },
+    },
+  });
+  await prisma.menu.create({
+    data: {
       name: '系统管理',
       icon: 'i-ant-design:setting-outlined',
-      sort: 2,
+      sort: 3,
       path: '/system',
       createBy: 'admin',
       children: {
@@ -97,7 +177,7 @@ async function main() {
             name: '字典数据管理',
             icon: 'i-ant-design:medicine-box-outlined',
             sort: 5,
-            path: '/system/dictData',
+            path: '/system/dictData/:id',
             createBy: 'admin',
           },
           {
@@ -122,7 +202,7 @@ async function main() {
     data: {
       name: '系统监控',
       icon: 'i-ant-design:android-filled',
-      sort: 3,
+      sort: 4,
       path: '/monitor',
       createBy: 'admin',
       children: {

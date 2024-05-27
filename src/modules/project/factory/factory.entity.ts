@@ -5,15 +5,12 @@ export class FactoryEntity implements Factory {
   name: string;
   status: boolean;
   address: string;
-  location: number[];
-  remark: string;
+  longitude: string;
+  latitude: string;
   parentId: number | null;
+  remark: string;
   createBy: string;
   updateBy: string;
-  role: number[];
-  device: number[];
-  contract: number[];
-  valve: number[];
   createdAt: Date;
   updatedAt: Date;
 }

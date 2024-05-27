@@ -17,10 +17,11 @@ export class DeviceService {
   }
 
   async findAll(queryDeviceDto: QueryDeviceDto) {
-    const { name, page, pageSize } = queryDeviceDto;
+    const { name, factoryId, page, pageSize } = queryDeviceDto;
     const [rows, meta] = await this.prismaService.client.device
       .paginate({
-        where: { name: { contains: name } },
+        where: { name: { contains: name }, factoryId: factoryId },
+        include: { factory: true },
       })
       .withPages({ page, limit: pageSize });
     return { rows, ...meta };
