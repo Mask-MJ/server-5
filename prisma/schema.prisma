@@ -257,16 +257,17 @@ model OperationLog {
 /// 登录日志表
 model LoginLog {
   id        Int      @id @default(autoincrement())
-  /// 创建时间
-  createdAt DateTime @default(now())
+  userId    Int
   /// 用户会话id
-  sessionId String
+  sessionId String   @default("")
   /// 登录账号
   account   String
   /// ip地址
   ip        String
   /// ip地址对应的地理位置
   address   String
+  /// 创建时间
+  createdAt DateTime @default(now())
 }
 
 /// 工厂表
@@ -379,6 +380,9 @@ model Valve {
   factoryId Int
   /// 关联装置id
   deviceId  Int?
+  createBy  String   @default("")
+  /// 更新者
+  updateBy  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   device    Device?  @relation(fields: [deviceId], references: [id])

@@ -22,8 +22,6 @@ import { RoleService } from './role/role.service';
 import { RoleController } from './role/role.controller';
 import { PostService } from './post/post.service';
 import { PostController } from './post/post.controller';
-import { AnalysisTaskService } from './analysis-task/analysis-task.service';
-import { AnalysisTaskController } from './analysis-task/analysis-task.controller';
 import { UnitService } from './unit/unit.service';
 import { UnitController } from './unit/unit.controller';
 
@@ -44,7 +42,6 @@ import { UnitController } from './unit/unit.controller';
     MenuController,
     RoleController,
     PostController,
-    AnalysisTaskController,
     UnitController,
   ],
   providers: [
@@ -58,7 +55,6 @@ import { UnitController } from './unit/unit.controller';
     MenuService,
     RoleService,
     PostService,
-    AnalysisTaskService,
     UnitService,
   ],
   exports: [UserService],

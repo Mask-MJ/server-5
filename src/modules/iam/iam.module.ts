@@ -12,14 +12,19 @@ import { AuthenticationGuard } from './authentication/guards/authentication.guar
 import { AccessTokenGuard } from './authentication/guards/access-token.guard';
 import { RefreshTokenIdsStorage } from './authentication/refresh-token-ids.storage';
 // import { RolesGuard } from './authorization/guards/roles.guard';
-import { PrismaModule } from 'nestjs-prisma';
+import { CustomPrismaModule, PrismaModule } from 'nestjs-prisma';
 import { PermissionsGuard } from './authorization/guards/permisssions.guard';
-// import { LoginLogService } from 'src/monitor/login-log/login-log.service';
+import { LoginLogService } from '../monitor/login-log/login-log.service';
+import { extendedPrismaClient } from 'src/common/pagination/prisma.extension';
 
 @Module({
   imports: [
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
+    CustomPrismaModule.forRootAsync({
+      name: 'PrismaService',
+      useFactory: () => extendedPrismaClient,
+    }),
     PrismaModule,
   ],
   providers: [
@@ -30,7 +35,7 @@ import { PermissionsGuard } from './authorization/guards/permisssions.guard';
     AccessTokenGuard,
     RefreshTokenIdsStorage,
     AuthenticationService,
-    // LoginLogService,
+    LoginLogService,
     Logger,
   ],
   controllers: [AuthenticationController],

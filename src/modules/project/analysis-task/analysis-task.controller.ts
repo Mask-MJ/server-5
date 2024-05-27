@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { AnalysisTaskService } from './analysis-task.service';
 import {
@@ -44,7 +45,7 @@ export class AnalysisTaskController {
   @Get()
   @ApiOperation({ summary: '获取分析任务列表' })
   @ApiOkResponse({ type: AnalysisTaskEntity, isArray: true })
-  findAll(queryAnalysisTaskDto: QueryAnalysisTaskDto) {
+  findAll(@Query() queryAnalysisTaskDto: QueryAnalysisTaskDto) {
     return this.analysisTaskService.findAll(queryAnalysisTaskDto);
   }
 

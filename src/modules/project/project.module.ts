@@ -10,6 +10,8 @@ import { DeviceService } from './device/device.service';
 import { DeviceController } from './device/device.controller';
 import { ValveService } from './valve/valve.service';
 import { ValveController } from './valve/valve.controller';
+import { AnalysisTaskService } from './analysis-task/analysis-task.service';
+import { AnalysisTaskController } from './analysis-task/analysis-task.controller';
 
 @Module({
   imports: [
@@ -23,7 +25,14 @@ import { ValveController } from './valve/valve.controller';
     DeviceController,
     FactoryController,
     ValveController,
+    AnalysisTaskController,
   ],
-  providers: [ContractService, DeviceService, FactoryService, ValveService],
+  providers: [
+    ContractService,
+    DeviceService,
+    FactoryService,
+    ValveService,
+    AnalysisTaskService,
+  ],
 })
 export class ProjectModule {}

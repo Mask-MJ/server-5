@@ -128,7 +128,6 @@ export class UserService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    console.log(updateUserDto);
     const { roleIds, ...rest } = updateUserDto;
     return this.prismaService.client.user.update({
       where: { id },

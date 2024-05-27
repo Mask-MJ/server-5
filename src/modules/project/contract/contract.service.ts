@@ -16,8 +16,13 @@ export class ContractService {
   ) {}
 
   create(user: ActiveUserData, createContractDto: CreateContractDto) {
+    const { contractTime, ...rest } = createContractDto;
     return this.prismaService.client.contract.create({
-      data: { ...createContractDto, createBy: user.account },
+      data: {
+        ...rest,
+        contractTime: new Date(contractTime),
+        createBy: user.account,
+      },
     });
   }
 
@@ -26,6 +31,7 @@ export class ContractService {
     const [rows, meta] = await this.prismaService.client.contract
       .paginate({
         where: { name: { contains: name }, customer: { contains: customer } },
+        include: { factory: true },
       })
       .withPages({ page, limit: pageSize });
     return { rows, ...meta };
@@ -40,9 +46,14 @@ export class ContractService {
     user: ActiveUserData,
     updateContractDto: UpdateContractDto,
   ) {
+    const { contractTime, ...rest } = updateContractDto;
     return this.prismaService.client.contract.update({
       where: { id },
-      data: { ...updateContractDto, updateBy: user.account },
+      data: {
+        ...rest,
+        contractTime: new Date(contractTime),
+        updateBy: user.account,
+      },
     });
   }
 

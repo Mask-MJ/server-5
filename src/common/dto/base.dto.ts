@@ -36,7 +36,7 @@ export class TimeDto {
    */
   @Type(() => Number)
   @Transform(({ value }) => dayjs(value).format(), { toClassOnly: true })
-  endTime: string;
+  endTime: Date;
 }
 
 export class BaseDto extends IntersectionType(PaginateDto, TimeDto) {}

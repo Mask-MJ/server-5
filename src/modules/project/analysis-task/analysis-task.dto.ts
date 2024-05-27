@@ -1,5 +1,5 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 
@@ -16,32 +16,35 @@ export class CreateAnalysisTaskDto {
    */
   @IsEnum([0, 1, 2, 3])
   @Transform(({ value }) => parseInt(value), { toClassOnly: true })
-  status: number;
+  status: number = 0;
   /**
    * pdf路径
    * @example ['path1', 'path2']
    */
   @IsString({ each: true })
-  pdfPath: string[];
+  pdfPath: string[] = [];
   /**
    * 数据字典ID
    * @example 1
    */
   @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
   dictId: number;
   /**
    * 工厂ID
    * @example 1
    */
   @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
   factoryId: number;
   /**
    * 备注
    * @example '备注'
    */
   @IsString()
-  @IsOptional()
-  remark?: string;
+  remark: string = '';
 }
 
 class AnalysisTaskDto {

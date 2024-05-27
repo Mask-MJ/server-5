@@ -25,11 +25,8 @@ export class AnalysisTaskService {
     const { name, status, factoryId, page, pageSize } = queryAnalysisTaskDto;
     const [rows, meta] = await this.prismaService.client.analysisTask
       .paginate({
-        where: {
-          name: { contains: name },
-          factoryId,
-          status,
-        },
+        where: { name: { contains: name }, factoryId, status },
+        include: { factory: true, dict: true },
       })
       .withPages({ page, limit: pageSize });
     return { rows, ...meta };

@@ -1,8 +1,11 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 
 export class CreateLoginLogDto {
+  @IsNumber()
+  userId: number;
+
   @IsString()
   sessionId: string;
 
@@ -11,9 +14,6 @@ export class CreateLoginLogDto {
 
   @IsString()
   ip: string;
-
-  @IsString()
-  address: string;
 }
 
 export class QueryLoginDto extends PartialType(

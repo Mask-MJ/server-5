@@ -25,7 +25,6 @@ export class LoginLogService {
       .paginate({
         where: { account },
         orderBy: { createdAt: 'desc' },
-        ...queryLoginDto,
       })
       .withPages({ limit: pageSize, page, includePageCount: true });
 

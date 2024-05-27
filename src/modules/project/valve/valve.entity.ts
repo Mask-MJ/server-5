@@ -17,6 +17,8 @@ export class ValveEntity implements Valve {
   status: boolean;
   remark: string;
   factoryId: number;
+  createBy: string;
+  updateBy: string;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -11,9 +11,10 @@ export class CreateContractDto {
 
   /**
    * 签订合同时间
-   * @example '2021-01-01'
+   * @example 1183135260000
    */
-  contractTime: string;
+  @IsNumber()
+  contractTime: number;
 
   /**
    * 采购阀门总数

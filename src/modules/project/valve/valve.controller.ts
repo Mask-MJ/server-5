@@ -18,6 +18,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ValveEntity } from './valve.entity';
+import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
+import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 
 @ApiTags('阀门管理')
 @ApiBearerAuth('bearer')
@@ -28,8 +30,11 @@ export class ValveController {
   @Post()
   @ApiOperation({ summary: '创建阀门' })
   @ApiCreatedResponse({ type: ValveEntity })
-  create(@Body() createValveDto: CreateValveDto) {
-    return this.valveService.create(createValveDto);
+  create(
+    @ActiveUser() user: ActiveUserData,
+    @Body() createValveDto: CreateValveDto,
+  ) {
+    return this.valveService.create(user, createValveDto);
   }
 
   @Get()
@@ -49,8 +54,12 @@ export class ValveController {
   @Patch(':id')
   @ApiOperation({ summary: '更新阀门信息' })
   @ApiOkResponse({ type: ValveEntity })
-  update(@Param('id') id: number, @Body() updateValveDto: UpdateValveDto) {
-    return this.valveService.update(id, updateValveDto);
+  update(
+    @Param('id') id: number,
+    @ActiveUser() user: ActiveUserData,
+    @Body() updateValveDto: UpdateValveDto,
+  ) {
+    return this.valveService.update(id, user, updateValveDto);
   }
 
   @Delete(':id')
