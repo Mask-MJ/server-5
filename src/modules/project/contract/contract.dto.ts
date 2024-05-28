@@ -11,7 +11,7 @@ export class CreateContractDto {
 
   /**
    * 签订合同时间
-   * @example 1183135260000
+   * @example 1714752000000
    */
   @IsNumber()
   contractTime: number;

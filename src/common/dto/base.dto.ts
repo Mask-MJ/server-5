@@ -24,7 +24,7 @@ export class PaginateDto {
 export class TimeDto {
   /**
    * 开始时间
-   * @example 1183135260000
+   * @example 1714752000000
    */
   @Type(() => Number)
   @Transform(({ value }) => dayjs(value).format(), { toClassOnly: true })
@@ -32,7 +32,7 @@ export class TimeDto {
 
   /**
    * 结束时间
-   * @example 1183135260000
+   * @example 1716048000000
    */
   @Type(() => Number)
   @Transform(({ value }) => dayjs(value).format(), { toClassOnly: true })

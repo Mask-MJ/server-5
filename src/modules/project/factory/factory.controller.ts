@@ -44,8 +44,11 @@ export class FactoryController {
   @Get()
   @ApiOperation({ summary: '获取工厂列表' })
   @ApiOkResponse({ type: FactoryEntity, isArray: true })
-  findAll(@Query() queryFactoryDto: QueryFactoryDto) {
-    return this.factoryService.findAll(queryFactoryDto);
+  findAll(
+    @ActiveUser() user: ActiveUserData,
+    @Query() queryFactoryDto: QueryFactoryDto,
+  ) {
+    return this.factoryService.findAll(user, queryFactoryDto);
   }
 
   @Get(':id')
