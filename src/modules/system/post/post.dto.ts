@@ -3,13 +3,13 @@ import { IsString, IsNumber, IsOptional } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 export class CreatePostDto {
   /**
-   * 部门编码
+   * 岗位编码
    * @example 'tech'
    */
   @IsString()
   code: string;
   /**
-   * 部门名称
+   * 岗位名称
    * @example '技术部'
    */
   @IsString()

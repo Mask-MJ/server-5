@@ -86,6 +86,7 @@ export class AuthenticationService {
     }
     // 记录登录日志
     this.logger.log('登录', AuthenticationService.name);
+    console.log('request', request.ip);
     await this.loginlogService.create({
       userId: user.id,
       sessionId: '',

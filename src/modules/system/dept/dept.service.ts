@@ -17,14 +17,19 @@ export class DeptService {
   }
 
   async findAll(queryDeptDto: QueryDeptDto) {
-    const { name, page, pageSize } = queryDeptDto;
-    const [rows, meta] = await this.prismaService.client.dept
-      .paginate({
-        where: { name: { contains: name } },
-        orderBy: { sort: 'asc' },
-      })
-      .withPages({ page, limit: pageSize });
-    return { rows, ...meta };
+    const { name } = queryDeptDto;
+    // https://github.com/prisma/prisma/issues/3725
+    // https://github.com/prisma/prisma/issues/4562
+    return this.prismaService.client.dept.findMany({
+      where: { name: { contains: name }, parentId: null },
+      include: {
+        children: {
+          include: { children: { orderBy: { sort: 'asc' } } },
+          orderBy: { sort: 'asc' },
+        },
+      },
+      orderBy: { sort: 'asc' },
+    });
   }
 
   findOne(id: number) {
