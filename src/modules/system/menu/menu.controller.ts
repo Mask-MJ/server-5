@@ -40,8 +40,11 @@ export class MenuController {
   @Get()
   @ApiOperation({ summary: '获取菜单列表' })
   @ApiOkResponse({ type: MenuEntity, isArray: true })
-  findAll(@Query() queryMenuDto: QueryMenuDto) {
-    return this.menuService.findAll(queryMenuDto);
+  findAll(
+    @ActiveUser() user: ActiveUserData,
+    @Query() queryMenuDto: QueryMenuDto,
+  ) {
+    return this.menuService.findAll(user, queryMenuDto);
   }
 
   @Get(':id')

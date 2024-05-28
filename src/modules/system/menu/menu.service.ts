@@ -16,16 +16,33 @@ export class MenuService {
     });
   }
 
-  findAll(queryMenuDto: QueryMenuDto) {
+  async findAll(user: ActiveUserData, queryMenuDto: QueryMenuDto) {
     const { name } = queryMenuDto;
-    return this.prismaService.client.menu.findMany({
-      where: {
-        name: { contains: name },
-        parentId: null,
-      },
-      include: { children: { orderBy: { sort: 'asc' } } },
-      orderBy: { sort: 'asc' },
+    const userData = await this.prismaService.client.user.findUnique({
+      where: { id: user.sub },
+      include: { role: true },
     });
+    if (userData.isAdmin) {
+      return this.prismaService.client.menu.findMany({
+        where: {
+          name: { contains: name },
+          parentId: null,
+        },
+        include: { children: { orderBy: { sort: 'asc' } } },
+        orderBy: { sort: 'asc' },
+      });
+    } else {
+      const roleIds = userData.role.map((item) => item.id);
+      return this.prismaService.client.menu.findMany({
+        where: {
+          OR: [{ role: { some: { id: { in: roleIds } } } }],
+          name: { contains: name },
+          parentId: null,
+        },
+        include: { children: { orderBy: { sort: 'asc' } } },
+        orderBy: { sort: 'asc' },
+      });
+    }
   }
 
   findOne(id: number) {
