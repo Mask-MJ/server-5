@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { AnalysisTaskService } from './analysis-task.service';
 import {
@@ -25,6 +27,7 @@ import {
 import { AnalysisTaskEntity } from './analysis-task.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('分析任务')
 @ApiBearerAuth('bearer')
@@ -57,6 +60,16 @@ export class AnalysisTaskController {
     @Body() executeAnalysisTaskDto: ExecuteAnalysisTaskDto,
   ) {
     return this.analysisTaskService.execute(user, executeAnalysisTaskDto);
+  }
+
+  @Post('uploadPdf')
+  @ApiOperation({ summary: '上传PDF文件' })
+  @UseInterceptors(FileInterceptor('file'))
+  uploadPdf(
+    @ActiveUser() user: ActiveUserData,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.analysisTaskService.uploadPdf(user, file);
   }
 
   @Get(':id')

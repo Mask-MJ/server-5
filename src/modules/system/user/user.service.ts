@@ -8,6 +8,7 @@ import { MinioService } from 'src/common/minio/minio.service';
 import { OperationLogService } from 'src/modules/monitor/operation-log/operation-log.service';
 import { Request } from 'express';
 import IP2Region from 'ip2region';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
@@ -17,6 +18,7 @@ export class UserService {
     private readonly hashingService: HashingService,
     private readonly minioClient: MinioService,
     private readonly operationLogService: OperationLogService,
+    private configService: ConfigService,
   ) {}
 
   // Exclude keys from user
@@ -159,12 +161,10 @@ export class UserService {
 
   async uploadAvatar(user: ActiveUserData, file: Express.Multer.File) {
     await this.minioClient.uploadFile('avatar', file.originalname, file.buffer);
-
+    const url = await this.minioClient.getUrl('avatar', file.originalname);
     return this.prismaService.client.user.update({
       where: { id: user.sub },
-      data: {
-        avatar: `http://39.105.100.190:9000/avatar/${file.originalname}`,
-      },
+      data: { avatar: url },
     });
   }
 }

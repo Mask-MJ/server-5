@@ -12,6 +12,7 @@ import { ValveService } from './valve/valve.service';
 import { ValveController } from './valve/valve.controller';
 import { AnalysisTaskService } from './analysis-task/analysis-task.service';
 import { AnalysisTaskController } from './analysis-task/analysis-task.controller';
+import { MinioService } from 'src/common/minio/minio.service';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AnalysisTaskController } from './analysis-task/analysis-task.controller
     FactoryService,
     ValveService,
     AnalysisTaskService,
+    MinioService,
   ],
 })
 export class ProjectModule {}
