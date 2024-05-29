@@ -30,7 +30,7 @@ export class CreateAnalysisTaskDto {
   @IsNumber()
   @Type(() => Number)
   @IsOptional()
-  dictId: number;
+  dictTypeId: number;
   /**
    * 工厂ID
    * @example 1
@@ -65,7 +65,7 @@ export class QueryAnalysisTaskDto extends PartialType(
 
 export class ExecuteAnalysisTaskDto extends PartialType(
   IntersectionType(
-    PickType(CreateAnalysisTaskDto, ['dictId', 'pdfPath', 'factoryId']),
+    PickType(CreateAnalysisTaskDto, ['dictTypeId', 'pdfPath', 'factoryId']),
     AnalysisTaskDto,
   ),
 ) {}

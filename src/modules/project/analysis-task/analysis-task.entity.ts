@@ -6,7 +6,7 @@ export class AnalysisTaskEntity implements AnalysisTask {
   status: number;
   pdfPath: string[];
   remark: string;
-  dictId: number;
+  dictTypeId: number;
   factoryId: number;
   createBy: string;
   updateBy: string;

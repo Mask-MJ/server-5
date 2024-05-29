@@ -190,8 +190,8 @@ model DictType {
   updatedAt    DateTime       @updatedAt
   /// 备注
   remark       String         @default("")
-  dictData     DictData[]
   analysisTask AnalysisTask[]
+  dictData     DictData[]
 }
 
 /// 字典数据表
@@ -257,7 +257,8 @@ model OperationLog {
 /// 登录日志表
 model LoginLog {
   id        Int      @id @default(autoincrement())
-  userId    Int
+  /// 创建时间
+  createdAt DateTime @default(now())
   /// 用户会话id
   sessionId String   @default("")
   /// 登录账号
@@ -266,8 +267,7 @@ model LoginLog {
   ip        String
   /// ip地址对应的地理位置
   address   String
-  /// 创建时间
-  createdAt DateTime @default(now())
+  userId    Int
 }
 
 /// 工厂表
@@ -290,10 +290,10 @@ model Factory {
   createBy     String
   /// 更新者
   updateBy     String?
+  parentId     Int?
   analysisTask AnalysisTask[]
   contract     Contract[]
   device       Device[]
-  parentId     Int?
   parent       Factory?       @relation("FactoryToFactory", fields: [parentId], references: [id])
   children     Factory[]      @relation("FactoryToFactory")
   valve        Valve[]
@@ -346,7 +346,7 @@ model Device {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   factory   Factory  @relation(fields: [factoryId], references: [id])
-  valves    Valve[]
+  valve     Valve[]
 }
 
 /// 阀门表
@@ -380,35 +380,35 @@ model Valve {
   factoryId Int
   /// 关联装置id
   deviceId  Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   createBy  String   @default("")
   /// 更新者
   updateBy  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   device    Device?  @relation(fields: [deviceId], references: [id])
   factory   Factory  @relation(fields: [factoryId], references: [id])
 }
 
 /// 分析任务表
 model AnalysisTask {
-  id        Int      @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   /// 任务名称
-  name      String
+  name       String
   /// 任务状态 0未开始 1进行中 2已完成
-  status    Int      @default(0)
+  status     Int      @default(0)
   /// pdf文件路径
-  pdfPath   String[]
+  pdfPath    String[]
   /// 任务备注
-  remark    String   @default("")
+  remark     String   @default("")
   /// 字典id
-  dictId    Int
+  dictTypeId Int
   /// 工厂id
-  factoryId Int
-  createBy  String
+  factoryId  Int
+  createBy   String
   /// 更新者
-  updateBy  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  dict      DictType @relation(fields: [dictId], references: [id])
-  factory   Factory  @relation(fields: [factoryId], references: [id])
+  updateBy   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  dict       DictType @relation(fields: [dictTypeId], references: [id])
+  factory    Factory  @relation(fields: [factoryId], references: [id])
 }

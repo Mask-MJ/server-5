@@ -11,8 +11,22 @@ export class MenuService {
     private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
   ) {}
   create(user: ActiveUserData, createMenuDto: CreateMenuDto) {
+    const suffix = createMenuDto.path.replace(/:id$/, '').replace(/\//g, ':');
     return this.prismaService.client.menu.create({
-      data: { ...createMenuDto, createBy: user.account },
+      data: {
+        ...createMenuDto,
+        createBy: user.account,
+        permission: {
+          createMany: {
+            data: [
+              { name: '创建', value: 'create' + suffix },
+              { name: '读取', value: 'read' + suffix },
+              { name: '更新', value: 'update' + suffix },
+              { name: '删除', value: 'delete' + suffix },
+            ],
+          },
+        },
+      },
     });
   }
 

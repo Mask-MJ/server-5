@@ -158,10 +158,11 @@ CREATE TABLE "OperationLog" (
 CREATE TABLE "LoginLog" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "sessionId" TEXT NOT NULL,
+    "sessionId" TEXT NOT NULL DEFAULT '',
     "account" TEXT NOT NULL,
     "ip" TEXT NOT NULL,
     "address" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
 
     CONSTRAINT "LoginLog_pkey" PRIMARY KEY ("id")
 );
@@ -239,6 +240,8 @@ CREATE TABLE "Valve" (
     "deviceId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "createBy" TEXT NOT NULL DEFAULT '',
+    "updateBy" TEXT,
 
     CONSTRAINT "Valve_pkey" PRIMARY KEY ("id")
 );
@@ -250,7 +253,7 @@ CREATE TABLE "AnalysisTask" (
     "status" INTEGER NOT NULL DEFAULT 0,
     "pdfPath" TEXT[],
     "remark" TEXT NOT NULL DEFAULT '',
-    "dictId" INTEGER NOT NULL,
+    "dictTypeId" INTEGER NOT NULL,
     "factoryId" INTEGER NOT NULL,
     "createBy" TEXT NOT NULL,
     "updateBy" TEXT,
@@ -387,7 +390,7 @@ ALTER TABLE "Valve" ADD CONSTRAINT "Valve_deviceId_fkey" FOREIGN KEY ("deviceId"
 ALTER TABLE "Valve" ADD CONSTRAINT "Valve_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AnalysisTask" ADD CONSTRAINT "AnalysisTask_dictId_fkey" FOREIGN KEY ("dictId") REFERENCES "DictType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AnalysisTask" ADD CONSTRAINT "AnalysisTask_dictTypeId_fkey" FOREIGN KEY ("dictTypeId") REFERENCES "DictType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "AnalysisTask" ADD CONSTRAINT "AnalysisTask_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

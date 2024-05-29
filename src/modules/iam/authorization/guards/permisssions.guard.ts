@@ -36,7 +36,7 @@ export class PermissionsGuard implements CanActivate {
       .reduce((acc, menu) => acc.concat(menu.permissions), [] as Permission[])
       .map((p: Permission) => p.value);
 
-    return contextPermissions.some((permission) =>
+    return contextPermissions.every((permission) =>
       permissionsName.includes(permission),
     );
   }
