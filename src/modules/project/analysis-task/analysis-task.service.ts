@@ -9,7 +9,6 @@ import { CustomPrismaService } from 'nestjs-prisma';
 import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { MinioService } from 'src/common/minio/minio.service';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AnalysisTaskService {
@@ -17,11 +16,24 @@ export class AnalysisTaskService {
     @Inject('PrismaService')
     private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
     private readonly minioClient: MinioService,
-    private configService: ConfigService,
   ) {}
   create(user: ActiveUserData, createAnalysisTaskDto: CreateAnalysisTaskDto) {
+    const { pdf, ...rest } = createAnalysisTaskDto;
+
     return this.prismaService.client.analysisTask.create({
-      data: { ...createAnalysisTaskDto, createBy: user.account },
+      data: {
+        ...rest,
+        createBy: user.account,
+        pdf: {
+          createMany: {
+            data: pdf.map((item) => ({
+              name: item.name,
+              url: item.url,
+              createBy: user.account,
+            })),
+          },
+        },
+      },
     });
   }
 
@@ -37,7 +49,10 @@ export class AnalysisTaskService {
   }
 
   findOne(id: number) {
-    return this.prismaService.client.analysisTask.findUnique({ where: { id } });
+    return this.prismaService.client.analysisTask.findUnique({
+      where: { id },
+      include: { pdf: true },
+    });
   }
 
   execute(
@@ -53,7 +68,7 @@ export class AnalysisTaskService {
     const fileName = `${Date.now()}-${file.originalname}`;
     await this.minioClient.uploadFile('pdf', fileName, file.buffer);
     const url = await this.minioClient.getUrl('pdf', fileName);
-    return { url: url };
+    return { url, name: fileName };
   }
 
   update(
@@ -61,9 +76,24 @@ export class AnalysisTaskService {
     user: ActiveUserData,
     updateAnalysisTaskDto: UpdateAnalysisTaskDto,
   ) {
+    const { pdf, ...rest } = updateAnalysisTaskDto;
+    // 覆盖pdf
     return this.prismaService.client.analysisTask.update({
       where: { id },
-      data: { ...updateAnalysisTaskDto, updateBy: user.account },
+      data: {
+        ...rest,
+        updateBy: user.account,
+        pdf: {
+          deleteMany: {},
+          createMany: {
+            data: pdf.map((item) => ({
+              name: item.name,
+              url: item.url,
+              createBy: user.account,
+            })),
+          },
+        },
+      },
     });
   }
 

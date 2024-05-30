@@ -1,6 +1,6 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsNumber, IsString } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 
 export class CreateAnalysisTaskDto {
@@ -19,17 +19,17 @@ export class CreateAnalysisTaskDto {
   status: number = 0;
   /**
    * pdf路径
-   * @example ['path1', 'path2']
+   * @example [{name: 'pdf1', url: 'http://xxx.com/xxx.pdf'}]
    */
-  @IsString({ each: true })
-  pdfPath: string[] = [];
+  @IsArray()
+  pdf: { name: string; url: string }[] = [];
+
   /**
    * 数据字典ID
    * @example 1
    */
   @IsNumber()
   @Type(() => Number)
-  @IsOptional()
   dictTypeId: number;
   /**
    * 工厂ID
@@ -37,7 +37,6 @@ export class CreateAnalysisTaskDto {
    */
   @IsNumber()
   @Type(() => Number)
-  @IsOptional()
   factoryId: number;
   /**
    * 备注
@@ -65,7 +64,7 @@ export class QueryAnalysisTaskDto extends PartialType(
 
 export class ExecuteAnalysisTaskDto extends PartialType(
   IntersectionType(
-    PickType(CreateAnalysisTaskDto, ['dictTypeId', 'pdfPath', 'factoryId']),
+    PickType(CreateAnalysisTaskDto, ['dictTypeId', 'pdf', 'factoryId']),
     AnalysisTaskDto,
   ),
 ) {}

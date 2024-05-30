@@ -539,9 +539,15 @@ async function main() {
       createBy: 'admin',
       dictTypeId: 1,
       factoryId: 1,
-      pdfPath: [
-        'http://39.105.100.190:9090/api/v1/buckets/pdf/objects/download?preview=true&prefix=RkYgT25saW5lX+WJr+acrDIucGRm&version_id=null',
-      ],
+      pdf: {
+        create: [
+          {
+            name: 'pdf1',
+            url: 'http://xxx.com/xxx.pdf',
+            createBy: 'admin',
+          },
+        ],
+      },
     },
   });
 
