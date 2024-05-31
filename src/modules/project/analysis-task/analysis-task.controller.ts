@@ -13,7 +13,6 @@ import {
 import { AnalysisTaskService } from './analysis-task.service';
 import {
   CreateAnalysisTaskDto,
-  ExecuteAnalysisTaskDto,
   QueryAnalysisTaskDto,
   UpdateAnalysisTaskDto,
 } from './analysis-task.dto';
@@ -53,13 +52,22 @@ export class AnalysisTaskController {
   }
 
   // 执行分析任务
-  @Post('execute')
+  @Post('execute/:id')
   @ApiOperation({ summary: '执行分析任务' })
-  execute(
-    @ActiveUser() user: ActiveUserData,
-    @Body() executeAnalysisTaskDto: ExecuteAnalysisTaskDto,
-  ) {
-    return this.analysisTaskService.execute(user, executeAnalysisTaskDto);
+  execute(@ActiveUser() user: ActiveUserData, @Param('id') id: number) {
+    return this.analysisTaskService.execute(user, id);
+  }
+
+  @Get('executeStatus/:id')
+  getExecutedStatus(@Param('id') id: number) {
+    return this.analysisTaskService.getExecutedStatus(id);
+  }
+
+  // 执行分析任务
+  @Post('execute2')
+  @ApiOperation({ summary: '执行分析任务2' })
+  execute2() {
+    return this.analysisTaskService.execute2();
   }
 
   @Post('uploadPdf')

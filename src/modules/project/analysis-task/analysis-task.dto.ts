@@ -46,26 +46,10 @@ export class CreateAnalysisTaskDto {
   remark: string = '';
 }
 
-class AnalysisTaskDto {
-  /**
-   * 数据字典ID
-   * @example 1
-   */
-  @IsNumber()
-  id: number;
-}
-
 export class QueryAnalysisTaskDto extends PartialType(
   IntersectionType(
     PickType(CreateAnalysisTaskDto, ['name', 'status', 'factoryId']),
     BaseDto,
-  ),
-) {}
-
-export class ExecuteAnalysisTaskDto extends PartialType(
-  IntersectionType(
-    PickType(CreateAnalysisTaskDto, ['dictTypeId', 'pdf', 'factoryId']),
-    AnalysisTaskDto,
   ),
 ) {}
 

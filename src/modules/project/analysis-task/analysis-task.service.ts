@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   CreateAnalysisTaskDto,
-  ExecuteAnalysisTaskDto,
   QueryAnalysisTaskDto,
   UpdateAnalysisTaskDto,
 } from './analysis-task.dto';
@@ -9,6 +8,11 @@ import { CustomPrismaService } from 'nestjs-prisma';
 import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { MinioService } from 'src/common/minio/minio.service';
+import PDFParser from 'pdf2json';
+import fs from 'fs';
+import pdf from 'pdf-parse';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AnalysisTaskService {
@@ -16,6 +20,7 @@ export class AnalysisTaskService {
     @Inject('PrismaService')
     private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
     private readonly minioClient: MinioService,
+    private readonly httpService: HttpService,
   ) {}
   create(user: ActiveUserData, createAnalysisTaskDto: CreateAnalysisTaskDto) {
     const { pdf, ...rest } = createAnalysisTaskDto;
@@ -55,12 +60,59 @@ export class AnalysisTaskService {
     });
   }
 
-  execute(
-    user: ActiveUserData,
-    executeAnalysisTaskDto: ExecuteAnalysisTaskDto,
-  ) {
-    console.log('executeAnalysisTaskDto', executeAnalysisTaskDto);
-    return 'This action adds a new analysisTask';
+  async execute(user: ActiveUserData, id: number) {
+    const analysisTask =
+      await this.prismaService.client.analysisTask.findUnique({
+        where: { id },
+      });
+    const { data } = await firstValueFrom(
+      this.httpService.post('http://39.105.100.190:5050/api/frasepdf', {
+        projectid: analysisTask.id,
+        filepath: ['pdf/DVW-R1_20240307_1534_REPORT中文.pdf'],
+        templateid: [0],
+        ruleid: 1,
+        factoryid: analysisTask.factoryId,
+      }),
+    );
+    return data.detail;
+  }
+
+  async getExecutedStatus(id: number) {
+    const { data } = await firstValueFrom(
+      this.httpService.post('http://39.105.100.190:5050/api/frasepdf', {
+        projectid: id,
+      }),
+    );
+    return data.detail;
+  }
+
+  execute2() {
+    const pdfParser = new PDFParser(this, true);
+    pdfParser.on('pdfParser_dataError', (errData) =>
+      console.error(errData.parserError),
+    );
+    // pdfParser.on('pdfParser_dataReady', (pdfData) => {
+    //   const data = pdfParser.getRawTextContent();
+    //   // fs 写入文件,转换成utf-8格式
+    //   // fs.writeFile('./test.json', JSON.stringify(pdfData), (data) =>
+    //   //   console.log(data),
+    //   // );
+    //   // console.log(pdfParser.getRawTextContent());
+    //   fs.writeFileSync('./test.json', JSON.stringify(pdfData), 'utf-8');
+    // });
+    pdfParser.on('pdfParser_dataReady', () => {
+      fs.writeFile('./test2.txt', pdfParser.getRawTextContent(), () => {
+        console.log('Done.');
+      });
+    });
+    pdfParser.loadPDF('./test.pdf');
+
+    const dataBuffer = fs.readFileSync('./test.pdf');
+    pdf(dataBuffer).then(function (data) {
+      console.log(data);
+      fs.writeFile('./test.txt', data.text, () => {});
+    });
+    // return data;
   }
 
   async uploadPdf(user: ActiveUserData, file: Express.Multer.File) {
