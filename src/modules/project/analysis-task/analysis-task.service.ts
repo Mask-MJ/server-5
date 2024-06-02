@@ -13,6 +13,7 @@ import fs from 'fs';
 import pdf from 'pdf-parse';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { escape } from 'querystring';
 
 @Injectable()
 export class AnalysisTaskService {
@@ -43,10 +44,10 @@ export class AnalysisTaskService {
   }
 
   async findAll(queryAnalysisTaskDto: QueryAnalysisTaskDto) {
-    const { name, status, factoryId, page, pageSize } = queryAnalysisTaskDto;
+    const { name, factoryId, page, pageSize } = queryAnalysisTaskDto;
     const [rows, meta] = await this.prismaService.client.analysisTask
       .paginate({
-        where: { name: { contains: name }, factoryId, status },
+        where: { name: { contains: name }, factoryId },
         include: { factory: true, dict: true },
       })
       .withPages({ page, limit: pageSize });
@@ -74,15 +75,22 @@ export class AnalysisTaskService {
         factoryid: analysisTask.factoryId,
       }),
     );
+    if (data.detail.result === 1) {
+      await this.prismaService.client.analysisTask.update({
+        where: { id },
+        data: { status: 1 },
+      });
+    }
     return data.detail;
   }
 
   async getExecutedStatus(id: number) {
     const { data } = await firstValueFrom(
-      this.httpService.post('http://39.105.100.190:5050/api/frasepdf', {
+      this.httpService.post('http://39.105.100.190:5050/api/score', {
         projectid: id,
       }),
     );
+    console.log(data);
     return data.detail;
   }
 
@@ -115,9 +123,13 @@ export class AnalysisTaskService {
     // return data;
   }
 
-  async uploadPdf(user: ActiveUserData, file: Express.Multer.File) {
+  async uploadPdf(user: ActiveUserData, file: Express.Multer.File, body: any) {
     // 加上时间戳，避免文件名重复
-    const fileName = `${Date.now()}-${file.originalname}`;
+    console.log(body);
+    const originalname = encodeURIComponent(file.originalname);
+
+    console.log(decodeURIComponent(file.originalname));
+    const fileName = `${Date.now()}-${decodeURIComponent(escape(file.originalname))}`;
     await this.minioClient.uploadFile('pdf', fileName, file.buffer);
     const url = await this.minioClient.getUrl('pdf', fileName);
     return { url, name: fileName };

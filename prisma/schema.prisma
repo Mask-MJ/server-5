@@ -394,7 +394,7 @@ model AnalysisTask {
   id         Int      @id @default(autoincrement())
   /// 任务名称
   name       String
-  /// 任务状态 0未开始 1进行中 2已完成
+  /// 任务状态 0未开始 1进行中 2已完成 3失败
   status     Int      @default(0)
   /// 任务备注
   remark     String   @default("")

@@ -76,8 +76,9 @@ export class AnalysisTaskController {
   uploadPdf(
     @ActiveUser() user: ActiveUserData,
     @UploadedFile() file: Express.Multer.File,
+    @Body() body: any,
   ) {
-    return this.analysisTaskService.uploadPdf(user, file);
+    return this.analysisTaskService.uploadPdf(user, file, body);
   }
 
   @Get(':id')
