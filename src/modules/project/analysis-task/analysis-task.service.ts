@@ -14,6 +14,7 @@ import pdf from 'pdf-parse';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { escape } from 'querystring';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class AnalysisTaskService {
@@ -84,6 +85,21 @@ export class AnalysisTaskService {
     return data.detail;
   }
 
+  @Cron(CronExpression.EVERY_MINUTE)
+  async handleCron() {
+    // 查找 analysisTask 表中 status 为 1 的数据
+    // 修改 status 为 2
+    const analysisTasks = await this.prismaService.client.analysisTask.findMany(
+      { where: { status: 1 } },
+    );
+    analysisTasks.forEach(async (item) => {
+      await this.prismaService.client.analysisTask.update({
+        where: { id: item.id },
+        data: { status: 2 },
+      });
+    });
+  }
+
   async getExecutedStatus(id: number) {
     const { data } = await firstValueFrom(
       this.httpService.post('http://39.105.100.190:5050/api/score', {
@@ -126,8 +142,6 @@ export class AnalysisTaskService {
   async uploadPdf(user: ActiveUserData, file: Express.Multer.File, body: any) {
     // 加上时间戳，避免文件名重复
     console.log(body);
-    const originalname = encodeURIComponent(file.originalname);
-
     console.log(decodeURIComponent(file.originalname));
     const fileName = `${Date.now()}-${decodeURIComponent(escape(file.originalname))}`;
     await this.minioClient.uploadFile('pdf', fileName, file.buffer);

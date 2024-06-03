@@ -14,10 +14,12 @@ import { AnalysisTaskService } from './analysis-task/analysis-task.service';
 import { AnalysisTaskController } from './analysis-task/analysis-task.controller';
 import { MinioService } from 'src/common/minio/minio.service';
 import { HttpModule } from '@nestjs/axios';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     HttpModule,
+    ScheduleModule.forRoot(),
     CustomPrismaModule.forRootAsync({
       name: 'PrismaService',
       useFactory: () => extendedPrismaClient,
