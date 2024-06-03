@@ -22,10 +22,14 @@ export class DictDataService {
   }
 
   async findAll(queryDictDataDto: QueryDictDataDto) {
-    const { name, value, page, pageSize } = queryDictDataDto;
+    const { name, value, dictTypeId, page, pageSize } = queryDictDataDto;
     const [rows, meta] = await this.prismaService.client.dictData
       .paginate({
-        where: { name: { contains: name }, value: { contains: value } },
+        where: {
+          name: { contains: name },
+          value: { contains: value },
+          dictTypeId,
+        },
         orderBy: { sort: 'asc' },
       })
       .withPages({ page, limit: pageSize });

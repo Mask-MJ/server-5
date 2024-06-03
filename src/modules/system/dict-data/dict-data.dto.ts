@@ -40,6 +40,7 @@ export class CreateDictDataDto {
    * @example 1
    */
   @IsNumber()
+  @Type(() => Number)
   dictTypeId: number;
 
   /**
@@ -52,7 +53,10 @@ export class CreateDictDataDto {
 }
 
 export class QueryDictDataDto extends PartialType(
-  IntersectionType(PickType(CreateDictDataDto, ['name', 'value']), BaseDto),
+  IntersectionType(
+    PickType(CreateDictDataDto, ['name', 'value', 'dictTypeId']),
+    BaseDto,
+  ),
 ) {}
 
 export class UpdateDictDataDto extends PartialType(CreateDictDataDto) {}
