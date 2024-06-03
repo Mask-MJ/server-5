@@ -113,10 +113,24 @@ export class CreateValveDto {
   @IsNumber()
   @Type(() => Number)
   factoryId: number;
+
+  /**
+   * 分析任务id
+   * @example 1
+   */
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  analysisTaskId?: number;
 }
 export class QueryValveDto extends PartialType(
   IntersectionType(
-    PickType(CreateValveDto, ['name', 'factoryId', 'deviceId']),
+    PickType(CreateValveDto, [
+      'name',
+      'factoryId',
+      'deviceId',
+      'analysisTaskId',
+    ]),
     BaseDto,
   ),
 ) {}

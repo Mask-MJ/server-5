@@ -18,13 +18,16 @@ export class ValveService {
   }
 
   async findAll(queryValveDto: QueryValveDto) {
-    const { name, factoryId, deviceId, page, pageSize } = queryValveDto;
+    const { name, factoryId, deviceId, analysisTaskId, page, pageSize } =
+      queryValveDto;
+    console.log('analysisTaskId', analysisTaskId);
     const [rows, meta] = await this.prismaService.client.valve
       .paginate({
         where: {
           name: { contains: name },
-          factoryId: factoryId,
-          deviceId: deviceId,
+          factoryId,
+          deviceId,
+          analysisTaskId,
         },
         include: { factory: true, device: true },
       })

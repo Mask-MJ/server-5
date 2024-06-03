@@ -13,7 +13,8 @@ export class ValveEntity implements Valve {
   actuator: string;
   locator: string;
   fault: string;
-  deviceId: number;
+  deviceId: number | null;
+  analysisTaskId: number | null;
   status: boolean;
   remark: string;
   factoryId: number;

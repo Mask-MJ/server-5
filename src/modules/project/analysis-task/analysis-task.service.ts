@@ -13,7 +13,6 @@ import fs from 'fs';
 import pdf from 'pdf-parse';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { escape } from 'querystring';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
@@ -82,6 +81,8 @@ export class AnalysisTaskService {
         data: { status: 1 },
       });
     }
+    // 访问另外一个数据库, 获取解析后的数据, 同步到本地数据库
+
     return data.detail;
   }
 
@@ -142,8 +143,7 @@ export class AnalysisTaskService {
   async uploadPdf(user: ActiveUserData, file: Express.Multer.File, body: any) {
     // 加上时间戳，避免文件名重复
     console.log(body);
-    console.log(decodeURIComponent(file.originalname));
-    const fileName = `${Date.now()}-${decodeURIComponent(escape(file.originalname))}`;
+    const fileName = `${Date.now()}-${body.fileName}`;
     await this.minioClient.uploadFile('pdf', fileName, file.buffer);
     const url = await this.minioClient.getUrl('pdf', fileName);
     return { url, name: fileName };

@@ -351,42 +351,45 @@ model Device {
 
 /// 阀门表
 model Valve {
-  id        Int      @id @default(autoincrement())
+  id             Int           @id @default(autoincrement())
   /// 阀门位号
-  name      String
+  name           String
   /// 阀门品牌
-  brand     String   @default("")
+  brand          String        @default("")
   /// 阀门型号
-  model     String   @default("")
+  model          String        @default("")
   /// 阀门序列号
-  serial    String   @default("")
+  serial         String        @default("")
   /// 阀门口径
-  caliber   String   @default("")
+  caliber        String        @default("")
   /// 阀门磅级
-  level     String   @default("")
+  level          String        @default("")
   /// 阀体材质
-  material  String   @default("")
+  material       String        @default("")
   /// 泄露等级
-  leak      String   @default("")
+  leak           String        @default("")
   /// 执行机构型号
-  actuator  String   @default("")
+  actuator       String        @default("")
   /// 定位器型号
-  locator   String   @default("")
+  locator        String        @default("")
   /// 阀门故障位
-  fault     String   @default("")
-  status    Boolean  @default(true)
-  remark    String   @default("")
+  fault          String        @default("")
+  status         Boolean       @default(true)
+  remark         String        @default("")
   /// 工厂id
-  factoryId Int
+  factoryId      Int
   /// 关联装置id
-  deviceId  Int?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  createBy  String   @default("")
+  deviceId       Int?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  createBy       String        @default("")
   /// 更新者
-  updateBy  String?
-  device    Device?  @relation(fields: [deviceId], references: [id])
-  factory   Factory  @relation(fields: [factoryId], references: [id])
+  updateBy       String?
+  /// 分析任务id
+  analysisTaskId Int?
+  analysisTask   AnalysisTask? @relation(fields: [analysisTaskId], references: [id])
+  device         Device?       @relation(fields: [deviceId], references: [id])
+  factory        Factory       @relation(fields: [factoryId], references: [id])
 }
 
 /// 分析任务表
@@ -410,12 +413,11 @@ model AnalysisTask {
   dict       DictType @relation(fields: [dictTypeId], references: [id])
   factory    Factory  @relation(fields: [factoryId], references: [id])
   pdf        Pdf[]
+  Valve      Valve[]
 }
 
 model Pdf {
   id        Int          @id @default(autoincrement())
-  /// pdf文件路径
-  url       String
   /// 文件名
   name      String
   /// 任务id
@@ -423,5 +425,7 @@ model Pdf {
   createBy  String
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
+  /// pdf文件路径
+  url       String
   task      AnalysisTask @relation(fields: [taskId], references: [id])
 }
