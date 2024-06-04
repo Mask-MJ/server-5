@@ -14,6 +14,7 @@ import pdf from 'pdf-parse';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { PrismaClient as PrismaClient2 } from '@prisma-db-2/client';
 
 @Injectable()
 export class AnalysisTaskService {
@@ -82,7 +83,17 @@ export class AnalysisTaskService {
       });
     }
     // 访问另外一个数据库, 获取解析后的数据, 同步到本地数据库
+    const db2 = new PrismaClient2();
+    await db2.$connect();
+    const result = await db2.farseValue.findMany({
+      where: { analysisTaskId: id },
+    });
+    result.forEach((item) => {
+      item.tageNumber;
+    });
+    console.log(result);
 
+    await db2.$disconnect();
     return data.detail;
   }
 
