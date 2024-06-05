@@ -427,5 +427,5 @@ model Pdf {
   updatedAt DateTime     @updatedAt
   /// pdf文件路径
   url       String
-  task      AnalysisTask @relation(fields: [taskId], references: [id])
+  task      AnalysisTask @relation(fields: [taskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

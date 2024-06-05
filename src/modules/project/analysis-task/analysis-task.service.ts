@@ -10,7 +10,6 @@ import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.inte
 import { MinioService } from 'src/common/minio/minio.service';
 import PDFParser from 'pdf2json';
 import fs from 'fs';
-import pdf from 'pdf-parse';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { Cron, CronExpression } from '@nestjs/schedule';
@@ -114,28 +113,17 @@ export class AnalysisTaskService {
     pdfParser.on('pdfParser_dataError', (errData) =>
       console.error(errData.parserError),
     );
-    // pdfParser.on('pdfParser_dataReady', (pdfData) => {
-    //   const data = pdfParser.getRawTextContent();
-    //   // fs 写入文件,转换成utf-8格式
-    //   // fs.writeFile('./test.json', JSON.stringify(pdfData), (data) =>
-    //   //   console.log(data),
-    //   // );
-    //   // console.log(pdfParser.getRawTextContent());
-    //   fs.writeFileSync('./test.json', JSON.stringify(pdfData), 'utf-8');
-    // });
+
     pdfParser.on('pdfParser_dataReady', () => {
-      fs.writeFile('./test2.txt', pdfParser.getRawTextContent(), () => {
+      const dataTxt = pdfParser.getRawTextContent();
+      const result = dataTxt.replace(/[\r\n]/g, '||');
+      console.log(result);
+      // 正则匹配[]中的文本 "仪表组态 [DVW-R1] - 基本"
+      fs.writeFile('./test.txt', pdfParser.getRawTextContent(), () => {
         console.log('Done.');
       });
     });
     pdfParser.loadPDF('./test.pdf');
-
-    const dataBuffer = fs.readFileSync('./test.pdf');
-    pdf(dataBuffer).then(function (data) {
-      console.log(data);
-      fs.writeFile('./test.txt', data.text, () => {});
-    });
-    // return data;
   }
 
   async uploadPdf(user: ActiveUserData, file: Express.Multer.File, body: any) {
@@ -174,6 +162,9 @@ export class AnalysisTaskService {
   }
 
   remove(id: number) {
-    return this.prismaService.client.analysisTask.delete({ where: { id } });
+    // 级联删除
+    return this.prismaService.client.analysisTask.delete({
+      where: { id },
+    });
   }
 }
