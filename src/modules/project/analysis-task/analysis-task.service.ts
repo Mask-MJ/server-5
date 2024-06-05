@@ -50,7 +50,7 @@ export class AnalysisTaskService {
         where: { name: { contains: name }, factoryId },
         include: { factory: true, dict: true },
       })
-      .withPages({ page, limit: pageSize });
+      .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };
   }
 

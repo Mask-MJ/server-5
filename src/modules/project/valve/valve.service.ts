@@ -31,7 +31,7 @@ export class ValveService {
         },
         include: { factory: true, device: true },
       })
-      .withPages({ page, limit: pageSize });
+      .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };
   }
 

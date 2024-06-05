@@ -33,7 +33,7 @@ export class ContractService {
         where: { name: { contains: name }, customer: { contains: customer } },
         include: { factory: true },
       })
-      .withPages({ page, limit: pageSize });
+      .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };
   }
 

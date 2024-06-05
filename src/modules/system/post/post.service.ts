@@ -24,7 +24,7 @@ export class PostService {
         where: { name: { contains: name }, code: { contains: code } },
         orderBy: { sort: 'asc' },
       })
-      .withPages({ page, limit: pageSize });
+      .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };
   }
 

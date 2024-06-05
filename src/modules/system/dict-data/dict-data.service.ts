@@ -32,7 +32,7 @@ export class DictDataService {
         },
         orderBy: { sort: 'asc' },
       })
-      .withPages({ page, limit: pageSize });
+      .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };
   }
 

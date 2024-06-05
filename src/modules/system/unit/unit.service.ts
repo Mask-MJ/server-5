@@ -22,7 +22,7 @@ export class UnitService {
       .paginate({
         where: { name: { contains: name }, value: { contains: value } },
       })
-      .withPages({ page, limit: pageSize });
+      .withPages({ page, limit: pageSize, includePageCount: true });
 
     return { rows, ...meta };
   }

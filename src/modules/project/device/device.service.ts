@@ -23,7 +23,7 @@ export class DeviceService {
         where: { name: { contains: name }, factoryId: factoryId },
         include: { factory: true },
       })
-      .withPages({ page, limit: pageSize });
+      .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };
   }
 

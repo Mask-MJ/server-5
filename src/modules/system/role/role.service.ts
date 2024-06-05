@@ -29,7 +29,7 @@ export class RoleService {
         where: { name: { contains: name }, value: { contains: value } },
         orderBy: { sort: 'asc' },
       })
-      .withPages({ page, limit: pageSize });
+      .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };
   }
 
