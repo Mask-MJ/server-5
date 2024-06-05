@@ -62,26 +62,26 @@ export class AnalysisTaskService {
   }
 
   async execute(user: ActiveUserData, id: number) {
-    const analysisTask =
-      await this.prismaService.client.analysisTask.findUnique({
-        where: { id },
-      });
-    const { data } = await firstValueFrom(
-      this.httpService.post('http://39.105.100.190:5050/api/frasepdf', {
-        projectid: analysisTask.id,
-        filepath: ['pdf/DVW-R1_20240307_1534_REPORT中文.pdf'],
-        templateid: [0],
-        ruleid: 1,
-        factoryid: analysisTask.factoryId,
-      }),
-    );
-    if (data.detail.result === 1) {
-      await this.prismaService.client.analysisTask.update({
-        where: { id },
-        data: { status: 1 },
-      });
-    }
-    return data.detail;
+    // const analysisTask =
+    //   await this.prismaService.client.analysisTask.findUnique({
+    //     where: { id },
+    //   });
+    // const { data } = await firstValueFrom(
+    //   this.httpService.post('http://39.105.100.190:5050/api/frasepdf', {
+    //     projectid: analysisTask.id,
+    //     filepath: ['pdf/DVW-R1_20240307_1534_REPORT中文.pdf'],
+    //     templateid: [0],
+    //     ruleid: 1,
+    //     factoryid: analysisTask.factoryId,
+    //   }),
+    // );
+    // if (data.detail.result === 1) {
+    return this.prismaService.client.analysisTask.update({
+      where: { id },
+      data: { status: 1 },
+    });
+    // }
+    // return data.detail;
   }
 
   @Cron(CronExpression.EVERY_MINUTE)

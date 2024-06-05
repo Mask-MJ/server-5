@@ -20,7 +20,6 @@ export class ValveService {
   async findAll(queryValveDto: QueryValveDto) {
     const { name, factoryId, deviceId, analysisTaskId, page, pageSize } =
       queryValveDto;
-    console.log('analysisTaskId', analysisTaskId);
     const [rows, meta] = await this.prismaService.client.valve
       .paginate({
         where: {
@@ -40,7 +39,7 @@ export class ValveService {
   }
 
   update(id: number, user: ActiveUserData, updateValveDto: UpdateValveDto) {
-    return this.prismaService.client.device.update({
+    return this.prismaService.client.valve.update({
       where: { id },
       data: { ...updateValveDto, updateBy: user.account },
     });
