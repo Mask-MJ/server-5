@@ -351,45 +351,98 @@ model Device {
 
 /// 阀门表
 model Valve {
-  id             Int           @id @default(autoincrement())
+  id                    Int           @id @default(autoincrement())
   /// 阀门位号
-  name           String
-  /// 阀门品牌
-  brand          String        @default("")
-  /// 阀门型号
-  model          String        @default("")
-  /// 阀门序列号
-  serial         String        @default("")
-  /// 阀门口径
-  caliber        String        @default("")
-  /// 阀门磅级
-  level          String        @default("")
-  /// 阀体材质
-  material       String        @default("")
-  /// 泄露等级
-  leak           String        @default("")
-  /// 执行机构型号
-  actuator       String        @default("")
-  /// 定位器型号
-  locator        String        @default("")
-  /// 阀门故障位
-  fault          String        @default("")
-  status         Boolean       @default(true)
-  remark         String        @default("")
+  tag                   String
+  /// 装置
+  unit                  String?
+  /// 介质
+  fluidName             String?
+  /// 关键应用
+  criticalApplication   String?
+  /// 阀体序列号
+  serialNumber          String?
+  /// 投用时间
+  since                 DateTime?
+  /// 阀体品牌
+  valveBrand            String?
+  /// 阀体类型
+  valveType             String?
+  /// 阀体口径
+  valveSize             String?
+  /// 阀体连接形式
+  valveEndConnection    String?
+  /// 阀体阀体材质
+  valveBodyMaterial     String?
+  /// 阀盖形式
+  valveBonnet           String?
+  /// 阀内件
+  valveTrim             String?
+  /// 阀体泄漏等级
+  valveSeatLeakage      String?
+  /// 阀体描述
+  valveDescription      String?
+  /// 执行机构品牌
+  actuatorBrand         String?
+  /// 执行机构类型
+  actuatorType          String?
+  /// 执行机构尺寸
+  actuatorSize          String?
+  /// 手轮
+  handwheel             String?
+  /// 执行机构描述
+  actuatorDescription   String?
+  /// 定位器品牌
+  positionerBrand       String?
+  /// 定位器类型
+  positionerType        String?
+  /// 定位器描述
+  positionerDescription String?
+  /// 附件种类
+  accessory             String?
+  /// 附件品牌
+  accessoryBrand        String?
+  /// 附件类型
+  accessoryType         String?
+  /// 附件数量
+  accessoryQuantity     Int?
+  /// 附件描述
+  accessoryDescription  String?
+  /// 仪表品牌
+  instrumentBrand       String?
+  /// 仪表类型
+  instrumentType        String?
+  /// 仪表描述
+  instrumentDescription String?
+  remark                String?
   /// 工厂id
-  factoryId      Int
+  factoryId             Int
   /// 关联装置id
-  deviceId       Int?
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  createBy       String        @default("")
+  deviceId              Int?
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  createBy              String        @default("")
   /// 更新者
-  updateBy       String?
+  updateBy              String?
   /// 分析任务id
-  analysisTaskId Int?
-  analysisTask   AnalysisTask? @relation(fields: [analysisTaskId], references: [id])
-  device         Device?       @relation(fields: [deviceId], references: [id])
-  factory        Factory       @relation(fields: [factoryId], references: [id])
+  analysisTaskId        Int?
+  analysisTask          AnalysisTask? @relation(fields: [analysisTaskId], references: [id])
+  device                Device?       @relation(fields: [deviceId], references: [id])
+  factory               Factory       @relation(fields: [factoryId], references: [id])
+  ValveData             ValveData[]
+}
+
+model ValveData {
+  id      Int    @id @default(autoincrement())
+  /// 状态名
+  name    String
+  /// 状态值
+  value   String
+  /// 单位
+  unit    String
+  /// 阀门id
+  valveId Int
+  valve   Valve  @relation(fields: [valveId], references: [id])
 }
 
 /// 分析任务表
