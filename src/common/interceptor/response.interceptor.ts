@@ -38,15 +38,17 @@ export class FormatResponse implements NestInterceptor {
 
 function changeTime(data: any) {
   if (!data) return [];
-  const { createdAt, updatedAt, contractTime, children } = data;
 
-  createdAt &&
-    (data.createdAt = dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss'));
-  updatedAt &&
-    (data.updatedAt = dayjs(updatedAt).format('YYYY-MM-DD HH:mm:ss'));
-  contractTime &&
-    (data.contractTime = dayjs(contractTime).format('YYYY-MM-DD'));
-  children && (data.children = children.map((item: any) => changeTime(item)));
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
+      if (key === 'children') {
+        data[key] = data[key].map((item: any) => changeTime(item));
+      }
+      if (data[key] instanceof Date) {
+        data[key] = dayjs(data[key]).format('YYYY-MM-DD HH:mm:ss');
+      }
+    }
+  }
 
   return data;
 }
