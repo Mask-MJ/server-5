@@ -475,12 +475,12 @@ async function main() {
                   valve: {
                     create: [
                       {
-                        name: '北京分厂-装置1-阀门1',
+                        tag: 'DW-R1',
                         createBy: 'admin',
                         factoryId: 2,
                       },
                       {
-                        name: '北京分厂-装置1-阀门2',
+                        tag: 'DW-R2',
                         createBy: 'admin',
                         factoryId: 2,
                       },
