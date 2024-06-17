@@ -1,5 +1,7 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import { Transform, Type } from 'class-transformer';
 import { IsString, IsNumber, IsOptional } from 'class-validator';
+import dayjs from 'dayjs';
 import { BaseDto } from 'src/common/dto/base.dto';
 export class CreateContractDto {
   /**
@@ -13,8 +15,9 @@ export class CreateContractDto {
    * 签订合同时间
    * @example 1714752000000
    */
-  @IsNumber()
-  contractTime: number;
+  @Type(() => Number)
+  @Transform(({ value }) => dayjs(value).format(), { toClassOnly: true })
+  contractTime: Date;
 
   /**
    * 采购阀门总数

@@ -16,13 +16,8 @@ export class ContractService {
   ) {}
 
   create(user: ActiveUserData, createContractDto: CreateContractDto) {
-    const { contractTime, ...rest } = createContractDto;
     return this.prismaService.client.contract.create({
-      data: {
-        ...rest,
-        contractTime: new Date(contractTime),
-        createBy: user.account,
-      },
+      data: { ...createContractDto, createBy: user.account },
     });
   }
 
@@ -46,14 +41,9 @@ export class ContractService {
     user: ActiveUserData,
     updateContractDto: UpdateContractDto,
   ) {
-    const { contractTime, ...rest } = updateContractDto;
     return this.prismaService.client.contract.update({
       where: { id },
-      data: {
-        ...rest,
-        contractTime: new Date(contractTime),
-        updateBy: user.account,
-      },
+      data: { ...updateContractDto, updateBy: user.account },
     });
   }
 
