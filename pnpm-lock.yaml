@@ -68,6 +68,9 @@ dependencies:
   ip2region:
     specifier: ^2.3.0
     version: 2.3.0(@types/node@20.12.10)
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   minio:
     specifier: ^8.0.0
     version: 8.0.0
@@ -112,6 +115,9 @@ devDependencies:
   '@types/jest':
     specifier: ^29.5.2
     version: 29.5.12
+  '@types/lodash':
+    specifier: ^4.17.5
+    version: 4.17.5
   '@types/multer':
     specifier: ^1.4.11
     version: 1.4.11
@@ -1565,6 +1571,10 @@ packages:
     dependencies:
       '@types/node': 20.12.10
     dev: false
+
+  /@types/lodash@4.17.5:
+    resolution: {integrity: sha512-MBIOHVZqVqgfro1euRDWX7OO0fBVUUMrN6Pwm8LQsz8cWhEpihlvR70ENj3f40j58TNxZaWv2ndSkInykNBBJw==}
+    dev: true
 
   /@types/luxon@3.4.2:
     resolution: {integrity: sha512-TifLZlFudklWlMBfhubvgqTXRzLDI5pCbGa4P8a3wPyUQSW+1xQ5eDsreP9DWHX3tjq1ke96uYG/nwundroWcA==}

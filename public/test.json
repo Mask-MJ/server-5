@@ -1,15 +1,5 @@
 [
   {
-    "name": "阀门型式",
-    "value": "旋转阀",
-    "unit": null
-  },
-  {
-    "name": "执行机构类型",
-    "value": "不带弹簧双作用气缸式",
-    "unit": null
-  },
-  {
     "name": "HART 标签",
     "value": "DVW-R1",
     "unit": null
@@ -32,40 +22,6 @@
   {
     "name": "反馈连接方式",
     "value": "旋转式阵列",
-    "unit": null
-  },
-  {
-    "name": "行程",
-    "value": "三级变量 (TV)",
-    "unit": null
-  },
-  {
-    "name": "行程",
-    "value": "控制",
-    "unit": null
-  },
-  {
-    "name": "循环计数",
-    "value": "循环计数/行程累计死区 (%)",
-    "unit": null
-  },
-  {
-    "name": "循环计数",
-    "value": "264"
-  },
-  {
-    "name": "行程累计器",
-    "value": "循环计数",
-    "unit": null
-  },
-  {
-    "name": "行程偏差",
-    "value": "所有行程死区报警 (%)",
-    "unit": null
-  },
-  {
-    "name": "驱动信号",
-    "value": "驱动电流故障",
     "unit": null
   },
   {
@@ -97,11 +53,6 @@
     "name": "驱动信号",
     "value": "70.44",
     "unit": "%"
-  },
-  {
-    "name": "行程",
-    "value": "驱动信号",
-    "unit": null
   },
   {
     "name": "仪表模式",
@@ -144,17 +95,7 @@
   },
   {
     "name": "标定日期",
-    "value": "12",
-    "unit": "Jul"
-  },
-  {
-    "name": "行程偏差",
-    "value": "-25.00",
-    "unit": "%"
-  },
-  {
-    "name": "驱动信号",
-    "value": "1000000",
-    "unit": "%"
+    "value": "12 Jul 2023",
+    "unit": null
   }
 ]

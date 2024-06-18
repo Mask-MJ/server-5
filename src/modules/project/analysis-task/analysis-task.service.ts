@@ -13,7 +13,7 @@ import fs from 'fs';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { Cron, CronExpression } from '@nestjs/schedule';
-
+import { DictData } from '@prisma/client';
 @Injectable()
 export class AnalysisTaskService {
   constructor(
@@ -118,35 +118,76 @@ export class AnalysisTaskService {
     );
 
     pdfParser.on('pdfParser_dataReady', (pdfData) => {
-      const result: string[] = pdfData.Pages.reduce((acc: string[], page) => {
-        const texts = page.Texts.map((text) => decodeURIComponent(text.R[0].T));
-        return [...acc, ...texts];
+      const pdfStringData: string[] = pdfData.Pages.reduce(
+        (acc: string[], page) => {
+          const texts = page.Texts.map((text) =>
+            decodeURIComponent(text.R[0].T),
+          );
+          return [...acc, ...texts];
+        },
+        [],
+      );
+
+      // 正则匹配 字符串以 '仪表组态' 开头, 并且以 '基本' 结尾的字符串
+      const indexes = pdfStringData.reduce((result, item, index) => {
+        if (/仪表组态.*基本/g.test(item)) {
+          result.push(index);
+        }
+        return result;
       }, []);
-      const result2: { name: string; value: string; unit: string }[] = [];
-      result.forEach((text, index) => {
-        if (data.some((item) => item.name === text)) {
-          const value = result[index - 1];
-          // 如果value是数字，且后面有单位，则取单位
-          const unit = Number(value.split(' ')[0]) ? value.split(' ')[1] : null;
-          // push 之前判断是否已经存在, name 和 value 都相同, 则不再 push
-          if (
-            !result2.some((item) => item.name === text && item.value === value)
-          ) {
-            // 如果 value 是数字，则取数字，否则取原始值
-            result2.push({
-              name: text,
-              value: Number(value.split(' ')[0]) ? value.split(' ')[0] : value,
-              unit: unit,
-            });
-          }
+      // 根据获取的索引把数组分割
+      const result = indexes.map((item, index) => {
+        if (index === indexes.length - 1) {
+          return pdfStringData.slice(item, pdfStringData.length);
+        } else {
+          return pdfStringData.slice(item, indexes[index + 1]);
         }
       });
-
-      fs.writeFile('./public/test.json', JSON.stringify(result2), () => {
-        console.log('Done.');
+      result.forEach((item) => {
+        this.savePdfData(item, data);
       });
     });
     pdfParser.loadPDF('./public/test.pdf');
+  }
+
+  savePdfData(pdfStringData: string[], data: DictData[]) {
+    const result: { name: string; value: string; unit: string }[] = [];
+    pdfStringData.forEach((text, index) => {
+      if (data.some((item) => item.name === text)) {
+        const value = pdfStringData[index - 1];
+        // 如果value是数字，且后面有单位，则取单位
+        const unit = Number(value.split(' ')[0]) ? value.split(' ')[1] : null;
+        // push 之前判断是否已经存在, name 和 value 都相同, 则不再 push
+        if (
+          !result.some((item) => item.name === text && item.value === value)
+        ) {
+          const params = {
+            name: text,
+            value: Number(value.split(' ')[0]) ? value.split(' ')[0] : value,
+            unit: unit,
+          };
+          // text 会有重复, 做一些特殊处理
+          if (text === '行程' && unit !== '%') return;
+          if (text === '循环计数' && unit !== 'counts') return;
+          if (text === '行程累计器' && unit !== '%') return;
+          if (text === '行程偏差' && unit !== '%') return;
+          if (text === '行程偏差' && pdfStringData[index - 2] != '行程') return;
+          if (text === '驱动信号' && unit !== '%') return;
+          if (text === '驱动信号' && pdfStringData[index - 2] != '供气压力')
+            return;
+          if (text === '标定日期') {
+            params.unit = null;
+            params.value = value;
+          }
+          // 如果 value 是数字，则取数字，否则取原始值
+          result.push(params);
+        }
+      }
+    });
+
+    fs.writeFile('./public/test.json', JSON.stringify(result), () => {
+      console.log('Done. result');
+    });
   }
 
   async uploadPdf(user: ActiveUserData, file: Express.Multer.File, body: any) {
