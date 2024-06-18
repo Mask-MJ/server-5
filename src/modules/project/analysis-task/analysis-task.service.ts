@@ -108,22 +108,45 @@ export class AnalysisTaskService {
     return data.detail;
   }
 
-  execute2() {
+  async execute2() {
+    const data = await this.prismaService.client.dictData.findMany({
+      where: { dictTypeId: 12 },
+    });
     const pdfParser = new PDFParser(this, true);
-    pdfParser.on('pdfParser_dataError', (errData) =>
+    pdfParser.on('pdfParser_dataError', (errData: any) =>
       console.error(errData.parserError),
     );
 
-    pdfParser.on('pdfParser_dataReady', () => {
-      const dataTxt = pdfParser.getRawTextContent();
-      const result = dataTxt.replace(/[\r\n]/g, '||');
-      console.log(result);
-      // 正则匹配[]中的文本 "仪表组态 [DVW-R1] - 基本"
-      fs.writeFile('./test.txt', pdfParser.getRawTextContent(), () => {
+    pdfParser.on('pdfParser_dataReady', (pdfData) => {
+      const result: string[] = pdfData.Pages.reduce((acc: string[], page) => {
+        const texts = page.Texts.map((text) => decodeURIComponent(text.R[0].T));
+        return [...acc, ...texts];
+      }, []);
+      const result2: { name: string; value: string; unit: string }[] = [];
+      result.forEach((text, index) => {
+        if (data.some((item) => item.name === text)) {
+          const value = result[index - 1];
+          // 如果value是数字，且后面有单位，则取单位
+          const unit = Number(value.split(' ')[0]) ? value.split(' ')[1] : null;
+          // push 之前判断是否已经存在, name 和 value 都相同, 则不再 push
+          if (
+            !result2.some((item) => item.name === text && item.value === value)
+          ) {
+            // 如果 value 是数字，则取数字，否则取原始值
+            result2.push({
+              name: text,
+              value: Number(value.split(' ')[0]) ? value.split(' ')[0] : value,
+              unit: unit,
+            });
+          }
+        }
+      });
+
+      fs.writeFile('./public/test.json', JSON.stringify(result2), () => {
         console.log('Done.');
       });
     });
-    pdfParser.loadPDF('./test.pdf');
+    pdfParser.loadPDF('./public/test.pdf');
   }
 
   async uploadPdf(user: ActiveUserData, file: Express.Multer.File, body: any) {
