@@ -300,3 +300,5 @@ export class QueryValveDto extends PartialType(
 ) {}
 
 export class UpdateValveDto extends PartialType(CreateValveDto) {}
+
+export class QueryValveHistoryDto extends BaseDto {}

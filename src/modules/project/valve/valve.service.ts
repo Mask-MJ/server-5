@@ -1,5 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateValveDto, QueryValveDto, UpdateValveDto } from './valve.dto';
+import {
+  CreateValveDto,
+  QueryValveDto,
+  QueryValveHistoryDto,
+  UpdateValveDto,
+} from './valve.dto';
 import { CustomPrismaService } from 'nestjs-prisma';
 import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
@@ -36,6 +41,17 @@ export class ValveService {
 
   findOne(id: number) {
     return this.prismaService.client.valve.findUnique({ where: { id } });
+  }
+
+  async findHistory(id: number, queryValveHistoryDto: QueryValveHistoryDto) {
+    const { page, pageSize, beginTime, endTime } = queryValveHistoryDto;
+    const [rows, meta] = await this.prismaService.client.valveDataHistory
+      .paginate({
+        where: { valveId: id, time: { gte: beginTime, lte: endTime } },
+        orderBy: { time: 'desc' },
+      })
+      .withPages({ page, limit: pageSize, includePageCount: true });
+    return { rows, ...meta };
   }
 
   update(id: number, user: ActiveUserData, updateValveDto: UpdateValveDto) {

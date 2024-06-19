@@ -1,4 +1,4 @@
-import { Valve } from '@prisma/client';
+import { Valve, ValveData, ValveDataHistory } from '@prisma/client';
 
 export class ValveEntity implements Valve {
   id: number;
@@ -73,4 +73,34 @@ export class ValveEntity implements Valve {
   updateBy: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export class ValveRunInfoEntity implements ValveData {
+  /// 阀门id
+  id: number;
+  /// 状态名
+  name: string;
+  /// 状态值
+  value: string;
+  /// 单位
+  unit: string;
+  /// 读取时间
+  time: Date;
+  /// 阀门id
+  valveId: number;
+}
+
+export class ValveHistoryEntity implements ValveDataHistory {
+  /// 阀门id
+  id: number;
+  /// 状态名
+  name: string;
+  /// 状态值
+  value: string;
+  /// 单位
+  unit: string;
+  /// 读取时间
+  time: Date;
+  /// 阀门id
+  valveId: number;
 }

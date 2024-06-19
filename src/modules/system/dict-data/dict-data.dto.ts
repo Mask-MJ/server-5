@@ -50,6 +50,14 @@ export class CreateDictDataDto {
   @IsString()
   @IsOptional()
   remark?: string;
+
+  /**
+   * 父级菜单id
+   * @example 0
+   */
+  @IsNumber()
+  @IsOptional()
+  parentId?: number;
 }
 
 export class QueryDictDataDto extends PartialType(

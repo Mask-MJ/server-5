@@ -9,7 +9,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { ValveService } from './valve.service';
-import { CreateValveDto, QueryValveDto, UpdateValveDto } from './valve.dto';
+import {
+  CreateValveDto,
+  QueryValveDto,
+  QueryValveHistoryDto,
+  UpdateValveDto,
+} from './valve.dto';
 import {
   ApiOperation,
   ApiCreatedResponse,
@@ -17,7 +22,11 @@ import {
   ApiBearerAuth,
   ApiTags,
 } from '@nestjs/swagger';
-import { ValveEntity } from './valve.entity';
+import {
+  ValveEntity,
+  ValveHistoryEntity,
+  ValveRunInfoEntity,
+} from './valve.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 
@@ -44,11 +53,22 @@ export class ValveController {
     return this.valveService.findAll(queryValveDto);
   }
 
-  @Get(':id')
+  @Get('run-info/:id')
+  @ApiOperation({ summary: '获取阀门运行信息' })
   @ApiOperation({ summary: '获取阀门信息' })
-  @ApiOkResponse({ type: ValveEntity })
+  @ApiOkResponse({ type: ValveRunInfoEntity })
   findOne(@Param('id') id: number) {
     return this.valveService.findOne(id);
+  }
+
+  @Get('history/:id')
+  @ApiOperation({ summary: '获取阀门历史数据' })
+  @ApiOkResponse({ type: ValveHistoryEntity, isArray: true })
+  findHistory(
+    @Param('id') id: number,
+    @Query() queryValveHistoryDto: QueryValveHistoryDto,
+  ) {
+    return this.valveService.findHistory(id, queryValveHistoryDto);
   }
 
   @Patch(':id')

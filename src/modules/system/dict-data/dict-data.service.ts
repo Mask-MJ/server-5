@@ -28,6 +28,7 @@ export class DictDataService {
         where: {
           name: { contains: name },
           value: { contains: value },
+          parentId: null,
           dictTypeId,
         },
         orderBy: { sort: 'asc' },
