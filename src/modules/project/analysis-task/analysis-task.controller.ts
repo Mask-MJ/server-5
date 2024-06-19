@@ -58,18 +58,6 @@ export class AnalysisTaskController {
     return this.analysisTaskService.execute(user, id);
   }
 
-  @Get('executeStatus/:id')
-  getExecutedStatus(@Param('id') id: number) {
-    return this.analysisTaskService.getExecutedStatus(id);
-  }
-
-  // 执行分析任务
-  @Post('execute2')
-  @ApiOperation({ summary: '执行分析任务2' })
-  execute2() {
-    return this.analysisTaskService.execute2();
-  }
-
   @Post('uploadPdf')
   @ApiOperation({ summary: '上传PDF文件' })
   @UseInterceptors(FileInterceptor('file'))

@@ -9,11 +9,13 @@ import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { MinioService } from 'src/common/minio/minio.service';
 import PDFParser from 'pdf2json';
-import fs from 'fs';
 import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
-import { Cron, CronExpression } from '@nestjs/schedule';
-import { DictData } from '@prisma/client';
+import { DictData, AnalysisTask } from '@prisma/client';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
 @Injectable()
 export class AnalysisTaskService {
   constructor(
@@ -61,56 +63,15 @@ export class AnalysisTaskService {
   }
 
   async execute(user: ActiveUserData, id: number) {
-    // const analysisTask =
-    //   await this.prismaService.client.analysisTask.findUnique({
-    //     where: { id },
-    //   });
-    // const { data } = await firstValueFrom(
-    //   this.httpService.post('http://39.105.100.190:5050/api/frasepdf', {
-    //     projectid: analysisTask.id,
-    //     filepath: ['pdf/DVW-R1_20240307_1534_REPORT中文.pdf'],
-    //     templateid: [0],
-    //     ruleid: 1,
-    //     factoryid: analysisTask.factoryId,
-    //   }),
-    // );
-    // if (data.detail.result === 1) {
-    return this.prismaService.client.analysisTask.update({
-      where: { id },
-      data: { status: 1 },
-    });
-    // }
-    // return data.detail;
-  }
-
-  @Cron(CronExpression.EVERY_MINUTE)
-  async handleCron() {
-    // 查找 analysisTask 表中 status 为 1 的数据
-    // 修改 status 为 2
-    const analysisTasks = await this.prismaService.client.analysisTask.findMany(
-      { where: { status: 1 } },
-    );
-    analysisTasks.forEach(async (item) => {
-      await this.prismaService.client.analysisTask.update({
-        where: { id: item.id },
-        data: { status: 2 },
+    // 获取分析任务的数据
+    const analysisTask =
+      await this.prismaService.client.analysisTask.findUnique({
+        where: { id },
+        include: { pdf: true },
       });
-    });
-  }
-
-  async getExecutedStatus(id: number) {
-    const { data } = await firstValueFrom(
-      this.httpService.post('http://39.105.100.190:5050/api/score', {
-        projectid: id,
-      }),
-    );
-    console.log(data);
-    return data.detail;
-  }
-
-  async execute2() {
+    // 获取解析模板的数据
     const data = await this.prismaService.client.dictData.findMany({
-      where: { dictTypeId: 12 },
+      where: { dictTypeId: analysisTask.dictTypeId },
     });
     const pdfParser = new PDFParser(this, true);
     pdfParser.on('pdfParser_dataError', (errData: any) =>
@@ -144,13 +105,22 @@ export class AnalysisTaskService {
         }
       });
       result.forEach((item) => {
-        this.savePdfData(item, data);
+        this.savePdfData(item, data, analysisTask);
       });
     });
-    pdfParser.loadPDF('./public/test.pdf');
+    const pdf = await axios({
+      method: 'get',
+      url: analysisTask.pdf[0].url,
+      responseType: 'arraybuffer',
+    });
+    pdfParser.parseBuffer(pdf.data);
   }
 
-  savePdfData(pdfStringData: string[], data: DictData[]) {
+  async savePdfData(
+    pdfStringData: string[],
+    data: DictData[],
+    analysisTask: AnalysisTask,
+  ) {
     const result: { name: string; value: string; unit: string }[] = [];
     pdfStringData.forEach((text, index) => {
       if (data.some((item) => item.name === text)) {
@@ -167,32 +137,92 @@ export class AnalysisTaskService {
             unit: unit,
           };
           // text 会有重复, 做一些特殊处理
-          if (text === '行程' && unit !== '%') return;
-          if (text === '循环计数' && unit !== 'counts') return;
-          if (text === '行程累计器' && unit !== '%') return;
-          if (text === '行程偏差' && unit !== '%') return;
-          if (text === '行程偏差' && pdfStringData[index - 2] != '行程') return;
-          if (text === '驱动信号' && unit !== '%') return;
-          if (text === '驱动信号' && pdfStringData[index - 2] != '供气压力')
-            return;
+          const conditions = new Map<
+            string,
+            { unit: string; prevText: string }
+          >([
+            ['行程', { unit: '%', prevText: '' }],
+            ['循环计数', { unit: 'counts', prevText: '' }],
+            ['行程累计器', { unit: '%', prevText: '' }],
+            ['行程偏差', { unit: '%', prevText: '行程' }],
+            ['驱动信号', { unit: '%', prevText: '供气压力' }],
+          ]);
+
+          if (conditions.has(text)) {
+            const condition = conditions.get(text);
+            if (condition.unit !== unit) return;
+            if (
+              condition.prevText &&
+              pdfStringData[index - 2] !== condition.prevText
+            )
+              return;
+          }
           if (text === '标定日期') {
             params.unit = null;
+            // params.value = '11 Oct 2023';
             params.value = value;
           }
-          // 如果 value 是数字，则取数字，否则取原始值
           result.push(params);
         }
       }
     });
-
-    fs.writeFile('./public/test.json', JSON.stringify(result), () => {
-      console.log('Done. result');
+    const tag = result.find((item) => item.name === 'HART 标签').value;
+    const date = result.find((item) => item.name === '标定日期').value; // 12 Jul 2023
+    const time = dayjs(date, 'DD MMM YYYY').toDate();
+    const valveData = result.map((item) => {
+      return {
+        name: item.name,
+        value: item.value,
+        unit: item.unit || null,
+        time,
+      };
     });
+    const valve = await this.prismaService.client.valve.findFirst({
+      where: { factoryId: analysisTask.factoryId, tag },
+      include: { valveData: true },
+    });
+    if (valve) {
+      // 通过time判断是否是否是最新的数据
+      if (dayjs(valve.valveData[0].time).isBefore(time)) {
+        await this.prismaService.client.valve.update({
+          where: { id: valve.id },
+          data: {
+            valveData: {
+              deleteMany: {},
+              createMany: { data: valveData },
+            },
+          },
+        });
+      }
+      // 判断该日期在历史记录表中是否已经存在
+      const history =
+        await this.prismaService.client.valveDataHistory.findFirst({
+          where: { valveId: valve.id, time },
+        });
+      // 不存在则创建
+      if (!history) {
+        await this.prismaService.client.valveDataHistory.createMany({
+          data: valveData.map((item) => ({
+            ...item,
+            valveId: valve.id,
+          })),
+        });
+      }
+    } else {
+      // 创建阀门
+      await this.prismaService.client.valve.create({
+        data: {
+          factoryId: analysisTask.factoryId,
+          tag,
+          valveData: { createMany: { data: valveData } },
+          ValveDataHistory: { createMany: { data: valveData } },
+        },
+      });
+    }
   }
 
   async uploadPdf(user: ActiveUserData, file: Express.Multer.File, body: any) {
     // 加上时间戳，避免文件名重复
-    console.log(body);
     const fileName = `${Date.now()}-${body.fileName}`;
     await this.minioClient.uploadFile('pdf', fileName, file.buffer);
     const url = await this.minioClient.getUrl('pdf', fileName);
