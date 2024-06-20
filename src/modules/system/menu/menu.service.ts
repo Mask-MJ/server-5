@@ -40,7 +40,7 @@ export class MenuService {
       return this.prismaService.client.menu.findMany({
         where: {
           name: { contains: name },
-          parentId: null,
+          parentId: !name ? null : undefined,
         },
         include: { children: { orderBy: { sort: 'asc' } } },
         orderBy: { sort: 'asc' },
@@ -51,7 +51,7 @@ export class MenuService {
         where: {
           OR: [{ role: { some: { id: { in: roleIds } } } }],
           name: { contains: name },
-          parentId: null,
+          parentId: !name ? null : undefined,
         },
         include: { children: { orderBy: { sort: 'asc' } } },
         orderBy: { sort: 'asc' },

@@ -21,7 +21,7 @@ export class DeptService {
     // https://github.com/prisma/prisma/issues/3725
     // https://github.com/prisma/prisma/issues/4562
     return this.prismaService.client.dept.findMany({
-      where: { name: { contains: name }, parentId: null },
+      where: { name: { contains: name }, parentId: !name ? null : undefined },
       include: {
         children: {
           include: { children: { orderBy: { sort: 'asc' } } },

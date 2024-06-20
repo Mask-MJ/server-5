@@ -30,7 +30,7 @@ export class FactoryService {
       return this.prismaService.client.factory.findMany({
         where: {
           name: { contains: name },
-          parentId: null,
+          parentId: !name ? null : undefined,
           createdAt: { gte: beginTime, lte: endTime },
         },
         include: { children: true },
@@ -44,7 +44,7 @@ export class FactoryService {
             { role: { some: { id: { in: roleIds } } } },
           ],
           name: { contains: name },
-          parentId: null,
+          parentId: !name ? null : undefined,
           createdAt: { gte: beginTime, lte: endTime },
         },
         include: { children: true },
