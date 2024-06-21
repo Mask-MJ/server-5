@@ -300,5 +300,11 @@ export class QueryValveDto extends PartialType(
 ) {}
 
 export class UpdateValveDto extends PartialType(CreateValveDto) {}
-
-export class QueryValveHistoryDto extends BaseDto {}
+export class ValveDto {
+  @IsNumber()
+  @Type(() => Number)
+  valveId: number;
+}
+export class QueryValveHistoryListDto extends PartialType(
+  IntersectionType(ValveDto, BaseDto),
+) {}

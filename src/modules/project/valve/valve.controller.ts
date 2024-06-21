@@ -12,7 +12,7 @@ import { ValveService } from './valve.service';
 import {
   CreateValveDto,
   QueryValveDto,
-  QueryValveHistoryDto,
+  QueryValveHistoryListDto,
   UpdateValveDto,
 } from './valve.dto';
 import {
@@ -25,6 +25,7 @@ import {
 import {
   ValveEntity,
   ValveHistoryEntity,
+  ValveHistoryListEntity,
   ValveRunInfoEntity,
 } from './valve.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
@@ -61,14 +62,21 @@ export class ValveController {
     return this.valveService.findOne(id);
   }
 
-  @Get('history/:id')
-  @ApiOperation({ summary: '获取阀门历史数据' })
-  @ApiOkResponse({ type: ValveHistoryEntity, isArray: true })
-  findHistory(
-    @Param('id') id: number,
-    @Query() queryValveHistoryDto: QueryValveHistoryDto,
+  // 获取阀门历史数据列表
+  @Get('history')
+  @ApiOperation({ summary: '获取阀门历史数据列表' })
+  @ApiOkResponse({ type: ValveHistoryListEntity, isArray: true })
+  findAllHistoryDataList(
+    @Query() queryValveHistoryListDto: QueryValveHistoryListDto,
   ) {
-    return this.valveService.findHistory(id, queryValveHistoryDto);
+    return this.valveService.findAllHistoryDataList(queryValveHistoryListDto);
+  }
+
+  @Get('history/:id')
+  @ApiOperation({ summary: '获取阀门历史数据列表详情' })
+  @ApiOkResponse({ type: ValveHistoryEntity, isArray: true })
+  findHistoryData(@Param('id') id: number) {
+    return this.valveService.findHistoryData(id);
   }
 
   @Patch(':id')

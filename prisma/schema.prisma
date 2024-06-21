@@ -364,7 +364,7 @@ model Device {
 
 /// 阀门表
 model Valve {
-  id                    Int                @id @default(autoincrement())
+  id                    Int                    @id @default(autoincrement())
   /// 阀门位号
   tag                   String
   /// 装置
@@ -432,18 +432,18 @@ model Valve {
   factoryId             Int
   /// 关联装置id
   deviceId              Int?
-  createdAt             DateTime           @default(now())
-  updatedAt             DateTime           @updatedAt
-  createBy              String             @default("")
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  createBy              String                 @default("")
   /// 更新者
   updateBy              String?
   /// 分析任务id
   analysisTaskId        Int?
-  analysisTask          AnalysisTask?      @relation(fields: [analysisTaskId], references: [id])
-  device                Device?            @relation(fields: [deviceId], references: [id])
-  factory               Factory            @relation(fields: [factoryId], references: [id])
+  analysisTask          AnalysisTask?          @relation(fields: [analysisTaskId], references: [id])
+  device                Device?                @relation(fields: [deviceId], references: [id])
+  factory               Factory                @relation(fields: [factoryId], references: [id])
   valveData             ValveData[]
-  ValveDataHistory      ValveDataHistory[]
+  valveHistoryDataList  ValveHistoryDataList[]
 }
 
 model ValveData {
@@ -461,19 +461,30 @@ model ValveData {
   time    DateTime
 }
 
-model ValveDataHistory {
-  id      Int      @id @default(autoincrement())
-  /// 状态名
-  name    String
-  /// 状态值
-  value   String
-  /// 单位
-  unit    String?
+model ValveHistoryDataList {
+  id               Int                @id @default(autoincrement())
+  /// 阀门位号
+  tag              String
   /// 阀门id
-  valveId Int
-  valve   Valve    @relation(fields: [valveId], references: [id])
+  valveId          Int
+  valve            Valve              @relation(fields: [valveId], references: [id])
   /// 读取时间
-  time    DateTime
+  time             DateTime
+  valveHistoryData ValveHistoryData[]
+}
+
+model ValveHistoryData {
+  id                     Int                  @id @default(autoincrement())
+  /// 状态名
+  name                   String
+  /// 状态值
+  value                  String
+  /// 单位
+  unit                   String?
+  valveHistoryDataListId Int
+  valveHistoryDataList   ValveHistoryDataList @relation(fields: [valveHistoryDataListId], references: [id])
+  /// 读取时间
+  time                   DateTime
 }
 
 /// 分析任务表

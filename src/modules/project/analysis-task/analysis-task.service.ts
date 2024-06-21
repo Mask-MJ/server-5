@@ -168,6 +168,7 @@ export class AnalysisTaskService {
     });
     const tag = result.find((item) => item.name === 'HART 标签').value;
     const date = result.find((item) => item.name === '标定日期').value; // 12 Jul 2023
+    // 格式化从pdf中获取的日期
     const time = dayjs(date, 'DD MMM YYYY').toDate();
     const valveData = result.map((item) => {
       return {
@@ -183,7 +184,10 @@ export class AnalysisTaskService {
     });
     if (valve) {
       // 通过time判断是否是否是最新的数据
-      if (dayjs(valve.valveData[0].time).isBefore(time)) {
+      if (
+        valve.valveData.length === 0 ||
+        dayjs(valve.valveData[0].time).isBefore(time)
+      ) {
         await this.prismaService.client.valve.update({
           where: { id: valve.id },
           data: {
@@ -196,16 +200,28 @@ export class AnalysisTaskService {
       }
       // 判断该日期在历史记录表中是否已经存在
       const history =
-        await this.prismaService.client.valveDataHistory.findFirst({
+        await this.prismaService.client.valveHistoryDataList.findFirst({
           where: { valveId: valve.id, time },
         });
-      // 不存在则创建
-      if (!history) {
-        await this.prismaService.client.valveDataHistory.createMany({
-          data: valveData.map((item) => ({
-            ...item,
+      if (history) {
+        // 更新历史记录表
+        await this.prismaService.client.valveHistoryDataList.update({
+          where: { id: history.id },
+          data: {
+            valveHistoryData: {
+              deleteMany: {},
+              createMany: { data: valveData },
+            },
+          },
+        });
+      } else {
+        await this.prismaService.client.valveHistoryDataList.create({
+          data: {
+            tag,
+            time,
             valveId: valve.id,
-          })),
+            valveHistoryData: { createMany: { data: valveData } },
+          },
         });
       }
     } else {
@@ -216,7 +232,13 @@ export class AnalysisTaskService {
           tag,
           analysisTaskId: analysisTask.id,
           valveData: { createMany: { data: valveData } },
-          ValveDataHistory: { createMany: { data: valveData } },
+          valveHistoryDataList: {
+            create: {
+              tag,
+              time,
+              valveHistoryData: { createMany: { data: valveData } },
+            },
+          },
         },
       });
     }

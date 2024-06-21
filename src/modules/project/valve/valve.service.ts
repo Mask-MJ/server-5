@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   CreateValveDto,
   QueryValveDto,
-  QueryValveHistoryDto,
+  QueryValveHistoryListDto,
   UpdateValveDto,
 } from './valve.dto';
 import { CustomPrismaService } from 'nestjs-prisma';
@@ -43,15 +43,16 @@ export class ValveService {
     return this.prismaService.client.valve.findUnique({ where: { id } });
   }
 
-  async findHistory(id: number, queryValveHistoryDto: QueryValveHistoryDto) {
-    const { page, pageSize, beginTime, endTime } = queryValveHistoryDto;
-    const [rows, meta] = await this.prismaService.client.valveDataHistory
-      .paginate({
-        where: { valveId: id, time: { gte: beginTime, lte: endTime } },
-        orderBy: { time: 'desc' },
-      })
-      .withPages({ page, limit: pageSize, includePageCount: true });
-    return { rows, ...meta };
+  findAllHistoryDataList(queryValveHistoryListDto: QueryValveHistoryListDto) {
+    return this.prismaService.client.valveHistoryDataList.findMany({
+      where: { valveId: queryValveHistoryListDto.valveId },
+    });
+  }
+
+  findHistoryData(id: number) {
+    return this.prismaService.client.valveHistoryData.findMany({
+      where: { valveHistoryDataListId: id },
+    });
   }
 
   update(id: number, user: ActiveUserData, updateValveDto: UpdateValveDto) {
