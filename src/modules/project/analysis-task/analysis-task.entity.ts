@@ -1,4 +1,4 @@
-import { AnalysisTask } from '@prisma/client';
+import { AnalysisTask, AnalysisTaskResult, Prisma } from '@prisma/client';
 
 export class AnalysisTaskEntity implements AnalysisTask {
   id: number;
@@ -11,4 +11,12 @@ export class AnalysisTaskEntity implements AnalysisTask {
   updateBy: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export class AnalysisTaskResultEntity implements AnalysisTaskResult {
+  id: number;
+  analysisTaskId: number;
+  tag: string;
+  time: Date;
+  data: Prisma.JsonArray;
 }

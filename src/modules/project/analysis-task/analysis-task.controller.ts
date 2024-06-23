@@ -23,7 +23,10 @@ import {
   ApiOperation,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { AnalysisTaskEntity } from './analysis-task.entity';
+import {
+  AnalysisTaskEntity,
+  AnalysisTaskResultEntity,
+} from './analysis-task.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -67,6 +70,14 @@ export class AnalysisTaskController {
     @Body() body: any,
   ) {
     return this.analysisTaskService.uploadPdf(user, file, body);
+  }
+
+  // 分析任务结果
+  @Get('result/:id')
+  @ApiOperation({ summary: '获取分析任务结果' })
+  @ApiOkResponse({ type: AnalysisTaskResultEntity })
+  result(@Param('id') id: number) {
+    return this.analysisTaskService.result(id);
   }
 
   @Get(':id')

@@ -56,10 +56,9 @@ export class ValveController {
 
   @Get('run-info/:id')
   @ApiOperation({ summary: '获取阀门运行信息' })
-  @ApiOperation({ summary: '获取阀门信息' })
   @ApiOkResponse({ type: ValveRunInfoEntity })
-  findOne(@Param('id') id: number) {
-    return this.valveService.findOne(id);
+  findRunInfo(@Param('id') id: number) {
+    return this.valveService.findRunInfo(id);
   }
 
   // 获取阀门历史数据列表
@@ -77,6 +76,13 @@ export class ValveController {
   @ApiOkResponse({ type: ValveHistoryEntity, isArray: true })
   findHistoryData(@Param('id') id: number) {
     return this.valveService.findHistoryData(id);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: '获取阀门信息' })
+  @ApiOkResponse({ type: ValveRunInfoEntity })
+  findOne(@Param('id') id: number) {
+    return this.valveService.findOne(id);
   }
 
   @Patch(':id')

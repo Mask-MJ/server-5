@@ -10,7 +10,7 @@ import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.inte
 import { MinioService } from 'src/common/minio/minio.service';
 import PDFParser from 'pdf2json';
 import { HttpService } from '@nestjs/axios';
-import { DictData, AnalysisTask } from '@prisma/client';
+import { DictData, AnalysisTask, Prisma } from '@prisma/client';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -69,6 +69,11 @@ export class AnalysisTaskService {
         where: { id },
         include: { pdf: true },
       });
+    // 把任务状态改为执行中
+    await this.prismaService.client.analysisTask.update({
+      where: { id },
+      data: { status: 1 },
+    });
     // 获取解析模板的数据
     const data = await this.prismaService.client.dictData.findMany({
       where: { dictTypeId: analysisTask.dictTypeId },
@@ -242,6 +247,32 @@ export class AnalysisTaskService {
         },
       });
     }
+    // 把任务状态改为已完成
+    await this.prismaService.client.analysisTask.update({
+      where: { id: analysisTask.id },
+      data: { status: 2 },
+    });
+    // 保存分析结果
+    await this.prismaService.client.analysisTaskResult.upsert({
+      where: { analysisTaskId: analysisTask.id },
+      create: {
+        analysisTaskId: analysisTask.id,
+        tag,
+        time,
+        data: valveData as unknown as Prisma.JsonArray,
+      },
+      update: {
+        tag,
+        time,
+        data: valveData as unknown as Prisma.JsonArray,
+      },
+    });
+  }
+
+  async result(id: number) {
+    return this.prismaService.client.analysisTaskResult.findFirst({
+      where: { analysisTaskId: id },
+    });
   }
 
   async uploadPdf(user: ActiveUserData, file: Express.Multer.File, body: any) {

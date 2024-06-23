@@ -43,10 +43,24 @@ export class ValveService {
     return this.prismaService.client.valve.findUnique({ where: { id } });
   }
 
-  findAllHistoryDataList(queryValveHistoryListDto: QueryValveHistoryListDto) {
-    return this.prismaService.client.valveHistoryDataList.findMany({
-      where: { valveId: queryValveHistoryListDto.valveId },
+  findRunInfo(id: number) {
+    return this.prismaService.client.valveData.findMany({
+      where: { valveId: id },
     });
+  }
+
+  async findAllHistoryDataList(
+    queryValveHistoryListDto: QueryValveHistoryListDto,
+  ) {
+    const { valveId, page, pageSize } = queryValveHistoryListDto;
+    const [rows, meta] = await this.prismaService.client.valveHistoryDataList
+      .paginate({
+        where: { valveId },
+        // 根据读取时间倒序排列
+        orderBy: { time: 'desc' },
+      })
+      .withPages({ page, limit: pageSize, includePageCount: true });
+    return { rows, ...meta };
   }
 
   findHistoryData(id: number) {

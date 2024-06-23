@@ -489,26 +489,41 @@ model ValveHistoryData {
 
 /// 分析任务表
 model AnalysisTask {
-  id         Int      @id @default(autoincrement())
+  id                 Int                 @id @default(autoincrement())
   /// 任务名称
-  name       String
+  name               String
   /// 任务状态 0未开始 1进行中 2已完成 3失败
-  status     Int      @default(0)
+  status             Int                 @default(0)
   /// 任务备注
-  remark     String   @default("")
+  remark             String              @default("")
   /// 字典id
-  dictTypeId Int
+  dictTypeId         Int
   /// 工厂id
-  factoryId  Int
-  createBy   String
+  factoryId          Int
+  createBy           String
   /// 更新者
-  updateBy   String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  dict       DictType @relation(fields: [dictTypeId], references: [id])
-  factory    Factory  @relation(fields: [factoryId], references: [id])
-  pdf        Pdf[]
-  Valve      Valve[]
+  updateBy           String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  dict               DictType            @relation(fields: [dictTypeId], references: [id])
+  factory            Factory             @relation(fields: [factoryId], references: [id])
+  pdf                Pdf[]
+  valve              Valve[]
+  analysisTaskResult AnalysisTaskResult?
+}
+
+/// 分析任务结果记录表
+model AnalysisTaskResult {
+  id             Int          @id @default(autoincrement())
+  /// 任务id
+  analysisTaskId Int          @unique
+  analysisTask   AnalysisTask @relation(fields: [analysisTaskId], references: [id])
+  /// 阀门位号
+  tag            String
+  /// 读取时间
+  time           DateTime
+  /// 读取的pdf数据 json格式
+  data           Json?
 }
 
 model Pdf {
