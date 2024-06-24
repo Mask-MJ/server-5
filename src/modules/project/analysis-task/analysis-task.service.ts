@@ -187,86 +187,94 @@ export class AnalysisTaskService {
       where: { factoryId: analysisTask.factoryId, tag },
       include: { valveData: true },
     });
-    if (valve) {
-      // 通过time判断是否是否是最新的数据
-      if (
-        valve.valveData.length === 0 ||
-        dayjs(valve.valveData[0].time).isBefore(time)
-      ) {
-        await this.prismaService.client.valve.update({
-          where: { id: valve.id },
-          data: {
-            valveData: {
-              deleteMany: {},
-              createMany: { data: valveData },
+    try {
+      if (valve) {
+        // 通过time判断是否是否是最新的数据
+        if (
+          valve.valveData.length === 0 ||
+          dayjs(valve.valveData[0].time).isBefore(time)
+        ) {
+          await this.prismaService.client.valve.update({
+            where: { id: valve.id },
+            data: {
+              valveData: {
+                deleteMany: {},
+                createMany: { data: valveData },
+              },
             },
-          },
-        });
-      }
-      // 判断该日期在历史记录表中是否已经存在
-      const history =
-        await this.prismaService.client.valveHistoryDataList.findFirst({
-          where: { valveId: valve.id, time },
-        });
-      if (history) {
-        // 更新历史记录表
-        await this.prismaService.client.valveHistoryDataList.update({
-          where: { id: history.id },
-          data: {
-            valveHistoryData: {
-              deleteMany: {},
-              createMany: { data: valveData },
+          });
+        }
+        // 判断该日期在历史记录表中是否已经存在
+        const history =
+          await this.prismaService.client.valveHistoryDataList.findFirst({
+            where: { valveId: valve.id, time },
+          });
+        if (history) {
+          // 更新历史记录表
+          await this.prismaService.client.valveHistoryDataList.update({
+            where: { id: history.id },
+            data: {
+              valveHistoryData: {
+                deleteMany: {},
+                createMany: { data: valveData },
+              },
             },
-          },
-        });
-      } else {
-        await this.prismaService.client.valveHistoryDataList.create({
-          data: {
-            tag,
-            time,
-            valveId: valve.id,
-            valveHistoryData: { createMany: { data: valveData } },
-          },
-        });
-      }
-    } else {
-      // 创建阀门
-      await this.prismaService.client.valve.create({
-        data: {
-          factoryId: analysisTask.factoryId,
-          tag,
-          analysisTaskId: analysisTask.id,
-          valveData: { createMany: { data: valveData } },
-          valveHistoryDataList: {
-            create: {
+          });
+        } else {
+          await this.prismaService.client.valveHistoryDataList.create({
+            data: {
               tag,
               time,
+              valveId: valve.id,
               valveHistoryData: { createMany: { data: valveData } },
             },
+          });
+        }
+      } else {
+        // 创建阀门
+        await this.prismaService.client.valve.create({
+          data: {
+            factoryId: analysisTask.factoryId,
+            tag,
+            analysisTaskId: analysisTask.id,
+            valveData: { createMany: { data: valveData } },
+            valveHistoryDataList: {
+              create: {
+                tag,
+                time,
+                valveHistoryData: { createMany: { data: valveData } },
+              },
+            },
           },
+        });
+      }
+      // 把任务状态改为已完成
+      await this.prismaService.client.analysisTask.update({
+        where: { id: analysisTask.id },
+        data: { status: 2 },
+      });
+      // 保存分析结果
+      await this.prismaService.client.analysisTaskResult.upsert({
+        where: { analysisTaskId: analysisTask.id },
+        create: {
+          analysisTaskId: analysisTask.id,
+          tag,
+          time,
+          data: valveData as unknown as Prisma.JsonArray,
+        },
+        update: {
+          tag,
+          time,
+          data: valveData as unknown as Prisma.JsonArray,
         },
       });
+    } catch {
+      // 把任务状态改为失败
+      await this.prismaService.client.analysisTask.update({
+        where: { id: analysisTask.id },
+        data: { status: 3 },
+      });
     }
-    // 把任务状态改为已完成
-    await this.prismaService.client.analysisTask.update({
-      where: { id: analysisTask.id },
-      data: { status: 2 },
-    });
-    // 保存分析结果
-    await this.prismaService.client.analysisTaskResult.upsert({
-      where: { analysisTaskId: analysisTask.id },
-      create: {
-        analysisTaskId: analysisTask.id,
-        tag,
-        time,
-        data: valveData as unknown as Prisma.JsonArray,
-      },
-      update: {
-        tag,
-        time,
-        data: valveData as unknown as Prisma.JsonArray,
-      },
-    });
   }
 
   async result(id: number) {
