@@ -278,7 +278,7 @@ export class AnalysisTaskService {
   }
 
   async result(id: number) {
-    return this.prismaService.client.analysisTaskResult.findFirst({
+    return this.prismaService.client.analysisTaskResult.findMany({
       where: { analysisTaskId: id },
     });
   }
