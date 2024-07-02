@@ -56,6 +56,7 @@ export class ValveService {
     const [rows, meta] = await this.prismaService.client.valveHistoryDataList
       .paginate({
         where: { valveId },
+        include: { valveHistoryData: true },
         // 根据读取时间倒序排列
         orderBy: { time: 'desc' },
       })
