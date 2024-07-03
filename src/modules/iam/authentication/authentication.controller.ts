@@ -15,6 +15,7 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/modules/iam/authorization/decorators/roles.decorator';
 import { Request as ExpRequest } from 'express';
+import { SignInEntity } from './authentication.entity';
 
 @ApiTags('登录认证')
 @Auth(AuthType.None)
@@ -34,7 +35,11 @@ export class AuthenticationController {
   @HttpCode(HttpStatus.OK)
   @Post('sign-in')
   @ApiOperation({ summary: '登录' })
-  @ApiResponse({ status: HttpStatus.OK, description: '登录成功' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: '登录成功',
+    type: SignInEntity,
+  })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description: '用户名或密码错误',
