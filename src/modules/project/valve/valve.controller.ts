@@ -78,6 +78,13 @@ export class ValveController {
     return this.valveService.findHistoryData(id);
   }
 
+  @Get('score/:id')
+  @ApiOperation({ summary: '获取阀门评分' })
+  @ApiOkResponse({ type: ValveHistoryEntity, isArray: true })
+  findScoreData(@Param('id') id: number) {
+    return this.valveService.findScoreData(id);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: '获取阀门信息' })
   @ApiOkResponse({ type: ValveRunInfoEntity })

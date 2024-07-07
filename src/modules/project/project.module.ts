@@ -18,7 +18,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
-    HttpModule,
+    HttpModule.register({ timeout: 5000 }),
     ScheduleModule.forRoot(),
     CustomPrismaModule.forRootAsync({
       name: 'PrismaService',

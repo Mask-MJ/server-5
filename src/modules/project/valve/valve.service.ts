@@ -8,12 +8,16 @@ import {
 import { CustomPrismaService } from 'nestjs-prisma';
 import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class ValveService {
   constructor(
     @Inject('PrismaService')
     private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
+    @Inject(HttpService)
+    private readonly httpService: HttpService,
   ) {}
 
   create(user: ActiveUserData, createValveDto: CreateValveDto) {
@@ -68,6 +72,16 @@ export class ValveService {
     return this.prismaService.client.valveHistoryData.findMany({
       where: { valveHistoryDataListId: id },
     });
+  }
+
+  async findScoreData(id: number) {
+    const valveScore = await firstValueFrom(
+      this.httpService.post('http://39.105.100.190:5050/api/score', {
+        ruleid: 1,
+        valveid: id,
+      }),
+    );
+    return valveScore.data?.detail?.scores;
   }
 
   update(id: number, user: ActiveUserData, updateValveDto: UpdateValveDto) {

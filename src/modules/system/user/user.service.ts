@@ -141,6 +141,13 @@ export class UserService {
   }
 
   async remove(user: ActiveUserData, id: number, request: Request) {
+    // 判断是否是管理员账号, 如果是管理员账号则不允许删除
+    const userInfo = await this.prismaService.client.user.findUnique({
+      where: { id },
+    });
+    if (userInfo.isAdmin) {
+      throw new ConflictException('管理员账号不允许删除');
+    }
     const deleteUser = await this.prismaService.client.user.delete({
       where: { id },
     });
