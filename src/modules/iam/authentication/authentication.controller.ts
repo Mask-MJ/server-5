@@ -51,7 +51,11 @@ export class AuthenticationController {
   @HttpCode(HttpStatus.OK)
   @Post('refresh-token')
   @ApiOperation({ summary: '刷新令牌' })
-  @ApiResponse({ status: HttpStatus.OK, description: '刷新成功' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: '刷新成功',
+    type: SignInEntity,
+  })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: '令牌无效' })
   refreshTokens(@Body() refreshTokenDto: RefreshTokenDto) {
     return this.authService.refreshTokens(refreshTokenDto);
