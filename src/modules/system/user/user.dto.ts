@@ -135,7 +135,10 @@ export class QueryUserDto extends PartialType(
   ),
 ) {}
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {}
+export class UpdateUserDto extends PartialType(CreateUserDto) {
+  @IsNumber()
+  id: number;
+}
 
 export class ChangePasswordDto {
   @IsNumber()
