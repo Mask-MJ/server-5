@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { RuleService } from './rule.service';
 import { CreateRuleDto, UpdateRuleDto, QueryRuleDto } from './rule.dto';
@@ -18,6 +20,9 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 import { RuleEntity } from './rule.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
+import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 
 @ApiTags('规则管理')
 @ApiBearerAuth('bearer')
@@ -37,6 +42,17 @@ export class RuleController {
   @ApiOkResponse({ type: RuleEntity, isArray: true })
   findAll(@Query() queryRuleDto: QueryRuleDto) {
     return this.ruleService.findAll(queryRuleDto);
+  }
+
+  @Post('upload')
+  @ApiOperation({ summary: '上传规则文件' })
+  @UseInterceptors(FileInterceptor('file'))
+  upload(
+    @ActiveUser() user: ActiveUserData,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: any,
+  ) {
+    return this.ruleService.upload(user, file, body);
   }
 
   @Get(':id')
