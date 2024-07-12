@@ -309,7 +309,7 @@ async function main() {
             },
           },
           {
-            name: '字典管理',
+            name: '模板管理',
             icon: 'i-ant-design:medicine-box-outlined',
             sort: 4,
             path: '/system/dictType',
@@ -324,10 +324,11 @@ async function main() {
             },
           },
           {
-            name: '字典数据管理',
+            name: '关键字管理',
             icon: 'i-ant-design:medicine-box-outlined',
             sort: 5,
             path: '/system/dictData/:id',
+            hidden: true,
             createBy: 'admin',
             permission: {
               create: [
@@ -343,6 +344,7 @@ async function main() {
             icon: 'i-ant-design:gold-twotone',
             sort: 6,
             path: '/system/dept',
+            hidden: true,
             createBy: 'admin',
             permission: {
               create: [
@@ -358,6 +360,7 @@ async function main() {
             icon: 'i-ant-design:golden-filled',
             sort: 7,
             path: '/system/post',
+            hidden: true,
             createBy: 'admin',
             permission: {
               create: [
@@ -365,6 +368,21 @@ async function main() {
                 { name: '查询', value: 'system:post:query' },
                 { name: '修改', value: 'system:post:update' },
                 { name: '删除', value: 'system:post:delete' },
+              ],
+            },
+          },
+          {
+            name: '规则管理',
+            icon: 'i-ant-design:schedule-outlined',
+            sort: 8,
+            path: '/system/rule',
+            createBy: 'admin',
+            permission: {
+              create: [
+                { name: '创建', value: 'system:rule:create' },
+                { name: '查询', value: 'system:rule:query' },
+                { name: '修改', value: 'system:rule:update' },
+                { name: '删除', value: 'system:rule:delete' },
               ],
             },
           },
@@ -386,6 +404,7 @@ async function main() {
             icon: 'i-ant-design:aim-outlined',
             sort: 1,
             path: '/monitor/online',
+            hidden: true,
             createBy: 'admin',
             permission: {
               create: [
@@ -419,6 +438,7 @@ async function main() {
             icon: 'i-ant-design:fund-projection-screen-outlined',
             sort: 4,
             path: '/monitor/info',
+            hidden: true,
             createBy: 'admin',
             permission: {
               create: [{ name: '查询', value: 'monitor:info:query' }],
