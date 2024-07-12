@@ -546,6 +546,10 @@ model Rule {
   id        Int      @id @default(autoincrement())
   /// 规则名称
   name      String
+  /// 文件路径
+  url       String
+  /// 文件名
+  fileName  String
   /// 规则备注
   remark    String   @default("")
   createdAt DateTime @default(now())

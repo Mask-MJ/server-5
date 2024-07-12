@@ -24,6 +24,8 @@ import { PostService } from './post/post.service';
 import { PostController } from './post/post.controller';
 import { UnitService } from './unit/unit.service';
 import { UnitController } from './unit/unit.controller';
+import { RuleService } from './rule/rule.service';
+import { RuleController } from './rule/rule.controller';
 
 @Module({
   imports: [
@@ -43,6 +45,7 @@ import { UnitController } from './unit/unit.controller';
     RoleController,
     PostController,
     UnitController,
+    RuleController,
   ],
   providers: [
     { provide: HashingService, useClass: BcryptService },
@@ -56,6 +59,7 @@ import { UnitController } from './unit/unit.controller';
     RoleService,
     PostService,
     UnitService,
+    RuleService,
   ],
   exports: [UserService],
 })
