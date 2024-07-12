@@ -39,6 +39,13 @@ export class CreateAnalysisTaskDto {
   @Type(() => Number)
   factoryId: number;
   /**
+   * 规则ID
+   * @example 1
+   */
+  @IsNumber()
+  @Type(() => Number)
+  ruleId: number;
+  /**
    * 备注
    * @example '备注'
    */

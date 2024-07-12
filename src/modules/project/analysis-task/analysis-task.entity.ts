@@ -7,6 +7,7 @@ export class AnalysisTaskEntity implements AnalysisTask {
   remark: string;
   dictTypeId: number;
   factoryId: number;
+  ruleId: number;
   createBy: string;
   updateBy: string;
   createdAt: Date;

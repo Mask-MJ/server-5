@@ -14,6 +14,7 @@ import { DictData, AnalysisTask, Prisma } from '@prisma/client';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { firstValueFrom } from 'rxjs';
 
 dayjs.extend(customParseFormat);
 @Injectable()
@@ -22,7 +23,8 @@ export class AnalysisTaskService {
     @Inject('PrismaService')
     private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
     private readonly minioClient: MinioService,
-    private readonly httpService: HttpService,
+    @Inject(HttpService)
+    private httpService: HttpService,
   ) {}
   create(user: ActiveUserData, createAnalysisTaskDto: CreateAnalysisTaskDto) {
     const { pdf, ...rest } = createAnalysisTaskDto;
@@ -63,6 +65,27 @@ export class AnalysisTaskService {
   }
 
   async execute(user: ActiveUserData, id: number) {
+    const analysisTask =
+      await this.prismaService.client.analysisTask.findUnique({
+        where: { id },
+        include: { pdf: true },
+      });
+    const filepath = analysisTask.pdf.map((item) => item.name);
+    const params = {
+      projectid: id,
+      filepath,
+      templateid: [analysisTask.dictTypeId],
+      ruleid: analysisTask.ruleId,
+      factoryid: analysisTask.factoryId,
+    };
+    const { data } = await firstValueFrom(
+      this.httpService.post('http://localhost/api/frasepdf', params),
+    );
+    console.log(data);
+    return data;
+  }
+
+  async execute2(user: ActiveUserData, id: number) {
     // 获取分析任务的数据
     const analysisTask =
       await this.prismaService.client.analysisTask.findUnique({

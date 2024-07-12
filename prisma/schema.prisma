@@ -500,6 +500,8 @@ model AnalysisTask {
   dictTypeId         Int
   /// 工厂id
   factoryId          Int
+  /// 规则id
+  ruleId             Int                 @default(1)
   createBy           String
   /// 更新者
   updateBy           String?
@@ -538,4 +540,14 @@ model Pdf {
   /// pdf文件路径
   url       String
   task      AnalysisTask @relation(fields: [taskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Rule {
+  id        Int      @id @default(autoincrement())
+  /// 规则名称
+  name      String
+  /// 规则备注
+  remark    String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
