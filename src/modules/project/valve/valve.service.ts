@@ -76,7 +76,7 @@ export class ValveService {
 
   async findScoreData(id: number) {
     const valveScore = await firstValueFrom(
-      this.httpService.post('http://39.105.100.190:5050/api/score', {
+      this.httpService.post('http://localhost:5050/api/score', {
         ruleid: 1,
         valveid: id,
       }),

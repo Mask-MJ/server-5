@@ -79,7 +79,7 @@ export class AnalysisTaskService {
       factoryid: analysisTask.factoryId,
     };
     const { data } = await firstValueFrom(
-      this.httpService.post('http://localhost/api/frasepdf', params),
+      this.httpService.post('http://localhost:5050/api/frasepdf', params),
     );
     console.log(data);
     return data;
