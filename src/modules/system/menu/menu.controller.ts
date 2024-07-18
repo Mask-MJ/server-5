@@ -19,7 +19,7 @@ import {
 } from '@nestjs/swagger';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
-import { MenuEntity } from './menu.entity';
+import { MenuEntity, MenuTreeEntity } from './menu.entity';
 
 @ApiTags('菜单管理')
 @ApiBearerAuth('bearer')
@@ -39,7 +39,7 @@ export class MenuController {
 
   @Get()
   @ApiOperation({ summary: '获取菜单列表' })
-  @ApiOkResponse({ type: MenuEntity, isArray: true })
+  @ApiOkResponse({ type: MenuTreeEntity, isArray: true })
   findAll(
     @ActiveUser() user: ActiveUserData,
     @Query() queryMenuDto: QueryMenuDto,

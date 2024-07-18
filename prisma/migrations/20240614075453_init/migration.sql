@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "Valve" ALTER COLUMN "remark" DROP NOT NULL,
-ALTER COLUMN "remark" DROP DEFAULT;

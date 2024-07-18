@@ -55,4 +55,7 @@ export class QueryDeviceDto extends PartialType(
   IntersectionType(PickType(CreateDeviceDto, ['name', 'factoryId']), BaseDto),
 ) {}
 
-export class UpdateDeviceDto extends PartialType(CreateDeviceDto) {}
+export class UpdateDeviceDto extends PartialType(CreateDeviceDto) {
+  @IsNumber()
+  id: number;
+}

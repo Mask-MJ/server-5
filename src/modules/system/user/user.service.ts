@@ -9,6 +9,7 @@ import { OperationLogService } from 'src/modules/monitor/operation-log/operation
 import { Request } from 'express';
 import IP2Region from 'ip2region';
 import { ConfigService } from '@nestjs/config';
+import { RedisStorage } from 'src/common/redis/redis.storage';
 
 @Injectable()
 export class UserService {
@@ -19,6 +20,7 @@ export class UserService {
     private readonly minioClient: MinioService,
     private readonly operationLogService: OperationLogService,
     private configService: ConfigService,
+    private readonly redisStorage: RedisStorage,
   ) {}
 
   // Exclude keys from user
@@ -173,5 +175,76 @@ export class UserService {
       where: { id: user.sub },
       data: { avatar: url },
     });
+  }
+
+  // 在 redis 中插入10条数据
+  async insertRedisData() {
+    // this.redisStorage.flushAll();
+    // 开始时间
+    const startTime = new Date();
+    for (let i = 0; i < 10000; i++) {
+      await this.redisStorage.setList(`key-${i}`, [
+        'a',
+        'b',
+        'c',
+        'a',
+        'b',
+        'c',
+        'a',
+        'b',
+        'c',
+        'a',
+        'b',
+        'c',
+        'a',
+        'b',
+        'c',
+        'a',
+        'b',
+        'c',
+        'a',
+        'b',
+        'c',
+        'a',
+        'b',
+        'c',
+        'a',
+        'b',
+        'c',
+        'a',
+        'b',
+        'c',
+        'a',
+        'b',
+        'c',
+        'a',
+        'b',
+        'c',
+      ]);
+    }
+    // 结束时间耗时
+    console.log('结束时间耗时', new Date().getTime() - startTime.getTime());
+    return '插入成功';
+  }
+
+  // 定时任务, 把 redis 中的数据存储到数据库中
+  async saveRedisDataToDB() {
+    // 获取所有的 key
+    const keys = await this.redisStorage.getkeys(`key-*`);
+    console.log('keys', keys);
+    // for (let i = 0; i < keys.length; i++) {
+    //   const key = keys[i];
+    //   const values = await this.redisStorage.getList(key);
+    //   // 存储到数据库中
+    //   await this.prismaService.client.redisData.create({
+    //     data: {
+    //       key,
+    //       values,
+    //     },
+    //   });
+    //   // 删除 redis 中的数据
+    //   await this.redisStorage.del(key);
+    // }
+    return '存储成功';
   }
 }

@@ -124,8 +124,20 @@ CREATE TABLE "DictData" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "remark" TEXT NOT NULL DEFAULT '',
     "dictTypeId" INTEGER NOT NULL,
+    "treeId" INTEGER,
 
     CONSTRAINT "DictData_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "DictDataTree" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "value" TEXT NOT NULL,
+    "remark" TEXT,
+    "parentId" INTEGER,
+
+    CONSTRAINT "DictDataTree_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -223,27 +235,81 @@ CREATE TABLE "Device" (
 -- CreateTable
 CREATE TABLE "Valve" (
     "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "brand" TEXT NOT NULL DEFAULT '',
-    "model" TEXT NOT NULL DEFAULT '',
-    "serial" TEXT NOT NULL DEFAULT '',
-    "caliber" TEXT NOT NULL DEFAULT '',
-    "level" TEXT NOT NULL DEFAULT '',
-    "material" TEXT NOT NULL DEFAULT '',
-    "leak" TEXT NOT NULL DEFAULT '',
-    "actuator" TEXT NOT NULL DEFAULT '',
-    "locator" TEXT NOT NULL DEFAULT '',
-    "fault" TEXT NOT NULL DEFAULT '',
-    "status" BOOLEAN NOT NULL DEFAULT true,
-    "remark" TEXT NOT NULL DEFAULT '',
+    "tag" TEXT NOT NULL,
+    "unit" TEXT,
+    "fluidName" TEXT,
+    "criticalApplication" TEXT,
+    "serialNumber" TEXT,
+    "since" TIMESTAMP(3),
+    "valveBrand" TEXT,
+    "valveType" TEXT,
+    "valveSize" TEXT,
+    "valveEndConnection" TEXT,
+    "valveBodyMaterial" TEXT,
+    "valveBonnet" TEXT,
+    "valveTrim" TEXT,
+    "valveSeatLeakage" TEXT,
+    "valveDescription" TEXT,
+    "actuatorBrand" TEXT,
+    "actuatorType" TEXT,
+    "actuatorSize" TEXT,
+    "handwheel" TEXT,
+    "actuatorDescription" TEXT,
+    "positionerBrand" TEXT,
+    "positionerType" TEXT,
+    "positionerDescription" TEXT,
+    "accessory" TEXT,
+    "accessoryBrand" TEXT,
+    "accessoryType" TEXT,
+    "accessoryQuantity" INTEGER,
+    "accessoryDescription" TEXT,
+    "instrumentBrand" TEXT,
+    "instrumentType" TEXT,
+    "instrumentDescription" TEXT,
+    "remark" TEXT,
     "factoryId" INTEGER NOT NULL,
     "deviceId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "createBy" TEXT NOT NULL DEFAULT '',
     "updateBy" TEXT,
+    "analysisTaskId" INTEGER,
 
     CONSTRAINT "Valve_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ValveData" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "value" TEXT NOT NULL,
+    "unit" TEXT,
+    "valveId" INTEGER NOT NULL,
+    "time" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ValveData_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ValveHistoryDataList" (
+    "id" SERIAL NOT NULL,
+    "tag" TEXT NOT NULL,
+    "valveId" INTEGER NOT NULL,
+    "time" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ValveHistoryDataList_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ValveHistoryData" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "value" TEXT NOT NULL,
+    "unit" TEXT,
+    "valveHistoryDataListId" INTEGER NOT NULL,
+    "time" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ValveHistoryData_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -251,16 +317,53 @@ CREATE TABLE "AnalysisTask" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "status" INTEGER NOT NULL DEFAULT 0,
-    "pdfPath" TEXT[],
     "remark" TEXT NOT NULL DEFAULT '',
     "dictTypeId" INTEGER NOT NULL,
     "factoryId" INTEGER NOT NULL,
+    "ruleId" INTEGER NOT NULL DEFAULT 1,
     "createBy" TEXT NOT NULL,
     "updateBy" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "AnalysisTask_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "AnalysisTaskResult" (
+    "id" SERIAL NOT NULL,
+    "analysisTaskId" INTEGER NOT NULL,
+    "tag" TEXT NOT NULL,
+    "time" TIMESTAMP(3) NOT NULL,
+    "data" JSONB,
+
+    CONSTRAINT "AnalysisTaskResult_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Pdf" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "taskId" INTEGER NOT NULL,
+    "createBy" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "url" TEXT NOT NULL,
+
+    CONSTRAINT "Pdf_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Rule" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
+    "fileName" TEXT NOT NULL,
+    "remark" TEXT NOT NULL DEFAULT '',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Rule_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -324,6 +427,9 @@ CREATE UNIQUE INDEX "Menu_path_key" ON "Menu"("path");
 CREATE UNIQUE INDEX "Factory_name_key" ON "Factory"("name");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "AnalysisTaskResult_analysisTaskId_key" ON "AnalysisTaskResult"("analysisTaskId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_PostToUser_AB_unique" ON "_PostToUser"("A", "B");
 
 -- CreateIndex
@@ -375,6 +481,12 @@ ALTER TABLE "Menu" ADD CONSTRAINT "Menu_parentId_fkey" FOREIGN KEY ("parentId") 
 ALTER TABLE "DictData" ADD CONSTRAINT "DictData_dictTypeId_fkey" FOREIGN KEY ("dictTypeId") REFERENCES "DictType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "DictData" ADD CONSTRAINT "DictData_treeId_fkey" FOREIGN KEY ("treeId") REFERENCES "DictDataTree"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "DictDataTree" ADD CONSTRAINT "DictDataTree_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "DictDataTree"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Factory" ADD CONSTRAINT "Factory_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Factory"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -384,16 +496,34 @@ ALTER TABLE "Contract" ADD CONSTRAINT "Contract_factoryId_fkey" FOREIGN KEY ("fa
 ALTER TABLE "Device" ADD CONSTRAINT "Device_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Valve" ADD CONSTRAINT "Valve_analysisTaskId_fkey" FOREIGN KEY ("analysisTaskId") REFERENCES "AnalysisTask"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Valve" ADD CONSTRAINT "Valve_deviceId_fkey" FOREIGN KEY ("deviceId") REFERENCES "Device"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Valve" ADD CONSTRAINT "Valve_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "ValveData" ADD CONSTRAINT "ValveData_valveId_fkey" FOREIGN KEY ("valveId") REFERENCES "Valve"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ValveHistoryDataList" ADD CONSTRAINT "ValveHistoryDataList_valveId_fkey" FOREIGN KEY ("valveId") REFERENCES "Valve"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ValveHistoryData" ADD CONSTRAINT "ValveHistoryData_valveHistoryDataListId_fkey" FOREIGN KEY ("valveHistoryDataListId") REFERENCES "ValveHistoryDataList"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "AnalysisTask" ADD CONSTRAINT "AnalysisTask_dictTypeId_fkey" FOREIGN KEY ("dictTypeId") REFERENCES "DictType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "AnalysisTask" ADD CONSTRAINT "AnalysisTask_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "AnalysisTaskResult" ADD CONSTRAINT "AnalysisTaskResult_analysisTaskId_fkey" FOREIGN KEY ("analysisTaskId") REFERENCES "AnalysisTask"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Pdf" ADD CONSTRAINT "Pdf_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "AnalysisTask"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_PostToUser" ADD CONSTRAINT "_PostToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -62,4 +62,7 @@ export class QueryMenuDto extends PartialType(
   IntersectionType(PickType(CreateMenuDto, ['name', 'hidden']), TimeDto),
 ) {}
 
-export class UpdateMenuDto extends PartialType(CreateMenuDto) {}
+export class UpdateMenuDto extends PartialType(CreateMenuDto) {
+  @IsNumber()
+  id: number;
+}

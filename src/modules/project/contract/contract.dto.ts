@@ -74,4 +74,7 @@ export class QueryContractDto extends PartialType(
   IntersectionType(PickType(CreateContractDto, ['name', 'customer']), BaseDto),
 ) {}
 
-export class UpdateContractDto extends PartialType(CreateContractDto) {}
+export class UpdateContractDto extends PartialType(CreateContractDto) {
+  @IsNumber()
+  id: number;
+}

@@ -8,9 +8,12 @@ export class DeptEntity implements Dept {
   email: string;
   parentId: number | null;
   remark: string | null;
-  children: DeptEntity[];
   createBy: string;
   updateBy: string | null;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export class DeptTreeEntity extends DeptEntity {
+  children: DeptEntity[];
 }

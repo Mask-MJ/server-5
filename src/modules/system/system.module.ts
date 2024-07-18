@@ -26,6 +26,7 @@ import { UnitService } from './unit/unit.service';
 import { UnitController } from './unit/unit.controller';
 import { RuleService } from './rule/rule.service';
 import { RuleController } from './rule/rule.controller';
+import { RedisStorage } from 'src/common/redis/redis.storage';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { RuleController } from './rule/rule.controller';
     PostService,
     UnitService,
     RuleService,
+    RedisStorage,
   ],
   exports: [UserService],
 })

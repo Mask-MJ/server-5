@@ -70,6 +70,36 @@ export class UserController {
     return this.userService.changePassword(id, password, oldPassword);
   }
 
+  @Post('uploadAvatar')
+  @ApiOperation({ summary: '上传用户头像' })
+  @UseInterceptors(FileInterceptor('file'))
+  upload(
+    @ActiveUser() user: ActiveUserData,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 2 }),
+          new FileTypeValidator({ fileType: /image\/(png|jpg|jpeg)/ }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+    return this.userService.uploadAvatar(user, file);
+  }
+
+  @Get('insertRedisData')
+  @ApiOperation({ summary: '插入 Redis 数据' })
+  insertRedisData() {
+    return this.userService.insertRedisData();
+  }
+
+  @Get('saveRedisDataToDB')
+  @ApiOperation({ summary: '保持 Redis 数据到数据库' })
+  saveRedisDataToDB() {
+    return this.userService.saveRedisDataToDB();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: '获取用户信息' })
   @ApiOkResponse({ type: UserEntity })
@@ -92,23 +122,5 @@ export class UserController {
     @Request() request: ExpRequest,
   ) {
     return this.userService.remove(user, id, request);
-  }
-
-  @Post('uploadAvatar')
-  @ApiOperation({ summary: '上传用户头像' })
-  @UseInterceptors(FileInterceptor('file'))
-  upload(
-    @ActiveUser() user: ActiveUserData,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 2 }),
-          new FileTypeValidator({ fileType: /image\/(png|jpg|jpeg)/ }),
-        ],
-      }),
-    )
-    file: Express.Multer.File,
-  ) {
-    return this.userService.uploadAvatar(user, file);
   }
 }

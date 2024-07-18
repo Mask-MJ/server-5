@@ -57,4 +57,7 @@ export class QueryDeptDto extends PartialType(
   IntersectionType(PickType(CreateDeptDto, ['name']), TimeDto),
 ) {}
 
-export class UpdateDeptDto extends PartialType(CreateDeptDto) {}
+export class UpdateDeptDto extends PartialType(CreateDeptDto) {
+  @IsNumber()
+  id: number;
+}

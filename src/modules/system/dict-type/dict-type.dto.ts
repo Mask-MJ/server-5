@@ -1,5 +1,5 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsNumber } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 
 export class CreateDictTypeDto {
@@ -29,4 +29,7 @@ export class QueryDictTypeDto extends PartialType(
   IntersectionType(PickType(CreateDictTypeDto, ['name', 'value']), BaseDto),
 ) {}
 
-export class UpdateDictTypeDto extends PartialType(CreateDictTypeDto) {}
+export class UpdateDictTypeDto extends PartialType(CreateDictTypeDto) {
+  @IsNumber()
+  id: number;
+}

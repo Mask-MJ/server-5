@@ -13,5 +13,8 @@ export class MenuEntity implements Menu {
   updateBy: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export class MenuTreeEntity extends MenuEntity {
   children: MenuEntity[];
 }

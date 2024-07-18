@@ -1,5 +1,6 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import { User } from '@prisma/client';
+import { RoleEntity } from '../role/role.entity';
 
 export class UserEntity implements User {
   constructor(partial: Partial<UserEntity>) {
@@ -14,6 +15,7 @@ export class UserEntity implements User {
   avatar: string;
   email: string;
   phoneNumber: string;
+  role: RoleEntity[];
   sex: number;
   status: boolean;
   createBy: string;

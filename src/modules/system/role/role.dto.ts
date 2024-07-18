@@ -49,4 +49,7 @@ export class QueryRoleDto extends PartialType(
   IntersectionType(PickType(CreateRoleDto, ['name', 'value']), BaseDto),
 ) {}
 
-export class UpdateRoleDto extends PartialType(CreateRoleDto) {}
+export class UpdateRoleDto extends PartialType(CreateRoleDto) {
+  @IsNumber()
+  id: number;
+}

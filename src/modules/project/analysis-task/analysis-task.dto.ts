@@ -60,4 +60,7 @@ export class QueryAnalysisTaskDto extends PartialType(
   ),
 ) {}
 
-export class UpdateAnalysisTaskDto extends PartialType(CreateAnalysisTaskDto) {}
+export class UpdateAnalysisTaskDto extends PartialType(CreateAnalysisTaskDto) {
+  @IsNumber()
+  id: number;
+}

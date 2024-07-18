@@ -21,7 +21,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { FactoryEntity } from './factory.entity';
+import { FactoryEntity, FactoryTreeEntity } from './factory.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 
@@ -40,10 +40,9 @@ export class FactoryController {
   ) {
     return this.factoryService.create(user, createFactoryDto);
   }
-
   @Get()
   @ApiOperation({ summary: '获取工厂列表' })
-  @ApiOkResponse({ type: FactoryEntity, isArray: true })
+  @ApiOkResponse({ type: FactoryTreeEntity, isArray: true })
   findAll(
     @ActiveUser() user: ActiveUserData,
     @Query() queryFactoryDto: QueryFactoryDto,

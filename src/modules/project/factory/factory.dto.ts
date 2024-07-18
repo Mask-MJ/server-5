@@ -62,4 +62,7 @@ export class QueryFactoryDto extends PartialType(
   IntersectionType(PickType(CreateFactoryDto, ['name']), TimeDto),
 ) {}
 
-export class UpdateFactoryDto extends PartialType(CreateFactoryDto) {}
+export class UpdateFactoryDto extends PartialType(CreateFactoryDto) {
+  @IsNumber()
+  id: number;
+}

@@ -1,16 +1,16 @@
 import { PartialType, IntersectionType, PickType } from '@nestjs/swagger';
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsNumber } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 
 export class CreateUnitDto {
   /**
-   * 权限名称
+   * 单位名称
    * @example '管理员'
    */
   @IsString()
   name: string;
   /**
-   * 权限值
+   * 单位值
    * @example 'admin'
    */
   @IsString()
@@ -28,4 +28,7 @@ export class QueryUnitDto extends PartialType(
   IntersectionType(PickType(CreateUnitDto, ['name', 'value']), BaseDto),
 ) {}
 
-export class UpdateUnitDto extends PartialType(CreateUnitDto) {}
+export class UpdateUnitDto extends PartialType(CreateUnitDto) {
+  @IsNumber()
+  id: number;
+}

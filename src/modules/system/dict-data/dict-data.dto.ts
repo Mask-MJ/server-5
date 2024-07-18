@@ -67,4 +67,7 @@ export class QueryDictDataDto extends PartialType(
   ),
 ) {}
 
-export class UpdateDictDataDto extends PartialType(CreateDictDataDto) {}
+export class UpdateDictDataDto extends PartialType(CreateDictDataDto) {
+  @IsNumber()
+  id: number;
+}

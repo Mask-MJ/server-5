@@ -17,7 +17,7 @@ import {
   ApiOperation,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { DeptEntity } from './dept.entity';
+import { DeptEntity, DeptTreeEntity } from './dept.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 
@@ -39,7 +39,7 @@ export class DeptController {
 
   @Get()
   @ApiOperation({ summary: '获取部门列表' })
-  @ApiOkResponse({ type: DeptEntity, isArray: true })
+  @ApiOkResponse({ type: DeptTreeEntity, isArray: true })
   findAll(@Query() queryDeptDto: QueryDeptDto) {
     return this.deptService.findAll(queryDeptDto);
   }

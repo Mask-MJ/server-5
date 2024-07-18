@@ -14,3 +14,7 @@ export class FactoryEntity implements Factory {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export class FactoryTreeEntity extends FactoryEntity {
+  children: FactoryEntity[];
+}

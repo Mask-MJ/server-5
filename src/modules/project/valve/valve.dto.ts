@@ -299,7 +299,10 @@ export class QueryValveDto extends PartialType(
   ),
 ) {}
 
-export class UpdateValveDto extends PartialType(CreateValveDto) {}
+export class UpdateValveDto extends PartialType(CreateValveDto) {
+  @IsNumber()
+  id: number;
+}
 export class ValveDto {
   @IsNumber()
   @Type(() => Number)

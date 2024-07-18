@@ -1,4 +1,5 @@
 import { Contract } from '@prisma/client';
+import { FactoryEntity } from 'src/modules/project/factory/factory.entity';
 export class ContractEntity implements Contract {
   id: number;
   name: string;
@@ -10,6 +11,7 @@ export class ContractEntity implements Contract {
   saler: string;
   remark: string;
   factoryId: number;
+  factory: FactoryEntity;
   createBy: string;
   updateBy: string;
   createdAt: Date;

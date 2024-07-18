@@ -146,6 +146,28 @@ export class RedisStorage
     return await this.redisClient.del(keys);
   }
   /**
+   * 存储列表
+   * @param key
+   * @param values
+   */
+  async setList(key: string, values: string[]) {
+    return await this.redisClient.rpush(key, ...values);
+  }
+  /**
+   * 获取列表
+   * @param key
+   */
+  async getList(key: string) {
+    return await this.redisClient.lrange(key, 0, -1);
+  }
+  /**
+   * 获取所有的 key
+   * @param key
+   */
+  async getkeys(key: string) {
+    return await this.redisClient.keys(key);
+  }
+  /**
    * 清除全部
    * @param key
    */

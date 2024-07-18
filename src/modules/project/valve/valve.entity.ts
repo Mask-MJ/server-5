@@ -4,11 +4,15 @@ import {
   ValveHistoryData,
   ValveHistoryDataList,
 } from '@prisma/client';
+import { DeviceEntity } from '../device/device.entity';
+import { FactoryEntity } from '../factory/factory.entity';
 
 export class ValveEntity implements Valve {
   id: number;
   /// 阀门位号
   tag: string;
+  device: DeviceEntity;
+  factory: FactoryEntity;
   /// 装置
   unit: string;
   /// 介质
