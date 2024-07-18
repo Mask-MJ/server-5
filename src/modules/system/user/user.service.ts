@@ -230,8 +230,34 @@ export class UserService {
   // 定时任务, 把 redis 中的数据存储到数据库中
   async saveRedisDataToDB() {
     // 获取所有的 key
+    const startTime = new Date();
+    // const keys = await this.redisStorage.getkeys(`key-*`);
+    // const values = await this.redisStorage.getList(key);
     const keys = await this.redisStorage.getkeys(`key-*`);
-    console.log('keys', keys);
+    // const data = keys.map(async (key) => {
+    //   const value = await this.redisStorage.getList(key);
+    //   return { [key]: value.join(',') };
+    // });
+    // console.log('data', data);
+    const data: { key: string; value: string }[] = [];
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const value = await this.redisStorage.getList(key);
+      data.push({ key, value: value.join(',') });
+    }
+    await this.prismaService.client.redisData.createMany({
+      data,
+    });
+    // const data = keys.map((key) => {
+    //   return { key, value: values };
+    // });
+
+    // this.prismaService.client.redisData.createMany({
+    //   // data: Array.from({ length: 10000 }).map((_, index) => ({
+    //   //   key: `key-${index}`,
+    //   //   value: 'a,b,c',
+    //   // })),
+    // });
     // for (let i = 0; i < keys.length; i++) {
     //   const key = keys[i];
     //   const values = await this.redisStorage.getList(key);
@@ -239,12 +265,13 @@ export class UserService {
     //   await this.prismaService.client.redisData.create({
     //     data: {
     //       key,
-    //       values,
+    //       value: values.join(','),
     //     },
     //   });
     //   // 删除 redis 中的数据
-    //   await this.redisStorage.del(key);
+    //   // await this.redisStorage.delString(key);
     // }
-    return '存储成功';
+    console.log('结束时间耗时', new Date().getTime() - startTime.getTime());
+    return '插入成功';
   }
 }

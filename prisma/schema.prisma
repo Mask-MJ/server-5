@@ -555,3 +555,11 @@ model Rule {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model RedisData {
+  id        Int      @id @default(autoincrement())
+  key       String
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
