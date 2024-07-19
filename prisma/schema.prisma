@@ -446,6 +446,7 @@ model Valve {
   valveHistoryDataList  ValveHistoryDataList[]
 }
 
+/// 阀门运行数据表
 model ValveData {
   id      Int      @id @default(autoincrement())
   /// 状态名
