@@ -182,7 +182,7 @@ export class UserService {
     // this.redisStorage.flushAll();
     // 开始时间
     const startTime = new Date();
-    for (let i = 0; i < 10000; i++) {
+    for (let i = 0; i < 100000; i++) {
       await this.redisStorage.setList(`key-${i}`, [
         'a',
         'b',
@@ -231,14 +231,7 @@ export class UserService {
   async saveRedisDataToDB() {
     // 获取所有的 key
     const startTime = new Date();
-    // const keys = await this.redisStorage.getkeys(`key-*`);
-    // const values = await this.redisStorage.getList(key);
     const keys = await this.redisStorage.getkeys(`key-*`);
-    // const data = keys.map(async (key) => {
-    //   const value = await this.redisStorage.getList(key);
-    //   return { [key]: value.join(',') };
-    // });
-    // console.log('data', data);
     const data: { key: string; value: string }[] = [];
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
@@ -248,29 +241,10 @@ export class UserService {
     await this.prismaService.client.redisData.createMany({
       data,
     });
-    // const data = keys.map((key) => {
-    //   return { key, value: values };
-    // });
 
-    // this.prismaService.client.redisData.createMany({
-    //   // data: Array.from({ length: 10000 }).map((_, index) => ({
-    //   //   key: `key-${index}`,
-    //   //   value: 'a,b,c',
-    //   // })),
-    // });
-    // for (let i = 0; i < keys.length; i++) {
-    //   const key = keys[i];
-    //   const values = await this.redisStorage.getList(key);
-    //   // 存储到数据库中
-    //   await this.prismaService.client.redisData.create({
-    //     data: {
-    //       key,
-    //       value: values.join(','),
-    //     },
-    //   });
-    //   // 删除 redis 中的数据
-    //   // await this.redisStorage.delString(key);
-    // }
+    // 插入到数据库成功后清空 redis 中的数据
+    await this.redisStorage.flushAll();
+
     console.log('结束时间耗时', new Date().getTime() - startTime.getTime());
     return '插入成功';
   }
