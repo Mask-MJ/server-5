@@ -87,7 +87,7 @@ export class ValveController {
 
   @Get(':id')
   @ApiOperation({ summary: '获取阀门信息' })
-  @ApiOkResponse({ type: ValveRunInfoEntity })
+  @ApiOkResponse({ type: ValveEntity })
   findOne(@Param('id') id: number) {
     return this.valveService.findOne(id);
   }
