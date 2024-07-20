@@ -301,7 +301,7 @@ export class AnalysisTaskService {
   }
 
   async result(id: number) {
-    return this.prismaService.client.analysisTaskResult.findFirstOrThrow({
+    return this.prismaService.client.analysisTaskResult.findMany({
       where: { analysisTaskId: id },
     });
   }
