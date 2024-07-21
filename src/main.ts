@@ -39,6 +39,7 @@ async function bootstrap() {
 
   // web 安全，防常见漏洞
   // app.use(helmet());
+
   const swaggerOptions = new DocumentBuilder()
     .setTitle(`${NAME} 接口文档`)
     .setDescription(`The ${NAME} API escription`)
