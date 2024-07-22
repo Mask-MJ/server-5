@@ -58,6 +58,14 @@ export class CreateDictDataDto {
   @IsNumber()
   @IsOptional()
   parentId?: number;
+
+  /**
+   * treeId
+   * @example 1
+   */
+  @IsNumber()
+  @IsOptional()
+  treeId?: number;
 }
 
 export class QueryDictDataDto extends PartialType(

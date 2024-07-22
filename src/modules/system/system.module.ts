@@ -27,6 +27,8 @@ import { UnitController } from './unit/unit.controller';
 import { RuleService } from './rule/rule.service';
 import { RuleController } from './rule/rule.controller';
 import { RedisStorage } from 'src/common/redis/redis.storage';
+import { DictDataTreeController } from './dict-data-tree/dict-data-tree.controller';
+import { DictDataTreeService } from './dict-data-tree/dict-data-tree.service';
 
 @Module({
   imports: [
@@ -47,6 +49,7 @@ import { RedisStorage } from 'src/common/redis/redis.storage';
     PostController,
     UnitController,
     RuleController,
+    DictDataTreeController,
   ],
   providers: [
     { provide: HashingService, useClass: BcryptService },
@@ -62,6 +65,7 @@ import { RedisStorage } from 'src/common/redis/redis.storage';
     UnitService,
     RuleService,
     RedisStorage,
+    DictDataTreeService,
   ],
   exports: [UserService],
 })

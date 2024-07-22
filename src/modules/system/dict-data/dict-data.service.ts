@@ -31,6 +31,7 @@ export class DictDataService {
           dictTypeId,
         },
         orderBy: { sort: 'asc' },
+        include: { tree: true },
       })
       .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };
@@ -45,6 +46,7 @@ export class DictDataService {
     user: ActiveUserData,
     updateDictDataDto: UpdateDictDataDto,
   ) {
+    console.log('updateDictDataDto', updateDictDataDto);
     return this.prismaService.client.dictData.update({
       where: { id },
       data: { ...updateDictDataDto, updateBy: user.account },
