@@ -388,6 +388,21 @@ async function main() {
               ],
             },
           },
+          {
+            name: 'PDF树管理',
+            icon: 'i-ant-design:control-outlined',
+            sort: 9,
+            path: '/system/dictDataTree',
+            createBy: 'admin',
+            permission: {
+              create: [
+                { name: '创建', value: 'system:dictDataTree:create' },
+                { name: '查询', value: 'system:dictDataTree:query' },
+                { name: '修改', value: 'system:dictDataTree:update' },
+                { name: '删除', value: 'system:dictDataTree:delete' },
+              ],
+            },
+          },
         ],
       },
     },
