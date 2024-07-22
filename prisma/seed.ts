@@ -451,6 +451,65 @@ async function main() {
       },
     },
   });
+  // pdf层级树
+  await prisma.dictDataTree.create({
+    data: {
+      name: 'hard',
+      value: 'hard',
+      children: {
+        create: [
+          { name: '仪表组态-基本', value: 'Instrument Configuration-Basic' },
+          { name: '仪表组态-报警', value: 'Instrument Configuration-Alerts' },
+          {
+            name: '仪表组态-报警(控制)',
+            value: 'Instrument Configuration-Alerts(cont.)',
+          },
+          {
+            name: '仪表组态-规格表',
+            value: 'Instrument Configuration-Spec Sheet',
+          },
+          { name: '状态监视器', value: 'Status Monitor' },
+          {
+            name: '供气压力性能诊断',
+            value: 'Supply Pressure Performance Diagnostic',
+          },
+          {
+            name: '行程偏差性能诊断',
+            value: 'Travel Deviation Performance Diagnostic',
+          },
+          {
+            name: 'I/P和放大器完整性性能诊断',
+            value: 'I/P and Relay Integrity Performance Diagnostic',
+          },
+          {
+            name: '放大器调整性能诊断',
+            value: 'Relay Adjustment Performance Diagnostic',
+          },
+          {
+            name: '空气质量流量性能诊断',
+            value: 'Air Mass Flow Performance Diagnostic',
+          },
+          {
+            name: '阀门摩擦力性能诊断',
+            value: 'Valve Friction Performance Diagnostic',
+          },
+          { name: '完全扫描', value: 'Total Scan' },
+          {
+            name: '完全扫描-特性曲线分析器设置',
+            value: 'Total Scan-Signature Analyzer Settings',
+          },
+          { name: '完全扫描-注释', value: 'Total Scan-Notes' },
+          { name: '完全扫描-规格表', value: 'Total Scan-Spec Sheet' },
+          { name: '阶跃响应', value: 'Step Response' },
+          {
+            name: '阶跃响应-已分析的数据',
+            value: 'Step Response-Analyzed Data',
+          },
+          { name: '阶跃响应-注释', value: 'Step Response-Notes' },
+        ],
+      },
+    },
+  });
   /// create dictType
   await prisma.dictType.create({
     data: {
