@@ -520,7 +520,7 @@ model AnalysisTaskResult {
   id             Int          @id @default(autoincrement())
   /// 任务id
   analysisTaskId Int          @unique
-  analysisTask   AnalysisTask @relation(fields: [analysisTaskId], references: [id])
+  analysisTask   AnalysisTask @relation(fields: [analysisTaskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   /// 阀门位号
   tag            String
   /// 读取时间

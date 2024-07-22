@@ -102,6 +102,7 @@ async function main() {
       },
     },
   });
+  // 业务功能
   await prisma.menu.create({
     data: {
       name: '业务功能',
@@ -254,6 +255,7 @@ async function main() {
       },
     },
   });
+  // 系统管理
   await prisma.menu.create({
     data: {
       name: '系统管理',
@@ -390,6 +392,7 @@ async function main() {
       },
     },
   });
+  // 系统监控
   await prisma.menu.create({
     data: {
       name: '系统监控',
@@ -477,6 +480,71 @@ async function main() {
       },
     },
   });
+  await prisma.dictType.create({
+    data: {
+      name: 'hard',
+      value: 'hard',
+      createBy: 'admin',
+      dictData: {
+        create: [
+          {
+            name: 'HATR 标签',
+            value: 'HART Tag',
+            createBy: 'admin',
+            remark: 'Hart|仪表组态-基本|设备标识|标签',
+          },
+          {
+            name: '行程',
+            value: 'Travel',
+            createBy: 'admin',
+            remark: 'hart|状态监视器|监视器',
+          },
+          {
+            name: '循环计数',
+            value: 'Cycle Count',
+            createBy: 'admin',
+            remark: 'hart|状态监视器|监视器',
+          },
+          {
+            name: '行程偏差',
+            value: 'Travel Deviation',
+            createBy: 'admin',
+            remark: 'hart|状态监视器|监视器',
+          },
+          {
+            name: '平均动态误差',
+            value: 'Avg. Dynamic Error',
+            createBy: 'admin',
+            remark: 'hart|完全扫描|已分析的数据',
+          },
+          {
+            name: '平均扭矩',
+            value: 'Average Torque',
+            createBy: 'admin',
+            remark: 'hart|完全扫描|已分析的数据',
+          },
+          {
+            name: '额定行程',
+            value: 'Rated Travel',
+            createBy: 'admin',
+            remark: 'hart|完全扫描|阀门',
+          },
+          {
+            name: '反馈连接方式',
+            value: 'Feedback Connection',
+            createBy: 'admin',
+            remark: 'hart|阶跃响应|组态',
+          },
+          {
+            name: '行程高',
+            value: 'Travel High',
+            createBy: 'admin',
+            remark: 'hart|状态监视器|报警',
+          },
+        ],
+      },
+    },
+  });
   // create factory
   await prisma.factory.create({
     data: {
@@ -555,20 +623,35 @@ async function main() {
 
   await prisma.analysisTask.create({
     data: {
-      name: '分析任务1',
+      name: '分析任务1-hard',
       createBy: 'admin',
-      dictTypeId: 1,
+      dictTypeId: 3,
       factoryId: 1,
+      ruleId: 1,
       pdf: {
         create: [
           {
-            name: 'pdf1',
-            url: 'http://xxx.com/xxx.pdf',
+            name: '1721111667600-FV101_3_20240307_1437_REPORT 中文.pdf',
+            url: 'http://200.200.200.18:9000/pdf/1721111667600-FV101_3_20240307_1437_REPORT%20%E4%B8%AD%E6%96%87.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=2xxSbNXQ3ayClsBEH1hZ%2F20240716%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240716T063427Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=78f813a62c350669d24f2fde35210e49a00eb96f5a56412f019c5a1c54e28f3a',
             createBy: 'admin',
           },
         ],
       },
     },
+  });
+  await prisma.rule.createMany({
+    data: [
+      {
+        name: 'Emily Test 0715',
+        url: 'http://200.200.200.18:9000/rule/1721017853349-HART_Online%281%29.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=2xxSbNXQ3ayClsBEH1hZ%2F20240715%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240715T043053Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=9e2058516768e0b1a37f900ca20a3fa0b28dcf0783c7463c94124dd1e2f49bc1',
+        fileName: '1721017853349-HART_Online(1).xlsx',
+      },
+      {
+        name: 'hart online',
+        url: 'http://200.200.200.18:9000/rule/1721251459807-HART_Online.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=2xxSbNXQ3ayClsBEH1hZ%2F20240717%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240717T212419Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=e9b3daee867da75b399fde74edc8b2325765999826ff327cedfd6c65473f48f4',
+        fileName: '1721251459807-HART_Online.xlsx',
+      },
+    ],
   });
 
   console.log('注入数据成功');
