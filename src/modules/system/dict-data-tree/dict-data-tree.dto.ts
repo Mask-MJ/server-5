@@ -23,8 +23,9 @@ export class CreateDictDataTreeDto {
    * @example 1
    */
   @IsNumber()
+  @IsOptional()
   @Type(() => Number)
-  dictDataId: number;
+  dictDataId?: number;
 
   /**
    * 备注
