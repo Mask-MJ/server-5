@@ -525,6 +525,69 @@ async function main() {
       },
     },
   });
+  // pdf层级树
+  await prisma.dictDataTree.create({
+    data: {
+      name: 'ff',
+      value: 'ff',
+      children: {
+        create: [
+          {
+            name: '仪表组态-基本，转换块',
+            value: 'Instrument Configuration-Basic, Transducer',
+          },
+          {
+            name: '仪表组态-报警，转换块',
+            value: 'Instrument Configuration-Alerts, Transducer',
+          },
+          {
+            name: ' 仪表组态-报警，转换块(控制)',
+            value: 'Instrument Configuration-Alerts, Transducer(cont.)',
+          },
+          {
+            name: '仪表组态-规格表，转换块',
+            value: ' Instrument Configuration-Spec Sheet, Transducer',
+          },
+          {
+            name: '仪表组态-资源块',
+            value: 'Instrument Configuration-Resource Block',
+          },
+          {
+            name: '状态监视器',
+            value: ' Status Monitor',
+          },
+          {
+            name: '阶跃响应',
+            value: 'Step Response',
+          },
+          {
+            name: '阶跃响应-已分析的数据',
+            value: 'Step Response-Analyzed Data',
+          },
+          {
+            name: '阶跃响应-注释',
+            value: 'Step Response-Notes',
+          },
+          {
+            name: '完全扫描',
+            value: 'Total Scan',
+          },
+          {
+            name: ' 完全扫描-注释',
+            value: 'Total Scan-Notes',
+          },
+          {
+            name: '完全扫描-规格表',
+            value: 'Total Scan-Spec Sheet',
+          },
+          {
+            name: '阀门摩擦力性能诊断',
+            value: 'Valve Friction Performance Diagnostic',
+          },
+        ],
+      },
+    },
+  });
   /// create dictType
   await prisma.dictType.create({
     data: {
