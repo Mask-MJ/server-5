@@ -33,6 +33,7 @@ import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request as ExpRequest } from 'express';
+import { uploadDto } from 'src/common/dto/base.dto';
 
 @ApiTags('用户管理')
 @ApiBearerAuth('bearer')
@@ -84,8 +85,9 @@ export class UserController {
       }),
     )
     file: Express.Multer.File,
+    @Body() body: uploadDto,
   ) {
-    return this.userService.uploadAvatar(user, file);
+    return this.userService.uploadAvatar(user, file, body);
   }
 
   // @Get('insertRedisData')

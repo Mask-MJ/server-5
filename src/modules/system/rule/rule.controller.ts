@@ -23,6 +23,7 @@ import { RuleEntity } from './rule.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { uploadDto } from 'src/common/dto/base.dto';
 
 @ApiTags('规则管理')
 @ApiBearerAuth('bearer')
@@ -50,7 +51,7 @@ export class RuleController {
   upload(
     @ActiveUser() user: ActiveUserData,
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: any,
+    @Body() body: uploadDto,
   ) {
     return this.ruleService.upload(user, file, body);
   }

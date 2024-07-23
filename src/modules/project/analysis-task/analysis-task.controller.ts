@@ -30,6 +30,7 @@ import {
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { uploadDto } from 'src/common/dto/base.dto';
 
 @ApiTags('分析任务')
 @ApiBearerAuth('bearer')
@@ -67,7 +68,7 @@ export class AnalysisTaskController {
   uploadPdf(
     @ActiveUser() user: ActiveUserData,
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: any,
+    @Body() body: uploadDto,
   ) {
     return this.analysisTaskService.uploadPdf(user, file, body);
   }

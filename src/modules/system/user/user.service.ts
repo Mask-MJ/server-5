@@ -10,6 +10,7 @@ import { Request } from 'express';
 import IP2Region from 'ip2region';
 import { ConfigService } from '@nestjs/config';
 import { RedisStorage } from 'src/common/redis/redis.storage';
+import { uploadDto } from 'src/common/dto/base.dto';
 
 @Injectable()
 export class UserService {
@@ -168,7 +169,12 @@ export class UserService {
     return deleteUser;
   }
 
-  async uploadAvatar(user: ActiveUserData, file: Express.Multer.File) {
+  async uploadAvatar(
+    user: ActiveUserData,
+    file: Express.Multer.File,
+    body: uploadDto,
+  ) {
+    console.log(body.fileName);
     await this.minioClient.uploadFile('avatar', file.originalname, file.buffer);
     const url = await this.minioClient.getUrl('avatar', file.originalname);
     return this.prismaService.client.user.update({

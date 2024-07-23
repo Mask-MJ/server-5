@@ -15,6 +15,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { firstValueFrom } from 'rxjs';
+import { uploadDto } from 'src/common/dto/base.dto';
 
 dayjs.extend(customParseFormat);
 @Injectable()
@@ -306,7 +307,11 @@ export class AnalysisTaskService {
     });
   }
 
-  async uploadPdf(user: ActiveUserData, file: Express.Multer.File, body: any) {
+  async uploadPdf(
+    user: ActiveUserData,
+    file: Express.Multer.File,
+    body: uploadDto,
+  ) {
     // 加上时间戳，避免文件名重复
     const fileName = `${Date.now()}-${body.fileName}`;
     await this.minioClient.uploadFile('pdf', fileName, file.buffer);

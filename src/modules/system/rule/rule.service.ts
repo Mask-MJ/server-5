@@ -4,6 +4,7 @@ import { CustomPrismaService } from 'nestjs-prisma';
 import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { MinioService } from 'src/common/minio/minio.service';
+import { uploadDto } from 'src/common/dto/base.dto';
 
 @Injectable()
 export class RuleService {
@@ -34,7 +35,11 @@ export class RuleService {
     return this.prismaService.client.rule.findUnique({ where: { id } });
   }
 
-  async upload(user: ActiveUserData, file: Express.Multer.File, body: any) {
+  async upload(
+    user: ActiveUserData,
+    file: Express.Multer.File,
+    body: uploadDto,
+  ) {
     // 加上时间戳，避免文件名重复
     const fileName = `${Date.now()}-${body.fileName}`;
     await this.minioClient.uploadFile('rule', fileName, file.buffer);

@@ -9,15 +9,33 @@ import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { FormatResponse } from './common/interceptor/response.interceptor';
-// import {
-//   utilities as nestWinstonModuleUtilities,
-//   WinstonModule,
-// } from 'nest-winston';
-// import * as winston from 'winston';
-// import 'winston-daily-rotate-file';
+import {
+  utilities as nestWinstonModuleUtilities,
+  WinstonModule,
+} from 'nest-winston';
+import * as winston from 'winston';
+import 'winston-daily-rotate-file';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    // 日志
+    logger: WinstonModule.createLogger({
+      transports: [
+        new winston.transports.DailyRotateFile({
+          level: 'info',
+          dirname: 'logs',
+          filename: '%DATE%.log',
+          datePattern: 'YYYY-MM-DD-HH-mm',
+        }),
+        new winston.transports.Console({
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            nestWinstonModuleUtilities.format.nestLike(),
+          ),
+        }),
+      ],
+    }),
+  });
   // 获取环境变量
   const config = app.get(ConfigService);
   const PREFIX = config.get<string>('PREFIX');

@@ -1,5 +1,5 @@
 import { Transform, Type } from 'class-transformer';
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 import { IntersectionType } from '@nestjs/swagger';
 import dayjs from 'dayjs';
 
@@ -40,3 +40,9 @@ export class TimeDto {
 }
 
 export class BaseDto extends IntersectionType(PaginateDto, TimeDto) {}
+
+export class uploadDto {
+  @IsString()
+  fileName: string;
+  file: Express.Multer.File;
+}
