@@ -13,7 +13,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
-    ThrottlerModule.forRoot([{ ttl: 30000, limit: 10 }]),
+    ThrottlerModule.forRoot([{ ttl: 10000, limit: 10 }]),
     ConfigModule.forRoot({ validate, isGlobal: true }),
     RouterModule.register([
       { path: 'project', module: ProjectModule },
