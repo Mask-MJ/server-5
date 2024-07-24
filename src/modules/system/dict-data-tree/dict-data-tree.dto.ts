@@ -40,6 +40,7 @@ export class CreateDictDataTreeDto {
    */
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   parentId?: number;
 }
 

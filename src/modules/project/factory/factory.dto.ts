@@ -54,6 +54,7 @@ export class CreateFactoryDto {
    * @example 1
    */
   @IsNumber()
+  @Type(() => Number)
   @IsOptional()
   parentId?: number;
 }

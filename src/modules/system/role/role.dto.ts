@@ -1,4 +1,5 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 
@@ -20,6 +21,7 @@ export class CreateRoleDto {
    * @example 0
    */
   @IsNumber()
+  @Type(() => Number)
   sort?: number = 0;
   /**
    * 备注

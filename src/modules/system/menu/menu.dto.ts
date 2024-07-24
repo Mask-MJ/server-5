@@ -47,6 +47,7 @@ export class CreateMenuDto {
    * @example 0
    */
   @IsNumber()
+  @Type(() => Number)
   sort?: number = 0;
 
   /**
@@ -55,6 +56,7 @@ export class CreateMenuDto {
    */
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   parentId?: number;
 }
 

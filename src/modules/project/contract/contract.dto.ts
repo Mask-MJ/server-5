@@ -24,6 +24,7 @@ export class CreateContractDto {
    * @example 1000
    */
   @IsNumber()
+  @Type(() => Number)
   valveCount: number;
 
   /**
@@ -67,11 +68,15 @@ export class CreateContractDto {
    * @example 1
    */
   @IsNumber()
+  @Type(() => Number)
   factoryId: number;
 }
 
 export class QueryContractDto extends PartialType(
-  IntersectionType(PickType(CreateContractDto, ['name', 'customer']), BaseDto),
+  IntersectionType(
+    PickType(CreateContractDto, ['name', 'customer', 'factoryId']),
+    BaseDto,
+  ),
 ) {}
 
 export class UpdateContractDto extends PartialType(CreateContractDto) {

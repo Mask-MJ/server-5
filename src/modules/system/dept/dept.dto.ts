@@ -1,4 +1,5 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { TimeDto } from 'src/common/dto/base.dto';
 
@@ -14,6 +15,7 @@ export class CreateDeptDto {
    * @example 1
    */
   @IsNumber()
+  @Type(() => Number)
   @IsOptional()
   sort?: number;
   /**

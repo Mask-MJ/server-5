@@ -22,10 +22,14 @@ export class ContractService {
   }
 
   async findAll(queryContractDto: QueryContractDto) {
-    const { name, customer, page, pageSize } = queryContractDto;
+    const { name, customer, factoryId, page, pageSize } = queryContractDto;
     const [rows, meta] = await this.prismaService.client.contract
       .paginate({
-        where: { name: { contains: name }, customer: { contains: customer } },
+        where: {
+          name: { contains: name },
+          customer: { contains: customer },
+          factoryId,
+        },
         include: { factory: true },
       })
       .withPages({ page, limit: pageSize, includePageCount: true });

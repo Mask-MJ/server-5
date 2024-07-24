@@ -218,6 +218,7 @@ export class CreateValveDto {
    * @example 1
    */
   @IsNumber()
+  @Type(() => Number)
   @IsOptional()
   accessoryQuantity?: number;
 

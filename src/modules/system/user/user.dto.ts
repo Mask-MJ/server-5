@@ -93,6 +93,7 @@ export class CreateUserDto {
    */
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   postId?: number;
 
   /**
@@ -101,6 +102,7 @@ export class CreateUserDto {
    */
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   deptId?: number;
 
   /**

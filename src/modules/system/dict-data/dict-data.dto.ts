@@ -57,6 +57,7 @@ export class CreateDictDataDto {
    */
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   parentId?: number;
 
   /**
@@ -65,6 +66,7 @@ export class CreateDictDataDto {
    */
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   treeId?: number;
 }
 

@@ -1,4 +1,5 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { IsString, IsNumber, IsOptional } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 export class CreatePostDto {
@@ -19,6 +20,7 @@ export class CreatePostDto {
    * @example 1
    */
   @IsNumber()
+  @Type(() => Number)
   @IsOptional()
   sort?: number;
   /**

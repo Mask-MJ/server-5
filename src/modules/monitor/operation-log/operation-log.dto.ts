@@ -1,4 +1,5 @@
 import { PartialType, IntersectionType, PickType } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { IsNumber, IsString } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 
@@ -10,6 +11,7 @@ export class CreateOperationLogDto {
   account: string;
 
   @IsNumber()
+  @Type(() => Number)
   businessType: number;
 
   @IsString()
