@@ -23,7 +23,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Node.js dependencies
-        run: pnpm
+        run: npm i -g pnpm
 
       - run: pnpm install
       - run: pnpm run lint
