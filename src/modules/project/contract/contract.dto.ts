@@ -17,6 +17,7 @@ export class CreateContractDto {
    */
   @Type(() => Number)
   @Transform(({ value }) => dayjs(value).format(), { toClassOnly: true })
+  @IsOptional()
   contractTime: Date;
 
   /**
