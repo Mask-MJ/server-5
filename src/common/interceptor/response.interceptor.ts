@@ -45,6 +45,7 @@ function changeTime(data: any) {
         data[key] = data[key].map((item: any) => changeTime(item));
       }
       if (data[key] instanceof Date) {
+        console.log('key', key);
         data[key] = dayjs(data[key]).format('YYYY-MM-DD HH:mm:ss');
       }
     }
