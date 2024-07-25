@@ -13,6 +13,7 @@ import { RedisStorage } from 'src/common/redis/redis.storage';
 import { uploadDto } from 'src/common/dto/base.dto';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
+// import { createWorker } from 'tesseract.js';
 
 @Injectable()
 export class UserService {
@@ -223,7 +224,10 @@ export class UserService {
   }
 
   async setRedisData(body: any) {
-    await this.userQueue.add('transcode', body);
+    await this.userQueue.add('user', body, {
+      removeOnComplete: 10,
+      removeOnFail: 5000,
+    });
     return '插入成功';
   }
 }

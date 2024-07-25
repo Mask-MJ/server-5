@@ -13,10 +13,6 @@ export class UserConsumer extends WorkerHost {
   }
   async process(job: Job<any, any, string>): Promise<any> {
     console.log('Processing job', job.id, job.name, job.data);
-    this.logger.debug('Start transcoding...');
-    this.logger.debug(job.name);
-    this.logger.debug(job.data);
-    this.logger.debug('Transcoding completed');
     return {};
   }
 }
