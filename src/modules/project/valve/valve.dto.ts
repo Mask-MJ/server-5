@@ -48,9 +48,10 @@ export class CreateValveDto {
    * 投用时间
    * @example 1714752000000
    */
-  @Type(() => Number)
   @IsOptional()
-  @Transform(({ value }) => dayjs(value).format(), { toClassOnly: true })
+  @Transform(({ value }) => (value ? dayjs(value).format() : null), {
+    toClassOnly: true,
+  })
   since?: Date;
 
   /**
