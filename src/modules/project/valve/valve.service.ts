@@ -75,9 +75,6 @@ export class ValveService {
   }
 
   async findScoreData(id: number) {
-    const valve = await this.prismaService.client.valve.findUnique({
-      where: { id },
-    });
     const valveScore = await firstValueFrom(
       this.httpService.post('http://localhost:5050/api/score', {
         valveid: id,
