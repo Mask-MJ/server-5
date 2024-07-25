@@ -29,7 +29,8 @@ import { RuleController } from './rule/rule.controller';
 import { RedisStorage } from 'src/common/redis/redis.storage';
 import { DictDataTreeController } from './dict-data-tree/dict-data-tree.controller';
 import { DictDataTreeService } from './dict-data-tree/dict-data-tree.service';
-
+import { BullModule } from '@nestjs/bullmq';
+import { UserConsumer } from './user/user.processor';
 @Module({
   imports: [
     JwtModule.registerAsync(jwtConfig.asProvider()),
@@ -38,6 +39,7 @@ import { DictDataTreeService } from './dict-data-tree/dict-data-tree.service';
       name: 'PrismaService',
       useFactory: () => extendedPrismaClient,
     }),
+    BullModule.registerQueue({ name: 'user' }),
   ],
   controllers: [
     UserController,
@@ -66,6 +68,7 @@ import { DictDataTreeService } from './dict-data-tree/dict-data-tree.service';
     RuleService,
     RedisStorage,
     DictDataTreeService,
+    UserConsumer,
   ],
   exports: [UserService],
 })

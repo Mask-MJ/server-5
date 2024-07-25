@@ -11,6 +11,8 @@ import IP2Region from 'ip2region';
 import { ConfigService } from '@nestjs/config';
 import { RedisStorage } from 'src/common/redis/redis.storage';
 import { uploadDto } from 'src/common/dto/base.dto';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 
 @Injectable()
 export class UserService {
@@ -22,6 +24,8 @@ export class UserService {
     private readonly operationLogService: OperationLogService,
     private configService: ConfigService,
     private readonly redisStorage: RedisStorage,
+    @InjectQueue('user')
+    private userQueue: Queue,
   ) {}
 
   // Exclude keys from user
@@ -183,75 +187,43 @@ export class UserService {
     });
   }
 
-  // // 在 redis 中插入10条数据
-  // async insertRedisData() {
-  //   // this.redisStorage.flushAll();
-  //   // 开始时间
-  //   const startTime = new Date();
-  //   for (let i = 0; i < 100000; i++) {
-  //     await this.redisStorage.setList(`key-${i}`, [
-  //       'a',
-  //       'b',
-  //       'c',
-  //       'a',
-  //       'b',
-  //       'c',
-  //       'a',
-  //       'b',
-  //       'c',
-  //       'a',
-  //       'b',
-  //       'c',
-  //       'a',
-  //       'b',
-  //       'c',
-  //       'a',
-  //       'b',
-  //       'c',
-  //       'a',
-  //       'b',
-  //       'c',
-  //       'a',
-  //       'b',
-  //       'c',
-  //       'a',
-  //       'b',
-  //       'c',
-  //       'a',
-  //       'b',
-  //       'c',
-  //       'a',
-  //       'b',
-  //       'c',
-  //       'a',
-  //       'b',
-  //       'c',
-  //     ]);
-  //   }
-  //   // 结束时间耗时
-  //   console.log('结束时间耗时', new Date().getTime() - startTime.getTime());
-  //   return '插入成功';
-  // }
+  // 在 redis 中插入10条数据
+  async insertRedisData() {
+    // this.redisStorage.flushAll();
+    // 开始时间
+    const startTime = new Date();
+    for (let i = 0; i < 100000; i++) {
+      await this.redisStorage.setList(`key-${i}`, ['a', 'b', 'a', 'b', 'c']);
+    }
+    // 结束时间耗时
+    console.log('结束时间耗时', new Date().getTime() - startTime.getTime());
+    return '插入成功';
+  }
 
-  // // 定时任务, 把 redis 中的数据存储到数据库中
-  // async saveRedisDataToDB() {
-  //   // 获取所有的 key
-  //   const startTime = new Date();
-  //   const keys = await this.redisStorage.getkeys(`key-*`);
-  //   const data: { key: string; value: string }[] = [];
-  //   for (let i = 0; i < keys.length; i++) {
-  //     const key = keys[i];
-  //     const value = await this.redisStorage.getList(key);
-  //     data.push({ key, value: value.join(',') });
-  //   }
-  //   await this.prismaService.client.redisData.createMany({
-  //     data,
-  //   });
+  // 定时任务, 把 redis 中的数据存储到数据库中
+  async saveRedisDataToDB() {
+    // 获取所有的 key
+    const startTime = new Date();
+    const keys = await this.redisStorage.getkeys(`key-*`);
+    const data: { key: string; value: string }[] = [];
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const value = await this.redisStorage.getList(key);
+      data.push({ key, value: value.join(',') });
+    }
+    await this.prismaService.client.redisData.createMany({
+      data,
+    });
 
-  //   // 插入到数据库成功后清空 redis 中的数据
-  //   await this.redisStorage.flushAll();
+    // 插入到数据库成功后清空 redis 中的数据
+    await this.redisStorage.flushAll();
 
-  //   console.log('结束时间耗时', new Date().getTime() - startTime.getTime());
-  //   return '插入成功';
-  // }
+    console.log('结束时间耗时', new Date().getTime() - startTime.getTime());
+    return '插入成功';
+  }
+
+  async setRedisData(body: any) {
+    await this.userQueue.add('transcode', body);
+    return '插入成功';
+  }
 }
