@@ -218,7 +218,7 @@ model DictData {
   remark     String        @default("")
   /// 字典类型
   dictTypeId Int
-  dictType   DictType      @relation(fields: [dictTypeId], references: [id])
+  dictType   DictType      @relation(fields: [dictTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   treeId     Int?
   tree       DictDataTree? @relation(fields: [treeId], references: [id])
 }
