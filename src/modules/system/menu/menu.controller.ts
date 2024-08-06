@@ -19,7 +19,8 @@ import {
 } from '@nestjs/swagger';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
-import { MenuEntity, MenuTreeEntity } from './menu.entity';
+import { MenuEntity } from './menu.entity';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 
 @ApiTags('菜单管理')
 @ApiBearerAuth('bearer')
@@ -39,7 +40,7 @@ export class MenuController {
 
   @Get()
   @ApiOperation({ summary: '获取菜单列表' })
-  @ApiOkResponse({ type: MenuTreeEntity, isArray: true })
+  @ApiPaginatedResponse(MenuEntity)
   findAll(
     @ActiveUser() user: ActiveUserData,
     @Query() queryMenuDto: QueryMenuDto,

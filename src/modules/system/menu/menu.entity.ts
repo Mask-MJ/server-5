@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Menu } from '@prisma/client';
 export class MenuEntity implements Menu {
   id: number;
@@ -8,6 +9,10 @@ export class MenuEntity implements Menu {
   status: boolean;
   sort: number;
   parentId: number | null;
+
+  @ApiProperty({ type: () => MenuEntity })
+  children: MenuEntity[];
+
   remark: string;
   createBy: string;
   updateBy: string;

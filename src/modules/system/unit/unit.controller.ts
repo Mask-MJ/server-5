@@ -15,9 +15,9 @@ import {
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOperation,
-  ApiOkResponse,
 } from '@nestjs/swagger';
 import { UnitEntity } from './unit.entity';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 
 @ApiTags('单位管理')
 @ApiBearerAuth('bearer')
@@ -34,7 +34,7 @@ export class UnitController {
 
   @Get()
   @ApiOperation({ summary: '获取单位列表' })
-  @ApiOkResponse({ type: UnitEntity, isArray: true })
+  @ApiPaginatedResponse(UnitEntity)
   findAll(@Query() queryUnitDto: QueryUnitDto) {
     return this.unitService.findAll(queryUnitDto);
   }

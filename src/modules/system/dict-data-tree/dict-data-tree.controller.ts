@@ -22,6 +22,7 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 import { DictDataTreeEntity } from './dict-data-tree.entity';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 
 @ApiTags('pdf数据树管理')
 @ApiBearerAuth('bearer')
@@ -38,7 +39,7 @@ export class DictDataTreeController {
 
   @Get()
   @ApiOperation({ summary: '获取pdf数据树列表' })
-  @ApiOkResponse({ type: DictDataTreeEntity, isArray: true })
+  @ApiPaginatedResponse(DictDataTreeEntity)
   findAll(@Query() queryDictDataTreeDto: QueryDictDataTreeDto) {
     return this.dictDataTreeService.findAll(queryDictDataTreeDto);
   }

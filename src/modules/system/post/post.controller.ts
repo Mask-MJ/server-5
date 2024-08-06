@@ -20,6 +20,7 @@ import {
 import { PostEntity } from './post.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 
 @ApiTags('岗位管理')
 @ApiBearerAuth('bearer')
@@ -39,7 +40,7 @@ export class PostController {
 
   @Get()
   @ApiOperation({ summary: '获取岗位列表' })
-  @ApiOkResponse({ type: PostEntity, isArray: true })
+  @ApiPaginatedResponse(PostEntity)
   findAll(@Query() queryPostDto: QueryPostDto) {
     return this.postService.findAll(queryPostDto);
   }

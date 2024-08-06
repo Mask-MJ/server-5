@@ -24,6 +24,10 @@ import {
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { DictDataEntity } from './dict-data.entity';
+import {
+  TransformerPagination,
+  IRes,
+} from 'src/common/interceptor/response.interceptor';
 @ApiTags('字典数据管理')
 @ApiBearerAuth('bearer')
 @Controller('dict-data')
@@ -42,7 +46,10 @@ export class DictDataController {
 
   @Get()
   @ApiOperation({ summary: '获取字典数据列表' })
-  @ApiOkResponse({ type: DictDataEntity, isArray: true })
+  // @ApiOkResponse({
+  //   type: { data: DictDataEntity },
+  //   schema: { anyOf: [{ type: getSchemaPath(UserOrderInfoDto) }] },
+  // })
   findAll(@Query() queryDictDataDto: QueryDictDataDto) {
     return this.dictDataService.findAll(queryDictDataDto);
   }

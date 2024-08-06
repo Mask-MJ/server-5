@@ -21,15 +21,9 @@ export class HttpExceptionFilter<T extends HttpException>
         ? { message: exceptionResponse }
         : exceptionResponse;
     if (typeof error === 'string') {
-      response.status(status).json({
-        code: status,
-        message: error,
-      });
+      response.status(status).json({ code: status, message: error });
     } else {
-      response.status(status).json({
-        code: status,
-        ...error,
-      });
+      response.status(status).json({ code: status, ...error });
     }
   }
 }

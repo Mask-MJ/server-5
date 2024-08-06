@@ -24,6 +24,7 @@ import {
 import { DictTypeEntity } from './dict-type.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 
 @ApiTags('字典管理')
 @ApiBearerAuth('bearer')
@@ -43,7 +44,7 @@ export class DictTypeController {
 
   @Get()
   @ApiOperation({ summary: '获取字典列表' })
-  @ApiOkResponse({ type: DictTypeEntity, isArray: true })
+  @ApiPaginatedResponse(DictTypeEntity)
   findAll(@Query() queryDictTypeDto: QueryDictTypeDto) {
     return this.dictTypeService.findAll(queryDictTypeDto);
   }

@@ -34,6 +34,7 @@ import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.inte
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request as ExpRequest } from 'express';
 import { uploadDto } from 'src/common/dto/base.dto';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 
 @ApiTags('用户管理')
 @ApiBearerAuth('bearer')
@@ -50,7 +51,7 @@ export class UserController {
 
   @Get()
   @ApiOperation({ summary: '获取用户列表' })
-  @ApiOkResponse({ type: UserEntity, isArray: true })
+  @ApiPaginatedResponse(UserEntity)
   findAll(@Query() queryUserDto: QueryUserDto) {
     return this.userService.findAll(queryUserDto);
   }

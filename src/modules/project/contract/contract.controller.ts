@@ -24,6 +24,8 @@ import {
 import { ContractEntity } from './contract.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
+
 @ApiTags('合同管理')
 @ApiBearerAuth('bearer')
 @Controller('contract')
@@ -42,7 +44,7 @@ export class ContractController {
 
   @Get()
   @ApiOperation({ summary: '获取合同列表' })
-  @ApiOkResponse({ type: ContractEntity, isArray: true })
+  @ApiPaginatedResponse(ContractEntity)
   findAll(@Query() queryContractDto: QueryContractDto) {
     return this.contractService.findAll(queryContractDto);
   }

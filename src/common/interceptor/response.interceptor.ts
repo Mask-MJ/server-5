@@ -14,6 +14,18 @@ interface Result {
   total?: number;
 }
 
+export class TransformerPagination<T = unknown> {
+  rows: T[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+export interface IRes<T = unknown> {
+  code: number;
+  error?: string;
+  data: T;
+}
+
 @Injectable()
 export class FormatResponse implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {

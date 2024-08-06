@@ -8,6 +8,7 @@ import {
 } from '@nestjs/swagger';
 import { LoginLogEntity } from './login-log.entity';
 import { QueryLoginDto } from './login-log.dto';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 
 @ApiTags('登录日志管理')
 @ApiBearerAuth('bearer')
@@ -17,7 +18,7 @@ export class LoginLogController {
 
   @Get()
   @ApiOperation({ summary: '获取日志列表' })
-  @ApiOkResponse({ type: LoginLogEntity, isArray: true })
+  @ApiPaginatedResponse(LoginLogEntity)
   findAll(@Query() queryLoginDto: QueryLoginDto) {
     return this.loginLogService.findAll(queryLoginDto);
   }

@@ -15,11 +15,12 @@ import {
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOperation,
-  ApiOkResponse,
 } from '@nestjs/swagger';
 import { RoleEntity } from './role.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
+
 @ApiTags('权限管理')
 @ApiBearerAuth('bearer')
 @Controller('role')
@@ -38,7 +39,7 @@ export class RoleController {
 
   @Get()
   @ApiOperation({ summary: '获取权限列表' })
-  @ApiOkResponse({ type: RoleEntity, isArray: true })
+  @ApiPaginatedResponse(RoleEntity)
   findAll(@Query() queryRoleDto: QueryRoleDto) {
     return this.roleService.findAll(queryRoleDto);
   }

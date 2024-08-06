@@ -30,6 +30,7 @@ import {
 } from './valve.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 
 @ApiTags('阀门管理')
 @ApiBearerAuth('bearer')
@@ -49,7 +50,7 @@ export class ValveController {
 
   @Get()
   @ApiOperation({ summary: '获取阀门列表' })
-  @ApiOkResponse({ type: ValveEntity, isArray: true })
+  @ApiPaginatedResponse(ValveEntity)
   findAll(@Query() queryValveDto: QueryValveDto) {
     return this.valveService.findAll(queryValveDto);
   }
@@ -64,7 +65,7 @@ export class ValveController {
   // 获取阀门历史数据列表
   @Get('history')
   @ApiOperation({ summary: '获取阀门历史数据列表' })
-  @ApiOkResponse({ type: ValveHistoryListEntity, isArray: true })
+  @ApiPaginatedResponse(ValveHistoryListEntity)
   findAllHistoryDataList(
     @Query() queryValveHistoryListDto: QueryValveHistoryListDto,
   ) {
@@ -73,7 +74,7 @@ export class ValveController {
 
   @Get('history/:id')
   @ApiOperation({ summary: '获取阀门历史数据列表详情' })
-  @ApiOkResponse({ type: ValveHistoryEntity, isArray: true })
+  @ApiPaginatedResponse(ValveHistoryEntity)
   findHistoryData(@Param('id') id: number) {
     return this.valveService.findHistoryData(id);
   }

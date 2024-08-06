@@ -1,14 +1,15 @@
 import { Transform, Type } from 'class-transformer';
-import { IsNumber, IsString } from 'class-validator';
-import { IntersectionType } from '@nestjs/swagger';
+import { IsNumber, IsPositive, IsString } from 'class-validator';
+import { ApiProperty, IntersectionType } from '@nestjs/swagger';
 import dayjs from 'dayjs';
 
-export class PaginateDto {
+export class PaginateDto<TData> {
   /**
    * 页码
    * @example 1
    */
   @IsNumber()
+  @IsPositive()
   @Type(() => Number)
   page: number = 1;
 
@@ -17,8 +18,14 @@ export class PaginateDto {
    * @example 10
    */
   @IsNumber()
+  @IsPositive()
   @Type(() => Number)
   pageSize: number = 10;
+
+  total: number;
+
+  @ApiProperty()
+  rows: TData[];
 }
 
 export class TimeDto {

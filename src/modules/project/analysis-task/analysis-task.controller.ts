@@ -31,6 +31,7 @@ import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { uploadDto } from 'src/common/dto/base.dto';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 
 @ApiTags('分析任务')
 @ApiBearerAuth('bearer')
@@ -50,7 +51,7 @@ export class AnalysisTaskController {
 
   @Get()
   @ApiOperation({ summary: '获取分析任务列表' })
-  @ApiOkResponse({ type: AnalysisTaskEntity, isArray: true })
+  @ApiPaginatedResponse(AnalysisTaskEntity)
   findAll(@Query() queryAnalysisTaskDto: QueryAnalysisTaskDto) {
     return this.analysisTaskService.findAll(queryAnalysisTaskDto);
   }

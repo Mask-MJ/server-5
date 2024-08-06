@@ -17,9 +17,10 @@ import {
   ApiOperation,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { DeptEntity, DeptTreeEntity } from './dept.entity';
+import { DeptEntity } from './dept.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 
 @ApiTags('部门管理')
 @ApiBearerAuth('bearer')
@@ -39,7 +40,7 @@ export class DeptController {
 
   @Get()
   @ApiOperation({ summary: '获取部门列表' })
-  @ApiOkResponse({ type: DeptTreeEntity, isArray: true })
+  @ApiPaginatedResponse(DeptEntity)
   findAll(@Query() queryDeptDto: QueryDeptDto) {
     return this.deptService.findAll(queryDeptDto);
   }

@@ -20,6 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 
 @ApiTags('装置管理')
 @ApiBearerAuth('bearer')
@@ -39,7 +40,7 @@ export class DeviceController {
 
   @Get()
   @ApiOperation({ summary: '获取装置列表' })
-  @ApiOkResponse({ type: DeviceEntity, isArray: true })
+  @ApiPaginatedResponse(DeviceEntity)
   findAll(@Query() queryDeviceDto: QueryDeviceDto) {
     return this.deviceService.findAll(queryDeviceDto);
   }

@@ -17,13 +17,13 @@ import {
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOperation,
-  ApiOkResponse,
 } from '@nestjs/swagger';
 import { RuleEntity } from './rule.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { uploadDto } from 'src/common/dto/base.dto';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 
 @ApiTags('规则管理')
 @ApiBearerAuth('bearer')
@@ -40,7 +40,7 @@ export class RuleController {
 
   @Get()
   @ApiOperation({ summary: '获取规则列表' })
-  @ApiOkResponse({ type: RuleEntity, isArray: true })
+  @ApiPaginatedResponse(RuleEntity)
   findAll(@Query() queryRuleDto: QueryRuleDto) {
     return this.ruleService.findAll(queryRuleDto);
   }

@@ -19,11 +19,11 @@ import {
   ApiBearerAuth,
   ApiOperation,
   ApiCreatedResponse,
-  ApiOkResponse,
 } from '@nestjs/swagger';
-import { FactoryEntity, FactoryTreeEntity } from './factory.entity';
+import { FactoryEntity } from './factory.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 
 @ApiTags('工厂管理')
 @ApiBearerAuth('bearer')
@@ -42,7 +42,7 @@ export class FactoryController {
   }
   @Get()
   @ApiOperation({ summary: '获取工厂列表' })
-  @ApiOkResponse({ type: FactoryTreeEntity, isArray: true })
+  @ApiPaginatedResponse(FactoryEntity)
   findAll(
     @ActiveUser() user: ActiveUserData,
     @Query() queryFactoryDto: QueryFactoryDto,
