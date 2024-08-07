@@ -5,6 +5,9 @@ import {
 } from './operation-log.dto';
 import { CustomPrismaService } from 'nestjs-prisma';
 import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
+import IP2Region from 'ip2region';
+import { OnEvent } from '@nestjs/event-emitter';
+
 @Injectable()
 export class OperationLogService {
   constructor(
@@ -13,8 +16,12 @@ export class OperationLogService {
   ) {}
 
   create(createOperationLogDto: CreateOperationLogDto) {
+    const query = new IP2Region();
+    const addressInfo = query.search(createOperationLogDto.ip);
+    const address = addressInfo ? addressInfo.province + addressInfo.city : '';
+
     return this.prismaService.client.operationLog.create({
-      data: createOperationLogDto,
+      data: { ...createOperationLogDto, address },
     });
   }
 
@@ -32,15 +39,17 @@ export class OperationLogService {
       })
       .withPages({ limit: pageSize, page, includePageCount: true });
 
-    return {
-      rows,
-      ...meta,
-    };
+    return { rows, ...meta };
   }
 
   findOne(id: number) {
     return this.prismaService.client.operationLog.findUniqueOrThrow({
       where: { id },
     });
+  }
+
+  @OnEvent('system.user.delete')
+  async handleLoginEvent(payload: CreateOperationLogDto) {
+    await this.create(payload);
   }
 }

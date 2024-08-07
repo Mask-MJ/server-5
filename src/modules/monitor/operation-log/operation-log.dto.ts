@@ -19,9 +19,6 @@ export class CreateOperationLogDto {
 
   @IsString()
   ip: string;
-
-  @IsString()
-  address: string;
 }
 
 export class QueryOperationLogDto extends PartialType(

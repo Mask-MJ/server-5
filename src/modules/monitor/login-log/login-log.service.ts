@@ -3,6 +3,7 @@ import { CreateLoginLogDto, QueryLoginDto } from './login-log.dto';
 import { CustomPrismaService } from 'nestjs-prisma';
 import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import IP2Region from 'ip2region';
+import { OnEvent } from '@nestjs/event-emitter';
 
 @Injectable()
 export class LoginLogService {
@@ -33,5 +34,10 @@ export class LoginLogService {
 
   findOne(id: number) {
     return this.prismaService.client.loginLog.findUnique({ where: { id } });
+  }
+
+  @OnEvent('login')
+  handleLoginEvent(payload: CreateLoginLogDto) {
+    this.create(payload);
   }
 }

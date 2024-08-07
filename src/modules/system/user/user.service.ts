@@ -5,15 +5,9 @@ import { CreateUserDto, UpdateUserDto, QueryUserDto } from './user.dto';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { HashingService } from 'src/modules/iam/hashing/hashing.service';
 import { MinioService } from 'src/common/minio/minio.service';
-import { OperationLogService } from 'src/modules/monitor/operation-log/operation-log.service';
 import { Request } from 'express';
-import IP2Region from 'ip2region';
-import { ConfigService } from '@nestjs/config';
-import { RedisStorage } from 'src/common/redis/redis.storage';
 import { uploadDto } from 'src/common/dto/base.dto';
-import { InjectQueue } from '@nestjs/bullmq';
-import { Queue } from 'bullmq';
-// import { createWorker } from 'tesseract.js';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class UserService {
@@ -22,11 +16,7 @@ export class UserService {
     private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
     private readonly hashingService: HashingService,
     private readonly minioClient: MinioService,
-    private readonly operationLogService: OperationLogService,
-    private configService: ConfigService,
-    private readonly redisStorage: RedisStorage,
-    @InjectQueue('user')
-    private userQueue: Queue,
+    @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2,
   ) {}
 
   // Exclude keys from user
@@ -156,22 +146,16 @@ export class UserService {
     if (userInfo.isAdmin) {
       throw new ConflictException('管理员账号不允许删除');
     }
-    const deleteUser = await this.prismaService.client.user.delete({
-      where: { id },
-    });
-    const query = new IP2Region();
-    const addressInfo = query.search(request.ip);
-    const address = addressInfo ? addressInfo.province + addressInfo.city : '';
-
-    await this.operationLogService.create({
-      account: user.account,
+    // await this.prismaService.client.user.delete({ where: { id } });
+    console.log('删除用户', id);
+    this.eventEmitter.emit('system.user.delete', {
+      title: `删除ID为${id}的用户`,
+      businessType: 2,
       module: '用户管理',
-      businessType: 1,
-      title: '删除用户',
+      account: user.account,
       ip: request.ip,
-      address,
     });
-    return deleteUser;
+    return '删除成功';
   }
 
   async uploadAvatar(
@@ -186,48 +170,5 @@ export class UserService {
       where: { id: user.sub },
       data: { avatar: url },
     });
-  }
-
-  // 在 redis 中插入10条数据
-  async insertRedisData() {
-    // this.redisStorage.flushAll();
-    // 开始时间
-    const startTime = new Date();
-    for (let i = 0; i < 100000; i++) {
-      await this.redisStorage.setList(`key-${i}`, ['a', 'b', 'a', 'b', 'c']);
-    }
-    // 结束时间耗时
-    console.log('结束时间耗时', new Date().getTime() - startTime.getTime());
-    return '插入成功';
-  }
-
-  // 定时任务, 把 redis 中的数据存储到数据库中
-  async saveRedisDataToDB() {
-    // 获取所有的 key
-    const startTime = new Date();
-    const keys = await this.redisStorage.getkeys(`key-*`);
-    const data: { key: string; value: string }[] = [];
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      const value = await this.redisStorage.getList(key);
-      data.push({ key, value: value.join(',') });
-    }
-    await this.prismaService.client.redisData.createMany({
-      data,
-    });
-
-    // 插入到数据库成功后清空 redis 中的数据
-    await this.redisStorage.flushAll();
-
-    console.log('结束时间耗时', new Date().getTime() - startTime.getTime());
-    return '插入成功';
-  }
-
-  async setRedisData(body: any) {
-    await this.userQueue.add('user', body, {
-      removeOnComplete: 10,
-      removeOnFail: 5000,
-    });
-    return '插入成功';
   }
 }

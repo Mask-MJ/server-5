@@ -91,24 +91,6 @@ export class UserController {
     return this.userService.uploadAvatar(user, file, body);
   }
 
-  @Get('insertRedisData')
-  @ApiOperation({ summary: '插入 Redis 数据' })
-  insertRedisData() {
-    return this.userService.insertRedisData();
-  }
-
-  @Get('saveRedisDataToDB')
-  @ApiOperation({ summary: '保持 Redis 数据到数据库' })
-  saveRedisDataToDB() {
-    return this.userService.saveRedisDataToDB();
-  }
-
-  @Post('setRedisData')
-  @ApiOperation({ summary: '设置 Redis 队列数据' })
-  setRedisData(@Body() body: any) {
-    return this.userService.setRedisData(body);
-  }
-
   @Get(':id')
   @ApiOperation({ summary: '获取用户信息' })
   @ApiOkResponse({ type: UserEntity })

@@ -21,20 +21,20 @@ import { HashingService } from '../hashing/hashing.service';
 import { PrismaService } from 'nestjs-prisma';
 import { User } from '@prisma/client';
 import { randomUUID } from 'crypto';
-import { LoginLogService } from 'src/modules/monitor/login-log/login-log.service';
 import { Request } from 'express';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly hashingService: HashingService,
-    private readonly loginlogService: LoginLogService,
     private readonly jwtService: JwtService,
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
     private readonly refreshTokenIdsStorage: RefreshTokenIdsStorage,
     private readonly logger: Logger,
+    @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2,
   ) {}
 
   // 生成 access token 传入 用户 id, 过期时间, payload
@@ -86,12 +86,11 @@ export class AuthenticationService {
     }
     // 记录登录日志
     this.logger.log('登录', AuthenticationService.name);
-    console.log('request', request.ip);
-    await this.loginlogService.create({
-      userId: user.id,
+    this.eventEmitter.emit('login', {
       sessionId: '',
       account: user.account,
       ip: request.ip || '',
+      userId: user.id,
     });
 
     // 生成 access token
