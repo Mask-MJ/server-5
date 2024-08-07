@@ -146,7 +146,7 @@ export class UserService {
     if (userInfo.isAdmin) {
       throw new ConflictException('管理员账号不允许删除');
     }
-    // await this.prismaService.client.user.delete({ where: { id } });
+    await this.prismaService.client.user.delete({ where: { id } });
     console.log('删除用户', id);
     this.eventEmitter.emit('system.user.delete', {
       title: `删除ID为${id}的用户`,
