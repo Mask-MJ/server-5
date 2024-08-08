@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["flask_ocrt", "public"]
 }
 
 /// 用户信息表
@@ -43,6 +45,8 @@ model User {
   menu        Menu[]   @relation("MenuToUser")
   post        Post[]   @relation("PostToUser")
   role        Role[]   @relation("RoleToUser")
+
+  @@schema("public")
 }
 
 /// 岗位信息表
@@ -66,6 +70,8 @@ model Post {
   /// 备注
   remark    String   @default("")
   user      User[]   @relation("PostToUser")
+
+  @@schema("public")
 }
 
 /// 部门信息表
@@ -95,6 +101,8 @@ model Dept {
   parent    Dept?    @relation("DeptToDept", fields: [parentId], references: [id])
   children  Dept[]   @relation("DeptToDept")
   user      User[]   @relation("DeptToUser")
+
+  @@schema("public")
 }
 
 /// 角色信息表
@@ -120,6 +128,8 @@ model Role {
   factory   Factory[] @relation("FactoryToRole")
   menu      Menu[]    @relation("MenuToRole")
   user      User[]    @relation("RoleToUser")
+
+  @@schema("public")
 }
 
 /// 权限模型表
@@ -135,6 +145,8 @@ model Permission {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   menu      Menu?    @relation(fields: [menuId], references: [id])
+
+  @@schema("public")
 }
 
 /// 菜单信息表
@@ -170,6 +182,8 @@ model Menu {
   permission Permission[]
   role       Role[]       @relation("MenuToRole")
   user       User[]       @relation("MenuToUser")
+
+  @@schema("public")
 }
 
 /// 字典类型表
@@ -192,6 +206,8 @@ model DictType {
   remark       String         @default("")
   analysisTask AnalysisTask[]
   dictData     DictData[]
+
+  @@schema("public")
 }
 
 /// 字典数据表
@@ -218,9 +234,11 @@ model DictData {
   remark     String        @default("")
   /// 字典类型
   dictTypeId Int
-  dictType   DictType      @relation(fields: [dictTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   treeId     Int?
+  dictType   DictType      @relation(fields: [dictTypeId], references: [id], onDelete: Cascade)
   tree       DictDataTree? @relation(fields: [treeId], references: [id])
+
+  @@schema("public")
 }
 
 model DictDataTree {
@@ -229,9 +247,11 @@ model DictDataTree {
   value    String
   remark   String?
   parentId Int?
+  dictData DictData[]
   parent   DictDataTree?  @relation("DictDataTreeToDictDataTree", fields: [parentId], references: [id])
   children DictDataTree[] @relation("DictDataTreeToDictDataTree")
-  dictData DictData[]
+
+  @@schema("public")
 }
 
 /// 单位
@@ -245,6 +265,8 @@ model Unit {
   remark    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@schema("public")
 }
 
 /// 操作日志记录表
@@ -265,6 +287,8 @@ model OperationLog {
   ip           String
   /// ip地址对应的地理位置
   address      String
+
+  @@schema("public")
 }
 
 /// 登录日志表
@@ -281,6 +305,8 @@ model LoginLog {
   /// ip地址对应的地理位置
   address   String
   userId    Int
+
+  @@schema("public")
 }
 
 /// 工厂表
@@ -311,6 +337,8 @@ model Factory {
   children     Factory[]      @relation("FactoryToFactory")
   valve        Valve[]
   role         Role[]         @relation("FactoryToRole")
+
+  @@schema("public")
 }
 
 /// 项目表
@@ -340,6 +368,8 @@ model Contract {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   factory        Factory  @relation(fields: [factoryId], references: [id])
+
+  @@schema("public")
 }
 
 /// 装置表
@@ -360,6 +390,8 @@ model Device {
   updatedAt DateTime @updatedAt
   factory   Factory  @relation(fields: [factoryId], references: [id])
   valve     Valve[]
+
+  @@schema("public")
 }
 
 /// 阀门表
@@ -444,6 +476,8 @@ model Valve {
   factory               Factory                @relation(fields: [factoryId], references: [id])
   valveData             ValveData[]
   valveHistoryDataList  ValveHistoryDataList[]
+
+  @@schema("public")
 }
 
 /// 阀门运行数据表
@@ -457,9 +491,11 @@ model ValveData {
   unit    String?
   /// 阀门id
   valveId Int
-  valve   Valve    @relation(fields: [valveId], references: [id])
   /// 读取时间
   time    DateTime
+  valve   Valve    @relation(fields: [valveId], references: [id])
+
+  @@schema("public")
 }
 
 model ValveHistoryDataList {
@@ -468,10 +504,12 @@ model ValveHistoryDataList {
   tag              String
   /// 阀门id
   valveId          Int
-  valve            Valve              @relation(fields: [valveId], references: [id])
   /// 读取时间
   time             DateTime
   valveHistoryData ValveHistoryData[]
+  valve            Valve              @relation(fields: [valveId], references: [id])
+
+  @@schema("public")
 }
 
 model ValveHistoryData {
@@ -483,9 +521,11 @@ model ValveHistoryData {
   /// 单位
   unit                   String?
   valveHistoryDataListId Int
-  valveHistoryDataList   ValveHistoryDataList @relation(fields: [valveHistoryDataListId], references: [id])
   /// 读取时间
   time                   DateTime
+  valveHistoryDataList   ValveHistoryDataList @relation(fields: [valveHistoryDataListId], references: [id])
+
+  @@schema("public")
 }
 
 /// 分析任务表
@@ -510,9 +550,11 @@ model AnalysisTask {
   updatedAt          DateTime            @updatedAt
   dict               DictType            @relation(fields: [dictTypeId], references: [id])
   factory            Factory             @relation(fields: [factoryId], references: [id])
+  analysisTaskResult AnalysisTaskResult?
   pdf                Pdf[]
   valve              Valve[]
-  analysisTaskResult AnalysisTaskResult?
+
+  @@schema("public")
 }
 
 /// 分析任务结果记录表
@@ -520,13 +562,15 @@ model AnalysisTaskResult {
   id             Int          @id @default(autoincrement())
   /// 任务id
   analysisTaskId Int          @unique
-  analysisTask   AnalysisTask @relation(fields: [analysisTaskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   /// 阀门位号
   tag            String
   /// 读取时间
   time           DateTime
   /// 读取的pdf数据 json格式
   data           Json?
+  analysisTask   AnalysisTask @relation(fields: [analysisTaskId], references: [id], onDelete: Cascade)
+
+  @@schema("public")
 }
 
 model Pdf {
@@ -540,7 +584,9 @@ model Pdf {
   updatedAt DateTime     @updatedAt
   /// pdf文件路径
   url       String
-  task      AnalysisTask @relation(fields: [taskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  task      AnalysisTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@schema("public")
 }
 
 model Rule {
@@ -555,6 +601,8 @@ model Rule {
   remark    String   @default("")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@schema("public")
 }
 
 model RedisData {
@@ -563,4 +611,6 @@ model RedisData {
   value     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@schema("public")
 }
