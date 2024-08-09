@@ -86,6 +86,13 @@ export class ValveController {
     return this.valveService.findScoreData(id);
   }
 
+  @Get('tree')
+  @ApiOperation({ summary: '获取阀门树' })
+  @ApiOkResponse({ type: ValveEntity, isArray: true })
+  findTree() {
+    return this.valveService.getTreeStructure();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: '获取阀门信息' })
   @ApiOkResponse({ type: ValveEntity })

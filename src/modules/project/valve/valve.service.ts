@@ -10,6 +10,8 @@ import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { DataSource } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ValveService {
@@ -18,6 +20,7 @@ export class ValveService {
     private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
     @Inject(HttpService)
     private readonly httpService: HttpService,
+    private configService: ConfigService,
   ) {}
 
   create(user: ActiveUserData, createValveDto: CreateValveDto) {
@@ -43,7 +46,7 @@ export class ValveService {
     return { rows, ...meta };
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return this.prismaService.client.valve.findUnique({ where: { id } });
   }
 
@@ -92,5 +95,25 @@ export class ValveService {
 
   remove(id: number) {
     return this.prismaService.client.valve.delete({ where: { id } });
+  }
+
+  async getTreeStructure() {
+    const db = new DataSource({
+      type: 'postgres',
+      host: this.configService.get('DATABASE_HOST'),
+      port: this.configService.get('DATABASE_PORT'),
+      username: this.configService.get('DATABASE_USER'),
+      password: this.configService.get('DATABASE_PASSWORD'),
+      database: 'flask_ocrt',
+    });
+    const condition = await db.initialize();
+    // 查找 TreeStructure 表中的所有数据
+    // const result2 = await condition.query(
+    //   "SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';",
+    // );
+    const result = await condition.query(
+      'SELECT "tagNumber" FROM "FarseAction"',
+    );
+    return result;
   }
 }
