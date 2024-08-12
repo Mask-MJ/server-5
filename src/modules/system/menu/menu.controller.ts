@@ -21,6 +21,7 @@ import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { MenuEntity } from './menu.entity';
 import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
+import { Permissions } from 'src/modules/iam/authorization/decorators/permissions.decorator';
 
 @ApiTags('菜单管理')
 @ApiBearerAuth('bearer')
@@ -31,6 +32,7 @@ export class MenuController {
   @Post()
   @ApiOperation({ summary: '创建菜单' })
   @ApiCreatedResponse({ type: MenuEntity })
+  @Permissions('system:menu:create')
   create(
     @ActiveUser() user: ActiveUserData,
     @Body() createMenuDto: CreateMenuDto,
@@ -41,6 +43,7 @@ export class MenuController {
   @Get()
   @ApiOperation({ summary: '获取菜单列表' })
   @ApiPaginatedResponse(MenuEntity)
+  @Permissions('system:menu:query')
   findAll(
     @ActiveUser() user: ActiveUserData,
     @Query() queryMenuDto: QueryMenuDto,
@@ -51,6 +54,7 @@ export class MenuController {
   @Get(':id')
   @ApiOperation({ summary: '获取菜单详情' })
   @ApiOkResponse({ type: MenuEntity })
+  @Permissions('system:menu:query')
   findOne(@Param('id') id: number) {
     return this.menuService.findOne(id);
   }
@@ -58,6 +62,7 @@ export class MenuController {
   @Patch(':id')
   @ApiOperation({ summary: '更新菜单' })
   @ApiOkResponse({ type: MenuEntity })
+  @Permissions('system:menu:update')
   update(
     @Param('id') id: number,
     @ActiveUser() user: ActiveUserData,
@@ -68,6 +73,7 @@ export class MenuController {
 
   @Delete(':id')
   @ApiOperation({ summary: '删除菜单' })
+  @Permissions('system:menu:delete')
   remove(@Param('id') id: number) {
     return this.menuService.remove(id);
   }

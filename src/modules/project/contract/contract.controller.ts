@@ -25,6 +25,7 @@ import { ContractEntity } from './contract.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
+import { Permissions } from 'src/modules/iam/authorization/decorators/permissions.decorator';
 
 @ApiTags('合同管理')
 @ApiBearerAuth('bearer')
@@ -35,6 +36,7 @@ export class ContractController {
   @Post()
   @ApiOperation({ summary: '创建合同' })
   @ApiCreatedResponse({ type: ContractEntity })
+  @Permissions('project:contract:create')
   create(
     @ActiveUser() user: ActiveUserData,
     @Body() createContractDto: CreateContractDto,
@@ -45,6 +47,7 @@ export class ContractController {
   @Get()
   @ApiOperation({ summary: '获取合同列表' })
   @ApiPaginatedResponse(ContractEntity)
+  @Permissions('project:contract:query')
   findAll(@Query() queryContractDto: QueryContractDto) {
     return this.contractService.findAll(queryContractDto);
   }
@@ -52,6 +55,7 @@ export class ContractController {
   @Get(':id')
   @ApiOperation({ summary: '获取合同信息' })
   @ApiOkResponse({ type: ContractEntity })
+  @Permissions('project:contract:query')
   findOne(@Param('id') id: number) {
     return this.contractService.findOne(id);
   }
@@ -59,6 +63,7 @@ export class ContractController {
   @Patch(':id')
   @ApiOperation({ summary: '更新合同信息' })
   @ApiOkResponse({ type: ContractEntity })
+  @Permissions('project:contract:update')
   update(
     @Param('id') id: number,
     @ActiveUser() user: ActiveUserData,
@@ -69,6 +74,7 @@ export class ContractController {
 
   @Delete(':id')
   @ApiOperation({ summary: '删除合同' })
+  @Permissions('project:contract:delete')
   remove(@Param('id') id: number) {
     return this.contractService.remove(id);
   }

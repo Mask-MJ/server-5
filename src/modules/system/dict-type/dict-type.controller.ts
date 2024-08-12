@@ -25,6 +25,7 @@ import { DictTypeEntity } from './dict-type.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
+import { Permissions } from 'src/modules/iam/authorization/decorators/permissions.decorator';
 
 @ApiTags('字典管理')
 @ApiBearerAuth('bearer')
@@ -35,6 +36,7 @@ export class DictTypeController {
   @Post()
   @ApiOperation({ summary: '创建字典' })
   @ApiCreatedResponse({ type: DictTypeEntity })
+  @Permissions('system:dictType:create')
   create(
     @ActiveUser() user: ActiveUserData,
     @Body() createDictTypeDto: CreateDictTypeDto,
@@ -45,6 +47,7 @@ export class DictTypeController {
   @Get()
   @ApiOperation({ summary: '获取字典列表' })
   @ApiPaginatedResponse(DictTypeEntity)
+  @Permissions('system:dictType:query')
   findAll(@Query() queryDictTypeDto: QueryDictTypeDto) {
     return this.dictTypeService.findAll(queryDictTypeDto);
   }
@@ -52,6 +55,7 @@ export class DictTypeController {
   @Get(':id')
   @ApiOperation({ summary: '获取字典详情' })
   @ApiOkResponse({ type: DictTypeEntity })
+  @Permissions('system:dictType:query')
   findOne(@Param('id') id: number) {
     return this.dictTypeService.findOne(id);
   }
@@ -59,6 +63,7 @@ export class DictTypeController {
   @Patch(':id')
   @ApiOperation({ summary: '更新字典' })
   @ApiOkResponse({ type: DictTypeEntity })
+  @Permissions('system:dictType:update')
   update(
     @Param('id') id: number,
     @ActiveUser() user: ActiveUserData,
@@ -69,6 +74,7 @@ export class DictTypeController {
 
   @Delete(':id')
   @ApiOperation({ summary: '删除字典' })
+  @Permissions('system:dictType:delete')
   remove(@Param('id') id: number) {
     return this.dictTypeService.remove(id);
   }

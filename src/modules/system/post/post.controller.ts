@@ -21,6 +21,7 @@ import { PostEntity } from './post.entity';
 import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
+import { Permissions } from 'src/modules/iam/authorization/decorators/permissions.decorator';
 
 @ApiTags('岗位管理')
 @ApiBearerAuth('bearer')
@@ -31,6 +32,7 @@ export class PostController {
   @Post()
   @ApiOperation({ summary: '创建岗位' })
   @ApiCreatedResponse({ type: PostEntity })
+  @Permissions('system:post:create')
   create(
     @ActiveUser() user: ActiveUserData,
     @Body() createPostDto: CreatePostDto,
@@ -41,6 +43,7 @@ export class PostController {
   @Get()
   @ApiOperation({ summary: '获取岗位列表' })
   @ApiPaginatedResponse(PostEntity)
+  @Permissions('system:post:query')
   findAll(@Query() queryPostDto: QueryPostDto) {
     return this.postService.findAll(queryPostDto);
   }
@@ -48,6 +51,7 @@ export class PostController {
   @Get(':id')
   @ApiOperation({ summary: '获取岗位详情' })
   @ApiOkResponse({ type: PostEntity })
+  @Permissions('system:post:query')
   findOne(@Param('id') id: number) {
     return this.postService.findOne(id);
   }
@@ -55,6 +59,7 @@ export class PostController {
   @Patch(':id')
   @ApiOperation({ summary: '更新岗位' })
   @ApiOkResponse({ type: PostEntity })
+  @Permissions('system:post:update')
   update(
     @Param('id') id: number,
     @ActiveUser() user: ActiveUserData,
@@ -65,6 +70,7 @@ export class PostController {
 
   @Delete(':id')
   @ApiOperation({ summary: '删除岗位' })
+  @Permissions('system:post:delete')
   remove(@Param('id') id: number) {
     return this.postService.remove(id);
   }

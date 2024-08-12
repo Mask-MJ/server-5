@@ -35,6 +35,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Request as ExpRequest } from 'express';
 import { uploadDto } from 'src/common/dto/base.dto';
 import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
+import { Permissions } from 'src/modules/iam/authorization/decorators/permissions.decorator';
 
 @ApiTags('用户管理')
 @ApiBearerAuth('bearer')
@@ -45,6 +46,7 @@ export class UserController {
   @Post()
   @ApiOperation({ summary: '创建用户' })
   @ApiCreatedResponse({ type: UserEntity })
+  @Permissions('system:user:create')
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
@@ -52,6 +54,7 @@ export class UserController {
   @Get()
   @ApiOperation({ summary: '获取用户列表' })
   @ApiPaginatedResponse(UserEntity)
+  @Permissions('system:user:query')
   findAll(@Query() queryUserDto: QueryUserDto) {
     return this.userService.findAll(queryUserDto);
   }
@@ -94,6 +97,7 @@ export class UserController {
   @Get(':id')
   @ApiOperation({ summary: '获取用户信息' })
   @ApiOkResponse({ type: UserEntity })
+  @Permissions('system:user:query')
   findOne(@Param('id') id: number) {
     return this.userService.findOne(id);
   }
@@ -101,12 +105,14 @@ export class UserController {
   @Patch(':id')
   @ApiOperation({ summary: '更新用户信息' })
   @ApiOkResponse({ type: UserEntity })
+  @Permissions('system:user:update')
   update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: '删除用户' })
+  @Permissions('system:user:delete')
   remove(
     @ActiveUser() user: ActiveUserData,
     @Param('id') id: number,

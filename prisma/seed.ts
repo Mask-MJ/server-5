@@ -232,6 +232,7 @@ async function main() {
                 { name: '查询', value: 'project:analysisTask:query' },
                 { name: '修改', value: 'project:analysisTask:update' },
                 { name: '删除', value: 'project:analysisTask:delete' },
+                { name: '执行', value: 'project:analysisTask:execute' },
               ],
             },
           },
@@ -400,6 +401,21 @@ async function main() {
                 { name: '查询', value: 'system:dictDataTree:query' },
                 { name: '修改', value: 'system:dictDataTree:update' },
                 { name: '删除', value: 'system:dictDataTree:delete' },
+              ],
+            },
+          },
+          {
+            name: '单位管理',
+            icon: 'i-ant-design:medicine-box-outlined',
+            sort: 4,
+            path: '/system/unit',
+            createBy: 'admin',
+            permission: {
+              create: [
+                { name: '创建', value: 'system:unit:create' },
+                { name: '查询', value: 'system:unit:query' },
+                { name: '修改', value: 'system:unit:update' },
+                { name: '删除', value: 'system:unit:delete' },
               ],
             },
           },
@@ -756,39 +772,6 @@ async function main() {
         ],
       },
     },
-  });
-
-  await prisma.analysisTask.create({
-    data: {
-      name: '分析任务1-hard',
-      createBy: 'admin',
-      dictTypeId: 3,
-      factoryId: 1,
-      ruleId: 1,
-      pdf: {
-        create: [
-          {
-            name: '1721111667600-FV101_3_20240307_1437_REPORT 中文.pdf',
-            url: 'http://200.200.200.18:9000/pdf/1721111667600-FV101_3_20240307_1437_REPORT%20%E4%B8%AD%E6%96%87.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=2xxSbNXQ3ayClsBEH1hZ%2F20240716%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240716T063427Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=78f813a62c350669d24f2fde35210e49a00eb96f5a56412f019c5a1c54e28f3a',
-            createBy: 'admin',
-          },
-        ],
-      },
-    },
-  });
-  await prisma.rule.createMany({
-    data: [
-      {
-        name: 'Emily Test 0715',
-        url: 'http://200.200.200.18:9000/rule/1721017853349-HART_Online%281%29.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=2xxSbNXQ3ayClsBEH1hZ%2F20240715%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240715T043053Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=9e2058516768e0b1a37f900ca20a3fa0b28dcf0783c7463c94124dd1e2f49bc1',
-        fileName: '1721017853349-HART_Online(1).xlsx',
-      },
-      {
-        name: 'hart online',
-        url: 'http://200.200.200.18:9000/rule/1721251459807-HART_Online.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=2xxSbNXQ3ayClsBEH1hZ%2F20240717%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240717T212419Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=e9b3daee867da75b399fde74edc8b2325765999826ff327cedfd6c65473f48f4',
-        fileName: '1721251459807-HART_Online.xlsx',
-      },
-    ],
   });
 
   console.log('注入数据成功');
