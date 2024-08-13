@@ -7,7 +7,6 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 import { InfoEntity } from './info.entity';
-// import { Observable } from 'rxjs';
 
 export interface MessageEvent {
   data: string | object;
@@ -25,13 +24,7 @@ export class InfoController {
   @Sse()
   @ApiOperation({ summary: '运行信息' })
   @ApiOkResponse({ type: InfoEntity })
-  async systemInfo() {
-    const data = await this.infoService.systemInfo();
-    return data;
-    // return new Observable((observer) => {
-    //   setInterval(async () => {
-    //     observer.next(data);
-    //   }, 1000);
-    // });
+  systemInfo() {
+    return this.infoService.systemInfo();
   }
 }

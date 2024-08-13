@@ -16,6 +16,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { firstValueFrom } from 'rxjs';
 import { uploadDto } from 'src/common/dto/base.dto';
+// import fs from 'fs';
 
 dayjs.extend(customParseFormat);
 @Injectable()
@@ -94,10 +95,10 @@ export class AnalysisTaskService {
         include: { pdf: true },
       });
     // 把任务状态改为执行中
-    await this.prismaService.client.analysisTask.update({
-      where: { id },
-      data: { status: 1 },
-    });
+    // await this.prismaService.client.analysisTask.update({
+    //   where: { id },
+    //   data: { status: 1 },
+    // });
     // 获取解析模板的数据
     const data = await this.prismaService.client.dictData.findMany({
       where: { dictTypeId: analysisTask.dictTypeId },
@@ -118,19 +119,20 @@ export class AnalysisTaskService {
         [],
       );
 
-      // 正则匹配 字符串以 '仪表组态' 开头, 并且以 '基本' 结尾的字符串
+      // 写入到 json 文件中
+      // fs.writeFileSync('pdf-zh.json', JSON.stringify(pdfStringData, null, 2));
+
       const indexes = pdfStringData.reduce((result, item, index) => {
-        if (/仪表组态.*基本/g.test(item)) {
+        if (item === 'HART 标签名称' || item === 'HART Tag Name') {
           result.push(index);
         }
         return result;
       }, []);
-      // 根据获取的索引把数组分割
       const result = indexes.map((item, index) => {
         if (index === indexes.length - 1) {
-          return pdfStringData.slice(item, pdfStringData.length);
+          return pdfStringData.slice(item - 3, pdfStringData.length);
         } else {
-          return pdfStringData.slice(item, indexes[index + 1]);
+          return pdfStringData.slice(item - 3, indexes[index + 1] - 3);
         }
       });
       result.forEach((item) => {

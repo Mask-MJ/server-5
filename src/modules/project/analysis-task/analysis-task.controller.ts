@@ -64,7 +64,7 @@ export class AnalysisTaskController {
   @ApiOperation({ summary: '执行分析任务' })
   // @Permissions('project:analysisTask:execute')
   execute(@ActiveUser() user: ActiveUserData, @Param('id') id: number) {
-    return this.analysisTaskService.execute(user, id);
+    return this.analysisTaskService.execute2(user, id);
   }
 
   @Post('uploadPdf')
