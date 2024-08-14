@@ -489,17 +489,281 @@ async function main() {
       value: 'hard',
       children: {
         create: [
-          { name: '仪表组态-基本', value: 'Instrument Configuration-Basic' },
-          { name: '仪表组态-报警', value: 'Instrument Configuration-Alerts' },
+          {
+            name: '仪表组态-基本',
+            value: 'Instrument Configuration-Basic',
+            children: {
+              create: [
+                {
+                  name: '设备标识',
+                  value: 'Device Identification',
+                  children: {
+                    create: [
+                      {
+                        name: '标签',
+                        value: 'Tag',
+                        children: {
+                          create: [
+                            { name: 'HART 标签', value: 'HART Tag' },
+                            { name: '信息串', value: 'Message' },
+                            { name: '描述符', value: 'Descriptor' },
+                            {
+                              name: '阀门序列号',
+                              value: 'Valve Serial Number',
+                            },
+                            {
+                              name: '轮询地址',
+                              value: 'Instrument Serial Number',
+                            },
+                            { name: '仪表序列号', value: 'Polling Address' },
+                          ],
+                        },
+                      },
+                      {
+                        name: '单位',
+                        value: 'Units',
+                        children: {
+                          create: [
+                            { name: '压力单位', value: 'Pressure Units' },
+                            { name: '温度单位', value: 'Temperature Units' },
+                            { name: '行程单位', value: 'Travel Units' },
+                            { name: '长度单位', value: 'Length Units' },
+                            { name: '面积单位', value: 'Area Units' },
+                            { name: '扭矩单位', value: 'Torque Units' },
+                            {
+                              name: '弹簧刚度单位',
+                              value: 'Spring Rate Units',
+                            },
+                            {
+                              name: '模拟输入单位',
+                              value: 'Analog Input Units',
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '初始设置',
+                  value: 'Initial Setup',
+                  children: {
+                    create: [
+                      { name: '控制信号', value: 'Control Signal' },
+                      { name: '设置', value: 'Setup' },
+                    ],
+                  },
+                },
+                {
+                  name: '输出',
+                  value: 'Outputs',
+                  children: {
+                    create: [
+                      {
+                        name: 'HART 变量分配',
+                        value: 'HART Variable Assignments',
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '整定',
+                  value: 'Tuning',
+                  children: {
+                    create: [
+                      { name: '行程控制', value: 'Travel Control' },
+                      { name: '积分设置', value: 'Integral Settings' },
+                      { name: '压力控制', value: 'Pressure Control' },
+                    ],
+                  },
+                },
+                {
+                  name: '仪表',
+                  value: 'Instrument',
+                  children: {
+                    create: [{ name: '仪表', value: 'Instrument' }],
+                  },
+                },
+                {
+                  name: '输入特性化',
+                  value: 'Input Characterization',
+                },
+                {
+                  name: '行程/压力控制',
+                  value: 'Travel/Pressure Control',
+                  children: {
+                    create: [
+                      { name: '控制', value: 'Control' },
+                      { name: '限值/截止', value: 'Limit/Cutoff' },
+                      { name: '动态响应', value: 'Dynamic Response' },
+                    ],
+                  },
+                },
+                { name: '阵发', value: 'Burst' },
+              ],
+            },
+          },
+          {
+            name: '仪表组态-报警',
+            value: 'Instrument Configuration-Alerts',
+            children: {
+              create: [
+                {
+                  name: '行程历史报警',
+                  value: 'Travel History Alerts',
+                  children: {
+                    create: [
+                      { name: '循环计数', value: 'Cycle Count' },
+                      { name: '行程累计器', value: 'Travel Accumulator' },
+                    ],
+                  },
+                },
+                {
+                  name: '行程报警',
+                  value: 'Travel Alerts',
+                  children: {
+                    create: [
+                      { name: '行程偏差', value: 'Travel Deviation' },
+                      { name: '行程高高', value: 'Travel High High' },
+                      { name: '行程低低', value: 'Travel Low Low' },
+                      { name: '行程高', value: 'Travel High' },
+                      { name: '行程低', value: 'Travel Low' },
+                      {
+                        name: '行程低限位/截止',
+                        value: 'Travel Limit/Cutoff Low',
+                      },
+                      {
+                        name: '行程高限位/截止',
+                        value: 'Travel Limit/Cutoff High',
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '信息状态',
+                  value: 'Informational Status',
+                  children: {
+                    create: [
+                      {
+                        name: '仪表时间为大概值',
+                        value: 'Instrument Time is Approximate',
+                      },
+                      { name: '校验进行中', value: 'Calibration in Progress' },
+                      { name: '自动校验进行中', value: 'Autocal in Progress' },
+                      { name: '诊断进行中', value: 'Diagnostic in Progress' },
+                      {
+                        name: '诊断数据可用',
+                        value: 'Diagnostic Data Available',
+                      },
+                      {
+                        name: '积分器饱和高',
+                        value: 'Integrator Saturated High',
+                      },
+                      {
+                        name: '积分器饱和低',
+                        value: 'Integrator Saturated Low',
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
           {
             name: '仪表组态-报警(控制)',
             value: 'Instrument Configuration-Alerts(cont.)',
+            children: {
+              create: [
+                {
+                  name: '压力报警',
+                  value: 'Pressure Alerts',
+                  children: {
+                    create: [
+                      { name: '供气压力高', value: 'Supply Pressure High' },
+                      { name: '供气压力低', value: 'Supply Pressure Low' },
+                      { name: '压力偏差', value: 'Pressure Deviation' },
+                      { name: '端口 A 过压', value: 'Port A Overpressurized' },
+                    ],
+                  },
+                },
+                {
+                  name: '报警记录',
+                  value: 'Alert Record',
+                  children: {
+                    create: [
+                      { name: '报警记录非空', value: 'Alert Record Not Empty' },
+                      { name: '报警记录已满', value: 'Alert Record Full' },
+                    ],
+                  },
+                },
+                {
+                  name: '电子报警',
+                  value: 'Electronic Alerts',
+                  children: {
+                    create: [
+                      { name: '驱动电流', value: 'Drive Current' },
+                      { name: '驱动信号', value: 'Drive Signal' },
+                      { name: '非关键 NVM', value: 'Non-Critical NVM' },
+                      {
+                        name: '闪存完整性故障',
+                        value: 'Flash Integrity Failure',
+                      },
+                      {
+                        name: '参考电压故障',
+                        value: 'Reference Voltage Failure',
+                      },
+                      { name: '回路电流', value: 'Loop Current' },
+                      { name: '关机激活', value: 'Shutdown Activated' },
+                    ],
+                  },
+                },
+                {
+                  name: '传感器报警',
+                  value: 'Sensor Alerts',
+                  children: {
+                    create: [
+                      { name: '行程传感器', value: 'Travel Sensor' },
+                      {
+                        name: '压力切换激活',
+                        value: 'Pressure Fallback Active',
+                      },
+                      {
+                        name: '温度传感器故障',
+                        value: 'Temperature Sensor Failure',
+                      },
+                      {
+                        name: '小回路传感器故障',
+                        value: 'Minor Loop Sensor Failure',
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
           },
           {
             name: '仪表组态-规格表',
             value: 'Instrument Configuration-Spec Sheet',
+            children: {
+              create: [
+                { name: '阀门', value: 'Valve' },
+                { name: '内件', value: 'Trim' },
+                { name: '执行机构', value: 'Actuator' },
+                { name: '附件', value: 'Accessories' },
+              ],
+            },
           },
-          { name: '状态监视器', value: 'Status Monitor' },
+          {
+            name: '状态监视器',
+            value: 'Status Monitor',
+            children: {
+              create: [
+                { name: '监视器', value: 'Monitor' },
+                { name: '设备', value: 'Device' },
+                { name: '报警', value: 'Alerts' },
+              ],
+            },
+          },
           {
             name: '供气压力性能诊断',
             value: 'Supply Pressure Performance Diagnostic',
@@ -524,19 +788,110 @@ async function main() {
             name: '阀门摩擦力性能诊断',
             value: 'Valve Friction Performance Diagnostic',
           },
-          { name: '完全扫描', value: 'Total Scan' },
+          {
+            name: '完全扫描',
+            value: 'Total Scan',
+            children: {
+              create: [
+                { name: '输入', value: 'Inputs' },
+                { name: '已分析的数据', value: 'Analyzed Data' },
+                {
+                  name: '组态',
+                  value: 'Configuration',
+                  children: {
+                    create: [
+                      { name: '整定', value: 'Tuning' },
+                      { name: '增益', value: 'Gains' },
+                      { name: '积分设置', value: 'Integral Settings' },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
           {
             name: '完全扫描-特性曲线分析器设置',
             value: 'Total Scan-Signature Analyzer Settings',
+            children: {
+              create: [
+                {
+                  name: '特性曲线分析器设置',
+                  value: 'Signature Analyzer Settings',
+                },
+              ],
+            },
           },
-          { name: '完全扫描-注释', value: 'Total Scan-Notes' },
-          { name: '完全扫描-规格表', value: 'Total Scan-Spec Sheet' },
-          { name: '阶跃响应', value: 'Step Response' },
+          {
+            name: '完全扫描-注释',
+            value: 'Total Scan-Notes',
+            children: {
+              create: [{ name: '注释', value: 'Notes' }],
+            },
+          },
+          {
+            name: '完全扫描-规格表',
+            value: 'Total Scan-Spec Sheet',
+            children: {
+              create: [
+                { name: '阀门', value: 'Valve' },
+                { name: '内件', value: 'Trim' },
+                { name: '附件', value: 'Accessories' },
+                { name: '执行机构', value: 'Actuator' },
+              ],
+            },
+          },
+          {
+            name: '阶跃响应',
+            value: 'Step Response',
+            children: {
+              create: [
+                {
+                  name: '已分析的数据',
+                  value: 'Analyzed Data',
+                  children: {
+                    create: [
+                      { name: '非性能测试', value: 'Not A Performance Test' },
+                    ],
+                  },
+                },
+                {
+                  name: '组态',
+                  value: 'Configuration',
+                  children: {
+                    create: [
+                      { name: '整定', value: 'Tuning' },
+                      { name: '增益', value: 'Gains' },
+                      { name: '积分设置', value: 'Integral Settings' },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
           {
             name: '阶跃响应-已分析的数据',
             value: 'Step Response-Analyzed Data',
+            children: {
+              create: [
+                {
+                  name: '已分析的数据(所有时间均以秒为单位)',
+                  value: 'Analyzed Data (all times in seconds)',
+                },
+              ],
+            },
           },
-          { name: '阶跃响应-注释', value: 'Step Response-Notes' },
+          {
+            name: '阶跃响应-注释',
+            value: 'Step Response-Notes',
+            children: {
+              create: [
+                {
+                  name: '注释',
+                  value: 'Notes',
+                },
+              ],
+            },
+          },
         ],
       },
     },

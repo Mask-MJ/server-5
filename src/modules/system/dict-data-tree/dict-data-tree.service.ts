@@ -27,7 +27,17 @@ export class DictDataTreeService {
         name: { contains: name },
         parentId: !name ? null : undefined,
       },
-      include: { children: true },
+      include: {
+        children: {
+          include: {
+            children: {
+              include: {
+                children: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 
