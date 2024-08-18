@@ -1,5 +1,8 @@
+-- CreateSchema
+CREATE SCHEMA IF NOT EXISTS "flask_ocrt";
+
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "public"."User" (
     "id" SERIAL NOT NULL,
     "isAdmin" BOOLEAN NOT NULL DEFAULT false,
     "account" TEXT NOT NULL,
@@ -19,7 +22,7 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
-CREATE TABLE "Post" (
+CREATE TABLE "public"."Post" (
     "id" SERIAL NOT NULL,
     "code" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -34,7 +37,7 @@ CREATE TABLE "Post" (
 );
 
 -- CreateTable
-CREATE TABLE "Dept" (
+CREATE TABLE "public"."Dept" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "sort" INTEGER NOT NULL DEFAULT 1,
@@ -51,7 +54,7 @@ CREATE TABLE "Dept" (
 );
 
 -- CreateTable
-CREATE TABLE "Role" (
+CREATE TABLE "public"."Role" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "value" TEXT NOT NULL,
@@ -66,7 +69,7 @@ CREATE TABLE "Role" (
 );
 
 -- CreateTable
-CREATE TABLE "Permission" (
+CREATE TABLE "public"."Permission" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "value" TEXT NOT NULL,
@@ -79,7 +82,7 @@ CREATE TABLE "Permission" (
 );
 
 -- CreateTable
-CREATE TABLE "Menu" (
+CREATE TABLE "public"."Menu" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "sort" INTEGER NOT NULL DEFAULT 1,
@@ -98,7 +101,7 @@ CREATE TABLE "Menu" (
 );
 
 -- CreateTable
-CREATE TABLE "DictType" (
+CREATE TABLE "public"."DictType" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "value" TEXT NOT NULL,
@@ -112,7 +115,7 @@ CREATE TABLE "DictType" (
 );
 
 -- CreateTable
-CREATE TABLE "DictData" (
+CREATE TABLE "public"."DictData" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "value" TEXT NOT NULL,
@@ -130,7 +133,7 @@ CREATE TABLE "DictData" (
 );
 
 -- CreateTable
-CREATE TABLE "DictDataTree" (
+CREATE TABLE "public"."DictDataTree" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "value" TEXT NOT NULL,
@@ -141,7 +144,7 @@ CREATE TABLE "DictDataTree" (
 );
 
 -- CreateTable
-CREATE TABLE "Unit" (
+CREATE TABLE "public"."Unit" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "value" TEXT NOT NULL,
@@ -153,7 +156,7 @@ CREATE TABLE "Unit" (
 );
 
 -- CreateTable
-CREATE TABLE "OperationLog" (
+CREATE TABLE "public"."OperationLog" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "title" TEXT NOT NULL,
@@ -167,7 +170,7 @@ CREATE TABLE "OperationLog" (
 );
 
 -- CreateTable
-CREATE TABLE "LoginLog" (
+CREATE TABLE "public"."LoginLog" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "sessionId" TEXT NOT NULL DEFAULT '',
@@ -180,7 +183,7 @@ CREATE TABLE "LoginLog" (
 );
 
 -- CreateTable
-CREATE TABLE "Factory" (
+CREATE TABLE "public"."Factory" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "status" BOOLEAN NOT NULL DEFAULT true,
@@ -198,7 +201,7 @@ CREATE TABLE "Factory" (
 );
 
 -- CreateTable
-CREATE TABLE "Contract" (
+CREATE TABLE "public"."Contract" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "contractTime" TIMESTAMP(3) NOT NULL,
@@ -218,7 +221,7 @@ CREATE TABLE "Contract" (
 );
 
 -- CreateTable
-CREATE TABLE "Device" (
+CREATE TABLE "public"."Device" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "status" BOOLEAN NOT NULL DEFAULT true,
@@ -233,7 +236,7 @@ CREATE TABLE "Device" (
 );
 
 -- CreateTable
-CREATE TABLE "Valve" (
+CREATE TABLE "public"."Valve" (
     "id" SERIAL NOT NULL,
     "tag" TEXT NOT NULL,
     "unit" TEXT,
@@ -279,7 +282,7 @@ CREATE TABLE "Valve" (
 );
 
 -- CreateTable
-CREATE TABLE "ValveData" (
+CREATE TABLE "public"."ValveData" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "value" TEXT NOT NULL,
@@ -291,7 +294,7 @@ CREATE TABLE "ValveData" (
 );
 
 -- CreateTable
-CREATE TABLE "ValveHistoryDataList" (
+CREATE TABLE "public"."ValveHistoryDataList" (
     "id" SERIAL NOT NULL,
     "tag" TEXT NOT NULL,
     "valveId" INTEGER NOT NULL,
@@ -301,7 +304,7 @@ CREATE TABLE "ValveHistoryDataList" (
 );
 
 -- CreateTable
-CREATE TABLE "ValveHistoryData" (
+CREATE TABLE "public"."ValveHistoryData" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "value" TEXT NOT NULL,
@@ -313,7 +316,7 @@ CREATE TABLE "ValveHistoryData" (
 );
 
 -- CreateTable
-CREATE TABLE "AnalysisTask" (
+CREATE TABLE "public"."AnalysisTask" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "status" INTEGER NOT NULL DEFAULT 0,
@@ -330,7 +333,7 @@ CREATE TABLE "AnalysisTask" (
 );
 
 -- CreateTable
-CREATE TABLE "AnalysisTaskResult" (
+CREATE TABLE "public"."AnalysisTaskResult" (
     "id" SERIAL NOT NULL,
     "analysisTaskId" INTEGER NOT NULL,
     "tag" TEXT NOT NULL,
@@ -341,7 +344,7 @@ CREATE TABLE "AnalysisTaskResult" (
 );
 
 -- CreateTable
-CREATE TABLE "Pdf" (
+CREATE TABLE "public"."Pdf" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "taskId" INTEGER NOT NULL,
@@ -354,7 +357,7 @@ CREATE TABLE "Pdf" (
 );
 
 -- CreateTable
-CREATE TABLE "Rule" (
+CREATE TABLE "public"."Rule" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "url" TEXT NOT NULL,
@@ -367,196 +370,207 @@ CREATE TABLE "Rule" (
 );
 
 -- CreateTable
-CREATE TABLE "_PostToUser" (
+CREATE TABLE "public"."RedisData" (
+    "id" SERIAL NOT NULL,
+    "key" TEXT NOT NULL,
+    "value" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "RedisData_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."_PostToUser" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
 
 -- CreateTable
-CREATE TABLE "_DeptToUser" (
+CREATE TABLE "public"."_DeptToUser" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
 
 -- CreateTable
-CREATE TABLE "_RoleToUser" (
+CREATE TABLE "public"."_RoleToUser" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
 
 -- CreateTable
-CREATE TABLE "_MenuToRole" (
+CREATE TABLE "public"."_MenuToRole" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
 
 -- CreateTable
-CREATE TABLE "_MenuToUser" (
+CREATE TABLE "public"."_MenuToUser" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
 
 -- CreateTable
-CREATE TABLE "_FactoryToRole" (
+CREATE TABLE "public"."_FactoryToRole" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_account_key" ON "User"("account");
+CREATE UNIQUE INDEX "User_account_key" ON "public"."User"("account");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_createBy_key" ON "User"("createBy");
+CREATE UNIQUE INDEX "User_createBy_key" ON "public"."User"("createBy");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Post_code_key" ON "Post"("code");
+CREATE UNIQUE INDEX "Post_code_key" ON "public"."Post"("code");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Role_name_key" ON "Role"("name");
+CREATE UNIQUE INDEX "Role_name_key" ON "public"."Role"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Role_value_key" ON "Role"("value");
+CREATE UNIQUE INDEX "Role_value_key" ON "public"."Role"("value");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Menu_name_key" ON "Menu"("name");
+CREATE UNIQUE INDEX "Menu_name_key" ON "public"."Menu"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Menu_path_key" ON "Menu"("path");
+CREATE UNIQUE INDEX "Menu_path_key" ON "public"."Menu"("path");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Factory_name_key" ON "Factory"("name");
+CREATE UNIQUE INDEX "Factory_name_key" ON "public"."Factory"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "AnalysisTaskResult_analysisTaskId_key" ON "AnalysisTaskResult"("analysisTaskId");
+CREATE UNIQUE INDEX "AnalysisTaskResult_analysisTaskId_key" ON "public"."AnalysisTaskResult"("analysisTaskId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_PostToUser_AB_unique" ON "_PostToUser"("A", "B");
+CREATE UNIQUE INDEX "_PostToUser_AB_unique" ON "public"."_PostToUser"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_PostToUser_B_index" ON "_PostToUser"("B");
+CREATE INDEX "_PostToUser_B_index" ON "public"."_PostToUser"("B");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_DeptToUser_AB_unique" ON "_DeptToUser"("A", "B");
+CREATE UNIQUE INDEX "_DeptToUser_AB_unique" ON "public"."_DeptToUser"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_DeptToUser_B_index" ON "_DeptToUser"("B");
+CREATE INDEX "_DeptToUser_B_index" ON "public"."_DeptToUser"("B");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_RoleToUser_AB_unique" ON "_RoleToUser"("A", "B");
+CREATE UNIQUE INDEX "_RoleToUser_AB_unique" ON "public"."_RoleToUser"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_RoleToUser_B_index" ON "_RoleToUser"("B");
+CREATE INDEX "_RoleToUser_B_index" ON "public"."_RoleToUser"("B");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_MenuToRole_AB_unique" ON "_MenuToRole"("A", "B");
+CREATE UNIQUE INDEX "_MenuToRole_AB_unique" ON "public"."_MenuToRole"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_MenuToRole_B_index" ON "_MenuToRole"("B");
+CREATE INDEX "_MenuToRole_B_index" ON "public"."_MenuToRole"("B");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_MenuToUser_AB_unique" ON "_MenuToUser"("A", "B");
+CREATE UNIQUE INDEX "_MenuToUser_AB_unique" ON "public"."_MenuToUser"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_MenuToUser_B_index" ON "_MenuToUser"("B");
+CREATE INDEX "_MenuToUser_B_index" ON "public"."_MenuToUser"("B");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_FactoryToRole_AB_unique" ON "_FactoryToRole"("A", "B");
+CREATE UNIQUE INDEX "_FactoryToRole_AB_unique" ON "public"."_FactoryToRole"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_FactoryToRole_B_index" ON "_FactoryToRole"("B");
+CREATE INDEX "_FactoryToRole_B_index" ON "public"."_FactoryToRole"("B");
 
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_createBy_fkey" FOREIGN KEY ("createBy") REFERENCES "User"("account") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "public"."User" ADD CONSTRAINT "User_createBy_fkey" FOREIGN KEY ("createBy") REFERENCES "public"."User"("account") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Dept" ADD CONSTRAINT "Dept_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Dept"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "public"."Dept" ADD CONSTRAINT "Dept_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "public"."Dept"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Permission" ADD CONSTRAINT "Permission_menuId_fkey" FOREIGN KEY ("menuId") REFERENCES "Menu"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "public"."Permission" ADD CONSTRAINT "Permission_menuId_fkey" FOREIGN KEY ("menuId") REFERENCES "public"."Menu"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Menu" ADD CONSTRAINT "Menu_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Menu"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "public"."Menu" ADD CONSTRAINT "Menu_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "public"."Menu"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "DictData" ADD CONSTRAINT "DictData_dictTypeId_fkey" FOREIGN KEY ("dictTypeId") REFERENCES "DictType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."DictData" ADD CONSTRAINT "DictData_dictTypeId_fkey" FOREIGN KEY ("dictTypeId") REFERENCES "public"."DictType"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "DictData" ADD CONSTRAINT "DictData_treeId_fkey" FOREIGN KEY ("treeId") REFERENCES "DictDataTree"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "public"."DictData" ADD CONSTRAINT "DictData_treeId_fkey" FOREIGN KEY ("treeId") REFERENCES "public"."DictDataTree"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "DictDataTree" ADD CONSTRAINT "DictDataTree_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "DictDataTree"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "public"."DictDataTree" ADD CONSTRAINT "DictDataTree_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "public"."DictDataTree"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Factory" ADD CONSTRAINT "Factory_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Factory"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "public"."Factory" ADD CONSTRAINT "Factory_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "public"."Factory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Contract" ADD CONSTRAINT "Contract_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."Contract" ADD CONSTRAINT "Contract_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "public"."Factory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Device" ADD CONSTRAINT "Device_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."Device" ADD CONSTRAINT "Device_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "public"."Factory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Valve" ADD CONSTRAINT "Valve_analysisTaskId_fkey" FOREIGN KEY ("analysisTaskId") REFERENCES "AnalysisTask"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "public"."Valve" ADD CONSTRAINT "Valve_analysisTaskId_fkey" FOREIGN KEY ("analysisTaskId") REFERENCES "public"."AnalysisTask"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Valve" ADD CONSTRAINT "Valve_deviceId_fkey" FOREIGN KEY ("deviceId") REFERENCES "Device"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "public"."Valve" ADD CONSTRAINT "Valve_deviceId_fkey" FOREIGN KEY ("deviceId") REFERENCES "public"."Device"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Valve" ADD CONSTRAINT "Valve_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."Valve" ADD CONSTRAINT "Valve_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "public"."Factory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ValveData" ADD CONSTRAINT "ValveData_valveId_fkey" FOREIGN KEY ("valveId") REFERENCES "Valve"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."ValveData" ADD CONSTRAINT "ValveData_valveId_fkey" FOREIGN KEY ("valveId") REFERENCES "public"."Valve"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ValveHistoryDataList" ADD CONSTRAINT "ValveHistoryDataList_valveId_fkey" FOREIGN KEY ("valveId") REFERENCES "Valve"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."ValveHistoryDataList" ADD CONSTRAINT "ValveHistoryDataList_valveId_fkey" FOREIGN KEY ("valveId") REFERENCES "public"."Valve"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ValveHistoryData" ADD CONSTRAINT "ValveHistoryData_valveHistoryDataListId_fkey" FOREIGN KEY ("valveHistoryDataListId") REFERENCES "ValveHistoryDataList"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."ValveHistoryData" ADD CONSTRAINT "ValveHistoryData_valveHistoryDataListId_fkey" FOREIGN KEY ("valveHistoryDataListId") REFERENCES "public"."ValveHistoryDataList"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AnalysisTask" ADD CONSTRAINT "AnalysisTask_dictTypeId_fkey" FOREIGN KEY ("dictTypeId") REFERENCES "DictType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."AnalysisTask" ADD CONSTRAINT "AnalysisTask_dictTypeId_fkey" FOREIGN KEY ("dictTypeId") REFERENCES "public"."DictType"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AnalysisTask" ADD CONSTRAINT "AnalysisTask_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."AnalysisTask" ADD CONSTRAINT "AnalysisTask_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "public"."Factory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AnalysisTaskResult" ADD CONSTRAINT "AnalysisTaskResult_analysisTaskId_fkey" FOREIGN KEY ("analysisTaskId") REFERENCES "AnalysisTask"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."AnalysisTaskResult" ADD CONSTRAINT "AnalysisTaskResult_analysisTaskId_fkey" FOREIGN KEY ("analysisTaskId") REFERENCES "public"."AnalysisTask"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Pdf" ADD CONSTRAINT "Pdf_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "AnalysisTask"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."Pdf" ADD CONSTRAINT "Pdf_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "public"."AnalysisTask"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_PostToUser" ADD CONSTRAINT "_PostToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_PostToUser" ADD CONSTRAINT "_PostToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "public"."Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_PostToUser" ADD CONSTRAINT "_PostToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_PostToUser" ADD CONSTRAINT "_PostToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_DeptToUser" ADD CONSTRAINT "_DeptToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Dept"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_DeptToUser" ADD CONSTRAINT "_DeptToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "public"."Dept"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_DeptToUser" ADD CONSTRAINT "_DeptToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_DeptToUser" ADD CONSTRAINT "_DeptToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_RoleToUser" ADD CONSTRAINT "_RoleToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Role"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_RoleToUser" ADD CONSTRAINT "_RoleToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "public"."Role"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_RoleToUser" ADD CONSTRAINT "_RoleToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_RoleToUser" ADD CONSTRAINT "_RoleToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_MenuToRole" ADD CONSTRAINT "_MenuToRole_A_fkey" FOREIGN KEY ("A") REFERENCES "Menu"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_MenuToRole" ADD CONSTRAINT "_MenuToRole_A_fkey" FOREIGN KEY ("A") REFERENCES "public"."Menu"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_MenuToRole" ADD CONSTRAINT "_MenuToRole_B_fkey" FOREIGN KEY ("B") REFERENCES "Role"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_MenuToRole" ADD CONSTRAINT "_MenuToRole_B_fkey" FOREIGN KEY ("B") REFERENCES "public"."Role"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_MenuToUser" ADD CONSTRAINT "_MenuToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Menu"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_MenuToUser" ADD CONSTRAINT "_MenuToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "public"."Menu"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_MenuToUser" ADD CONSTRAINT "_MenuToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_MenuToUser" ADD CONSTRAINT "_MenuToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_FactoryToRole" ADD CONSTRAINT "_FactoryToRole_A_fkey" FOREIGN KEY ("A") REFERENCES "Factory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_FactoryToRole" ADD CONSTRAINT "_FactoryToRole_A_fkey" FOREIGN KEY ("A") REFERENCES "public"."Factory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_FactoryToRole" ADD CONSTRAINT "_FactoryToRole_B_fkey" FOREIGN KEY ("B") REFERENCES "Role"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_FactoryToRole" ADD CONSTRAINT "_FactoryToRole_B_fkey" FOREIGN KEY ("B") REFERENCES "public"."Role"("id") ON DELETE CASCADE ON UPDATE CASCADE;

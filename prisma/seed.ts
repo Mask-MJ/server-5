@@ -482,6 +482,14 @@ async function main() {
       },
     },
   });
+  /// create dictType
+  await prisma.dictType.create({
+    data: {
+      name: 'hart',
+      value: 'hart',
+      createBy: 'admin',
+    },
+  });
   // pdf层级树
   await prisma.dictDataTree.create({
     data: {
@@ -756,6 +764,395 @@ async function main() {
           {
             name: '状态监视器',
             value: 'Status Monitor',
+            dictData: {
+              create: [
+                {
+                  name: '行程',
+                  value: 'Travel',
+                  sort: 1,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '供气压力',
+                  value: 'Supply Pressure',
+                  sort: 2,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '仪表模式',
+                  value: 'Instrument Mode',
+                  sort: 3,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '行程累计器',
+                  value: 'Travel Accumulator',
+                  sort: 4,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '放大器调整',
+                  value: 'Relay Adjustment',
+                  sort: 5,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '最高温度记录',
+                  value: 'Max Recorded Temp',
+                  sort: 6,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '运行时间',
+                  value: 'Run Time',
+                  sort: 7,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '启动次数',
+                  value: 'Number of Powerups',
+                  sort: 8,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '仪表等级',
+                  value: 'Instrument Level',
+                  sort: 9,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '阀门型式',
+                  value: 'Valve Style',
+                  sort: 10,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '执行机构类型',
+                  value: 'Spring Actuator Style',
+                  sort: 11,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '标定日期',
+                  value: 'Calibration Date',
+                  sort: 12,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '行程高',
+                  value: 'Travel High',
+                  sort: 13,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '行程低',
+                  value: 'Travel Low',
+                  sort: 14,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '行程高高',
+                  value: 'Travel High High',
+                  sort: 15,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '行程低低',
+                  value: 'Travel Low Low',
+                  sort: 16,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '行程偏差',
+                  value: 'Travel Deviation',
+                  sort: 17,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '循环计数高',
+                  value: 'Cycle Count High',
+                  sort: 18,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '行程累计高',
+                  value: 'Travel Accumulator High',
+                  sort: 19,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '供气压力低',
+                  value: 'Supply Pressure',
+                  sort: 20,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '组态已更改',
+                  value: 'Configuration Changed',
+                  sort: 21,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '回路电流验证报警',
+                  value: 'Loop Current Validation Alert',
+                  sort: 22,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '内部传感器超出限制范围',
+                  value: 'Internal Sensor Out of Limits',
+                  sort: 23,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '变量超出范围',
+                  value: 'Variable Out of Range',
+                  sort: 24,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '处于标定模式',
+                  value: 'In Calibration Mode',
+                  sort: 25,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '自动校验进行中',
+                  value: 'Autocal in Progress',
+                  sort: 26,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '诊断进行中',
+                  value: 'Diagnostic in Progress',
+                  sort: 27,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '小回路传感器故障',
+                  value: 'Minor Loop Sensor Failure',
+                  sort: 28,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '行程传感器故障',
+                  value: 'Travel Sensor Failure',
+                  sort: 29,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '温度传感器故障',
+                  value: 'Temperature Sensor Failure',
+                  sort: 30,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '压力传感器故障',
+                  value: 'Pressure Sensor Failure',
+                  sort: 31,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '驱动电流故障',
+                  value: 'Drive Current Failure',
+                  sort: 32,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '关键 NVM 故障',
+                  value: 'Critical NVM Failure',
+                  sort: 33,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '闪存完整性故障',
+                  value: 'Flash Integrity Failure',
+                  sort: 34,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '参考电压故障',
+                  value: 'Reference Voltage Failure',
+                  sort: 35,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '报警记录非空',
+                  value: 'Alert Record Not Empty',
+                  sort: 36,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '报警记录已满',
+                  value: 'Alert Record Full',
+                  sort: 37,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '积分器饱和高',
+                  value: 'Integrator Saturated High',
+                  sort: 38,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '积分器饱和低',
+                  value: 'Integrator Saturated Low',
+                  sort: 39,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '关机激活',
+                  value: 'Shutdown Activated',
+                  sort: 40,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '压力偏差',
+                  value: 'Pressure Deviation',
+                  sort: 41,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '非关键 NVM 故障',
+                  value: 'Non-Critical NVM Failure',
+                  sort: 42,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '仪表时间为大概值',
+                  value: 'Instrument Time is Approximate',
+                  sort: 43,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '诊断数据可用',
+                  value: 'Diagnostic Data Available',
+                  sort: 44,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '要求手动复位',
+                  value: 'Manual Reset Required',
+                  sort: 45,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '行程高限位/截止',
+                  value: 'Travel Limit/Cutoff High',
+                  sort: 46,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '行程低限位/截止',
+                  value: 'Travel Limit/Cutoff Low',
+                  sort: 47,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '压力切换激活',
+                  value: 'Pressure Fallback Active',
+                  sort: 48,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '驱动信号',
+                  value: 'Drive Signal',
+                  sort: 49,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '行程偏差',
+                  value: 'Travel Deviation',
+                  sort: 50,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '供气压力高',
+                  value: 'Supply Pressure High',
+                  sort: 51,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '端口 A 过压',
+                  value: 'Port A Overpressurized',
+                  sort: 52,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: 'SOV 测试最低要求压降',
+                  value: 'SOV Test Min Required Pressure Drop',
+                  sort: 53,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: 'SOV 测试最高可允许压降',
+                  value: 'SOV Test Max Allowable Pressure Drop',
+                  sort: 54,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '循环计数',
+                  value: 'Cycle Count',
+                  sort: 55,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+              ],
+            },
             children: {
               create: [
                 { name: '监视器', value: 'Monitor' },
@@ -767,30 +1164,177 @@ async function main() {
           {
             name: '供气压力性能诊断',
             value: 'Supply Pressure Performance Diagnostic',
+            dictData: {
+              create: [
+                {
+                  name: '供气压力性能诊断',
+                  value: 'Supply Pressure Performance Diagnostic',
+                  sort: 55,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+              ],
+            },
           },
           {
             name: '行程偏差性能诊断',
             value: 'Travel Deviation Performance Diagnostic',
+            dictData: {
+              create: [
+                {
+                  name: '行程偏差性能诊断',
+                  value: 'Travel Deviation Performance Diagnostic',
+                  sort: 56,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+              ],
+            },
           },
           {
             name: 'I/P和放大器完整性性能诊断',
             value: 'I/P and Relay Integrity Performance Diagnostic',
+            dictData: {
+              create: [
+                {
+                  name: 'I/P和放大器完整性性能诊断',
+                  value: 'I/P and Relay Integrity Performance Diagnostic',
+                  sort: 57,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+              ],
+            },
           },
           {
             name: '放大器调整性能诊断',
             value: 'Relay Adjustment Performance Diagnostic',
+            dictData: {
+              create: [
+                {
+                  name: '放大器调整性能诊断',
+                  value: 'Relay Adjustment Performance Diagnostic',
+                  sort: 58,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+              ],
+            },
           },
           {
             name: '空气质量流量性能诊断',
             value: 'Air Mass Flow Performance Diagnostic',
+            dictData: {
+              create: [
+                {
+                  name: '空气质量流量性能诊断',
+                  value: 'Air Mass Flow Performance Diagnostic',
+                  sort: 59,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+              ],
+            },
           },
           {
             name: '阀门摩擦力性能诊断',
             value: 'Valve Friction Performance Diagnostic',
+            dictData: {
+              create: [
+                {
+                  name: '阀门摩擦力性能诊断',
+                  value: 'Valve Friction Performance Diagnostic',
+                  sort: 93,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '平均扭矩',
+                  value: 'Avg. Torque',
+                  sort: 94,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '平均死区',
+                  value: 'Avg. Dead Band',
+                  sort: 95,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+              ],
+            },
           },
           {
             name: '完全扫描',
             value: 'Total Scan',
+            dictData: {
+              create: [
+                {
+                  name: '扫描时间',
+                  value: 'Scan Time',
+                  sort: 79,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '平均动态误差',
+                  value: 'Avg. Dynamic Error',
+                  sort: 80,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '动态线性度（独立）',
+                  value: 'Dyn. Linearity (Ind.)',
+                  sort: 81,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '平均扭矩',
+                  value: 'Average Torque',
+                  sort: 82,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '弹簧预紧力',
+                  value: 'Bench Set',
+                  sort: 83,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '测试状态阀座负载',
+                  value: 'Seat Load As Tested',
+                  sort: 84,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '投用状态阀座负载',
+                  value: 'Service Seat Load',
+                  sort: 85,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '所需阀座负载',
+                  value: 'Required Seat Load',
+                  sort: 86,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '预期总摩擦力',
+                  value: 'Expected Total Friction',
+                  sort: 87,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+              ],
+            },
             children: {
               create: [
                 { name: '输入', value: 'Inputs' },
@@ -831,6 +1375,45 @@ async function main() {
           {
             name: '完全扫描-规格表',
             value: 'Total Scan-Spec Sheet',
+            dictData: {
+              create: [
+                {
+                  name: '额定行程',
+                  value: 'Rated Travel',
+                  sort: 88,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '实际行程：',
+                  value: 'Actual Travel',
+                  sort: 89,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '下方弹簧预紧力',
+                  value: 'Lower Bench Set',
+                  sort: 90,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '上方弹簧预紧力',
+                  value: 'Upper Bench Set',
+                  sort: 91,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '增压器',
+                  value: 'Volume Booster',
+                  sort: 92,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+              ],
+            },
             children: {
               create: [
                 { name: '阀门', value: 'Valve' },
@@ -843,6 +1426,52 @@ async function main() {
           {
             name: '阶跃响应',
             value: 'Step Response',
+            dictData: {
+              create: [
+                {
+                  name: '反馈连接方式',
+                  value: 'Feedback Connection',
+                  sort: 61,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '零功率状态',
+                  value: 'Zero Power Condition',
+                  sort: 62,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '行程整定参数',
+                  value: 'Travel Tuning Set',
+                  sort: 63,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '比例',
+                  value: 'Proportional',
+                  sort: 64,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '速度：',
+                  value: 'Velocity',
+                  sort: 65,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: 'MLF',
+                  value: 'MLF',
+                  sort: 66,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+              ],
+            },
             children: {
               create: [
                 {
@@ -871,6 +1500,94 @@ async function main() {
           {
             name: '阶跃响应-已分析的数据',
             value: 'Step Response-Analyzed Data',
+            dictData: {
+              create: [
+                {
+                  name: '1',
+                  value: '1',
+                  sort: 67,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '2',
+                  value: '2',
+                  sort: 68,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '3',
+                  value: '3',
+                  sort: 69,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '4',
+                  value: '4',
+                  sort: 70,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '5',
+                  value: '5',
+                  sort: 71,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '6',
+                  value: '6',
+                  sort: 72,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '7',
+                  value: '7',
+                  sort: 73,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '8',
+                  value: '8',
+                  sort: 74,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '9',
+                  value: '9',
+                  sort: 75,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '10',
+                  value: '10',
+                  sort: 76,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '11',
+                  value: '11',
+                  sort: 77,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+                {
+                  name: '12',
+                  value: '12',
+                  sort: 78,
+                  createBy: 'admin',
+                  dictTypeId: 1,
+                },
+              ],
+            },
             children: {
               create: [
                 {
@@ -897,100 +1614,6 @@ async function main() {
     },
   });
 
-  /// create dictType
-  await prisma.dictType.create({
-    data: {
-      name: 'ffonline英文版',
-      value: 'ff online',
-      createBy: 'admin',
-      dictData: {
-        create: [
-          { name: '阀门位号', value: 'name', createBy: 'admin' },
-          { name: '阀门型号', value: 'model', createBy: 'admin' },
-          { name: '阀门品牌', value: 'brand', createBy: 'admin' },
-        ],
-      },
-    },
-  });
-  await prisma.dictType.create({
-    data: {
-      name: 'ffonline中文版',
-      value: 'ff online',
-      createBy: 'admin',
-      dictData: {
-        create: [
-          { name: '阀门位号-中文版', value: 'name', createBy: 'admin' },
-          { name: '阀门型号-中文版', value: 'model', createBy: 'admin' },
-          { name: '阀门品牌-中文版', value: 'brand', createBy: 'admin' },
-        ],
-      },
-    },
-  });
-  await prisma.dictType.create({
-    data: {
-      name: 'hart',
-      value: 'hart',
-      createBy: 'admin',
-      dictData: {
-        create: [
-          {
-            name: 'HATR 标签',
-            value: 'HART Tag',
-            createBy: 'admin',
-            remark: 'Hart|仪表组态-基本|设备标识|标签',
-          },
-          {
-            name: '行程',
-            value: 'Travel',
-            createBy: 'admin',
-            remark: 'hart|状态监视器|监视器',
-          },
-          {
-            name: '循环计数',
-            value: 'Cycle Count',
-            createBy: 'admin',
-            remark: 'hart|状态监视器|监视器',
-          },
-          {
-            name: '行程偏差',
-            value: 'Travel Deviation',
-            createBy: 'admin',
-            remark: 'hart|状态监视器|监视器',
-          },
-          {
-            name: '平均动态误差',
-            value: 'Avg. Dynamic Error',
-            createBy: 'admin',
-            remark: 'hart|完全扫描|已分析的数据',
-          },
-          {
-            name: '平均扭矩',
-            value: 'Average Torque',
-            createBy: 'admin',
-            remark: 'hart|完全扫描|已分析的数据',
-          },
-          {
-            name: '额定行程',
-            value: 'Rated Travel',
-            createBy: 'admin',
-            remark: 'hart|完全扫描|阀门',
-          },
-          {
-            name: '反馈连接方式',
-            value: 'Feedback Connection',
-            createBy: 'admin',
-            remark: 'hart|阶跃响应|组态',
-          },
-          {
-            name: '行程高',
-            value: 'Travel High',
-            createBy: 'admin',
-            remark: 'hart|状态监视器|报警',
-          },
-        ],
-      },
-    },
-  });
   // create factory
   await prisma.factory.create({
     data: {
