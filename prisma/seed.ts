@@ -485,8 +485,8 @@ async function main() {
   // pdf层级树
   await prisma.dictDataTree.create({
     data: {
-      name: 'hard',
-      value: 'hard',
+      name: 'hart',
+      value: 'hart',
       children: {
         create: [
           {
@@ -896,69 +896,7 @@ async function main() {
       },
     },
   });
-  // pdf层级树
-  await prisma.dictDataTree.create({
-    data: {
-      name: 'ff',
-      value: 'ff',
-      children: {
-        create: [
-          {
-            name: '仪表组态-基本，转换块',
-            value: 'Instrument Configuration-Basic, Transducer',
-          },
-          {
-            name: '仪表组态-报警，转换块',
-            value: 'Instrument Configuration-Alerts, Transducer',
-          },
-          {
-            name: ' 仪表组态-报警，转换块(控制)',
-            value: 'Instrument Configuration-Alerts, Transducer(cont.)',
-          },
-          {
-            name: '仪表组态-规格表，转换块',
-            value: ' Instrument Configuration-Spec Sheet, Transducer',
-          },
-          {
-            name: '仪表组态-资源块',
-            value: 'Instrument Configuration-Resource Block',
-          },
-          {
-            name: '状态监视器',
-            value: ' Status Monitor',
-          },
-          {
-            name: '阶跃响应',
-            value: 'Step Response',
-          },
-          {
-            name: '阶跃响应-已分析的数据',
-            value: 'Step Response-Analyzed Data',
-          },
-          {
-            name: '阶跃响应-注释',
-            value: 'Step Response-Notes',
-          },
-          {
-            name: '完全扫描',
-            value: 'Total Scan',
-          },
-          {
-            name: ' 完全扫描-注释',
-            value: 'Total Scan-Notes',
-          },
-          {
-            name: '完全扫描-规格表',
-            value: 'Total Scan-Spec Sheet',
-          },
-          {
-            name: '阀门摩擦力性能诊断',
-            value: 'Valve Friction Performance Diagnostic',
-          },
-        ],
-      },
-    },
-  });
+
   /// create dictType
   await prisma.dictType.create({
     data: {
@@ -990,8 +928,8 @@ async function main() {
   });
   await prisma.dictType.create({
     data: {
-      name: 'hard',
-      value: 'hard',
+      name: 'hart',
+      value: 'hart',
       createBy: 'admin',
       dictData: {
         create: [
@@ -1056,77 +994,50 @@ async function main() {
   // create factory
   await prisma.factory.create({
     data: {
-      name: '北京总工厂',
+      name: '万华化学（福建）有限公司',
+      address: '福建省福州市福清市江阴镇江阴港城经济区国盛大道3号',
       createBy: 'admin',
-      children: {
+      device: {
         create: [
-          {
-            name: '北京分厂',
-            createBy: 'admin',
-            device: {
-              create: [
-                {
-                  name: '北京分厂-装置1',
-                  createBy: 'admin',
-                  valve: {
-                    create: [
-                      {
-                        tag: 'DW-R1',
-                        createBy: 'admin',
-                        factoryId: 2,
-                      },
-                      {
-                        tag: 'DW-R2',
-                        createBy: 'admin',
-                        factoryId: 2,
-                      },
-                    ],
-                  },
-                },
-                {
-                  name: '北京分厂-装置2',
-                  createBy: 'admin',
-                },
-              ],
-            },
-          },
-          {
-            name: '北京分厂2',
-            createBy: 'admin',
-            device: {
-              create: [
-                { name: '北京分厂2-装置1', createBy: 'admin' },
-                { name: '北京分厂2-装置2', createBy: 'admin' },
-              ],
-            },
-          },
+          { name: 'PVC', createBy: 'admin' },
+          { name: 'VCM', createBy: 'admin' },
         ],
       },
     },
   });
-  await prisma.factory.create({
-    data: {
-      name: '上海总工厂',
-      createBy: 'admin',
-      children: {
-        create: [
-          { name: '上海分厂', createBy: 'admin' },
-          { name: '上海分厂2', createBy: 'admin' },
-        ],
+  await prisma.factory.createMany({
+    data: [
+      {
+        name: '英威达尼龙化工（中国）有限公司',
+        address: '上海化学工业区天华路88号',
+        createBy: 'admin',
       },
-    },
-  });
-  await prisma.factory.create({
-    data: {
-      name: '深圳总工厂',
-      createBy: 'admin',
-      children: {
-        create: [
-          { name: '深圳分厂', createBy: 'admin' },
-          { name: '深圳分厂2', createBy: 'admin' },
-        ],
+      {
+        name: '九江心连心化肥有限公司',
+        address: '江西省九江市彭泽县矶山工业园区',
+        createBy: 'admin',
       },
-    },
+      {
+        name: '新浦化学（泰兴）有限公司',
+        address: '江苏省泰兴经济开发区疏港路１号',
+        createBy: 'admin',
+      },
+      {
+        name: '镇江联成化学工业有限公司',
+        address: '江苏省镇江新区临江西路57号',
+        createBy: 'admin',
+      },
+      {
+        name: '泰州联成化学工业有限公司',
+        address: '江苏省泰兴市滨江镇新木路9号',
+        createBy: 'admin',
+      },
+      {
+        name: '扬子石化-巴斯夫有限责任公司',
+        address: '江苏省南京市六合区乙烯路266号',
+        createBy: 'admin',
+      },
+    ],
   });
 
   console.log('注入数据成功');

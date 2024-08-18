@@ -235,8 +235,8 @@ model DictData {
   /// 字典类型
   dictTypeId Int
   treeId     Int?
-  dictType   DictType      @relation(fields: [dictTypeId], references: [id], onDelete: Cascade)
-  tree       DictDataTree? @relation(fields: [treeId], references: [id])
+  dictType   DictType      @relation(fields: [dictTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  tree       DictDataTree? @relation(fields: [treeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@schema("public")
 }
@@ -248,7 +248,7 @@ model DictDataTree {
   remark   String?
   parentId Int?
   dictData DictData[]
-  parent   DictDataTree?  @relation("DictDataTreeToDictDataTree", fields: [parentId], references: [id])
+  parent   DictDataTree?  @relation("DictDataTreeToDictDataTree", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   children DictDataTree[] @relation("DictDataTreeToDictDataTree")
 
   @@schema("public")
@@ -333,7 +333,7 @@ model Factory {
   analysisTask AnalysisTask[]
   contract     Contract[]
   device       Device[]
-  parent       Factory?       @relation("FactoryToFactory", fields: [parentId], references: [id])
+  parent       Factory?       @relation("FactoryToFactory", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   children     Factory[]      @relation("FactoryToFactory")
   valve        Valve[]
   role         Role[]         @relation("FactoryToRole")
@@ -367,7 +367,7 @@ model Contract {
   updateBy       String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  factory        Factory  @relation(fields: [factoryId], references: [id])
+  factory        Factory  @relation(fields: [factoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@schema("public")
 }
@@ -388,7 +388,7 @@ model Device {
   updateBy  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  factory   Factory  @relation(fields: [factoryId], references: [id])
+  factory   Factory  @relation(fields: [factoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   valve     Valve[]
 
   @@schema("public")
@@ -472,8 +472,8 @@ model Valve {
   /// 分析任务id
   analysisTaskId        Int?
   analysisTask          AnalysisTask?          @relation(fields: [analysisTaskId], references: [id])
-  device                Device?                @relation(fields: [deviceId], references: [id])
-  factory               Factory                @relation(fields: [factoryId], references: [id])
+  device                Device?                @relation(fields: [deviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  factory               Factory                @relation(fields: [factoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   valveData             ValveData[]
   valveHistoryDataList  ValveHistoryDataList[]
 
@@ -493,7 +493,7 @@ model ValveData {
   valveId Int
   /// 读取时间
   time    DateTime
-  valve   Valve    @relation(fields: [valveId], references: [id])
+  valve   Valve    @relation(fields: [valveId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@schema("public")
 }
@@ -507,7 +507,7 @@ model ValveHistoryDataList {
   /// 读取时间
   time             DateTime
   valveHistoryData ValveHistoryData[]
-  valve            Valve              @relation(fields: [valveId], references: [id])
+  valve            Valve              @relation(fields: [valveId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@schema("public")
 }
@@ -523,7 +523,7 @@ model ValveHistoryData {
   valveHistoryDataListId Int
   /// 读取时间
   time                   DateTime
-  valveHistoryDataList   ValveHistoryDataList @relation(fields: [valveHistoryDataListId], references: [id])
+  valveHistoryDataList   ValveHistoryDataList @relation(fields: [valveHistoryDataListId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@schema("public")
 }
@@ -548,8 +548,8 @@ model AnalysisTask {
   updateBy           String?
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
-  dict               DictType            @relation(fields: [dictTypeId], references: [id])
-  factory            Factory             @relation(fields: [factoryId], references: [id])
+  dict               DictType            @relation(fields: [dictTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  factory            Factory             @relation(fields: [factoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   analysisTaskResult AnalysisTaskResult?
   pdf                Pdf[]
   valve              Valve[]
@@ -568,7 +568,7 @@ model AnalysisTaskResult {
   time           DateTime
   /// 读取的pdf数据 json格式
   data           Json?
-  analysisTask   AnalysisTask @relation(fields: [analysisTaskId], references: [id], onDelete: Cascade)
+  analysisTask   AnalysisTask @relation(fields: [analysisTaskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@schema("public")
 }
@@ -584,7 +584,7 @@ model Pdf {
   updatedAt DateTime     @updatedAt
   /// pdf文件路径
   url       String
-  task      AnalysisTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  task      AnalysisTask @relation(fields: [taskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@schema("public")
 }
