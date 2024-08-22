@@ -51,8 +51,8 @@ importers:
         specifier: ^10.3.10
         version: 10.3.10(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@10.3.10)(@nestjs/platform-socket.io@10.3.10)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@prisma/client':
-        specifier: 5.13.0
-        version: 5.13.0(prisma@5.18.0)
+        specifier: 5.18.0
+        version: 5.18.0(prisma@5.18.0)
       axios:
         specifier: ^1.7.3
         version: 1.7.3
@@ -91,7 +91,7 @@ importers:
         version: 1.9.7(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1))(winston@3.14.1)
       nestjs-prisma:
         specifier: ^0.23.0
-        version: 0.23.0(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@prisma/client@5.13.0(prisma@5.18.0))(chokidar@3.6.0)(prisma@5.18.0)
+        version: 0.23.0(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@prisma/client@5.18.0(prisma@5.18.0))(chokidar@3.6.0)(prisma@5.18.0)
       pdf2json:
         specifier: ^3.1.3
         version: 3.1.3
@@ -100,7 +100,7 @@ importers:
         version: 8.12.0
       prisma-extension-pagination:
         specifier: ^0.7.4
-        version: 0.7.4(@prisma/client@5.13.0(prisma@5.18.0))
+        version: 0.7.4(@prisma/client@5.18.0(prisma@5.18.0))
       reflect-metadata:
         specifier: ^0.1.14
         version: 0.1.14
@@ -789,8 +789,8 @@ packages:
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@prisma/client@5.13.0':
-    resolution: {integrity: sha512-uYdfpPncbZ/syJyiYBwGZS8Gt1PTNoErNYMuqHDa2r30rNSFtgTA/LXsSk55R7pdRTMi5pHkeP9B14K6nHmwkg==}
+  '@prisma/client@5.18.0':
+    resolution: {integrity: sha512-BWivkLh+af1kqC89zCJYkHsRcyWsM8/JHpsDMM76DjP3ZdEquJhXa4IeX+HkWPnwJ5FanxEJFZZDTWiDs/Kvyw==}
     engines: {node: '>=16.13'}
     peerDependencies:
       prisma: '*'
@@ -4622,7 +4622,7 @@ snapshots:
 
   '@pkgr/core@0.1.1': {}
 
-  '@prisma/client@5.13.0(prisma@5.18.0)':
+  '@prisma/client@5.18.0(prisma@5.18.0)':
     optionalDependencies:
       prisma: 5.18.0
 
@@ -6917,12 +6917,12 @@ snapshots:
       fast-safe-stringify: 2.1.1
       winston: 3.14.1
 
-  nestjs-prisma@0.23.0(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@prisma/client@5.13.0(prisma@5.18.0))(chokidar@3.6.0)(prisma@5.18.0):
+  nestjs-prisma@0.23.0(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@prisma/client@5.18.0(prisma@5.18.0))(chokidar@3.6.0)(prisma@5.18.0):
     dependencies:
       '@angular-devkit/core': 13.3.11(chokidar@3.6.0)
       '@angular-devkit/schematics': 13.3.11(chokidar@3.6.0)
       '@nestjs/common': 10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
-      '@prisma/client': 5.13.0(prisma@5.18.0)
+      '@prisma/client': 5.18.0(prisma@5.18.0)
       '@schematics/angular': 13.3.11(chokidar@3.6.0)
       prisma: 5.18.0
     transitivePeerDependencies:
@@ -7150,9 +7150,9 @@ snapshots:
       ansi-styles: 5.2.0
       react-is: 18.3.1
 
-  prisma-extension-pagination@0.7.4(@prisma/client@5.13.0(prisma@5.18.0)):
+  prisma-extension-pagination@0.7.4(@prisma/client@5.18.0(prisma@5.18.0)):
     dependencies:
-      '@prisma/client': 5.13.0(prisma@5.18.0)
+      '@prisma/client': 5.18.0(prisma@5.18.0)
 
   prisma@5.18.0:
     dependencies:
