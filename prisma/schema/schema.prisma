@@ -1,0 +1,77 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema", "prismaSchemaFolder"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["flask_ocrt", "public"]
+}
+
+/// 用户信息表
+model User {
+  /// 用户ID
+  id          Int      @id @default(autoincrement())
+  /// 是否是超级管理员
+  isAdmin     Boolean  @default(false)
+  /// 账号
+  account     String   @unique
+  /// 密码
+  password    String
+  /// 昵称
+  nickname    String   @default("")
+  /// 头像路径
+  avatar      String   @default("")
+  /// 邮箱
+  email       String   @default("")
+  /// 手机号
+  phoneNumber String   @default("")
+  /// 性别（0女 1男 2未知）
+  sex         Int      @default(1)
+  /// 状态
+  status      Boolean  @default(true)
+  /// 创建者
+  createBy    String?  @unique
+  /// 创建时间
+  createdAt   DateTime @default(now())
+  /// 更新时间
+  updatedAt   DateTime @updatedAt
+  /// 备注
+  remark      String   @default("")
+  creator     User?    @relation("editor", fields: [createBy], references: [account])
+  updateBy    User?    @relation("editor")
+  dept        Dept[]   @relation("DeptToUser")
+  menu        Menu[]   @relation("MenuToUser")
+  post        Post[]   @relation("PostToUser")
+  role        Role[]   @relation("RoleToUser")
+
+  @@schema("public")
+}
+
+/// 角色信息表
+model Role {
+  /// 角色ID
+  id        Int       @id @default(autoincrement())
+  /// 角色名称
+  name      String    @unique
+  /// 角色键值
+  value     String    @unique
+  /// 显示顺序
+  sort      Int       @default(1)
+  /// 创建者
+  createBy  String
+  /// 更新者
+  updateBy  String?
+  /// 创建时间
+  createdAt DateTime  @default(now())
+  /// 更新时间
+  updatedAt DateTime  @updatedAt
+  /// 备注
+  remark    String    @default("")
+  factory   Factory[] @relation("FactoryToRole")
+  menu      Menu[]    @relation("MenuToRole")
+  user      User[]    @relation("RoleToUser")
+
+  @@schema("public")
+}

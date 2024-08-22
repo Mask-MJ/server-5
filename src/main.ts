@@ -25,7 +25,7 @@ async function bootstrap() {
           level: 'info',
           dirname: 'logs',
           filename: '%DATE%.log',
-          datePattern: 'YYYY-MM-DD-HH-mm',
+          datePattern: 'YYYY-MM-DD-HH',
         }),
         new winston.transports.Console({
           format: winston.format.combine(

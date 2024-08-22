@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { CustomPrismaModule } from 'nestjs-prisma';
-import { extendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { JwtModule } from '@nestjs/jwt';
 import jwtConfig from '../iam/config/jwt.config';
 import { ConfigModule } from '@nestjs/config';
@@ -16,10 +14,6 @@ import { systemControllers, systemProviders } from './index';
   imports: [
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
-    CustomPrismaModule.forRootAsync({
-      name: 'PrismaService',
-      useFactory: () => extendedPrismaClient,
-    }),
     BullModule.registerQueue({ name: 'user' }),
   ],
   controllers: systemControllers,

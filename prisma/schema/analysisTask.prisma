@@ -1,0 +1,91 @@
+/// 分析任务表
+model AnalysisTask {
+  id                 Int                 @id @default(autoincrement())
+  /// 任务名称
+  name               String
+  /// 任务状态 0未开始 1进行中 2已完成 3失败
+  status             Int                 @default(0)
+  /// 任务备注
+  remark             String              @default("")
+  /// 字典id
+  dictTypeId         Int
+  /// 工厂id
+  factoryId          Int
+  /// 规则id
+  ruleId             Int                 @default(1)
+  createBy           String
+  /// 更新者
+  updateBy           String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  dict               DictType            @relation(fields: [dictTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  factory            Factory             @relation(fields: [factoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  analysisTaskResult AnalysisTaskResult?
+  pdf                Pdf[]
+  valve              Valve[]
+
+  @@schema("public")
+}
+
+/// 分析任务结果记录表
+model AnalysisTaskResult {
+  id             Int          @id @default(autoincrement())
+  /// 任务id
+  analysisTaskId Int          @unique
+  /// 阀门位号
+  tag            String
+  /// 读取时间
+  time           DateTime
+  /// 读取的pdf数据 json格式
+  data           Json?
+  analysisTask   AnalysisTask @relation(fields: [analysisTaskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@schema("public")
+}
+
+model Rule {
+  id        Int      @id @default(autoincrement())
+  /// 规则名称
+  name      String
+  /// 文件路径
+  url       String
+  /// 文件名
+  fileName  String
+  /// 规则备注
+  remark    String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("public")
+}
+
+model Pdf {
+  id        Int          @id @default(autoincrement())
+  /// 文件名
+  name      String
+  /// 任务id
+  taskId    Int
+  createBy  String
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  /// pdf文件路径
+  url       String
+  task      AnalysisTask @relation(fields: [taskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@schema("public")
+}
+
+/// 单位
+model Unit {
+  id        Int      @id @default(autoincrement())
+  /// 单位名称
+  name      String
+  /// 单位值
+  value     String
+  /// 备注
+  remark    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("public")
+}

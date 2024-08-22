@@ -1,0 +1,84 @@
+/// 工厂表
+model Factory {
+  id           Int            @id @default(autoincrement())
+  /// 工厂名称
+  name         String         @unique
+  /// 工厂状态
+  status       Boolean        @default(true)
+  /// 工厂地址
+  address      String?        @default("")
+  /// 工厂经纬度(可选)
+  longitude    String?        @default("")
+  latitude     String?        @default("")
+  /// 工厂备注
+  remark       String         @default("")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  /// 创建者
+  createBy     String
+  /// 更新者
+  updateBy     String?
+  parentId     Int?
+  analysisTask AnalysisTask[]
+  contract     Contract[]
+  device       Device[]
+  parent       Factory?       @relation("FactoryToFactory", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  children     Factory[]      @relation("FactoryToFactory")
+  valve        Valve[]
+  role         Role[]         @relation("FactoryToRole")
+
+  @@schema("public")
+}
+
+/// 项目表
+model Contract {
+  id             Int      @id @default(autoincrement())
+  /// 项目名称
+  name           String
+  /// 签订合同时间
+  contractTime   DateTime
+  /// 采购阀门总数
+  valveCount     Int
+  /// 高级阀门数量
+  highValveCount Int?     @default(0)
+  /// 客户名称
+  customer       String   @default("")
+  /// 客户联系方式
+  customerPhone  String   @default("")
+  /// 销售员名称
+  saler          String   @default("")
+  /// 项目备注
+  remark         String   @default("")
+  /// 工厂id
+  factoryId      Int
+  createBy       String
+  /// 更新者
+  updateBy       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  factory        Factory  @relation(fields: [factoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@schema("public")
+}
+
+/// 装置表
+model Device {
+  id        Int      @id @default(autoincrement())
+  /// 装置名称
+  name      String
+  /// 装置状态
+  status    Boolean  @default(true)
+  /// 装置备注
+  remark    String   @default("")
+  /// 工厂id
+  factoryId Int
+  createBy  String
+  /// 更新者
+  updateBy  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  factory   Factory  @relation(fields: [factoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  valve     Valve[]
+
+  @@schema("public")
+}
