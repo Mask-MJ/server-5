@@ -10,7 +10,7 @@ export class MenuEntity implements Menu {
   sort: number;
   parentId: number | null;
 
-  @ApiProperty({ type: () => MenuEntity })
+  @ApiProperty({ type: () => [MenuEntity] })
   children: MenuEntity[];
 
   remark: string;

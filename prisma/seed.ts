@@ -11,57 +11,57 @@ async function main() {
     ],
   });
   // create dept
-  await prisma.dept.create({
-    data: {
-      name: '中国集团',
-      createBy: 'admin',
-      children: {
-        create: [
-          {
-            name: '北京分公司',
-            createBy: 'admin',
-            children: {
-              create: [
-                { name: '技术部', createBy: 'admin' },
-                { name: '销售部', createBy: 'admin' },
-                { name: '会计部', createBy: 'admin' },
-              ],
-            },
-          },
-          {
-            name: '上海分公司',
-            createBy: 'admin',
-            children: {
-              create: [
-                { name: '技术部', createBy: 'admin' },
-                { name: '销售部', createBy: 'admin' },
-              ],
-            },
-          },
-          {
-            name: '广州分公司',
-            createBy: 'admin',
-            children: {
-              create: [
-                { name: '技术部', createBy: 'admin' },
-                { name: '销售部', createBy: 'admin' },
-              ],
-            },
-          },
-          {
-            name: '深圳分公司',
-            createBy: 'admin',
-            children: {
-              create: [
-                { name: '技术部', createBy: 'admin' },
-                { name: '销售部', createBy: 'admin' },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  });
+  // await prisma.dept.create({
+  //   data: {
+  //     name: '中国集团',
+  //     createBy: 'admin',
+  //     children: {
+  //       create: [
+  //         {
+  //           name: '北京分公司',
+  //           createBy: 'admin',
+  //           children: {
+  //             create: [
+  //               { name: '技术部', createBy: 'admin' },
+  //               { name: '销售部', createBy: 'admin' },
+  //               { name: '会计部', createBy: 'admin' },
+  //             ],
+  //           },
+  //         },
+  //         {
+  //           name: '上海分公司',
+  //           createBy: 'admin',
+  //           children: {
+  //             create: [
+  //               { name: '技术部', createBy: 'admin' },
+  //               { name: '销售部', createBy: 'admin' },
+  //             ],
+  //           },
+  //         },
+  //         {
+  //           name: '广州分公司',
+  //           createBy: 'admin',
+  //           children: {
+  //             create: [
+  //               { name: '技术部', createBy: 'admin' },
+  //               { name: '销售部', createBy: 'admin' },
+  //             ],
+  //           },
+  //         },
+  //         {
+  //           name: '深圳分公司',
+  //           createBy: 'admin',
+  //           children: {
+  //             create: [
+  //               { name: '技术部', createBy: 'admin' },
+  //               { name: '销售部', createBy: 'admin' },
+  //             ],
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   },
+  // });
   // create user
   await prisma.user.create({
     data: {
@@ -483,12 +483,11 @@ async function main() {
     },
   });
   /// create dictType
-  await prisma.dictType.create({
-    data: {
-      name: 'hart',
-      value: 'hart',
-      createBy: 'admin',
-    },
+  await prisma.dictType.createMany({
+    data: [
+      { name: 'hart', value: 'hart', createBy: 'admin' },
+      { name: 'ff', value: 'ff', createBy: 'admin' },
+    ],
   });
   // pdf层级树
   await prisma.dictDataTree.create({
@@ -1613,7 +1612,379 @@ async function main() {
       },
     },
   });
-
+  // pdf层级树
+  await prisma.dictDataTree.create({
+    data: {
+      name: 'ff',
+      value: 'ff',
+      children: {
+        create: [
+          {
+            name: '状态监视器',
+            value: 'Status Monitor',
+            dictData: {
+              create: [
+                {
+                  name: '行程',
+                  value: 'Travel',
+                  sort: 1,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '行程偏差',
+                  value: 'Travel Deviation',
+                  sort: 2,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '供气压力',
+                  value: 'Supply Pressure',
+                  sort: 3,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '驱动信号',
+                  value: 'Drive Signal',
+                  sort: 4,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '仪表模式',
+                  value: 'Instrument Mode',
+                  sort: 5,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '行程累计器',
+                  value: 'Travel Accumulator',
+                  sort: 6,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '放大器调整',
+                  value: 'Relay Adjustment',
+                  sort: 7,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: 'PDInside 状态',
+                  value: 'PD Inside Status',
+                  sort: 8,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '行程累计器',
+                  value: 'Travel Accumulator',
+                  sort: 9,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '输入特性',
+                  value: 'Input Characteristic',
+                  sort: 10,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '温度',
+                  value: 'Temperature',
+                  sort: 11,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '标定日期',
+                  value: 'Calibration Date',
+                  sort: 12,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '模拟生效',
+                  value: 'Simulate Active',
+                  sort: 13,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+              ],
+            },
+          },
+          {
+            name: '阀门摩擦力性能诊断',
+            value: 'Valve Friction Performance Diagnostic',
+            dictData: {
+              create: [
+                {
+                  name: '阀门摩擦力性能诊断',
+                  value: 'Valve Friction Performance Diagnostic',
+                  sort: 14,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+              ],
+            },
+          },
+          {
+            name: '阶跃响应',
+            value: 'Step Response',
+            dictData: {
+              create: [
+                {
+                  name: '零功率状态',
+                  value: 'Zero Power Condition',
+                  sort: 15,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '行程整定参数',
+                  value: 'Travel Tuning Set',
+                  sort: 16,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '比例',
+                  value: 'Proportional',
+                  sort: 17,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '速度：',
+                  value: 'Velocity',
+                  sort: 18,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: 'MLF',
+                  value: 'MLF',
+                  sort: 19,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '1',
+                  value: '1',
+                  sort: 20,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '2',
+                  value: '2',
+                  sort: 21,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '3',
+                  value: '3',
+                  sort: 22,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '4',
+                  value: '4',
+                  sort: 23,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '5',
+                  value: '5',
+                  sort: 24,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '6',
+                  value: '6',
+                  sort: 25,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '7',
+                  value: '7',
+                  sort: 26,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '8',
+                  value: '8',
+                  sort: 27,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '9',
+                  value: '9',
+                  sort: 28,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '10',
+                  value: '10',
+                  sort: 29,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '11',
+                  value: '11',
+                  sort: 30,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '12',
+                  value: '12',
+                  sort: 31,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+              ],
+            },
+          },
+          {
+            name: '完全扫描',
+            value: 'Total Scan',
+            dictData: {
+              create: [
+                {
+                  name: '扫描时间',
+                  value: 'Scan Time',
+                  sort: 32,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '平均动态误差',
+                  value: 'Avg. Dynamic Error',
+                  sort: 33,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '动态线性度（独立）',
+                  value: 'Dyn. Linearity (Ind.)',
+                  sort: 34,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '平均扭矩',
+                  value: 'Average Torque',
+                  sort: 35,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '平均摩擦力',
+                  value: 'Average Friction',
+                  sort: 36,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '弹簧预紧力',
+                  value: 'Bench Set',
+                  sort: 37,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '测试状态阀座负载',
+                  value: 'Seat Load As Tested',
+                  sort: 38,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '投用状态阀座负载',
+                  value: 'Service Seat Load',
+                  sort: 39,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '所需阀座负载',
+                  value: 'Required Seat Load',
+                  sort: 40,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '预期总摩擦力',
+                  value: 'Expected Total Friction',
+                  sort: 41,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '反馈连接方式',
+                  value: 'Feedback Connection',
+                  sort: 42,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+              ],
+            },
+          },
+          {
+            name: '完全扫描-规格表',
+            value: 'Total Scan-Spec Sheet',
+            dictData: {
+              create: [
+                {
+                  name: '额定行程',
+                  value: 'Rated Travel',
+                  sort: 43,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '实际行程：',
+                  value: 'Actual Travel',
+                  sort: 44,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '弹簧预紧力下限',
+                  value: 'Lower Bench Set',
+                  sort: 45,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+                {
+                  name: '弹簧预紧力上限',
+                  value: 'Upper Bench Set',
+                  sort: 46,
+                  createBy: 'admin',
+                  dictTypeId: 2,
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  });
   // create factory
   await prisma.factory.create({
     data: {
