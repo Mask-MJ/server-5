@@ -2015,6 +2015,15 @@ async function main() {
       },
     ],
   });
+  await prisma.rule.createMany({
+    data: [
+      {
+        name: 'hart online',
+        url: 'http://200.200.200.18:9000/rule/1724032676037-HART_Online.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=2xxSbNXQ3ayClsBEH1hZ%2F20240819%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240819T015756Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=e007536b7cbc5d0c21d086216909621a77334b523bd2c6eb96bab046d11ef971',
+        fileName: '1724032676037-HART_Online.xlsx',
+      },
+    ],
+  });
 
   console.log('注入数据成功');
 }
