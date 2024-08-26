@@ -10,58 +10,6 @@ async function main() {
       { name: '普通用户', value: 'user', createBy: 'admin' },
     ],
   });
-  // create dept
-  // await prisma.dept.create({
-  //   data: {
-  //     name: '中国集团',
-  //     createBy: 'admin',
-  //     children: {
-  //       create: [
-  //         {
-  //           name: '北京分公司',
-  //           createBy: 'admin',
-  //           children: {
-  //             create: [
-  //               { name: '技术部', createBy: 'admin' },
-  //               { name: '销售部', createBy: 'admin' },
-  //               { name: '会计部', createBy: 'admin' },
-  //             ],
-  //           },
-  //         },
-  //         {
-  //           name: '上海分公司',
-  //           createBy: 'admin',
-  //           children: {
-  //             create: [
-  //               { name: '技术部', createBy: 'admin' },
-  //               { name: '销售部', createBy: 'admin' },
-  //             ],
-  //           },
-  //         },
-  //         {
-  //           name: '广州分公司',
-  //           createBy: 'admin',
-  //           children: {
-  //             create: [
-  //               { name: '技术部', createBy: 'admin' },
-  //               { name: '销售部', createBy: 'admin' },
-  //             ],
-  //           },
-  //         },
-  //         {
-  //           name: '深圳分公司',
-  //           createBy: 'admin',
-  //           children: {
-  //             create: [
-  //               { name: '技术部', createBy: 'admin' },
-  //               { name: '销售部', createBy: 'admin' },
-  //             ],
-  //           },
-  //         },
-  //       ],
-  //     },
-  //   },
-  // });
   // create user
   await prisma.user.create({
     data: {
@@ -769,6 +717,7 @@ async function main() {
                   name: '行程',
                   value: 'Travel',
                   sort: 1,
+                  type: '1',
                   createBy: 'admin',
                   dictTypeId: 1,
                 },
@@ -776,12 +725,14 @@ async function main() {
                   name: '供气压力',
                   value: 'Supply Pressure',
                   sort: 2,
+                  type: '1',
                   createBy: 'admin',
                   dictTypeId: 1,
                 },
                 {
                   name: '仪表模式',
                   value: 'Instrument Mode',
+                  type: '0',
                   sort: 3,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -803,6 +754,7 @@ async function main() {
                 {
                   name: '最高温度记录',
                   value: 'Max Recorded Temp',
+                  type: '1',
                   sort: 6,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -810,6 +762,7 @@ async function main() {
                 {
                   name: '运行时间',
                   value: 'Run Time',
+                  type: '1',
                   sort: 7,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -817,6 +770,7 @@ async function main() {
                 {
                   name: '启动次数',
                   value: 'Number of Powerups',
+                  type: '1',
                   sort: 8,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -824,6 +778,7 @@ async function main() {
                 {
                   name: '仪表等级',
                   value: 'Instrument Level',
+                  type: '0',
                   sort: 9,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -831,6 +786,7 @@ async function main() {
                 {
                   name: '阀门型式',
                   value: 'Valve Style',
+                  type: '0',
                   sort: 10,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -838,6 +794,7 @@ async function main() {
                 {
                   name: '执行机构类型',
                   value: 'Spring Actuator Style',
+                  type: '0',
                   sort: 11,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -845,6 +802,7 @@ async function main() {
                 {
                   name: '标定日期',
                   value: 'Calibration Date',
+                  type: '0',
                   sort: 12,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1146,6 +1104,7 @@ async function main() {
                 {
                   name: '循环计数',
                   value: 'Cycle Count',
+                  type: '1',
                   sort: 55,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1250,6 +1209,7 @@ async function main() {
                 {
                   name: '平均扭矩',
                   value: 'Avg. Torque',
+                  type: '1',
                   sort: 94,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1257,6 +1217,7 @@ async function main() {
                 {
                   name: '平均死区',
                   value: 'Avg. Dead Band',
+                  type: '1',
                   sort: 95,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1293,6 +1254,7 @@ async function main() {
                 {
                   name: '平均扭矩',
                   value: 'Average Torque',
+                  type: '1',
                   sort: 82,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1379,6 +1341,7 @@ async function main() {
                 {
                   name: '额定行程',
                   value: 'Rated Travel',
+                  type: '1',
                   sort: 88,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1386,6 +1349,7 @@ async function main() {
                 {
                   name: '实际行程：',
                   value: 'Actual Travel',
+                  type: '1',
                   sort: 89,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1393,6 +1357,7 @@ async function main() {
                 {
                   name: '下方弹簧预紧力',
                   value: 'Lower Bench Set',
+                  type: '1',
                   sort: 90,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1400,6 +1365,7 @@ async function main() {
                 {
                   name: '上方弹簧预紧力',
                   value: 'Upper Bench Set',
+                  type: '1',
                   sort: 91,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1430,6 +1396,7 @@ async function main() {
                 {
                   name: '反馈连接方式',
                   value: 'Feedback Connection',
+                  type: '0',
                   sort: 61,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1437,6 +1404,7 @@ async function main() {
                 {
                   name: '零功率状态',
                   value: 'Zero Power Condition',
+                  type: '0',
                   sort: 62,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1444,6 +1412,7 @@ async function main() {
                 {
                   name: '行程整定参数',
                   value: 'Travel Tuning Set',
+                  type: '0',
                   sort: 63,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1451,6 +1420,7 @@ async function main() {
                 {
                   name: '比例',
                   value: 'Proportional',
+                  type: '1',
                   sort: 64,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1458,6 +1428,7 @@ async function main() {
                 {
                   name: '速度：',
                   value: 'Velocity',
+                  type: '1',
                   sort: 65,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1465,6 +1436,7 @@ async function main() {
                 {
                   name: 'MLF',
                   value: 'MLF',
+                  type: '1',
                   sort: 66,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1627,6 +1599,7 @@ async function main() {
                 {
                   name: '行程',
                   value: 'Travel',
+                  type: '1',
                   sort: 1,
                   createBy: 'admin',
                   dictTypeId: 2,
@@ -1634,6 +1607,7 @@ async function main() {
                 {
                   name: '行程偏差',
                   value: 'Travel Deviation',
+                  type: '1',
                   sort: 2,
                   createBy: 'admin',
                   dictTypeId: 2,
@@ -1641,6 +1615,7 @@ async function main() {
                 {
                   name: '供气压力',
                   value: 'Supply Pressure',
+                  type: '1',
                   sort: 3,
                   createBy: 'admin',
                   dictTypeId: 2,
@@ -1648,6 +1623,7 @@ async function main() {
                 {
                   name: '驱动信号',
                   value: 'Drive Signal',
+                  type: '1',
                   sort: 4,
                   createBy: 'admin',
                   dictTypeId: 2,
@@ -1655,6 +1631,7 @@ async function main() {
                 {
                   name: '仪表模式',
                   value: 'Instrument Mode',
+                  type: '0',
                   sort: 5,
                   createBy: 'admin',
                   dictTypeId: 2,
@@ -1662,6 +1639,7 @@ async function main() {
                 {
                   name: '行程累计器',
                   value: 'Travel Accumulator',
+                  type: '1',
                   sort: 6,
                   createBy: 'admin',
                   dictTypeId: 2,
@@ -1669,6 +1647,7 @@ async function main() {
                 {
                   name: '放大器调整',
                   value: 'Relay Adjustment',
+                  type: '1',
                   sort: 7,
                   createBy: 'admin',
                   dictTypeId: 2,
@@ -1875,6 +1854,7 @@ async function main() {
                 {
                   name: '平均动态误差',
                   value: 'Avg. Dynamic Error',
+                  type: '1',
                   sort: 33,
                   createBy: 'admin',
                   dictTypeId: 2,
@@ -1882,6 +1862,7 @@ async function main() {
                 {
                   name: '动态线性度（独立）',
                   value: 'Dyn. Linearity (Ind.)',
+                  type: '1',
                   sort: 34,
                   createBy: 'admin',
                   dictTypeId: 2,
@@ -1889,6 +1870,7 @@ async function main() {
                 {
                   name: '平均扭矩',
                   value: 'Average Torque',
+                  type: '1',
                   sort: 35,
                   createBy: 'admin',
                   dictTypeId: 2,

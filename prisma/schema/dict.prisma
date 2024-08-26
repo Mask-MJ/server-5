@@ -34,6 +34,8 @@ model DictData {
   sort       Int           @default(1)
   /// 状态
   status     Boolean       @default(true)
+  /// 字典类别 0:参数 1:运行数据
+  type       String        @default("0")
   /// 创建者
   createBy   String
   /// 更新者
