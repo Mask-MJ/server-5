@@ -437,6 +437,21 @@ async function main() {
       { name: 'ff', value: 'ff', createBy: 'admin' },
     ],
   });
+  await prisma.dictType.create({
+    data: {
+      name: '图表字段',
+      value: 'chart',
+      createBy: 'admin',
+      dictData: {
+        create: [
+          { name: '行程', value: 'Travel', createBy: 'admin' },
+          { name: '行程偏差', value: 'Travel Deviation', createBy: 'admin' },
+          { name: '供气压力', value: 'Supply Pressure', createBy: 'admin' },
+        ],
+      },
+    },
+  });
+
   // pdf层级树
   await prisma.dictDataTree.create({
     data: {

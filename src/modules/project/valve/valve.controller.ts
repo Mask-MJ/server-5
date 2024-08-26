@@ -85,6 +85,14 @@ export class ValveController {
     return this.valveService.findHistoryData(id);
   }
 
+  @Get('historyChart/:id/:type')
+  @ApiOperation({ summary: '获取阀门历史运行数据详情' })
+  @ApiPaginatedResponse(ValveHistoryEntity)
+  @Permissions('project:valve:query')
+  findHistoryChartData(@Param('id') id: number, @Param('type') type: string) {
+    return this.valveService.findHistoryChartData(id, type);
+  }
+
   @Get('score/:id')
   @ApiOperation({ summary: '获取阀门评分' })
   @ApiOkResponse({ type: ValveHistoryEntity, isArray: true })

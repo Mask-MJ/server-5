@@ -12,6 +12,7 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class ValveService {
@@ -75,6 +76,35 @@ export class ValveService {
     return this.prismaService.client.valveHistoryData.findMany({
       where: { valveHistoryDataListId: id },
     });
+  }
+
+  async findHistoryChartData(id: number, name: string) {
+    const list = await this.prismaService.client.valveHistoryDataList.findMany({
+      where: { valveId: id },
+      include: {
+        valveHistoryData: {
+          where: { name },
+          orderBy: { time: 'desc' },
+        },
+      },
+    });
+    const data: any = {
+      value: [],
+      time: [],
+    };
+    list.forEach((item) => {
+      // 判断是否有数据 或 value 为空,不返回
+      if (item.valveHistoryData.length) {
+        if (item.valveHistoryData[0].value) {
+          data.value.push(item.valveHistoryData[0].value);
+          data.time.push(
+            dayjs(item.valveHistoryData[0].time).format('YYYY-MM-DD'),
+          );
+        }
+      }
+    });
+
+    return data;
   }
 
   async findScoreData(id: number) {
