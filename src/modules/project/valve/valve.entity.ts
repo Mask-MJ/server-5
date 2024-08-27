@@ -93,6 +93,8 @@ export class ValveRunInfoEntity implements ValveData {
   value: string;
   /// 单位
   unit: string;
+  /// 类别 0:参数 1:运行数据
+  type: string;
   /// 读取时间
   time: Date;
   /// 阀门id
@@ -117,6 +119,8 @@ export class ValveHistoryEntity implements ValveHistoryData {
   value: string;
   /// 单位
   unit: string;
+  /// 类别 0:参数 1:运行数据
+  type: string;
   /// 读取时间
   time: Date;
   /// 阀门id
