@@ -1142,6 +1142,7 @@ async function main() {
                 {
                   name: '供气压力性能诊断',
                   value: 'Supply Pressure Performance Diagnostic',
+                  type: '2',
                   sort: 55,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1157,6 +1158,7 @@ async function main() {
                 {
                   name: '行程偏差性能诊断',
                   value: 'Travel Deviation Performance Diagnostic',
+                  type: '2',
                   sort: 56,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1172,6 +1174,7 @@ async function main() {
                 {
                   name: 'I/P和放大器完整性性能诊断',
                   value: 'I/P and Relay Integrity Performance Diagnostic',
+                  type: '2',
                   sort: 57,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1187,6 +1190,7 @@ async function main() {
                 {
                   name: '放大器调整性能诊断',
                   value: 'Relay Adjustment Performance Diagnostic',
+                  type: '2',
                   sort: 58,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1202,6 +1206,7 @@ async function main() {
                 {
                   name: '空气质量流量性能诊断',
                   value: 'Air Mass Flow Performance Diagnostic',
+                  type: '2',
                   sort: 59,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1217,6 +1222,7 @@ async function main() {
                 {
                   name: '阀门摩擦力性能诊断',
                   value: 'Valve Friction Performance Diagnostic',
+                  type: '2',
                   sort: 93,
                   createBy: 'admin',
                   dictTypeId: 1,
@@ -1720,6 +1726,7 @@ async function main() {
                 {
                   name: '阀门摩擦力性能诊断',
                   value: 'Valve Friction Performance Diagnostic',
+                  type: '2',
                   sort: 14,
                   createBy: 'admin',
                   dictTypeId: 2,

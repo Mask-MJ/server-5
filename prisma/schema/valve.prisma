@@ -93,7 +93,7 @@ model ValveData {
   value   String
   /// 单位
   unit    String?
-  /// 类别 0:参数 1:运行数据
+  /// 类别 0:参数 1:运行数据 2: 阀门诊断数据
   type    String   @default("0")
   /// 阀门id
   valveId Int
