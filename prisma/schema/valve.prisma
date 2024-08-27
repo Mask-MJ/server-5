@@ -126,6 +126,8 @@ model ValveHistoryData {
   value                  String
   /// 单位
   unit                   String?
+  /// 类别 0:参数 1:运行数据
+  type                   String               @default("0")
   valveHistoryDataListId Int
   /// 读取时间
   time                   DateTime
