@@ -1,7 +1,7 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import { IsString, IsNumber, IsOptional } from 'class-validator';
-import { BaseDto } from 'src/common/dto/base.dto';
+import { BaseDto, TimeDto } from 'src/common/dto/base.dto';
 import dayjs from 'dayjs';
 
 export class CreateValveDto {
@@ -300,6 +300,14 @@ export class QueryValveDto extends PartialType(
     BaseDto,
   ),
 ) {}
+
+export class QueryValveChartDto extends PartialType(TimeDto) {
+  @IsNumber()
+  @Type(() => Number)
+  id: number;
+  @IsString()
+  type: string;
+}
 
 export class UpdateValveDto extends PartialType(CreateValveDto) {
   @IsNumber()

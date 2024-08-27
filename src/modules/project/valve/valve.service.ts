@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   CreateValveDto,
+  QueryValveChartDto,
   QueryValveDto,
   QueryValveHistoryListDto,
   UpdateValveDto,
@@ -78,26 +79,25 @@ export class ValveService {
     });
   }
 
-  async findHistoryChartData(id: number, name: string) {
+  async findHistoryChartData(queryValveChartDto: QueryValveChartDto) {
+    const { id, type } = queryValveChartDto;
     const list = await this.prismaService.client.valveHistoryDataList.findMany({
       where: { valveId: id },
       include: {
         valveHistoryData: {
-          where: { name },
+          where: { name: type },
           orderBy: { time: 'desc' },
         },
       },
     });
-    const data: any = {
-      value: [],
-      time: [],
-    };
+
+    const data: Record<string, string[]> = { values: [], times: [] };
     list.forEach((item) => {
       // 判断是否有数据 或 value 为空,不返回
       if (item.valveHistoryData.length) {
         if (item.valveHistoryData[0].value) {
-          data.value.push(item.valveHistoryData[0].value);
-          data.time.push(
+          data.values.push(item.valveHistoryData[0].value);
+          data.times.push(
             dayjs(item.valveHistoryData[0].time).format('YYYY-MM-DD'),
           );
         }
