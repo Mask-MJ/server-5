@@ -47,6 +47,14 @@ export class DictDataTreeController {
     return this.dictDataTreeService.findAll(queryDictDataTreeDto);
   }
 
+  @Get('all')
+  @ApiOperation({ summary: '获取所有pdf数据列表' })
+  @ApiOkResponse({ type: DictDataTreeEntity, isArray: true })
+  @Permissions('system:dictDataTree:query')
+  findAllList() {
+    return this.dictDataTreeService.findAllList();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: '获取pdf数据树详情' })
   @ApiOkResponse({ type: DictDataTreeEntity })

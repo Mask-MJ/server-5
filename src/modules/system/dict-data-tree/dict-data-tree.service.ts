@@ -41,6 +41,10 @@ export class DictDataTreeService {
     });
   }
 
+  findAllList() {
+    return this.prismaService.client.dictDataTree.findMany();
+  }
+
   findOne(id: number) {
     return this.prismaService.client.dictDataTree.findUnique({ where: { id } });
   }

@@ -95,6 +95,8 @@ export class ValveRunInfoEntity implements ValveData {
   unit: string;
   /// 类别 0:参数 1:运行数据
   type: string;
+  /// pdf 树 id
+  treeId: number;
   /// 读取时间
   time: Date;
   /// 阀门id
@@ -121,6 +123,8 @@ export class ValveHistoryEntity implements ValveHistoryData {
   unit: string;
   /// 类别 0:参数 1:运行数据
   type: string;
+  /// pdf 树 id
+  treeId: number;
   /// 读取时间
   time: Date;
   /// 阀门id
