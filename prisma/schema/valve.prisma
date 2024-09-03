@@ -97,6 +97,8 @@ model ValveData {
   type    String   @default("0")
   /// 阀门id
   valveId Int
+  /// pdf树id
+  treeId  Int?
   /// 读取时间
   time    DateTime
   valve   Valve    @relation(fields: [valveId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -128,6 +130,8 @@ model ValveHistoryData {
   unit                   String?
   /// 类别 0:参数 1:运行数据
   type                   String               @default("0")
+  /// pdf树id
+  treeId                 Int?
   valveHistoryDataListId Int
   /// 读取时间
   time                   DateTime
