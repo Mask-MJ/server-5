@@ -27,6 +27,14 @@ export class CreateDictDataDto {
   sort?: number;
 
   /**
+   * 类型 0: 配置 1: 参数 2: 诊断
+   * @example '0'
+   */
+  @IsString()
+  @IsOptional()
+  type?: string;
+
+  /**
    * 状态 false: 禁用 true: 启用
    * @example true
    */
