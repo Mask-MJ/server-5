@@ -75,7 +75,15 @@ export class QueryDictDataDto extends PartialType(
     PickType(CreateDictDataDto, ['name', 'value', 'dictTypeId']),
     BaseDto,
   ),
-) {}
+) {
+  /**
+   * 字典类型值
+   * @example 'chart'
+   */
+  @IsString()
+  @IsOptional()
+  dictTypeValue?: string;
+}
 
 export class UpdateDictDataDto extends PartialType(CreateDictDataDto) {
   @IsNumber()
