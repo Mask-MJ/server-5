@@ -1,7 +1,7 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsString, IsOptional, IsBoolean, IsNumber } from 'class-validator';
-import { TimeDto } from 'src/common/dto/base.dto';
+import { TimeDto, uploadDto } from 'src/common/dto/base.dto';
 
 export class CreateFactoryDto {
   /**
@@ -66,4 +66,10 @@ export class QueryFactoryDto extends PartialType(
 export class UpdateFactoryDto extends PartialType(CreateFactoryDto) {
   @IsNumber()
   id: number;
+}
+
+export class importDto extends uploadDto {
+  @IsNumber()
+  @Type(() => Number)
+  factoryId: number;
 }

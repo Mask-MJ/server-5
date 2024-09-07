@@ -1,12 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   CreateFactoryDto,
+  importDto,
   QueryFactoryDto,
   UpdateFactoryDto,
 } from './factory.dto';
 import { CustomPrismaService } from 'nestjs-prisma';
 import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
+import { read, utils } from 'xlsx';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class FactoryService {
@@ -50,6 +53,70 @@ export class FactoryService {
         include: { children: true },
       });
     }
+  }
+
+  async import(
+    user: ActiveUserData,
+    file: Express.Multer.File,
+    body: importDto,
+  ) {
+    const workbook = read(file.buffer, { type: 'buffer' });
+    const xslx = utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+    const deviceNames: string[] = [];
+    xslx.forEach((item: any) => {
+      // 获取所有的 装置 名称
+      if (item['装置'] && !deviceNames.includes(item['装置'])) {
+        deviceNames.push(item['装置']);
+      }
+    });
+    deviceNames.forEach(async (deviceName) => {
+      let device = await this.prismaService.client.device.findFirst({
+        where: { name: deviceName, factoryId: body.factoryId },
+      });
+      if (!device) {
+        device = await this.prismaService.client.device.create({
+          data: {
+            name: deviceName,
+            factoryId: body.factoryId,
+            createBy: user.account,
+          },
+        });
+      }
+      xslx
+        .filter((item: any) => item['装置'] === deviceName)
+        .forEach(async (item: any) => {
+          const valve = await this.prismaService.client.valve.findFirst({
+            where: { tag: item['Tag'], deviceId: device.id },
+          });
+          const data = {
+            // no: item['Order Number']
+            tag: item['Tag'],
+            serialNumber: String(item['系列号']),
+            valveSize: String(item['Valve Size']),
+            valveType: item['Valve Type'],
+            // class: item['Class'],
+            valveEndConnection: item['End Connection'],
+            valveBodyMaterial: item['Body Material'],
+            // valveTrimMaterial: item['内件材质'],
+            valveSeatLeakage: item['泄漏等级'],
+            valveBonnet: item['阀盖形式'],
+            since: dayjs(item['使用年份'].slice(0, -1)).toDate(),
+            deviceId: device.id,
+            factoryId: body.factoryId,
+            updateBy: user.account,
+          };
+          if (valve) {
+            await this.prismaService.client.valve.update({
+              where: { id: valve.id },
+              data,
+            });
+            // 记录有多少个阀门被更新
+          } else {
+            await this.prismaService.client.valve.create({ data });
+          }
+        });
+    });
+    return { success: true };
   }
 
   findOne(id: number) {

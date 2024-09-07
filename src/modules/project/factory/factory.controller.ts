@@ -7,10 +7,13 @@ import {
   Param,
   Delete,
   Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { FactoryService } from './factory.service';
 import {
   CreateFactoryDto,
+  importDto,
   QueryFactoryDto,
   UpdateFactoryDto,
 } from './factory.dto';
@@ -26,6 +29,7 @@ import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 import { Permissions } from 'src/modules/iam/authorization/decorators/permissions.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('工厂管理')
 @ApiBearerAuth('bearer')
@@ -52,6 +56,17 @@ export class FactoryController {
     @Query() queryFactoryDto: QueryFactoryDto,
   ) {
     return this.factoryService.findAll(user, queryFactoryDto);
+  }
+
+  @Post('import')
+  @ApiOperation({ summary: '导入阀门数据' })
+  @UseInterceptors(FileInterceptor('file'))
+  import(
+    @ActiveUser() user: ActiveUserData,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: importDto,
+  ) {
+    return this.factoryService.import(user, file, body);
   }
 
   @Get(':id')
