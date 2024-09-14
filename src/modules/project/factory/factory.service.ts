@@ -51,6 +51,7 @@ export class FactoryService {
           createdAt: { gte: beginTime, lte: endTime },
         },
         include: { children: true },
+        orderBy: { createdAt: 'desc' },
       });
     }
   }

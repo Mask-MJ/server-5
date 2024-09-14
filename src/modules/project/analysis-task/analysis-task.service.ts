@@ -54,6 +54,7 @@ export class AnalysisTaskService {
       .paginate({
         where: { name: { contains: name }, factoryId },
         include: { factory: true, dict: true },
+        orderBy: { createdAt: 'desc' },
       })
       .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };

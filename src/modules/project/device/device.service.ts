@@ -22,6 +22,7 @@ export class DeviceService {
       .paginate({
         where: { name: { contains: name }, factoryId: factoryId },
         include: { factory: true },
+        orderBy: { createdAt: 'desc' },
       })
       .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };

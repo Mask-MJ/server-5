@@ -43,6 +43,7 @@ export class ValveService {
           analysisTaskId,
         },
         include: { factory: true, device: true },
+        orderBy: { createdAt: 'desc' },
       })
       .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };
