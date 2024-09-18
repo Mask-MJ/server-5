@@ -8,6 +8,7 @@ import { MinioService } from 'src/common/minio/minio.service';
 import { Request } from 'express';
 import { uploadDto } from 'src/common/dto/base.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import * as requestIp from 'request-ip';
 
 @Injectable()
 export class UserService {
@@ -148,12 +149,13 @@ export class UserService {
     }
     await this.prismaService.client.user.delete({ where: { id } });
     console.log('删除用户', id);
-    this.eventEmitter.emit('system.user.delete', {
+    const ip = requestIp.getClientIp(request);
+    this.eventEmitter.emit('delete', {
       title: `删除ID为${id}的用户`,
       businessType: 2,
       module: '用户管理',
       account: user.account,
-      ip: request.ip,
+      ip,
     });
     return '删除成功';
   }

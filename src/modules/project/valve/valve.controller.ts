@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Request,
 } from '@nestjs/common';
 import { ValveService } from './valve.service';
 import {
@@ -33,6 +34,7 @@ import { ActiveUser } from 'src/modules/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 import { Permissions } from 'src/modules/iam/authorization/decorators/permissions.decorator';
+import { Request as ExpRequest } from 'express';
 
 @ApiTags('阀门管理')
 @ApiBearerAuth('bearer')
@@ -133,7 +135,11 @@ export class ValveController {
   @Delete(':id')
   @ApiOperation({ summary: '删除阀门' })
   @Permissions('project:valve:delete')
-  remove(@Param('id') id: number) {
-    return this.valveService.remove(id);
+  remove(
+    @ActiveUser() user: ActiveUserData,
+    @Param('id') id: number,
+    @Request() request: ExpRequest,
+  ) {
+    return this.valveService.remove(user, id, request);
   }
 }

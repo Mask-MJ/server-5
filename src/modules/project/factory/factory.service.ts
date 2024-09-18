@@ -10,12 +10,16 @@ import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { read, utils } from 'xlsx';
 import dayjs from 'dayjs';
+import { Request } from 'express';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import * as requestIp from 'request-ip';
 
 @Injectable()
 export class FactoryService {
   constructor(
     @Inject('PrismaService')
     private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
+    @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2,
   ) {}
   create(user: ActiveUserData, createFactoryDto: CreateFactoryDto) {
     return this.prismaService.client.factory.create({
@@ -131,7 +135,16 @@ export class FactoryService {
     });
   }
 
-  remove(id: number) {
-    return this.prismaService.client.factory.delete({ where: { id } });
+  async remove(user: ActiveUserData, id: number, request: Request) {
+    await this.prismaService.client.factory.delete({ where: { id } });
+    const ip = requestIp.getClientIp(request);
+    this.eventEmitter.emit('delete', {
+      title: `删除ID为${id}的工厂`,
+      businessType: 2,
+      module: '工厂管理',
+      account: user.account,
+      ip,
+    });
+    return '删除成功';
   }
 }

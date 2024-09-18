@@ -48,7 +48,7 @@ export class OperationLogService {
     });
   }
 
-  @OnEvent('system.user.delete')
+  @OnEvent('delete')
   async handleLoginEvent(payload: CreateOperationLogDto) {
     await this.create(payload);
   }

@@ -9,6 +9,7 @@ import {
   Query,
   UseInterceptors,
   UploadedFile,
+  Request,
 } from '@nestjs/common';
 import { FactoryService } from './factory.service';
 import {
@@ -30,6 +31,7 @@ import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.inte
 import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 import { Permissions } from 'src/modules/iam/authorization/decorators/permissions.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Request as ExpRequest } from 'express';
 
 @ApiTags('工厂管理')
 @ApiBearerAuth('bearer')
@@ -92,7 +94,11 @@ export class FactoryController {
   @Delete(':id')
   @ApiOperation({ summary: '删除工厂' })
   @Permissions('project:factory:delete')
-  remove(@Param('id') id: number) {
-    return this.factoryService.remove(id);
+  remove(
+    @ActiveUser() user: ActiveUserData,
+    @Param('id') id: number,
+    @Request() request: ExpRequest,
+  ) {
+    return this.factoryService.remove(user, id, request);
   }
 }

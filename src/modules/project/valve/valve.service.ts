@@ -14,6 +14,9 @@ import { firstValueFrom } from 'rxjs';
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import dayjs from 'dayjs';
+import { Request } from 'express';
+import * as requestIp from 'request-ip';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class ValveService {
@@ -23,6 +26,7 @@ export class ValveService {
     @Inject(HttpService)
     private readonly httpService: HttpService,
     private configService: ConfigService,
+    @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2,
   ) {}
 
   create(user: ActiveUserData, createValveDto: CreateValveDto) {
@@ -124,8 +128,17 @@ export class ValveService {
     });
   }
 
-  remove(id: number) {
-    return this.prismaService.client.valve.delete({ where: { id } });
+  async remove(user: ActiveUserData, id: number, request: Request) {
+    await this.prismaService.client.valve.delete({ where: { id } });
+    const ip = requestIp.getClientIp(request);
+    this.eventEmitter.emit('delete', {
+      title: `删除ID为${id}的阀门`,
+      businessType: 2,
+      module: '阀门管理',
+      account: user.account,
+      ip,
+    });
+    return '删除成功';
   }
 
   async getTreeStructure() {
