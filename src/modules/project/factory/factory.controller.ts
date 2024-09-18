@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Request,
+  Headers,
 } from '@nestjs/common';
 import { FactoryService } from './factory.service';
 import {
@@ -98,7 +99,8 @@ export class FactoryController {
     @ActiveUser() user: ActiveUserData,
     @Param('id') id: number,
     @Request() request: ExpRequest,
+    @Headers('X-Real-IP') ip: string,
   ) {
-    return this.factoryService.remove(user, id, request);
+    return this.factoryService.remove(user, id, ip || request.ip);
   }
 }

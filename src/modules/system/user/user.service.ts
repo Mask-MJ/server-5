@@ -5,10 +5,8 @@ import { CreateUserDto, UpdateUserDto, QueryUserDto } from './user.dto';
 import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.interface';
 import { HashingService } from 'src/modules/iam/hashing/hashing.service';
 import { MinioService } from 'src/common/minio/minio.service';
-import { Request } from 'express';
 import { uploadDto } from 'src/common/dto/base.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import * as requestIp from 'request-ip';
 
 @Injectable()
 export class UserService {
@@ -139,7 +137,7 @@ export class UserService {
     });
   }
 
-  async remove(user: ActiveUserData, id: number, request: Request) {
+  async remove(user: ActiveUserData, id: number, ip: string) {
     // 判断是否是管理员账号, 如果是管理员账号则不允许删除
     const userInfo = await this.prismaService.client.user.findUnique({
       where: { id },
@@ -149,9 +147,8 @@ export class UserService {
     }
     await this.prismaService.client.user.delete({ where: { id } });
     console.log('删除用户', id);
-    const ip = requestIp.getClientIp(request);
     this.eventEmitter.emit('delete', {
-      title: `删除ID为${id}的用户`,
+      title: `删除ID为${id}, 账号为${userInfo.account}的用户`,
       businessType: 2,
       module: '用户管理',
       account: user.account,

@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   Request,
+  Headers,
 } from '@nestjs/common';
 import { ValveService } from './valve.service';
 import {
@@ -139,7 +140,8 @@ export class ValveController {
     @ActiveUser() user: ActiveUserData,
     @Param('id') id: number,
     @Request() request: ExpRequest,
+    @Headers('X-Real-IP') ip: string,
   ) {
-    return this.valveService.remove(user, id, request);
+    return this.valveService.remove(user, id, ip || request.ip);
   }
 }

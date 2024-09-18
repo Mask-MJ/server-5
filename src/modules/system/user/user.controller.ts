@@ -13,6 +13,7 @@ import {
   UploadedFile,
   UseInterceptors,
   Request,
+  Headers,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -117,7 +118,8 @@ export class UserController {
     @ActiveUser() user: ActiveUserData,
     @Param('id') id: number,
     @Request() request: ExpRequest,
+    @Headers('X-Real-IP') ip: string,
   ) {
-    return this.userService.remove(user, id, request);
+    return this.userService.remove(user, id, ip || request.ip);
   }
 }
