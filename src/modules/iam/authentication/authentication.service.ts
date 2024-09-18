@@ -21,7 +21,6 @@ import { HashingService } from '../hashing/hashing.service';
 import { PrismaService } from 'nestjs-prisma';
 import { User } from '@prisma/client';
 import { randomUUID } from 'crypto';
-import { Request } from 'express';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
@@ -67,7 +66,7 @@ export class AuthenticationService {
     }
   }
 
-  async signIn(signInDto: SignInDto, request: Request) {
+  async signIn(signInDto: SignInDto, ip: string = '') {
     const user = await this.prisma.user.findUnique({
       where: { account: signInDto.account },
       include: {
@@ -89,7 +88,7 @@ export class AuthenticationService {
     this.eventEmitter.emit('login', {
       sessionId: '',
       account: user.account,
-      ip: request.ip || '',
+      ip,
       userId: user.id,
     });
 

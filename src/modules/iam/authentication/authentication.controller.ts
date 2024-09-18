@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Post,
   Request,
+  Headers,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { SignUpDto } from './dto/sign-up.dto';
@@ -44,8 +45,12 @@ export class AuthenticationController {
     status: HttpStatus.UNAUTHORIZED,
     description: '用户名或密码错误',
   })
-  async signIn(@Request() request: ExpRequest, @Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto, request);
+  async signIn(
+    @Body() signInDto: SignInDto,
+    @Request() request: ExpRequest,
+    @Headers('X-Real-IP') ip: string,
+  ) {
+    return this.authService.signIn(signInDto, ip || request.ip);
   }
 
   @HttpCode(HttpStatus.OK)
