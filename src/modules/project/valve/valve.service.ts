@@ -34,8 +34,16 @@ export class ValveService {
   }
 
   async findAll(queryValveDto: QueryValveDto) {
-    const { tag, factoryId, deviceId, analysisTaskId, page, pageSize } =
-      queryValveDto;
+    const {
+      tag,
+      factoryId,
+      deviceId,
+      analysisTaskId,
+      valveSeries,
+      serialNumber,
+      page,
+      pageSize,
+    } = queryValveDto;
     const [rows, meta] = await this.prismaService.client.valve
       .paginate({
         where: {
@@ -43,12 +51,36 @@ export class ValveService {
           factoryId,
           deviceId,
           analysisTaskId,
+          serialNumber: { contains: serialNumber },
+          valveSeries: { contains: valveSeries },
         },
         include: { factory: true, device: true },
         orderBy: { createdAt: 'desc' },
       })
       .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };
+  }
+
+  async findAllExport(queryValveDto: QueryValveDto) {
+    const {
+      tag,
+      factoryId,
+      deviceId,
+      analysisTaskId,
+      valveSeries,
+      serialNumber,
+    } = queryValveDto;
+    return this.prismaService.client.valve.findMany({
+      where: {
+        tag: { contains: tag },
+        factoryId,
+        deviceId,
+        analysisTaskId,
+        serialNumber: { contains: serialNumber },
+        valveSeries: { contains: valveSeries },
+      },
+      include: { factory: true, device: true },
+    });
   }
 
   async findOne(id: number) {

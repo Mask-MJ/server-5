@@ -3,6 +3,8 @@ model Valve {
   id                    Int                    @id @default(autoincrement())
   /// 阀门位号
   tag                   String
+  /// 来源 hart, ff
+  source                String?
   /// 装置
   unit                  String?
   /// 介质
@@ -15,6 +17,8 @@ model Valve {
   since                 DateTime?
   /// 阀体品牌
   valveBrand            String?
+  /// 系列
+  valveSeries           String?
   /// 阀体类型
   valveType             String?
   /// 阀体口径

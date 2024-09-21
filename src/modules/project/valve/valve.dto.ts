@@ -21,6 +21,14 @@ export class CreateValveDto {
   unit?: string;
 
   /**
+   * 来源
+   * @example 'hart'
+   */
+  @IsString()
+  @IsOptional()
+  source?: string;
+
+  /**
    * 介质
    * @example '氨水'
    */
@@ -61,6 +69,14 @@ export class CreateValveDto {
   @IsString()
   @IsOptional()
   valveBrand?: string;
+
+  /**
+   * 系列
+   * @example '系列'
+   */
+  @IsString()
+  @IsOptional()
+  valveSeries?: string;
 
   /**
    * 阀体类型
@@ -296,6 +312,8 @@ export class QueryValveDto extends PartialType(
       'factoryId',
       'deviceId',
       'analysisTaskId',
+      'serialNumber',
+      'valveSeries',
     ]),
     BaseDto,
   ),

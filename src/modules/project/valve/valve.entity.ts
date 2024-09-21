@@ -13,6 +13,8 @@ export class ValveEntity implements Valve {
   tag: string;
   device: DeviceEntity;
   factory: FactoryEntity;
+  /// 来源
+  source: string;
   /// 装置
   unit: string;
   /// 介质
@@ -25,6 +27,8 @@ export class ValveEntity implements Valve {
   since: Date;
   /// 阀体品牌
   valveBrand: string;
+  /// 系列
+  valveSeries: string;
   /// 阀体类型
   valveType: string;
   /// 阀体口径

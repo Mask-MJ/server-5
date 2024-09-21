@@ -62,6 +62,14 @@ export class ValveController {
     return this.valveService.findAll(queryValveDto);
   }
 
+  @Get('all')
+  @ApiOperation({ summary: '获取所有阀门列表' })
+  @ApiPaginatedResponse(ValveEntity)
+  @Permissions('project:valve:query')
+  findAllExport(@Query() queryValveDto: QueryValveDto) {
+    return this.valveService.findAllExport(queryValveDto);
+  }
+
   @Get('run-info/:id')
   @ApiOperation({ summary: '获取阀门运行信息' })
   @ApiOkResponse({ type: ValveRunInfoEntity })
