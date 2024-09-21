@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { validate } from './common/validate/env.validation';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD, RouterModule } from '@nestjs/core';
+import { RouterModule } from '@nestjs/core';
 import { RedisStorage } from './common/redis/redis.storage';
 import {
   CustomPrismaModule,
@@ -19,7 +18,6 @@ import { extendedPrismaClient } from 'src/common/pagination/prisma.extension';
 
 @Module({
   imports: [
-    ThrottlerModule.forRoot([{ ttl: 10000, limit: 10 }]),
     ConfigModule.forRoot({ validate, isGlobal: true }),
     CustomPrismaModule.forRootAsync({
       isGlobal: true,
@@ -49,11 +47,6 @@ import { extendedPrismaClient } from 'src/common/pagination/prisma.extension';
     ProjectModule,
   ],
   controllers: [],
-  providers: [
-    { provide: APP_GUARD, useClass: ThrottlerGuard },
-    RedisStorage,
-    UserConsumer,
-    providePrismaClientExceptionFilter(),
-  ],
+  providers: [RedisStorage, UserConsumer, providePrismaClientExceptionFilter()],
 })
 export class AppModule {}
