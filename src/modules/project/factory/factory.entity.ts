@@ -4,6 +4,10 @@ export class FactoryEntity implements Factory {
   id: number;
   name: string;
   status: boolean;
+  code: string;
+  province: string;
+  city: string;
+  county: string;
   address: string;
   longitude: string;
   latitude: string;
@@ -13,8 +17,4 @@ export class FactoryEntity implements Factory {
   updateBy: string;
   createdAt: Date;
   updatedAt: Date;
-}
-
-export class FactoryTreeEntity extends FactoryEntity {
-  children: FactoryEntity[];
 }

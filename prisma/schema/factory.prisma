@@ -5,6 +5,14 @@ model Factory {
   name         String         @unique
   /// 工厂状态
   status       Boolean        @default(true)
+  /// 省份
+  province     String?        @default("")
+  /// 城市
+  city         String?        @default("")
+  /// 区县
+  county       String?        @default("")
+  /// 地址编码
+  code         String?        @default("")
   /// 工厂地址
   address      String?        @default("")
   /// 工厂经纬度(可选)

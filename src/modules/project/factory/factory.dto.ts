@@ -21,6 +21,38 @@ export class CreateFactoryDto {
   status?: boolean = true;
 
   /**
+   * 地址编码
+   * @example '130010'
+   */
+  @IsString()
+  @IsOptional()
+  code?: string;
+
+  /**
+   * 省份
+   * @example '广东省'
+   */
+  @IsString()
+  @IsOptional()
+  province?: string;
+
+  /**
+   * 城市
+   * @example '广州市'
+   */
+  @IsString()
+  @IsOptional()
+  city?: string;
+
+  /**
+   * 区县
+   * @example '天河区'
+   */
+  @IsString()
+  @IsOptional()
+  county?: string;
+
+  /**
    * 工厂地址
    * @example '地址1'
    */
