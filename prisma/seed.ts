@@ -1613,123 +1613,482 @@ async function main() {
       children: {
         create: [
           {
-            name: '状态监视器',
-            value: 'Status Monitor',
-            dictData: {
+            name: '仪表组态-基本，转换块',
+            value: 'Instrument Configuration-Basic, Transducer',
+            children: {
               create: [
                 {
-                  name: '行程',
-                  value: 'Travel',
-                  type: '1',
-                  sort: 1,
-                  createBy: 'admin',
-                  dictTypeId: 2,
+                  name: '初始设置',
+                  value: 'Initial Setup',
+                  children: {
+                    create: [
+                      { name: '转换块模式', value: 'Transducer Block Mode' },
+                      { name: '设置', value: 'Setup' },
+                    ],
+                  },
                 },
                 {
-                  name: '行程偏差',
-                  value: 'Travel Deviation',
-                  type: '1',
-                  sort: 2,
-                  createBy: 'admin',
-                  dictTypeId: 2,
+                  name: '整定',
+                  value: 'Tuning',
+                  children: {
+                    create: [
+                      {
+                        name: '行程控制',
+                        value: 'Travel Control',
+                      },
+                      {
+                        name: '积分设置',
+                        value: 'Integral Settings',
+                      },
+                      {
+                        name: '压力控制',
+                        value: 'Pressure Control',
+                      },
+                    ],
+                  },
                 },
                 {
-                  name: '供气压力',
-                  value: 'Supply Pressure',
-                  type: '1',
-                  sort: 3,
-                  createBy: 'admin',
-                  dictTypeId: 2,
+                  name: '行程/压力控制',
+                  value: 'Travel/Pressure Control',
+                  children: {
+                    create: [
+                      { name: '控制', value: 'Control' },
+                      { name: '截止', value: 'Cutoff' },
+                    ],
+                  },
                 },
                 {
-                  name: '驱动信号',
-                  value: 'Drive Signal',
-                  type: '1',
-                  sort: 4,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '仪表模式',
-                  value: 'Instrument Mode',
-                  type: '0',
-                  sort: 5,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '行程累计器',
-                  value: 'Travel Accumulator',
-                  type: '1',
-                  sort: 6,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '放大器调整',
-                  value: 'Relay Adjustment',
-                  type: '1',
-                  sort: 7,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: 'PDInside 状态',
-                  value: 'PD Inside Status',
-                  sort: 8,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '行程累计器',
-                  value: 'Travel Accumulator',
-                  sort: 9,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '输入特性',
-                  value: 'Input Characteristic',
-                  sort: 10,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '温度',
-                  value: 'Temperature',
-                  sort: 11,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '标定日期',
-                  value: 'Calibration Date',
-                  sort: 12,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '模拟生效',
-                  value: 'Simulate Active',
-                  sort: 13,
-                  createBy: 'admin',
-                  dictTypeId: 2,
+                  name: '输入特性化',
+                  value: 'Input Characterization',
                 },
               ],
             },
           },
           {
-            name: '阀门摩擦力性能诊断',
-            value: 'Valve Friction Performance Diagnostic',
-            dictData: {
+            name: '仪表组态-报警，转换块',
+            value: 'Instrument Configuration-Alerts, Transducer',
+            children: {
               create: [
                 {
-                  name: '阀门摩擦力性能诊断',
-                  value: 'Valve Friction Performance Diagnostic',
-                  type: '2',
-                  sort: 14,
-                  createBy: 'admin',
-                  dictTypeId: 2,
+                  name: '电子部件报警',
+                  value: 'Electronics Alerts',
+                  children: {
+                    create: [
+                      {
+                        name: '驱动电流',
+                        value: 'Drive Current',
+                      },
+                      {
+                        name: '驱动信号',
+                        value: 'Drive Signal',
+                      },
+                      {
+                        name: '处理器损坏',
+                        value: 'Processor Impaired',
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '接近报警',
+                  value: 'Proximity Alerts',
+                  children: {
+                    create: [
+                      {
+                        name: '行程开',
+                        value: 'Travel Open',
+                      },
+                      {
+                        name: '行程关',
+                        value: 'Travel Closed',
+                      },
+                      {
+                        name: '近接式',
+                        value: 'Proximity',
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '组态报警',
+                  value: 'Config Alerts',
+                  children: {
+                    create: [
+                      {
+                        name: '输出块超时',
+                        value: 'Output Block Timeout',
+                      },
+                      {
+                        name: '功能块设置为默认值',
+                        value: 'Blocks Set to Defaults',
+                      },
+                      {
+                        name: '关机报警',
+                        value: 'Shutdown Alert',
+                      },
+                      {
+                        name: '报警键',
+                        value: 'Alert Key',
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '压力/温度报警',
+                  value: 'Pressure/Temperature Alerts',
+                  children: {
+                    create: [
+                      {
+                        name: '供气压力',
+                        value: 'Supply Pressure',
+                      },
+                      {
+                        name: '温度限值',
+                        value: 'Temperature Limit',
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '性能报警',
+                  value: 'Performance Alerts',
+                  children: {
+                    create: [
+                      {
+                        name: '性能诊断',
+                        value: 'Performance Diagnostic',
+                      },
+                      {
+                        name: '性能临界',
+                        value: 'Performance Critical',
+                      },
+                      {
+                        name: '性能降低',
+                        value: 'Performance Reduced',
+                      },
+                      { name: '性能信息', value: 'Performance Information' },
+                    ],
+                  },
+                },
+                {
+                  name: '模拟 PWA',
+                  value: 'Simulate PWA',
+                  children: {
+                    create: [
+                      { name: '模拟状态', value: 'Simulation Status' },
+                      { name: '组态报警', value: 'Config Alerts' },
+                      { name: '电子部件报警', value: 'Electronics Alerts' },
+                      {
+                        name: '压力/温度报警',
+                        value: 'Pressure/Temperature Alerts',
+                      },
+                      { name: '性能报警', value: 'Performance Alerts' },
+                      { name: '传感器报警', value: 'Sensor Alerts' },
+                      { name: '行程报警', value: 'Travel Alerts' },
+                      { name: '行程历史报警', value: 'Travel History Alerts' },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            name: '仪表组态-报警，转换块(控制)',
+            value: 'Instrument Configuration-Alerts, Transducer(cont.)',
+            children: {
+              create: [
+                {
+                  name: '行程报警',
+                  value: 'Travel Alerts',
+                  children: {
+                    create: [
+                      { name: '行程偏差', value: 'Travel Deviation' },
+                      { name: '行程限位', value: 'Travel Limit' },
+                      { name: '行程高限位', value: 'Travel Limit High' },
+                      { name: '行程低限位', value: 'Travel Limit Low' },
+                    ],
+                  },
+                },
+                {
+                  name: '传感器报警',
+                  value: 'Sensor Alerts',
+                  children: {
+                    create: [
+                      {
+                        name: '行程传感器',
+                        value: 'Travel Sensor',
+                      },
+                      {
+                        name: '输出压力传感器',
+                        value: 'Output Pressure Sensor',
+                      },
+                      {
+                        name: '供气压力传感器',
+                        value: 'Supply Pressure Sensor',
+                      },
+                      {
+                        name: '温度传感器',
+                        value: 'Temperature Sensor',
+                      },
+                      {
+                        name: '压力切换激活',
+                        value: 'Pressure Fallback Active',
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '行程历史报警',
+                  value: 'Travel History Alerts',
+                  children: {
+                    create: [
+                      { name: '循环计数高', value: 'Cycle Count High' },
+                      { name: '行程累计器', value: 'Travel Accumulator' },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            name: '仪表组态-规格表，转换块',
+            value: 'Instrument Configuration-Spec Sheet, Transducer',
+            children: {
+              create: [
+                {
+                  name: '仪表',
+                  value: 'Instrument',
+                  children: {
+                    create: [
+                      { name: '单位', value: 'Units' },
+                      { name: '仪表', value: 'Instrument' },
+                      { name: '标定', value: 'Calibration' },
+                      { name: '标定数据', value: 'Calibration Data' },
+                    ],
+                  },
+                },
+                {
+                  name: 'MAI 通道',
+                  value: 'MAI Channels',
+                  children: {
+                    create: [{ name: 'MAI 通道', value: 'MAI Channels' }],
+                  },
+                },
+                { name: '阀门', value: 'Valve' },
+                {
+                  name: '内件',
+                  value: 'Trim',
+                  children: {
+                    create: [
+                      {
+                        name: '其他直通式阀内件选项',
+                        value: 'Extra Sliding Stem Valve Trim Options',
+                      },
+                    ],
+                  },
+                },
+                { name: '执行机构', value: 'Actuator' },
+                { name: '参考', value: 'Reference' },
+              ],
+            },
+          },
+          {
+            name: '仪表组态-资源块',
+            value: 'Instrument Configuration-Resource Block',
+            children: {
+              create: [
+                {
+                  name: '模式',
+                  value: 'Mode',
+                  children: {
+                    create: [
+                      { name: '资源块模式', value: 'Resource Block Mode' },
+                    ],
+                  },
+                },
+                { name: '写锁定', value: 'Write Lock' },
+                { name: '通讯超时', value: 'Comm Timeout' },
+                {
+                  name: '选项',
+                  value: 'Options',
+                  children: {
+                    create: [{ name: '功能选择', value: 'Feature Select' }],
+                  },
+                },
+                {
+                  name: '警报处理',
+                  value: 'Alarm Handling',
+                  children: {
+                    create: [
+                      { name: '全部警报', value: 'All Alarms' },
+                      { name: '块警报', value: 'Block Alarm' },
+                      { name: '写入警报', value: 'Write Alarm' },
+                    ],
+                  },
+                },
+                {
+                  name: '仪表',
+                  value: 'Instrument',
+                  children: {
+                    create: [
+                      {
+                        name: '仪表描述',
+                        value: 'Instrument Description',
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            name: '状态监视器',
+            value: 'Status Monitor',
+            children: {
+              create: [
+                { name: '监视器', value: 'Monitor' },
+                {
+                  name: '仪表',
+                  value: 'Instrument',
+                  children: {
+                    create: [
+                      { name: '转换块', value: 'TRANSDUCER' },
+                      { name: '资源块', value: 'RESOURCE' },
+                    ],
+                  },
+                },
+                {
+                  name: '块状态',
+                  value: 'Block Status',
+                  children: {
+                    create: [
+                      { name: '转换块', value: 'TRANSDUCER' },
+                      { name: '资源块', value: 'RESOURCE' },
+                    ],
+                  },
+                },
+                {
+                  name: '组态',
+                  value: 'Config',
+                  children: {
+                    create: [
+                      {
+                        name: '输出块超时',
+                        value: 'Output Block Timeout',
+                      },
+                      {
+                        name: '功能块设置为默认值',
+                        value: 'Blocks Set to Defaults',
+                      },
+                      { name: '关机报警', value: 'Shutdown Alert' },
+                    ],
+                  },
+                },
+                {
+                  name: '压力/温度',
+                  value: 'Pressure/Temperature',
+                  children: {
+                    create: [
+                      { name: '供气压力', value: 'Supply Pressure' },
+                      { name: '温度限值', value: 'Temperature Limit' },
+                    ],
+                  },
+                },
+                {
+                  name: '传感器',
+                  value: 'Sensor',
+                  children: {
+                    create: [
+                      { name: '行程传感器', value: 'Travel Sensor' },
+                      {
+                        name: '输出压力传感器',
+                        value: 'Output Pressure Sensor',
+                      },
+                      {
+                        name: '供气压力传感器',
+                        value: 'Supply Pressure Sensor',
+                      },
+                      {
+                        name: '温度传感器',
+                        value: 'Temperature Sensor',
+                      },
+                      {
+                        name: '压力切换激活',
+                        value: 'Pressure Fallback Active',
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '电子部件',
+                  value: 'Electronic',
+                  children: {
+                    create: [
+                      { name: '驱动电流', value: 'Drive Current' },
+                      { name: '驱动信号', value: 'Drive Signal' },
+                      { name: '处理器损坏', value: 'Processor Impaired' },
+                    ],
+                  },
+                },
+                {
+                  name: '近接式',
+                  value: 'Proximity',
+                  children: {
+                    create: [{ name: '接近报警', value: 'Proximity Alerts' }],
+                  },
+                },
+                {
+                  name: '行程',
+                  value: 'Travel',
+                  children: {
+                    create: [
+                      { name: '行程偏差', value: 'Travel Deviation' },
+                      { name: '行程限位', value: 'Travel Limit' },
+                      { name: '行程高限位', value: 'Travel Limit High' },
+                      { name: '行程低限位', value: 'Travel Limit Low' },
+                    ],
+                  },
+                },
+                {
+                  name: '行程历史记录',
+                  value: 'Travel History',
+                  children: {
+                    create: [
+                      { name: '行程累计高', value: 'Travel Accumulator High' },
+                      { name: '循环计数高', value: 'Cycle Count High' },
+                    ],
+                  },
+                },
+                {
+                  name: '临界性能',
+                  value: 'Perf Critical',
+                  children: {
+                    create: [
+                      { name: '性能临界', value: 'Performance Critical' },
+                      { name: '可能原因', value: 'Possible Cause' },
+                    ],
+                  },
+                },
+                {
+                  name: '性能信息',
+                  value: 'Perf Info',
+                  children: {
+                    create: [
+                      { name: '性能信息', value: 'Performance Information' },
+                      { name: '可能原因', value: 'Possible Cause' },
+                      { name: '其他信息', value: 'Other Information' },
+                    ],
+                  },
+                },
+                {
+                  name: '降低性能',
+                  value: 'Perf Reduced',
+                  children: {
+                    create: [
+                      { name: '性能降低', value: 'Performance Reduced' },
+                      { name: '可能原因', value: 'Possible Cause' },
+                    ],
+                  },
                 },
               ],
             },
@@ -1737,253 +2096,92 @@ async function main() {
           {
             name: '阶跃响应',
             value: 'Step Response',
-            dictData: {
+            children: {
               create: [
                 {
-                  name: '零功率状态',
-                  value: 'Zero Power Condition',
-                  sort: 15,
-                  createBy: 'admin',
-                  dictTypeId: 2,
+                  name: '已分析的数据',
+                  value: 'Analyzed Data',
+                  children: {
+                    create: [
+                      { name: '非性能测试', value: 'Not A Performance Test' },
+                    ],
+                  },
                 },
                 {
-                  name: '行程整定参数',
-                  value: 'Travel Tuning Set',
-                  sort: 16,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '比例',
-                  value: 'Proportional',
-                  sort: 17,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '速度：',
-                  value: 'Velocity',
-                  sort: 18,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: 'MLF',
-                  value: 'MLF',
-                  sort: 19,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '1',
-                  value: '1',
-                  sort: 20,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '2',
-                  value: '2',
-                  sort: 21,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '3',
-                  value: '3',
-                  sort: 22,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '4',
-                  value: '4',
-                  sort: 23,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '5',
-                  value: '5',
-                  sort: 24,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '6',
-                  value: '6',
-                  sort: 25,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '7',
-                  value: '7',
-                  sort: 26,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '8',
-                  value: '8',
-                  sort: 27,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '9',
-                  value: '9',
-                  sort: 28,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '10',
-                  value: '10',
-                  sort: 29,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '11',
-                  value: '11',
-                  sort: 30,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '12',
-                  value: '12',
-                  sort: 31,
-                  createBy: 'admin',
-                  dictTypeId: 2,
+                  name: '组态',
+                  value: 'Configuration',
+                  children: {
+                    create: [
+                      { name: '整定', value: 'Tuning' },
+                      { name: '增益', value: 'Gains' },
+                      { name: '积分设置', value: 'Integral Settings' },
+                    ],
+                  },
                 },
               ],
+            },
+          },
+          {
+            name: '阶跃响应-已分析的数据',
+            value: 'Step Response-Analyzed Data',
+            children: {
+              create: [
+                {
+                  name: '已分析的数据(所有时间均以秒为单位)',
+                  value: 'Analyzed Data (all times in seconds)',
+                },
+              ],
+            },
+          },
+          {
+            name: '阶跃响应-注释',
+            value: 'Step Response-Notes',
+            children: {
+              create: [{ name: '注释', value: 'Notes' }],
             },
           },
           {
             name: '完全扫描',
             value: 'Total Scan',
-            dictData: {
+            children: {
               create: [
+                { name: '输入', value: 'Inputs' },
+                { name: '已分析的数据', value: 'Analyzed Data' },
                 {
-                  name: '扫描时间',
-                  value: 'Scan Time',
-                  sort: 32,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '平均动态误差',
-                  value: 'Avg. Dynamic Error',
-                  type: '1',
-                  sort: 33,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '动态线性度（独立）',
-                  value: 'Dyn. Linearity (Ind.)',
-                  type: '1',
-                  sort: 34,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '平均扭矩',
-                  value: 'Average Torque',
-                  type: '1',
-                  sort: 35,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '平均摩擦力',
-                  value: 'Average Friction',
-                  sort: 36,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '弹簧预紧力',
-                  value: 'Bench Set',
-                  sort: 37,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '测试状态阀座负载',
-                  value: 'Seat Load As Tested',
-                  sort: 38,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '投用状态阀座负载',
-                  value: 'Service Seat Load',
-                  sort: 39,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '所需阀座负载',
-                  value: 'Required Seat Load',
-                  sort: 40,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '预期总摩擦力',
-                  value: 'Expected Total Friction',
-                  sort: 41,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '反馈连接方式',
-                  value: 'Feedback Connection',
-                  sort: 42,
-                  createBy: 'admin',
-                  dictTypeId: 2,
+                  name: '组态',
+                  value: 'Configuration',
+                  children: {
+                    create: [
+                      { name: '整定', value: 'Tuning' },
+                      { name: '增益', value: 'Gains' },
+                      { name: '积分设置', value: 'Integral Settings' },
+                    ],
+                  },
                 },
               ],
             },
           },
           {
+            name: '完全扫描-注释',
+            value: 'Total Scan-Notes',
+            children: {
+              create: [{ name: '注释', value: 'Notes' }],
+            },
+          },
+          {
             name: '完全扫描-规格表',
             value: 'Total Scan-Spec Sheet',
-            dictData: {
+            children: {
               create: [
-                {
-                  name: '额定行程',
-                  value: 'Rated Travel',
-                  sort: 43,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '实际行程：',
-                  value: 'Actual Travel',
-                  sort: 44,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '弹簧预紧力下限',
-                  value: 'Lower Bench Set',
-                  sort: 45,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
-                {
-                  name: '弹簧预紧力上限',
-                  value: 'Upper Bench Set',
-                  sort: 46,
-                  createBy: 'admin',
-                  dictTypeId: 2,
-                },
+                { name: '阀门', value: 'Valve' },
+                { name: '内件', value: 'Trim' },
+                { name: '执行机构', value: 'Actuator' },
               ],
             },
+          },
+          {
+            name: '阀门摩擦力性能诊断',
+            value: 'Valve Friction Performance Diagnostic',
           },
         ],
       },

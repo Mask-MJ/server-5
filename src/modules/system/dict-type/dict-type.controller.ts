@@ -52,6 +52,12 @@ export class DictTypeController {
     return this.dictTypeService.findAll(queryDictTypeDto);
   }
 
+  @Get('export')
+  @ApiOperation({ summary: '导出字典列表' })
+  export() {
+    return this.dictTypeService.export();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: '获取字典详情' })
   @ApiOkResponse({ type: DictTypeEntity })
