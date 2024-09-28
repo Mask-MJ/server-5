@@ -53,7 +53,7 @@ function changeTime(data: any) {
 
   for (const key in data) {
     if (data.hasOwnProperty(key)) {
-      if (key === 'children') {
+      if (key === 'children' && Array.isArray(data[key])) {
         data[key] = data[key].map((item: any) => changeTime(item));
       }
       if (data[key] instanceof Date) {

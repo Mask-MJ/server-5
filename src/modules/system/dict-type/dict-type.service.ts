@@ -12,7 +12,6 @@ import {
   dictDataTree,
   keyWord,
   type DictDataTreeCreate,
-  type KeyWord,
 } from './TreeStructure';
 
 @Injectable()
@@ -57,7 +56,10 @@ export class DictTypeService {
     return this.prismaService.client.dictType.delete({ where: { id } });
   }
 
-  export() {
+  async export() {
+    const dictType = await this.prismaService.client.dictType.findFirst({
+      where: { name: 'ff' },
+    });
     // 序列化数据, 改成树形结构, 递归
     function getChildren(
       data: dictDataTree[],
@@ -72,27 +74,28 @@ export class DictTypeService {
             parentId: item.parent_id,
             name: item.name_ZH,
             value: item.name_EN,
-            dictData: { create: [] },
+            dictData: {},
             children: {
               create: getChildren(data, item.id),
             },
           };
         });
     }
-    const treeData = getChildren(data, null);
-
     // 把 keyWord 放到树形结构中
     function addKeyWord(treeData: DictDataTreeCreate[]) {
       treeData.forEach((item, index) => {
         const keyWordItem = keyWord.find((key) => key.parent_id === item.id);
         if (keyWordItem) {
+          if (!item.dictData.create) {
+            item.dictData.create = [];
+          }
           item.dictData.create.push({
             name: keyWordItem.name_ZH,
             value: keyWordItem.name_EN,
             sort: index + 1,
             type: '0',
             createBy: 'admin',
-            dictTypeId: 1,
+            dictTypeId: dictType.id,
           });
         }
         if (item.children) {
@@ -100,8 +103,29 @@ export class DictTypeService {
         }
       });
     }
+    // 删除数据中所有的 id 和 parentId 和 children 中 create 为空的数据
+    function deleteId(treeData: DictDataTreeCreate[]) {
+      treeData.forEach((item) => {
+        delete item.id;
+        delete item.parentId;
+        if (item.children) {
+          deleteId(item.children.create);
+        }
+        if (item.dictData.create?.length === 0) {
+          delete item.dictData;
+        }
+        if (item.children.create?.length === 0) {
+          delete item.children.create;
+        }
+      });
+    }
+    const treeData = getChildren(data, null);
     addKeyWord(treeData);
+    deleteId(treeData);
 
-    return treeData;
+    // return treeData;
+    return this.prismaService.client.dictDataTree.create({
+      data: treeData[1],
+    });
   }
 }

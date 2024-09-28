@@ -21,7 +21,7 @@ export interface DictDataTreeCreate {
   value: string;
   parentId: number | null;
   dictData: {
-    create: DictData[];
+    create?: DictData[];
   };
   children: {
     create: DictDataTreeCreate[];

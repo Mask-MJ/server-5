@@ -1613,575 +1613,4457 @@ async function main() {
       children: {
         create: [
           {
-            name: '仪表组态-基本，转换块',
-            value: 'Instrument Configuration-Basic, Transducer',
+            name: 'hart',
+            value: 'hart',
+            dictData: {
+              create: [],
+            },
             children: {
               create: [
                 {
-                  name: '初始设置',
-                  value: 'Initial Setup',
+                  name: '仪表组态-基本',
+                  value: 'Instrument Configuration-Basic',
+                  dictData: {
+                    create: [],
+                  },
                   children: {
                     create: [
-                      { name: '转换块模式', value: 'Transducer Block Mode' },
-                      { name: '设置', value: 'Setup' },
+                      {
+                        name: '设备标识',
+                        value: 'Device Identification',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '标签',
+                              value: 'Tag',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'HART 标签',
+                                    value: 'HART Tag',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '单位',
+                              value: 'Units',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '压力单位',
+                                    value: 'Pressure Units',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '初始设置',
+                        value: 'Initial Setup',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '控制信号',
+                              value: 'Control Signal',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '控制模式',
+                                    value: 'Control Mode',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '设置',
+                              value: 'Setup',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '零功率状态',
+                                    value: 'Zero Power Condition',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '输出',
+                        value: 'Outputs',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: 'HART 变量分配',
+                              value: 'HART Variable Assignments',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '主变量 (PV)',
+                                    value: 'Primary Variable (PV)',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '整定',
+                        value: 'Tuning',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '行程控制',
+                              value: 'Travel Control',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '整定参数',
+                                    value: 'Tuning Set',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '积分设置',
+                              value: 'Integral Settings',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '积分死区 (%)',
+                                    value: 'Integral Dead Zone (%)',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '压力控制',
+                              value: 'Pressure Control',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '整定参数',
+                                    value: 'Tuning Set',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '仪表',
+                        value: 'Instrument',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '仪表',
+                              value: 'Instrument',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '最大供气压力',
+                                    value: 'Max Supply Pressure',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '输入特性化',
+                        value: 'Input Characterization',
+                        dictData: {
+                          create: [
+                            {
+                              name: '输入特性',
+                              value: 'Input Characteristic',
+                              sort: 6,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '行程/压力控制',
+                        value: 'Travel/Pressure Control',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '控制',
+                              value: 'Control',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程/压力选择',
+                                    value: 'Travel / Pressure Select',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '限值/截止',
+                              value: '限值/截止',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '低限位/截止选择',
+                                    value: 'Low Limit/Cutoff Select',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '动态响应',
+                              value: 'Dynamic Response',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '开阀设定点变化率（%/秒）',
+                                    value: 'Set Point Rate Open (%/sec)',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '压力切换',
+                              value: 'Pressure Fallback',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '回复',
+                                    value: 'Recovery',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '阵发',
+                        value: 'Burst',
+                        dictData: {
+                          create: [
+                            {
+                              name: '脉冲模式启用',
+                              value: 'Burst Mode Enable',
+                              sort: 8,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
                     ],
                   },
                 },
                 {
-                  name: '整定',
-                  value: 'Tuning',
+                  name: '仪表组态-报警',
+                  value: 'Instrument Configuration-Alerts',
+                  dictData: {
+                    create: [],
+                  },
                   children: {
                     create: [
                       {
-                        name: '行程控制',
-                        value: 'Travel Control',
+                        name: '行程历史报警',
+                        value: 'Travel History Alerts',
+                        dictData: {
+                          create: [
+                            {
+                              name: '循环计数/行程累计死区 (%)',
+                              value: 'Cycle Cnt/Tvl Accum Deadband (%)',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '循环计数',
+                              value: 'Cycle Count',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '循环计数高报警',
+                                    value: 'Cycle Count High Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程累计器',
+                              value: 'Travel Accumulator',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程累加器高报警',
+                                    value: 'Travel Accumulator High Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
                       },
                       {
-                        name: '积分设置',
-                        value: 'Integral Settings',
+                        name: '行程报警',
+                        value: 'Travel Alerts',
+                        dictData: {
+                          create: [
+                            {
+                              name: '所有行程死区报警 (%)',
+                              value: 'Deadband for All Travel Alerts (%)',
+                              sort: 2,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '行程偏差',
+                              value: 'Travel Deviation',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程偏差报警',
+                                    value: 'Travel Deviation Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程高高',
+                              value: 'Travel High High',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程高高报警',
+                                    value: 'Travel High High Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程低低',
+                              value: 'Travel Low Low',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程低低报警',
+                                    value: 'Travel Low Low Alert',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程高',
+                              value: 'Travel High',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程高报警',
+                                    value: 'Travel High Alert',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程低',
+                              value: 'Travel Low',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程低报警',
+                                    value: 'Travel Low Alert',
+                                    sort: 5,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程低限位/截止',
+                              value: 'Travel Limit/Cutoff Low',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程限位/截止低报警',
+                                    value: 'Travel Limit/Cutoff Low Alert',
+                                    sort: 6,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程高限位/截止',
+                              value: 'Travel Limit/Cutoff High',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程限位/截止高报警',
+                                    value: 'Travel Limit/Cutoff High Alert',
+                                    sort: 7,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
                       },
                       {
-                        name: '压力控制',
-                        value: 'Pressure Control',
+                        name: '信息状态',
+                        value: 'Informational Status',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '仪表时间为大概值',
+                              value: 'Instrument Time is Approximate',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '仪表时间为大概值报警',
+                                    value:
+                                      'Instrument Time is Approximate Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '校验进行中',
+                              value: 'Calibration in Progress',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '标定进行中报警',
+                                    value: 'Calibration in Progress Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '自动校验进行中',
+                              value: 'Autocal in Progress',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '自动标定进行中报警',
+                                    value: 'Autocal in Progress Alert',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '诊断进行中',
+                              value: 'Diagnostic in Progress',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '诊断进行中报警',
+                                    value: 'Diagnostic in Progress Alert',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '诊断数据可用',
+                              value: 'Diagnostic Data Available',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '诊断数据可用报警',
+                                    value: 'Diagnostic Data Available Alert',
+                                    sort: 5,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '积分器饱和高',
+                              value: 'Integrator Saturated High',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '积分器饱和高报警',
+                                    value: 'Integrator Saturated High Alert',
+                                    sort: 6,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '积分器饱和低',
+                              value: 'Integrator Saturated Low',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '积分器饱和低报警',
+                                    value: 'Integrator Saturated Low Alert',
+                                    sort: 7,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
                       },
                     ],
                   },
                 },
                 {
-                  name: '行程/压力控制',
-                  value: 'Travel/Pressure Control',
+                  name: '仪表组态-报警(控制)',
+                  value: 'Instrument Configuration-Alerts(cont.)',
+                  dictData: {
+                    create: [],
+                  },
                   children: {
                     create: [
-                      { name: '控制', value: 'Control' },
-                      { name: '截止', value: 'Cutoff' },
+                      {
+                        name: '压力报警',
+                        value: 'Pressure Alerts',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '供气压力高',
+                              value: 'Supply Pressure High',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '供气压力高报警',
+                                    value: 'Supply Pressure High Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '供气压力低',
+                              value: 'Supply Pressure Low',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '供气压力低报警',
+                                    value: 'Supply Pressure Low Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '压力偏差',
+                              value: 'Pressure Deviation',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '压力偏差报警',
+                                    value: 'Pressure Deviation Alert',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '端口A过压',
+                              value: 'Port A Overpressurized',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '端口 A 过压报警',
+                                    value: 'Port A Overpressurized Alert',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '报警记录',
+                        value: 'Alert Record',
+                        dictData: {
+                          create: [
+                            {
+                              name: '仪表时钟',
+                              value: 'Instrument Clock',
+                              sort: 2,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '报警记录非空',
+                              value: 'Alert Record Not Empty',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '报警记录非空报警',
+                                    value: 'Alert Record Not Empty Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '报警记录已满',
+                              value: 'Alert Record Full',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '报警记录已满报警',
+                                    value: 'Alert Record Full Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '电子报警',
+                        value: 'Electronic Alerts',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '驱动电流',
+                              value: 'Drive Current',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '驱动电流故障',
+                                    value: 'Drive Current Failure',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '驱动信号',
+                              value: 'Drive Signal',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '驱动信号报警',
+                                    value: 'Drive Signal Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '关键 NVM',
+                              value: 'Critical NVM',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '关键NVM故障',
+                                    value: 'Critical NVM Failure',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '非关键 NVM',
+                              value: 'Non-Critical NVM',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '非关键挥发性存储器报警',
+                                    value: 'Non-Critical NVM Alert',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '闪存完整性故障',
+                              value: 'Flash Integrity Failure',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '闪存完整性故障',
+                                    value: 'Flash Integrity Failure',
+                                    sort: 5,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '参考电压故障',
+                              value: 'Reference Voltage Failure',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '参考电压故障',
+                                    value: 'Reference Voltage Failure',
+                                    sort: 6,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '回路电流',
+                              value: 'Loop Current',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '回路电流验证',
+                                    value: 'Loop Current Validation',
+                                    sort: 7,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '关机激活',
+                              value: 'Shutdown Activated',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '关机激活报警',
+                                    value: 'Shutdown Activated Alert',
+                                    sort: 8,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '传感器报警',
+                        value: 'Sensor Alerts',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '行程传感器',
+                              value: 'Travel Sensor',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程传感器故障',
+                                    value: 'Travel Sensor Failure',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '压力切换激活',
+                              value: 'Pressure Fallback Active',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '压力回落激活警报',
+                                    value: 'Pressure Fallback Active Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '温度传感器故障',
+                              value: 'Temperature Sensor Failure',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '温度传感器故障',
+                                    value: 'Temperature Sensor Failure',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '小回路传感器故障',
+                              value: 'Minor Loop Sensor Failure',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '小回路传感器故障',
+                                    value: 'Minor Loop Sensor Failure',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
                     ],
                   },
                 },
                 {
-                  name: '输入特性化',
-                  value: 'Input Characterization',
+                  name: '仪表组态-规格表',
+                  value: 'Instrument Configuration-Spec Sheet',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '阀门',
+                        value: 'Valve',
+                        dictData: {
+                          create: [
+                            {
+                              name: '制造商',
+                              value: 'Manufacturer',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '内件',
+                        value: 'Trim',
+                        dictData: {
+                          create: [
+                            {
+                              name: '阀座类型',
+                              value: 'Seat Type',
+                              sort: 2,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '执行机构',
+                        value: 'Actuator',
+                        dictData: {
+                          create: [
+                            {
+                              name: '制造商',
+                              value: 'Manufacturer',
+                              sort: 3,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '附件',
+                        value: 'Accessories',
+                        dictData: {
+                          create: [
+                            {
+                              name: '增压器',
+                              value: 'Volume Booster',
+                              sort: 4,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '状态监视器',
+                  value: 'Status Monitor',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '监视器',
+                        value: 'Monitor',
+                        dictData: {
+                          create: [
+                            {
+                              name: '输入电流',
+                              value: 'Input Current',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '设备',
+                        value: 'Device',
+                        dictData: {
+                          create: [
+                            {
+                              name: '信息串',
+                              value: 'Message',
+                              sort: 2,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '报警',
+                        value: 'Alerts',
+                        dictData: {
+                          create: [
+                            {
+                              name: '行程高',
+                              value: 'Travel High',
+                              sort: 3,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '供气压力性能诊断',
+                  value: 'Supply Pressure Performance Diagnostic',
+                  dictData: {
+                    create: [
+                      {
+                        name: '供气压力性能诊断',
+                        value: 'Supply Pressure Performance Diagnostic',
+                        sort: 6,
+                        type: '0',
+                        createBy: 'admin',
+                        dictTypeId: 4,
+                      },
+                    ],
+                  },
+                  children: {
+                    create: [],
+                  },
+                },
+                {
+                  name: '行程偏差性能诊断',
+                  value: 'Travel Deviation Performance Diagnostic',
+                  dictData: {
+                    create: [
+                      {
+                        name: '行程偏差性能诊断',
+                        value: 'Travel Deviation Performance Diagnostic',
+                        sort: 7,
+                        type: '0',
+                        createBy: 'admin',
+                        dictTypeId: 4,
+                      },
+                    ],
+                  },
+                  children: {
+                    create: [],
+                  },
+                },
+                {
+                  name: 'I/P和放大器完整性性能诊断',
+                  value: 'I/P and Relay Integrity Performance Diagnostic',
+                  dictData: {
+                    create: [
+                      {
+                        name: 'I/P和放大器完整性性能诊断',
+                        value: 'I/P and Relay Integrity Performance Diagnostic',
+                        sort: 8,
+                        type: '0',
+                        createBy: 'admin',
+                        dictTypeId: 4,
+                      },
+                    ],
+                  },
+                  children: {
+                    create: [],
+                  },
+                },
+                {
+                  name: '放大器调整性能诊断',
+                  value: 'Relay Adjustment Performance Diagnostic',
+                  dictData: {
+                    create: [
+                      {
+                        name: '放大器调整性能诊断',
+                        value: 'Relay Adjustment Performance Diagnostic',
+                        sort: 9,
+                        type: '0',
+                        createBy: 'admin',
+                        dictTypeId: 4,
+                      },
+                    ],
+                  },
+                  children: {
+                    create: [],
+                  },
+                },
+                {
+                  name: '空气质量流量性能诊断',
+                  value: 'Air Mass Flow Performance Diagnostic',
+                  dictData: {
+                    create: [
+                      {
+                        name: '空气质量流量性能诊断',
+                        value: 'Air Mass Flow Performance Diagnostic',
+                        sort: 10,
+                        type: '0',
+                        createBy: 'admin',
+                        dictTypeId: 4,
+                      },
+                    ],
+                  },
+                  children: {
+                    create: [],
+                  },
+                },
+                {
+                  name: '阀门摩擦力性能诊断',
+                  value: 'Valve Friction Performance Diagnostic',
+                  dictData: {
+                    create: [
+                      {
+                        name: '阀门摩擦力性能诊断',
+                        value: 'Valve Friction Performance Diagnostic',
+                        sort: 11,
+                        type: '0',
+                        createBy: 'admin',
+                        dictTypeId: 4,
+                      },
+                    ],
+                  },
+                  children: {
+                    create: [],
+                  },
+                },
+                {
+                  name: '完全扫描',
+                  value: 'Total Scan',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '输入',
+                        value: 'Inputs',
+                        dictData: {
+                          create: [
+                            {
+                              name: '输入开始',
+                              value: 'Input Start',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '已分析的数据',
+                        value: 'Analyzed Data',
+                        dictData: {
+                          create: [
+                            {
+                              name: '平均动态误差',
+                              value: 'Avg. Dynamic Error',
+                              sort: 2,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '组态',
+                        value: 'Configuration',
+                        dictData: {
+                          create: [
+                            {
+                              name: '反馈连接方式',
+                              value: 'Feedback Connection',
+                              sort: 3,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '整定',
+                              value: 'Tuning',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程整定参数',
+                                    value: 'Travel Tuning Set',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '增益',
+                              value: 'Gains',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '比例',
+                                    value: 'Proportional',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '积分设置',
+                              value: 'Integral Settings',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '积分控制',
+                                    value: 'Integral Control',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '完全扫描-特性曲线分析器设置',
+                  value: 'Total Scan-Signature Analyzer Settings',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '特性曲线分析器设置',
+                        value: 'Signature Analyzer Settings',
+                        dictData: {
+                          create: [
+                            {
+                              name: '分析',
+                              value: 'Analysis',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '完全扫描-注释',
+                  value: 'Total Scan-Notes',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '注释',
+                        value: 'Notes',
+                        dictData: {
+                          create: [
+                            {
+                              name: '注释',
+                              value: 'Notes',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '完全扫描-规格表',
+                  value: 'Total Scan-Spec Sheet',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '阀门',
+                        value: 'Valve',
+                        dictData: {
+                          create: [
+                            {
+                              name: '制造商',
+                              value: 'Manufacturer',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '内件',
+                        value: 'Trim',
+                        dictData: {
+                          create: [
+                            {
+                              name: '阀座类型',
+                              value: 'Seat Type',
+                              sort: 2,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '附件',
+                        value: 'Accessories',
+                        dictData: {
+                          create: [
+                            {
+                              name: '增压器',
+                              value: 'Volume Booster',
+                              sort: 3,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '执行机构',
+                        value: 'Actuator',
+                        dictData: {
+                          create: [
+                            {
+                              name: '制造商',
+                              value: 'Manufacturer',
+                              sort: 4,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '阶跃响应',
+                  value: 'Step Response',
+                  dictData: {
+                    create: [
+                      {
+                        name: '测试设置',
+                        value: 'Test Set',
+                        sort: 16,
+                        type: '0',
+                        createBy: 'admin',
+                        dictTypeId: 4,
+                      },
+                    ],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '已分析的数据',
+                        value: 'Analyzed Data',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '非性能测试',
+                              value: 'Not A Performance Test',
+                              dictData: {
+                                create: [],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '组态',
+                        value: 'Configuration',
+                        dictData: {
+                          create: [
+                            {
+                              name: '反馈连接方式',
+                              value: 'Feedback Connection',
+                              sort: 2,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '整定',
+                              value: 'Tuning',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程整定参数',
+                                    value: 'Travel Tuning Set',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '增益',
+                              value: 'Gains',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '比例',
+                                    value: 'Proportional',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '积分设置',
+                              value: 'Integral Settings',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '积分控制',
+                                    value: 'Integral Control',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '阶跃响应-已分析的数据',
+                  value: 'Step Response-Analyzed Data',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '已分析的数据(所有时间均以秒为单位)',
+                        value: 'Analyzed Data (all times in seconds)',
+                        dictData: {
+                          create: [
+                            {
+                              name: '1',
+                              value: '1',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '阶跃响应-注释',
+                  value: 'Step Response-Notes',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '注释',
+                        value: 'Notes',
+                        dictData: {
+                          create: [
+                            {
+                              name: '注释',
+                              value: 'Notes',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                    ],
+                  },
                 },
               ],
             },
           },
           {
-            name: '仪表组态-报警，转换块',
-            value: 'Instrument Configuration-Alerts, Transducer',
+            name: 'ff',
+            value: 'ff',
+            dictData: {
+              create: [],
+            },
             children: {
               create: [
                 {
-                  name: '电子部件报警',
-                  value: 'Electronics Alerts',
+                  name: '仪表组态-基本，转换块',
+                  value: 'Instrument Configuration-Basic, Transducer',
+                  dictData: {
+                    create: [],
+                  },
                   children: {
                     create: [
                       {
-                        name: '驱动电流',
-                        value: 'Drive Current',
+                        name: '初始设置',
+                        value: 'Initial Setup',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '转换块模式',
+                              value: 'Transducer Block Mode',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '正常',
+                                    value: 'Normal',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '设置',
+                              value: 'Setup',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程/压力选择',
+                                    value: 'Travel/Pressure Select',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
                       },
                       {
-                        name: '驱动信号',
-                        value: 'Drive Signal',
+                        name: '整定',
+                        value: 'Tuning',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '行程控制',
+                              value: 'Travel Control',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '整定参数',
+                                    value: 'Tuning Set',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '积分设置',
+                              value: 'Integral Settings',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程死区',
+                                    value: 'Travel Dead Zone',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '压力控制',
+                              value: 'Pressure Control',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '整定参数',
+                                    value: 'Tuning Set',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
                       },
                       {
-                        name: '处理器损坏',
-                        value: 'Processor Impaired',
+                        name: '行程/压力控制',
+                        value: 'Travel/Pressure Control',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '控制',
+                              value: 'Control',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程/压力选择',
+                                    value: 'Travel/Pressure Select',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '截止',
+                              value: 'Cutoff',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程高截止点',
+                                    value: 'Travel Cutoff High',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '输入特性化',
+                        value: 'Input Characterization',
+                        dictData: {
+                          create: [
+                            {
+                              name: '输入特性',
+                              value: 'Input Characteristic',
+                              sort: 4,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
                       },
                     ],
                   },
                 },
                 {
-                  name: '接近报警',
-                  value: 'Proximity Alerts',
+                  name: '仪表组态-报警，转换块',
+                  value: 'Instrument Configuration-Alerts, Transducer',
+                  dictData: {
+                    create: [],
+                  },
                   children: {
                     create: [
                       {
-                        name: '行程开',
-                        value: 'Travel Open',
+                        name: '电子部件报警',
+                        value: 'Electronics Alerts',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '驱动电流',
+                              value: 'Drive Current',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '驱动电流报警',
+                                    value: 'Drive Current Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '驱动信号',
+                              value: 'Drive Signal',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '驱动信号报警',
+                                    value: 'Drive Signal Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '处理器损坏',
+                              value: 'Processor Impaired',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '程序存储器报警',
+                                    value: 'Program Memory Alert',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
                       },
                       {
-                        name: '行程关',
-                        value: 'Travel Closed',
+                        name: '接近报警',
+                        value: 'Proximity Alerts',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '行程开',
+                              value: 'Travel Open',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程打开报警',
+                                    value: 'Travel Open Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程关',
+                              value: 'Travel Closed',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程关闭报警',
+                                    value: 'Travel Closed Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '近接式',
+                              value: 'Proximity',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '接近高高报警',
+                                    value: 'Proximity High High Alert',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '组态报警',
+                        value: 'Config Alerts',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '输出块超时',
+                              value: 'Output Block Timeout',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '输出块超时',
+                                    value: 'Output Block Timeout',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '功能块设置为默认值',
+                              value: 'Blocks Set to Defaults',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '功能块设置为默认值',
+                                    value: 'Blocks Set to Defaults',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '关机报警',
+                              value: 'Shutdown Alert',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警启用',
+                                    value: 'PlantWeb Alert Enable',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '报警键',
+                              value: 'Alert Key',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '报警键',
+                                    value: 'Alert Key',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '压力/温度报警',
+                        value: 'Pressure/Temperature Alerts',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '供气压力',
+                              value: 'Supply Pressure',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '供气压力高报警',
+                                    value: 'Supply Pressure High Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '温度限值',
+                              value: 'Temperature Limit',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '温度高报警',
+                                    value: 'Temperature High Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '性能报警',
+                        value: 'Performance Alerts',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '性能诊断',
+                              value: 'Performance Diagnostic',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '运行性能诊断',
+                                    value: 'PD Run',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '性能临界',
+                              value: 'Performance Critical',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '性能临界报警',
+                                    value: 'Performance Critical Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '性能降低',
+                              value: 'Performance Reduced',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '性能降低报警',
+                                    value: 'Performance Reduced Alert',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '性能信息',
+                              value: 'Performance Information',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '性能信息报警',
+                                    value: 'Performance Information Alert',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '模拟 PWA',
+                        value: 'Simulate PWA',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '模拟状态',
+                              value: 'Simulation Status',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '模拟 PWA 状态',
+                                    value: 'Simulate PWA Status',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '组态报警',
+                              value: 'Config Alerts',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '功能块设置为默认值',
+                                    value: 'Blocks Set to Defaults',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '电子部件报警',
+                              value: 'Electronics Alerts',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '驱动电流',
+                                    value: 'Drive Current',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '压力/温度报警',
+                              value: 'Pressure/Temperature Alerts',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '供气压力',
+                                    value: 'Supply Pressure',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '性能报警',
+                              value: 'Performance Alerts',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '性能临界',
+                                    value: 'Performance Critical',
+                                    sort: 5,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '传感器报警',
+                              value: 'Sensor Alerts',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '输出压力传感器',
+                                    value: 'Output Pressure Sensor',
+                                    sort: 6,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程报警',
+                              value: 'Travel Alerts',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程偏差',
+                                    value: 'Travel Deviation',
+                                    sort: 7,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程历史报警',
+                              value: 'Travel History Alerts',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '循环计数高',
+                                    value: 'Cycle Count High',
+                                    sort: 8,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '仪表组态-报警，转换块(控制)',
+                  value: 'Instrument Configuration-Alerts, Transducer(cont.)',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '行程报警',
+                        value: 'Travel Alerts',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '行程偏差',
+                              value: 'Travel Deviation',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程偏差报警',
+                                    value: 'Travel Deviation Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程限位',
+                              value: 'Travel Limit',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程限位高高报警',
+                                    value: 'Travel Limit High High Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程高限位',
+                              value: 'Travel Limit High',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程高限位',
+                                    value: 'Travel Limit High',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程低限位',
+                              value: 'Travel Limit Low',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程低限位',
+                                    value: 'Travel Limit Low',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '传感器报警',
+                        value: 'Sensor Alerts',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '行程传感器',
+                              value: 'Travel Sensor',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程传感器报警',
+                                    value: 'Travel Sensor Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '输出压力传感器',
+                              value: 'Output Pressure Sensor',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '端口 A 压力传感器报警',
+                                    value: 'Port A Pressure Sensor Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '供气压力传感器',
+                              value: 'Supply Pressure Sensor',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '供气压力传感器报警',
+                                    value: 'Supply Pressure Sensor Alert',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '温度传感器',
+                              value: 'Temperature Sensor',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '温度传感器报警',
+                                    value: 'Temperature Sensor Alert',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '压力切换激活',
+                              value: 'Pressure Fallback Active',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '压力回落激活警报',
+                                    value: 'Pressure Fallback Active Alert',
+                                    sort: 5,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '行程历史报警',
+                        value: 'Travel History Alerts',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '循环计数高',
+                              value: 'Cycle Count High',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '循环计数高报警',
+                                    value: 'Cycle Count High Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程累计器',
+                              value: 'Travel Accumulator',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程累加器高报警',
+                                    value: 'Travel Accumulator High Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '仪表组态-规格表，转换块',
+                  value: 'Instrument Configuration-Spec Sheet, Transducer',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '仪表',
+                        value: 'Instrument',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '单位',
+                              value: 'Units',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '压力单位',
+                                    value: 'Pressure Units',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '仪表',
+                              value: 'Instrument',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '最大供气压力',
+                                    value: 'Max Supply Pressure',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '标定',
+                              value: 'Calibration',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '人员',
+                                    value: 'Person',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '标定数据',
+                              value: 'Calibration Data',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程高标定',
+                                    value: 'Travel High Cal',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: 'MAI 通道',
+                        value: 'MAI Channels',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: 'MAI 通道',
+                              value: 'MAI Channels',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '通道 1',
+                                    value: 'Channel 1',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '阀门',
+                        value: 'Valve',
+                        dictData: {
+                          create: [
+                            {
+                              name: '制造商',
+                              value: 'Manufacturer',
+                              sort: 3,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '内件',
+                        value: 'Trim',
+                        dictData: {
+                          create: [
+                            {
+                              name: '阀座类型',
+                              value: 'Seat Type',
+                              sort: 4,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '其他直通式阀内件选项',
+                              value: 'Extra Sliding Stem Valve Trim Options',
+                              dictData: {
+                                create: [],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '执行机构',
+                        value: 'Actuator',
+                        dictData: {
+                          create: [
+                            {
+                              name: '制造商',
+                              value: 'Manufacturer',
+                              sort: 5,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '参考',
+                        value: 'Reference',
+                        dictData: {
+                          create: [
+                            {
+                              name: '开阀动作时间',
+                              value: 'Stroking Time Open',
+                              sort: 6,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '仪表组态-资源块',
+                  value: 'Instrument Configuration-Resource Block',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '模式',
+                        value: 'Mode',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '资源块模式',
+                              value: 'Resource Block Mode',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '正常',
+                                    value: 'Normal',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '写锁定',
+                        value: 'Write Lock',
+                        dictData: {
+                          create: [
+                            {
+                              name: '写锁定',
+                              value: 'Write Lock',
+                              sort: 2,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '通讯超时',
+                        value: 'Comm Timeout',
+                        dictData: {
+                          create: [
+                            {
+                              name: 'RCas 超时',
+                              value: 'RCas Timeout',
+                              sort: 3,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '选项',
+                        value: 'Options',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '功能选择',
+                              value: 'Feature Select',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '支持报告',
+                                    value: 'Reports Supported',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '警报处理',
+                        value: 'Alarm Handling',
+                        dictData: {
+                          create: [
+                            {
+                              name: '报警键',
+                              value: 'Alert Key',
+                              sort: 5,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '全部警报',
+                              value: 'All Alarms',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '确认时间',
+                                    value: 'Confirm Time',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '块警报',
+                              value: 'Block Alarm',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '已禁用',
+                                    value: 'Disabled',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '写入警报',
+                              value: 'Write Alarm',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '已禁用',
+                                    value: 'Disabled',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '仪表',
+                        value: 'Instrument',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '仪表描述',
+                              value: 'Instrument Description',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '策略',
+                                    value: 'Strategy',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '状态监视器',
+                  value: 'Status Monitor',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '监视器',
+                        value: 'Monitor',
+                        dictData: {
+                          create: [
+                            {
+                              name: '设定点 (SP)',
+                              value: 'Setpoint',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '仪表',
+                        value: 'Instrument',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '转换块',
+                              value: 'TRANSDUCER',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '仪表系列',
+                                    value: 'Instrument Family',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '资源块',
+                              value: 'RESOURCE',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '标签描述',
+                                    value: 'Tag Description',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '块状态',
+                        value: 'Block Status',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '转换块',
+                              value: 'TRANSDUCER',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '模拟生效',
+                                    value: 'Simulate Active',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '资源块',
+                              value: 'RESOURCE',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '设备状态',
+                                    value: 'Device State',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '组态',
+                        value: 'Config',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '输出块超时',
+                              value: 'Output Block Timeout',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '功能块设置为默认值',
+                              value: 'Blocks Set to Defaults',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '关机报警',
+                              value: 'Shutdown Alert',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警 ',
+                                    value: 'PlantWeb Alert',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '压力/温度',
+                        value: 'Pressure/Temperature',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '供气压力',
+                              value: 'Supply Pressure',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '温度限值',
+                              value: 'Temperature Limit',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '传感器',
+                        value: 'Sensor',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '行程传感器',
+                              value: 'Travel Sensor',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '输出压力传感器',
+                              value: 'Output Pressure Sensor',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '供气压力传感器',
+                              value: 'Supply Pressure Sensor',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '温度传感器',
+                              value: 'Temperature Sensor',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '压力切换激活',
+                              value: 'Pressure Fallback Active',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 5,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '电子部件',
+                        value: 'Electronic',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '驱动电流',
+                              value: 'Drive Current',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '驱动信号',
+                              value: 'Drive Signal',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '处理器损坏',
+                              value: 'Processor Impaired',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
                       },
                       {
                         name: '近接式',
                         value: 'Proximity',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '接近报警',
+                              value: 'Proximity Alerts',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程开',
+                                    value: 'Travel Open',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '行程',
+                        value: 'Travel',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '行程偏差',
+                              value: 'Travel Deviation',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程限位',
+                              value: 'Travel Limit',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程高限位',
+                              value: 'Travel Limit High',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程高限位',
+                                    value: 'Travel Limit High',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '行程低限位',
+                              value: 'Travel Limit Low',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程低限位',
+                                    value: 'Travel Limit Low',
+                                    sort: 4,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '行程历史记录',
+                        value: 'Travel History',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '行程累计高',
+                              value: 'Travel Accumulator High',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '循环计数高',
+                              value: 'Cycle Count High',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '临界性能',
+                        value: 'Perf Critical',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '性能临界',
+                              value: 'Performance Critical',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '可能原因',
+                              value: 'Possible Cause',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'I/P',
+                                    value: 'I/P',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '性能信息',
+                        value: 'Perf Info',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '性能信息',
+                              value: 'Performance Information',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '可能原因',
+                              value: 'Possible Cause',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PDInside 未运行',
+                                    value: 'PDInside Not Running',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '其他信息',
+                              value: 'Other Information',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PDInside 未运行',
+                                    value: 'PDInside Not Running',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        name: '降低性能',
+                        value: 'Perf Reduced',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '性能降低',
+                              value: 'Performance Reduced',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'PlantWeb 报警',
+                                    value: 'PlantWeb Alert',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '可能原因',
+                              value: 'Possible Cause',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: 'I/P',
+                                    value: 'I/P',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
                       },
                     ],
                   },
                 },
                 {
-                  name: '组态报警',
-                  value: 'Config Alerts',
+                  name: '阶跃响应',
+                  value: 'Step Response',
+                  dictData: {
+                    create: [],
+                  },
                   children: {
                     create: [
                       {
-                        name: '输出块超时',
-                        value: 'Output Block Timeout',
+                        name: '已分析的数据',
+                        value: 'Analyzed Data',
+                        dictData: {
+                          create: [],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '非性能测试',
+                              value: 'Not A Performance Test',
+                              dictData: {
+                                create: [],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
                       },
                       {
-                        name: '功能块设置为默认值',
-                        value: 'Blocks Set to Defaults',
-                      },
-                      {
-                        name: '关机报警',
-                        value: 'Shutdown Alert',
-                      },
-                      {
-                        name: '报警键',
-                        value: 'Alert Key',
+                        name: '组态',
+                        value: 'Configuration',
+                        dictData: {
+                          create: [
+                            {
+                              name: '反馈连接方式',
+                              value: 'Feedback Connection',
+                              sort: 2,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '整定',
+                              value: 'Tuning',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程整定参数',
+                                    value: 'Travel Tuning Set',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '增益',
+                              value: 'Gains',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '比例',
+                                    value: 'Proportional',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '积分设置',
+                              value: 'Integral Settings',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '积分控制',
+                                    value: 'Integral Control',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
                       },
                     ],
                   },
                 },
                 {
-                  name: '压力/温度报警',
-                  value: 'Pressure/Temperature Alerts',
+                  name: '阶跃响应-已分析的数据',
+                  value: 'Step Response-Analyzed Data',
+                  dictData: {
+                    create: [],
+                  },
                   children: {
                     create: [
                       {
-                        name: '供气压力',
-                        value: 'Supply Pressure',
-                      },
-                      {
-                        name: '温度限值',
-                        value: 'Temperature Limit',
+                        name: '已分析的数据(所有时间均以秒为单位)',
+                        value: 'Analyzed Data (all times in seconds)',
+                        dictData: {
+                          create: [
+                            {
+                              name: '1',
+                              value: '1',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
                       },
                     ],
                   },
                 },
                 {
-                  name: '性能报警',
-                  value: 'Performance Alerts',
+                  name: '阶跃响应-注释',
+                  value: 'Step Response-Notes',
+                  dictData: {
+                    create: [],
+                  },
                   children: {
                     create: [
                       {
-                        name: '性能诊断',
-                        value: 'Performance Diagnostic',
+                        name: '注释',
+                        value: 'Notes',
+                        dictData: {
+                          create: [
+                            {
+                              name: '注释',
+                              value: 'Notes',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
                       },
-                      {
-                        name: '性能临界',
-                        value: 'Performance Critical',
-                      },
-                      {
-                        name: '性能降低',
-                        value: 'Performance Reduced',
-                      },
-                      { name: '性能信息', value: 'Performance Information' },
                     ],
                   },
                 },
                 {
-                  name: '模拟 PWA',
-                  value: 'Simulate PWA',
+                  name: '完全扫描',
+                  value: 'Total Scan',
+                  dictData: {
+                    create: [],
+                  },
                   children: {
                     create: [
-                      { name: '模拟状态', value: 'Simulation Status' },
-                      { name: '组态报警', value: 'Config Alerts' },
-                      { name: '电子部件报警', value: 'Electronics Alerts' },
                       {
-                        name: '压力/温度报警',
-                        value: 'Pressure/Temperature Alerts',
+                        name: '输入',
+                        value: 'Inputs',
+                        dictData: {
+                          create: [
+                            {
+                              name: '输入开始',
+                              value: 'Input Start',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
                       },
-                      { name: '性能报警', value: 'Performance Alerts' },
-                      { name: '传感器报警', value: 'Sensor Alerts' },
-                      { name: '行程报警', value: 'Travel Alerts' },
-                      { name: '行程历史报警', value: 'Travel History Alerts' },
+                      {
+                        name: '已分析的数据',
+                        value: 'Analyzed Data',
+                        dictData: {
+                          create: [
+                            {
+                              name: '平均动态误差',
+                              value: 'Avg. Dynamic Error',
+                              sort: 2,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '组态',
+                        value: 'Configuration',
+                        dictData: {
+                          create: [
+                            {
+                              name: '反馈连接方式',
+                              value: 'Feedback Connection',
+                              sort: 3,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [
+                            {
+                              name: '整定',
+                              value: 'Tuning',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '行程整定参数',
+                                    value: 'Travel Tuning Set',
+                                    sort: 1,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '增益',
+                              value: 'Gains',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '比例',
+                                    value: 'Proportional',
+                                    sort: 2,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                            {
+                              name: '积分设置',
+                              value: 'Integral Settings',
+                              dictData: {
+                                create: [
+                                  {
+                                    name: '积分控制',
+                                    value: 'Integral Control',
+                                    sort: 3,
+                                    type: '0',
+                                    createBy: 'admin',
+                                    dictTypeId: 4,
+                                  },
+                                ],
+                              },
+                              children: {
+                                create: [],
+                              },
+                            },
+                          ],
+                        },
+                      },
                     ],
+                  },
+                },
+                {
+                  name: '完全扫描-注释',
+                  value: 'Total Scan-Notes',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '注释',
+                        value: 'Notes',
+                        dictData: {
+                          create: [
+                            {
+                              name: '注释',
+                              value: 'Notes',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '完全扫描-规格表',
+                  value: 'Total Scan-Spec Sheet',
+                  dictData: {
+                    create: [],
+                  },
+                  children: {
+                    create: [
+                      {
+                        name: '阀门',
+                        value: 'Valve',
+                        dictData: {
+                          create: [
+                            {
+                              name: '制造商',
+                              value: 'Manufacturer',
+                              sort: 1,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '内件',
+                        value: 'Trim',
+                        dictData: {
+                          create: [
+                            {
+                              name: '阀座类型',
+                              value: 'Seat Type',
+                              sort: 2,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                      {
+                        name: '执行机构',
+                        value: 'Actuator',
+                        dictData: {
+                          create: [
+                            {
+                              name: '制造商',
+                              value: 'Manufacturer',
+                              sort: 3,
+                              type: '0',
+                              createBy: 'admin',
+                              dictTypeId: 4,
+                            },
+                          ],
+                        },
+                        children: {
+                          create: [],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  name: '阀门摩擦力性能诊断',
+                  value: 'Valve Friction Performance Diagnostic',
+                  dictData: {
+                    create: [
+                      {
+                        name: '阀门摩擦力性能诊断',
+                        value: 'Valve Friction Performance Diagnostic',
+                        sort: 13,
+                        type: '0',
+                        createBy: 'admin',
+                        dictTypeId: 4,
+                      },
+                    ],
+                  },
+                  children: {
+                    create: [],
                   },
                 },
               ],
             },
-          },
-          {
-            name: '仪表组态-报警，转换块(控制)',
-            value: 'Instrument Configuration-Alerts, Transducer(cont.)',
-            children: {
-              create: [
-                {
-                  name: '行程报警',
-                  value: 'Travel Alerts',
-                  children: {
-                    create: [
-                      { name: '行程偏差', value: 'Travel Deviation' },
-                      { name: '行程限位', value: 'Travel Limit' },
-                      { name: '行程高限位', value: 'Travel Limit High' },
-                      { name: '行程低限位', value: 'Travel Limit Low' },
-                    ],
-                  },
-                },
-                {
-                  name: '传感器报警',
-                  value: 'Sensor Alerts',
-                  children: {
-                    create: [
-                      {
-                        name: '行程传感器',
-                        value: 'Travel Sensor',
-                      },
-                      {
-                        name: '输出压力传感器',
-                        value: 'Output Pressure Sensor',
-                      },
-                      {
-                        name: '供气压力传感器',
-                        value: 'Supply Pressure Sensor',
-                      },
-                      {
-                        name: '温度传感器',
-                        value: 'Temperature Sensor',
-                      },
-                      {
-                        name: '压力切换激活',
-                        value: 'Pressure Fallback Active',
-                      },
-                    ],
-                  },
-                },
-                {
-                  name: '行程历史报警',
-                  value: 'Travel History Alerts',
-                  children: {
-                    create: [
-                      { name: '循环计数高', value: 'Cycle Count High' },
-                      { name: '行程累计器', value: 'Travel Accumulator' },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            name: '仪表组态-规格表，转换块',
-            value: 'Instrument Configuration-Spec Sheet, Transducer',
-            children: {
-              create: [
-                {
-                  name: '仪表',
-                  value: 'Instrument',
-                  children: {
-                    create: [
-                      { name: '单位', value: 'Units' },
-                      { name: '仪表', value: 'Instrument' },
-                      { name: '标定', value: 'Calibration' },
-                      { name: '标定数据', value: 'Calibration Data' },
-                    ],
-                  },
-                },
-                {
-                  name: 'MAI 通道',
-                  value: 'MAI Channels',
-                  children: {
-                    create: [{ name: 'MAI 通道', value: 'MAI Channels' }],
-                  },
-                },
-                { name: '阀门', value: 'Valve' },
-                {
-                  name: '内件',
-                  value: 'Trim',
-                  children: {
-                    create: [
-                      {
-                        name: '其他直通式阀内件选项',
-                        value: 'Extra Sliding Stem Valve Trim Options',
-                      },
-                    ],
-                  },
-                },
-                { name: '执行机构', value: 'Actuator' },
-                { name: '参考', value: 'Reference' },
-              ],
-            },
-          },
-          {
-            name: '仪表组态-资源块',
-            value: 'Instrument Configuration-Resource Block',
-            children: {
-              create: [
-                {
-                  name: '模式',
-                  value: 'Mode',
-                  children: {
-                    create: [
-                      { name: '资源块模式', value: 'Resource Block Mode' },
-                    ],
-                  },
-                },
-                { name: '写锁定', value: 'Write Lock' },
-                { name: '通讯超时', value: 'Comm Timeout' },
-                {
-                  name: '选项',
-                  value: 'Options',
-                  children: {
-                    create: [{ name: '功能选择', value: 'Feature Select' }],
-                  },
-                },
-                {
-                  name: '警报处理',
-                  value: 'Alarm Handling',
-                  children: {
-                    create: [
-                      { name: '全部警报', value: 'All Alarms' },
-                      { name: '块警报', value: 'Block Alarm' },
-                      { name: '写入警报', value: 'Write Alarm' },
-                    ],
-                  },
-                },
-                {
-                  name: '仪表',
-                  value: 'Instrument',
-                  children: {
-                    create: [
-                      {
-                        name: '仪表描述',
-                        value: 'Instrument Description',
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            name: '状态监视器',
-            value: 'Status Monitor',
-            children: {
-              create: [
-                { name: '监视器', value: 'Monitor' },
-                {
-                  name: '仪表',
-                  value: 'Instrument',
-                  children: {
-                    create: [
-                      { name: '转换块', value: 'TRANSDUCER' },
-                      { name: '资源块', value: 'RESOURCE' },
-                    ],
-                  },
-                },
-                {
-                  name: '块状态',
-                  value: 'Block Status',
-                  children: {
-                    create: [
-                      { name: '转换块', value: 'TRANSDUCER' },
-                      { name: '资源块', value: 'RESOURCE' },
-                    ],
-                  },
-                },
-                {
-                  name: '组态',
-                  value: 'Config',
-                  children: {
-                    create: [
-                      {
-                        name: '输出块超时',
-                        value: 'Output Block Timeout',
-                      },
-                      {
-                        name: '功能块设置为默认值',
-                        value: 'Blocks Set to Defaults',
-                      },
-                      { name: '关机报警', value: 'Shutdown Alert' },
-                    ],
-                  },
-                },
-                {
-                  name: '压力/温度',
-                  value: 'Pressure/Temperature',
-                  children: {
-                    create: [
-                      { name: '供气压力', value: 'Supply Pressure' },
-                      { name: '温度限值', value: 'Temperature Limit' },
-                    ],
-                  },
-                },
-                {
-                  name: '传感器',
-                  value: 'Sensor',
-                  children: {
-                    create: [
-                      { name: '行程传感器', value: 'Travel Sensor' },
-                      {
-                        name: '输出压力传感器',
-                        value: 'Output Pressure Sensor',
-                      },
-                      {
-                        name: '供气压力传感器',
-                        value: 'Supply Pressure Sensor',
-                      },
-                      {
-                        name: '温度传感器',
-                        value: 'Temperature Sensor',
-                      },
-                      {
-                        name: '压力切换激活',
-                        value: 'Pressure Fallback Active',
-                      },
-                    ],
-                  },
-                },
-                {
-                  name: '电子部件',
-                  value: 'Electronic',
-                  children: {
-                    create: [
-                      { name: '驱动电流', value: 'Drive Current' },
-                      { name: '驱动信号', value: 'Drive Signal' },
-                      { name: '处理器损坏', value: 'Processor Impaired' },
-                    ],
-                  },
-                },
-                {
-                  name: '近接式',
-                  value: 'Proximity',
-                  children: {
-                    create: [{ name: '接近报警', value: 'Proximity Alerts' }],
-                  },
-                },
-                {
-                  name: '行程',
-                  value: 'Travel',
-                  children: {
-                    create: [
-                      { name: '行程偏差', value: 'Travel Deviation' },
-                      { name: '行程限位', value: 'Travel Limit' },
-                      { name: '行程高限位', value: 'Travel Limit High' },
-                      { name: '行程低限位', value: 'Travel Limit Low' },
-                    ],
-                  },
-                },
-                {
-                  name: '行程历史记录',
-                  value: 'Travel History',
-                  children: {
-                    create: [
-                      { name: '行程累计高', value: 'Travel Accumulator High' },
-                      { name: '循环计数高', value: 'Cycle Count High' },
-                    ],
-                  },
-                },
-                {
-                  name: '临界性能',
-                  value: 'Perf Critical',
-                  children: {
-                    create: [
-                      { name: '性能临界', value: 'Performance Critical' },
-                      { name: '可能原因', value: 'Possible Cause' },
-                    ],
-                  },
-                },
-                {
-                  name: '性能信息',
-                  value: 'Perf Info',
-                  children: {
-                    create: [
-                      { name: '性能信息', value: 'Performance Information' },
-                      { name: '可能原因', value: 'Possible Cause' },
-                      { name: '其他信息', value: 'Other Information' },
-                    ],
-                  },
-                },
-                {
-                  name: '降低性能',
-                  value: 'Perf Reduced',
-                  children: {
-                    create: [
-                      { name: '性能降低', value: 'Performance Reduced' },
-                      { name: '可能原因', value: 'Possible Cause' },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            name: '阶跃响应',
-            value: 'Step Response',
-            children: {
-              create: [
-                {
-                  name: '已分析的数据',
-                  value: 'Analyzed Data',
-                  children: {
-                    create: [
-                      { name: '非性能测试', value: 'Not A Performance Test' },
-                    ],
-                  },
-                },
-                {
-                  name: '组态',
-                  value: 'Configuration',
-                  children: {
-                    create: [
-                      { name: '整定', value: 'Tuning' },
-                      { name: '增益', value: 'Gains' },
-                      { name: '积分设置', value: 'Integral Settings' },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            name: '阶跃响应-已分析的数据',
-            value: 'Step Response-Analyzed Data',
-            children: {
-              create: [
-                {
-                  name: '已分析的数据(所有时间均以秒为单位)',
-                  value: 'Analyzed Data (all times in seconds)',
-                },
-              ],
-            },
-          },
-          {
-            name: '阶跃响应-注释',
-            value: 'Step Response-Notes',
-            children: {
-              create: [{ name: '注释', value: 'Notes' }],
-            },
-          },
-          {
-            name: '完全扫描',
-            value: 'Total Scan',
-            children: {
-              create: [
-                { name: '输入', value: 'Inputs' },
-                { name: '已分析的数据', value: 'Analyzed Data' },
-                {
-                  name: '组态',
-                  value: 'Configuration',
-                  children: {
-                    create: [
-                      { name: '整定', value: 'Tuning' },
-                      { name: '增益', value: 'Gains' },
-                      { name: '积分设置', value: 'Integral Settings' },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            name: '完全扫描-注释',
-            value: 'Total Scan-Notes',
-            children: {
-              create: [{ name: '注释', value: 'Notes' }],
-            },
-          },
-          {
-            name: '完全扫描-规格表',
-            value: 'Total Scan-Spec Sheet',
-            children: {
-              create: [
-                { name: '阀门', value: 'Valve' },
-                { name: '内件', value: 'Trim' },
-                { name: '执行机构', value: 'Actuator' },
-              ],
-            },
-          },
-          {
-            name: '阀门摩擦力性能诊断',
-            value: 'Valve Friction Performance Diagnostic',
           },
         ],
       },
