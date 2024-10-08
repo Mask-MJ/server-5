@@ -88,6 +88,18 @@ export class AnalysisTaskService {
     return data;
   }
 
+  async clear() {
+    const pdfs = await this.prismaService.client.pdf.findMany();
+    pdfs.forEach(async (item) => {
+      const url = item.url.split('?')[0];
+      await this.prismaService.client.pdf.update({
+        where: { id: item.id },
+        data: { url },
+      });
+    });
+    return 'success';
+  }
+
   async execute2(user: ActiveUserData, id: number) {
     // 获取分析任务的数据
     const analysisTask =
@@ -319,7 +331,8 @@ export class AnalysisTaskService {
     const fileName = `${Date.now()}-${body.fileName}`;
     await this.minioClient.uploadFile('pdf', fileName, file.buffer);
     const url = await this.minioClient.getUrl('pdf', fileName);
-    return { url, name: fileName };
+    const urlWithoutParams = url.split('?')[0];
+    return { url: urlWithoutParams, name: fileName };
   }
 
   update(

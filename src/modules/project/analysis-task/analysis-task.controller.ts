@@ -67,6 +67,12 @@ export class AnalysisTaskController {
     return this.analysisTaskService.execute(user, id);
   }
 
+  @Get('clear')
+  @ApiOperation({ summary: '清理PDF表中url后缀' })
+  clear() {
+    return this.analysisTaskService.clear();
+  }
+
   @Post('uploadPdf')
   @ApiOperation({ summary: '上传PDF文件' })
   @UseInterceptors(FileInterceptor('file'))
