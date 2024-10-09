@@ -59,6 +59,10 @@ model DictDataTree {
   id       Int            @id @default(autoincrement())
   name     String
   value    String
+  /// 中文标题
+  cnTitle  String?
+  /// 英文标题
+  enTitle  String?
   remark   String?
   parentId Int?
   dictData DictData[]

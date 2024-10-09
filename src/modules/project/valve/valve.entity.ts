@@ -9,25 +9,27 @@ import { FactoryEntity } from '../factory/factory.entity';
 
 export class ValveEntity implements Valve {
   id: number;
-  /// 阀门位号
-  tag: string;
   device: DeviceEntity;
   factory: FactoryEntity;
   /// 来源
   source: string;
+  /// 编码
+  no: string;
+  /// 阀门位号
+  tag: string;
   /// 装置
   unit: string;
   /// 介质
   fluidName: string;
   /// 关键应用
   criticalApplication: string;
-  /// 阀体序列号
-  serialNumber: string;
   /// 投用时间
   since: Date;
+  /// 阀体序列号
+  serialNumber: string;
   /// 阀体品牌
   valveBrand: string;
-  /// 系列
+  /// 阀体系列
   valveSeries: string;
   /// 阀体类型
   valveType: string;
@@ -77,6 +79,56 @@ export class ValveEntity implements Valve {
   /// 仪表描述
   instrumentDescription: string;
   remark: string;
+  /// 阀体阀杆尺寸 Valve Stem Size
+  ValveStemSize: string;
+  /// 行程 Stroke
+  stroke: string;
+  /// 过滤减压阀品牌 REGULATOR BRAND
+  regulatorBrand: string;
+  /// 过滤减压阀型号 REGULATOR MODEL
+  regulatorModel: string;
+  /// 定位器型号 POSITIONER MODEL
+  positionerModel: string;
+  /// 电磁阀品牌 SOV BRAND
+  sovBrand: string;
+  /// 电磁阀型号 SOV MODEL
+  sovModel: string;
+  /// 电磁阀数量 SOV QTY
+  sovQty: number;
+  /// 限位开关品牌 LS BRAND
+  lsBrand: string;
+  /// 限位开关型号 LS MODEL
+  lsModel: string;
+  /// 限位开关数量 LS QTY
+  lsQty: number;
+  /// 保位阀品牌 TRIP VALVE BRAND
+  tripValveBrand: string;
+  /// 保位阀型号 TRIP VALVE MODEL
+  tripValveModel: string;
+  /// 保位阀数量 TRIP VALVE QTY
+  tripValveQty: number;
+  /// 放大器品牌 VB BRAND
+  vbBrand: string;
+  /// 放大器型号 VB MODEL
+  vbModel: string;
+  /// 放大器数量 VB QTY
+  vbQty: number;
+  /// 快排阀品牌 QE BRAND
+  qeBrand: string;
+  /// 快排阀型号 QE MODEL
+  qeModel: string;
+  /// 快排阀数量 QE QTY
+  qeQty: number;
+  /// 气控阀品牌 PILOT BRAND
+  pilotBrand: string;
+  /// 气控阀型号 PILOT MODEL
+  pilotModel: string;
+  /// 气控阀数量 PILOT QTY
+  pilotQty: number;
+  /// 信号比较器品牌 SIGNAL COMPARATOR BRAND
+  signalComparatorBrand: string;
+  /// 信号比较器型号 SIGNAL COMPARATOR MODEL
+  signalComparatorModel: string;
   /// 关联装置id
   deviceId: number;
   /// 分析任务id

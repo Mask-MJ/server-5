@@ -1,56 +1,106 @@
 /// 阀门表
 model Valve {
   id                    Int                    @id @default(autoincrement())
-  /// 阀门位号
+  /// 编码 No.
+  no                    String?
+  /// 介质 Fluid Name 
+  fluidName             String?
+  /// 关键应用 Critical Application
+  criticalApplication   String?
+  /// 阀门位号 Tag
   tag                   String
+  /// 投用时间 Since
+  since                 DateTime?
   /// 来源 hart, ff
   source                String?
-  /// 装置
+  /// 装置 Unit
   unit                  String?
-  /// 介质
-  fluidName             String?
-  /// 关键应用
-  criticalApplication   String?
-  /// 阀体序列号
+  /// 阀体序列号 Serial Number
   serialNumber          String?
-  /// 投用时间
-  since                 DateTime?
-  /// 阀体品牌
+  /// 阀体品牌 Valve Brand
   valveBrand            String?
-  /// 系列
-  valveSeries           String?
-  /// 阀体类型
+  /// 阀体类型 
   valveType             String?
-  /// 阀体口径
+  /// 阀体口径 Valve Size
   valveSize             String?
-  /// 阀体连接形式
+  /// 阀体系列 Valve Series
+  valveSeries           String?
+  /// 阀体连接形式 Valve End Connection
   valveEndConnection    String?
-  /// 阀体阀体材质
+  /// 阀体阀杆尺寸 Valve Stem Size
+  ValveStemSize         String?
+  /// 阀体阀体材质 Valve Body Material
   valveBodyMaterial     String?
-  /// 阀盖形式
+  /// 阀盖形式 Valve Bonnet
   valveBonnet           String?
-  /// 阀内件
+  /// 阀内件 Valve Trim
   valveTrim             String?
-  /// 阀体泄漏等级
+  /// 阀体泄漏等级 Valve Seat Leakage
   valveSeatLeakage      String?
-  /// 阀体描述
+  /// 阀体描述 Valve Description
   valveDescription      String?
-  /// 执行机构品牌
+  /// 执行机构品牌 Actuator Brand
   actuatorBrand         String?
-  /// 执行机构类型
+  /// 执行机构类型 Actuator Type
   actuatorType          String?
-  /// 执行机构尺寸
+  /// 执行机构尺寸 Actuator Size
   actuatorSize          String?
-  /// 手轮
+  /// 手轮 Handwheel
   handwheel             String?
-  /// 执行机构描述
+  /// 行程 Stroke
+  stroke                String?
+  /// 执行机构描述 Actuator Description
   actuatorDescription   String?
-  /// 定位器品牌
+  /// 过滤减压阀品牌 REGULATOR BRAND
+  regulatorBrand        String?
+  /// 过滤减压阀型号 REGULATOR MODEL
+  regulatorModel        String?
+  /// 定位器品牌 POSITIONER BRAND
   positionerBrand       String?
-  /// 定位器类型
-  positionerType        String?
+  /// 定位器型号 POSITIONER MODEL
+  positionerModel       String?
   /// 定位器描述
   positionerDescription String?
+  /// 电磁阀品牌 SOV BRAND
+  sovBrand              String?
+  /// 电磁阀型号 SOV MODEL
+  sovModel              String?
+  /// 电磁阀数量 SOV QTY
+  sovQty                Int?
+  /// 限位开关品牌 LS BRAND
+  lsBrand               String?
+  /// 限位开关型号 LS MODEL
+  lsModel               String?
+  /// 限位开关数量 LS QTY
+  lsQty                 Int?
+  /// 保位阀品牌 TRIP VALVE BRAND
+  tripValveBrand        String?
+  /// 保位阀型号 TRIP VALVE MODEL
+  tripValveModel        String?
+  /// 保位阀数量 TRIP VALVE QTY
+  tripValveQty          Int?
+  /// 放大器品牌 VB BRAND
+  vbBrand               String?
+  /// 放大器型号 VB MODEL
+  vbModel               String?
+  /// 放大器数量 VB QTY
+  vbQty                 Int?
+  /// 快排阀品牌 QE BRAND
+  qeBrand               String?
+  /// 快排阀型号 QE MODEL
+  qeModel               String?
+  /// 快排阀数量 QE QTY
+  qeQty                 Int?
+  /// 气控阀品牌 PILOT BRAND
+  pilotBrand            String?
+  /// 气控阀型号 PILOT MODEL
+  pilotModel            String?
+  /// 气控阀数量 PILOT QTY
+  pilotQty              Int?
+  /// 信号比较器品牌 SIGNAL COMPARATOR BRAND
+  signalComparatorBrand String?
+  /// 信号比较器型号 SIGNAL COMPARATOR MODEL
+  signalComparatorModel String?
   /// 附件种类
   accessory             String?
   /// 附件品牌
