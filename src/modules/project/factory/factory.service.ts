@@ -38,7 +38,17 @@ export class FactoryService {
           parentId: !name ? null : undefined,
           createdAt: { gte: beginTime, lte: endTime },
         },
-        include: { children: true },
+        include: {
+          children: {
+            include: {
+              children: {
+                include: {
+                  children: true,
+                },
+              },
+            },
+          },
+        },
       });
     } else {
       const roleIds = userData.role.map((item) => item.id);
@@ -52,7 +62,17 @@ export class FactoryService {
           parentId: !name ? null : undefined,
           createdAt: { gte: beginTime, lte: endTime },
         },
-        include: { children: true },
+        include: {
+          children: {
+            include: {
+              children: {
+                include: {
+                  children: true,
+                },
+              },
+            },
+          },
+        },
         orderBy: { createdAt: 'desc' },
       });
     }
