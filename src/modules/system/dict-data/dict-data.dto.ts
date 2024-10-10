@@ -44,6 +44,22 @@ export class CreateDictDataDto {
   status?: boolean = true;
 
   /**
+   * 中文标题
+   * @example '男'
+   */
+  @IsString()
+  @IsOptional()
+  cnTitle?: string;
+
+  /**
+   * 英文标题
+   * @example 'boy'
+   */
+  @IsString()
+  @IsOptional()
+  enTitle?: string;
+
+  /**
    * 字典类型ID
    * @example 1
    */

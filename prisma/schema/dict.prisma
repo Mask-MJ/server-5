@@ -36,6 +36,10 @@ model DictData {
   status     Boolean       @default(true)
   /// 字典类别 0:参数 1:运行数据 2: 阀门诊断数据
   type       String        @default("0")
+  /// 中文标题
+  cnTitle  String?
+  /// 英文标题
+  enTitle  String?
   /// 创建者
   createBy   String
   /// 更新者
@@ -59,10 +63,6 @@ model DictDataTree {
   id       Int            @id @default(autoincrement())
   name     String
   value    String
-  /// 中文标题
-  cnTitle  String?
-  /// 英文标题
-  enTitle  String?
   remark   String?
   parentId Int?
   dictData DictData[]

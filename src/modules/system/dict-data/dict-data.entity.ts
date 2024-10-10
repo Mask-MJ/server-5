@@ -6,6 +6,8 @@ export class DictDataEntity implements DictData {
   sort: number;
   status: boolean;
   type: string;
+  cnTitle: string | null;
+  enTitle: string | null;
   dictTypeId: number;
   treeId: number | null;
   createBy: string;
