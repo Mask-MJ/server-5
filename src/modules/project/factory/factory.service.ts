@@ -116,7 +116,8 @@ export class FactoryService {
             fluidName: item['介质'],
             criticalApplication: item['关键应用'],
             tag: item['位号'],
-            since: dayjs(item['投用时间'].slice(0, -1)).toDate(),
+            since:
+              item['投用时间'] && dayjs(item['投用时间'].slice(0, -1)).toDate(),
             unit: item['装置'],
             serialNumber: String(item['阀体序列号']),
             valveBrand: item['阀体品牌'],
@@ -169,7 +170,6 @@ export class FactoryService {
             instrumentType: item['仪表类型'],
             instrumentDescription: item['仪表描述'],
             remark: item['备注'],
-
             deviceId: device.id,
             factoryId: body.factoryId,
             updateBy: user.account,
