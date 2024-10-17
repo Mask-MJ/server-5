@@ -60,6 +60,39 @@ export class CreateDictDataDto {
   enTitle?: string;
 
   /**
+   * 是否图表
+   * @example false
+   */
+  @IsOptional()
+  @IsBoolean()
+  @Type(() => Boolean)
+  isChart?: boolean;
+
+  /**
+   * 图表数据类型 0: 数值 1: 百分比
+   * @example '0'
+   */
+  @IsString()
+  @IsOptional()
+  chartType?: string;
+
+  /**
+   * 上限值
+   * @example '0'
+   */
+  @IsString()
+  @IsOptional()
+  upperLimit?: string;
+
+  /**
+   * 下限值
+   * @example '0'
+   */
+  @IsString()
+  @IsOptional()
+  lowerLimit?: string;
+
+  /**
    * 字典类型ID
    * @example 1
    */
@@ -96,7 +129,7 @@ export class CreateDictDataDto {
 
 export class QueryDictDataDto extends PartialType(
   IntersectionType(
-    PickType(CreateDictDataDto, ['name', 'value', 'dictTypeId']),
+    PickType(CreateDictDataDto, ['name', 'value', 'dictTypeId', 'isChart']),
     BaseDto,
   ),
 ) {

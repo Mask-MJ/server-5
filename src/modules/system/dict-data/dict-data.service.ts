@@ -22,14 +22,19 @@ export class DictDataService {
   }
 
   async findAll(queryDictDataDto: QueryDictDataDto) {
-    const { name, value, dictTypeId, dictTypeValue, page, pageSize } =
+    const { name, value, dictTypeId, dictTypeValue, isChart, page, pageSize } =
       queryDictDataDto;
+    const dictType = await this.prismaService.client.dictType.findFirst({
+      where: { value: dictTypeValue },
+    });
+    console.log(dictType);
     const [rows, meta] = await this.prismaService.client.dictData
       .paginate({
         where: {
           name: { contains: name },
           value: { contains: value },
-          dictTypeId,
+          dictTypeId: dictTypeId,
+          // isChart,
           dictType: { value: { contains: dictTypeValue } },
         },
         orderBy: { sort: 'asc' },
@@ -37,6 +42,21 @@ export class DictDataService {
       })
       .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };
+  }
+
+  async findAllEcharts(queryDictDataDto: QueryDictDataDto) {
+    const { dictTypeId, dictTypeValue } = queryDictDataDto;
+    const dictType = await this.prismaService.client.dictType.findFirst({
+      where: { value: dictTypeValue },
+    });
+    const rows = await this.prismaService.client.dictData.findMany({
+      where: {
+        dictTypeId,
+        dictType: { value: dictTypeValue },
+      },
+      orderBy: { sort: 'asc' },
+    });
+    return rows;
   }
 
   findOne(id: number) {
@@ -48,7 +68,6 @@ export class DictDataService {
     user: ActiveUserData,
     updateDictDataDto: UpdateDictDataDto,
   ) {
-    console.log('updateDictDataDto', updateDictDataDto);
     return this.prismaService.client.dictData.update({
       where: { id },
       data: { ...updateDictDataDto, updateBy: user.account },

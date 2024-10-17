@@ -130,6 +130,7 @@ export class FactoryService {
             valveBonnet: item['阀盖形式'],
             valveTrim: item['阀内件'],
             valveSeatLeakage: item['阀体泄漏等级'],
+            valveDescription: item['阀体描述'],
             actuatorBrand: item['执行机构品牌'],
             actuatorType: item['执行机构类型'],
             actuatorSize: item['执行机构尺寸'],

@@ -55,7 +55,7 @@ export class ValveService {
           valveSeries: { contains: valveSeries },
         },
         include: { factory: true, device: true },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { updatedAt: 'desc' },
       })
       .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };
