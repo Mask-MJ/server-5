@@ -52,6 +52,14 @@ export class DictDataController {
     return this.dictDataService.findAll(queryDictDataDto);
   }
 
+  @Get('charts')
+  @ApiOperation({ summary: '获取字典数据图表列表' })
+  @ApiOkResponse({ type: DictDataEntity, isArray: true })
+  @Permissions('system:dictData:query')
+  findAllEcharts(@Query() queryDictDataDto: QueryDictDataDto) {
+    return this.dictDataService.findAllCharts(queryDictDataDto);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: '获取字典数据详情' })
   @ApiOkResponse({ type: DictDataEntity })

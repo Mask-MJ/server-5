@@ -22,20 +22,18 @@ export class DictDataService {
   }
 
   async findAll(queryDictDataDto: QueryDictDataDto) {
-    const { name, value, dictTypeId, dictTypeValue, isChart, page, pageSize } =
-      queryDictDataDto;
-    const dictType = await this.prismaService.client.dictType.findFirst({
-      where: { value: dictTypeValue },
-    });
-    console.log(dictType);
+    const { name, value, dictTypeId, page, pageSize } = queryDictDataDto;
+    // const dictType = await this.prismaService.client.dictType.findFirst({
+    //   where: { value: dictTypeValue },
+    // });
+    // console.log(dictType);
     const [rows, meta] = await this.prismaService.client.dictData
       .paginate({
         where: {
           name: { contains: name },
           value: { contains: value },
           dictTypeId: dictTypeId,
-          // isChart,
-          dictType: { value: { contains: dictTypeValue } },
+          // dictType: { value: { contains: dictTypeValue } },
         },
         orderBy: { sort: 'asc' },
         include: { tree: true },
@@ -44,19 +42,16 @@ export class DictDataService {
     return { rows, ...meta };
   }
 
-  async findAllEcharts(queryDictDataDto: QueryDictDataDto) {
-    const { dictTypeId, dictTypeValue } = queryDictDataDto;
+  async findAllCharts(queryDictDataDto: QueryDictDataDto) {
+    const { dictTypeValue } = queryDictDataDto;
     const dictType = await this.prismaService.client.dictType.findFirst({
       where: { value: dictTypeValue },
     });
-    const rows = await this.prismaService.client.dictData.findMany({
-      where: {
-        dictTypeId,
-        dictType: { value: dictTypeValue },
-      },
+    console.log(dictType);
+    return await this.prismaService.client.dictData.findMany({
+      where: { dictTypeId: dictType.id, isChart: true },
       orderBy: { sort: 'asc' },
     });
-    return rows;
   }
 
   findOne(id: number) {
