@@ -322,9 +322,11 @@ export class QueryValveDto extends PartialType(
 export class QueryValveChartDto extends PartialType(TimeDto) {
   @IsNumber()
   @Type(() => Number)
-  id: number;
-  @IsString()
-  type: string;
+  keywordId: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  valveId: number;
 }
 
 export class UpdateValveDto extends PartialType(CreateValveDto) {

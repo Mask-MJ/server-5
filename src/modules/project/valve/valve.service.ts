@@ -108,38 +108,23 @@ export class ValveService {
     return { rows, ...meta };
   }
 
-  findHistoryData(id: number) {
+  async findHistoryData(id: number) {
     return this.prismaService.client.valveHistoryData.findMany({
       where: { valveHistoryDataListId: id },
     });
   }
 
   async findHistoryChartData(queryValveChartDto: QueryValveChartDto) {
-    const { id, type } = queryValveChartDto;
-    const list = await this.prismaService.client.valveHistoryDataList.findMany({
-      where: { valveId: id },
-      include: {
-        valveHistoryData: {
-          where: { name: type },
-          orderBy: { time: 'desc' },
-        },
-      },
-    });
-
-    const data: Record<string, string[]> = { values: [], times: [] };
-    list.forEach((item) => {
-      // 判断是否有数据 或 value 为空,不返回
-      if (item.valveHistoryData.length) {
-        if (item.valveHistoryData[0].value) {
-          data.values.push(item.valveHistoryData[0].value);
-          data.times.push(
-            dayjs(item.valveHistoryData[0].time).format('YYYY-MM-DD'),
-          );
-        }
-      }
-    });
-
-    return data;
+    const { keywordId, valveId, beginTime, endTime } = queryValveChartDto;
+    const valveScore = await firstValueFrom(
+      this.httpService.post('http://39.105.100.190:5050/api/keywordPlot', {
+        keywordId,
+        valveId,
+        beginTime: dayjs(beginTime).format('YYYY-MM-DD'),
+        endTime: dayjs(endTime).format('YYYY-MM-DD'),
+      }),
+    );
+    return valveScore.data;
   }
 
   async findScoreData(id: number) {
