@@ -117,7 +117,7 @@ export class ValveService {
   async findHistoryChartData(queryValveChartDto: QueryValveChartDto) {
     const { keywordId, valveId, beginTime, endTime } = queryValveChartDto;
     const valveScore = await firstValueFrom(
-      this.httpService.post('http://39.105.100.190:5050/api/keywordPlot', {
+      this.httpService.post('http://localhost:5050/api/keywordPlot', {
         keywordId,
         valveId,
         beginTime: dayjs(beginTime).format('YYYY-MM-DD'),
