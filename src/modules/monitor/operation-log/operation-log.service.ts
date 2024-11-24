@@ -48,8 +48,13 @@ export class OperationLogService {
     });
   }
 
+  @OnEvent('create')
+  async handleOperationCreateEvent(payload: CreateOperationLogDto) {
+    await this.create(payload);
+  }
+
   @OnEvent('delete')
-  async handleLoginEvent(payload: CreateOperationLogDto) {
+  async handleOperationDeleteEvent(payload: CreateOperationLogDto) {
     await this.create(payload);
   }
 }

@@ -7,6 +7,7 @@ import { HashingService } from 'src/modules/iam/hashing/hashing.service';
 import { MinioService } from 'src/common/minio/minio.service';
 import { uploadDto } from 'src/common/dto/base.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class UserService {
@@ -53,6 +54,47 @@ export class UserService {
         role: { include: { menu: { include: { permission: true } } } },
       },
     });
+  }
+
+  async findCharts(user: ActiveUserData) {
+    const factoryTotal = await this.prismaService.client.factory.count();
+    const valveTotal = await this.prismaService.client.valve.count();
+    const taskTotal = await this.prismaService.client.analysisTask.count();
+    // 获取用户本周的创建的任务数量， 从周一开始，到周日结束
+    // 根据当前时间获取本周周一到周日所有的日期
+    const weekDays = Array.from({ length: 7 }).map((_, index) => {
+      return dayjs().startOf('week').add(index, 'day').format('YYYY-MM-DD');
+    });
+    const taskCount = await Promise.all(
+      weekDays.map(async (day) => {
+        const count = await this.prismaService.client.analysisTask.count({
+          where: {
+            createBy: user.account,
+            createdAt: { gte: dayjs(day).format() },
+          },
+        });
+        return { name: dayjs(day).format('dddd'), value: count };
+      }),
+    );
+
+    const operationLog = (
+      await this.prismaService.client.operationLog.findMany({
+        where: { account: user.account, module: '分析任务' },
+      })
+    ).map((log) => {
+      return {
+        ...log,
+        createdAt: dayjs(log.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+      };
+    });
+
+    return {
+      factoryTotal,
+      valveTotal,
+      taskTotal,
+      taskCount,
+      operationLog,
+    };
   }
 
   async findAll(queryUserDto: QueryUserDto) {

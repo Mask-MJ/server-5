@@ -67,6 +67,13 @@ export class UserController {
     return this.userService.findSelf(user.sub);
   }
 
+  @Get('charts')
+  @ApiOperation({ summary: '获取工作台信息' })
+  // @ApiOkResponse({ type: UserEntity })
+  async findCharts(@ActiveUser() user: ActiveUserData) {
+    return this.userService.findCharts(user);
+  }
+
   @Patch('changePassword')
   @ApiOperation({ summary: '修改密码' })
   @ApiOkResponse({ type: UserEntity })

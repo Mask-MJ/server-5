@@ -9,6 +9,8 @@ import {
   Query,
   UseInterceptors,
   UploadedFile,
+  Request,
+  Headers,
 } from '@nestjs/common';
 import { AnalysisTaskService } from './analysis-task.service';
 import {
@@ -33,6 +35,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { uploadDto } from 'src/common/dto/base.dto';
 import { ApiPaginatedResponse } from 'src/common/response/paginated.response';
 import { Permissions } from 'src/modules/iam/authorization/decorators/permissions.decorator';
+import { Request as ExpRequest } from 'express';
 
 @ApiTags('分析任务')
 @ApiBearerAuth('bearer')
@@ -47,8 +50,14 @@ export class AnalysisTaskController {
   create(
     @ActiveUser() user: ActiveUserData,
     @Body() createAnalysisTaskDto: CreateAnalysisTaskDto,
+    @Request() request: ExpRequest,
+    @Headers('X-Real-IP') ip: string,
   ) {
-    return this.analysisTaskService.create(user, createAnalysisTaskDto);
+    return this.analysisTaskService.create(
+      user,
+      createAnalysisTaskDto,
+      ip || request.ip,
+    );
   }
 
   @Get()

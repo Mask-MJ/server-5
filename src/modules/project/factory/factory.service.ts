@@ -41,11 +41,7 @@ export class FactoryService {
         include: {
           children: {
             include: {
-              children: {
-                include: {
-                  children: true,
-                },
-              },
+              children: { include: { children: true } },
             },
           },
         },

@@ -17,6 +17,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { firstValueFrom } from 'rxjs';
 import { uploadDto } from 'src/common/dto/base.dto';
 // import fs from 'fs';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 dayjs.extend(customParseFormat);
 @Injectable()
@@ -25,13 +26,17 @@ export class AnalysisTaskService {
     @Inject('PrismaService')
     private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
     private readonly minioClient: MinioService,
-    @Inject(HttpService)
-    private httpService: HttpService,
+    @Inject(HttpService) private httpService: HttpService,
+    @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2,
   ) {}
-  create(user: ActiveUserData, createAnalysisTaskDto: CreateAnalysisTaskDto) {
+  async create(
+    user: ActiveUserData,
+    createAnalysisTaskDto: CreateAnalysisTaskDto,
+    ip: string,
+  ) {
     const { pdf, ...rest } = createAnalysisTaskDto;
 
-    return this.prismaService.client.analysisTask.create({
+    const analysisTask = await this.prismaService.client.analysisTask.create({
       data: {
         ...rest,
         createBy: user.account,
@@ -46,6 +51,14 @@ export class AnalysisTaskService {
         },
       },
     });
+    this.eventEmitter.emit('create', {
+      title: `创建名称为${analysisTask.name}的工厂`,
+      businessType: 1,
+      module: '分析任务',
+      account: user.account,
+      ip,
+    });
+    return analysisTask;
   }
 
   async findAll(queryAnalysisTaskDto: QueryAnalysisTaskDto) {

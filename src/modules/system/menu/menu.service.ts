@@ -45,7 +45,9 @@ export class MenuService {
           name: { contains: name },
           parentId: !name ? null : undefined,
         },
-        include: { children: { orderBy: { sort: 'asc' } } },
+        include: {
+          children: { orderBy: { sort: 'asc' }, include: { children: true } },
+        },
         orderBy: { sort: 'asc' },
       });
     } else {
@@ -56,7 +58,9 @@ export class MenuService {
           name: { contains: name },
           parentId: !name ? null : undefined,
         },
-        include: { children: { orderBy: { sort: 'asc' } } },
+        include: {
+          children: { orderBy: { sort: 'asc' }, include: { children: true } },
+        },
         orderBy: { sort: 'asc' },
       });
     }
