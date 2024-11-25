@@ -52,7 +52,7 @@ export class AnalysisTaskService {
       },
     });
     this.eventEmitter.emit('create', {
-      title: `创建名称为${analysisTask.name}的工厂`,
+      title: `创建名称为${analysisTask.name}的分析任务`,
       businessType: 1,
       module: '分析任务',
       account: user.account,
