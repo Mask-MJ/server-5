@@ -72,6 +72,14 @@ export class FactoryController {
     return this.factoryService.import(user, file, body);
   }
 
+  @Get('chart/:id')
+  @ApiOperation({ summary: '获取工厂工作台详情' })
+  @ApiOkResponse({ type: FactoryEntity })
+  @Permissions('project:factory:query')
+  findChartOne(@Param('id') id: number) {
+    return this.factoryService.findChartOne(id);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: '获取工厂详情' })
   @ApiOkResponse({ type: FactoryEntity })

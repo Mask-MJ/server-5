@@ -185,6 +185,29 @@ export class FactoryService {
     return { success: true };
   }
 
+  async findChartOne(id: number) {
+    const valveBrandGroup = (
+      await this.prismaService.client.valve.groupBy({
+        by: ['valveBrand'],
+        _count: true,
+        where: { NOT: { valveBrand: '' }, factoryId: id },
+      })
+    ).map((item) => ({ name: item.valveBrand, value: item._count }));
+
+    const positionerModelGroup = (
+      await this.prismaService.client.valve.groupBy({
+        by: ['positionerModel'],
+        _count: true,
+        where: { NOT: { positionerModel: '' }, factoryId: id },
+      })
+    ).map((item) => ({ name: item.positionerModel, value: item._count }));
+
+    return {
+      valveBrandGroup,
+      positionerModelGroup,
+    };
+  }
+
   findOne(id: number) {
     return this.prismaService.client.factory.findUnique({ where: { id } });
   }
