@@ -59,8 +59,6 @@ export class ValveEntity implements Valve {
   actuatorDescription: string;
   /// 定位器品牌
   positionerBrand: string;
-  /// 定位器类型
-  positionerType: string;
   /// 定位器描述
   positionerDescription: string;
   /// 附件种类

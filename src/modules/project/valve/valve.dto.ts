@@ -196,7 +196,7 @@ export class CreateValveDto {
    */
   @IsString()
   @IsOptional()
-  positionerType?: string;
+  positionerModel?: string;
 
   /**
    * 定位器描述
