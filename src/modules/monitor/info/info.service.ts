@@ -7,7 +7,6 @@ export class InfoService {
     const { cores, brand, manufacturer, speed } = await systemInfo.cpu();
     const { total, free, used } = await systemInfo.mem();
     const { platform, release, arch, hostname } = await systemInfo.osInfo();
-    console.log('sse');
 
     return {
       cpu: { cores, brand, manufacturer, speed: speed + 'GHz' },

@@ -47,7 +47,6 @@ export class DictDataService {
     const dictType = await this.prismaService.client.dictType.findFirst({
       where: { value: dictTypeValue },
     });
-    console.log(dictType);
     return await this.prismaService.client.dictData.findMany({
       where: { dictTypeId: dictType.id, isChart: true },
       orderBy: { sort: 'asc' },

@@ -8,6 +8,8 @@ import { MinioService } from 'src/common/minio/minio.service';
 import { uploadDto } from 'src/common/dto/base.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import isoWeek from 'dayjs/plugin/isoWeek';
 
 @Injectable()
 export class UserService {
@@ -62,18 +64,21 @@ export class UserService {
     const taskTotal = await this.prismaService.client.analysisTask.count();
     // 获取用户本周的创建的任务数量， 从周一开始，到周日结束
     // 根据当前时间获取本周周一到周日所有的日期
+    dayjs.extend(isoWeek);
     const weekDays = Array.from({ length: 7 }).map((_, index) => {
-      return dayjs().startOf('week').add(index, 'day').format('YYYY-MM-DD');
+      return dayjs().startOf('isoWeek').add(index, 'day').toISOString();
     });
+    console.log(weekDays);
     const taskCount = await Promise.all(
       weekDays.map(async (day) => {
-        const count = await this.prismaService.client.analysisTask.count({
-          where: {
-            createBy: user.account,
-            createdAt: { gte: dayjs(day).format() },
-          },
-        });
-        return { name: dayjs(day).format('dddd'), value: count };
+        const analysisTask =
+          await this.prismaService.client.analysisTask.findMany({
+            where: { createBy: user.account, createdAt: { gte: day } },
+          });
+        return {
+          name: dayjs(day).locale('zh-cn').format('dddd'),
+          value: analysisTask.length,
+        };
       }),
     );
 
@@ -88,8 +93,57 @@ export class UserService {
       };
     });
 
+    // 根据省份分组统计工厂数量
+    // await this.prismaService.client.factory.findMany({});
+    const factoryProvinceGroup = (
+      await this.prismaService.client.factory.groupBy({
+        by: ['province'],
+        _count: true,
+        where: { NOT: { province: '' } },
+      })
+    ).map((item) => ({ name: item.province, value: item._count }));
+
+    // 根据工厂行业分组统计工厂数量
+    const factoryIndustryGroup = (
+      await this.prismaService.client.factory.groupBy({
+        by: ['industry'],
+        _count: true,
+        where: { NOT: { industry: '' } },
+      })
+    ).map((item) => ({ name: item.industry, value: item._count }));
+
+    // 根据阀门品牌分组统计阀门数量
+    const valveBrandGroup = (
+      await this.prismaService.client.valve.groupBy({
+        by: ['valveBrand'],
+        _count: true,
+        where: { NOT: { valveBrand: '' } },
+      })
+    ).map((item) => ({ name: item.valveBrand, value: item._count }));
+    // 根据阀门型号分组统计阀门数量
+    const valveModelGroup = (
+      await this.prismaService.client.valve.groupBy({
+        by: ['valveType'],
+        _count: true,
+        where: { NOT: { valveType: '' } },
+      })
+    ).map((item) => ({ name: item.valveType, value: item._count }));
+
+    const positionerModelGroup = (
+      await this.prismaService.client.valve.groupBy({
+        by: ['positionerModel'],
+        _count: true,
+        where: { NOT: { positionerModel: '' } },
+      })
+    ).map((item) => ({ name: item.positionerModel, value: item._count }));
+
     return {
       factoryTotal,
+      factoryProvinceGroup,
+      factoryIndustryGroup,
+      valveBrandGroup,
+      valveModelGroup,
+      positionerModelGroup,
       valveTotal,
       taskTotal,
       taskCount,
@@ -188,7 +242,6 @@ export class UserService {
       throw new ConflictException('管理员账号不允许删除');
     }
     await this.prismaService.client.user.delete({ where: { id } });
-    console.log('删除用户', id);
     this.eventEmitter.emit('delete', {
       title: `删除ID为${id}, 账号为${userInfo.account}的用户`,
       businessType: 2,

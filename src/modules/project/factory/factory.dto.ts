@@ -21,6 +21,14 @@ export class CreateFactoryDto {
   status?: boolean = true;
 
   /**
+   * 行业
+   * @example '新能源'
+   */
+  @IsString()
+  @IsOptional()
+  industry?: string;
+
+  /**
    * 地址编码
    * @example '130010'
    */

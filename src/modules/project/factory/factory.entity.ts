@@ -5,6 +5,7 @@ export class FactoryEntity implements Factory {
   name: string;
   status: boolean;
   code: string;
+  industry: string;
   province: string;
   city: string;
   county: string;

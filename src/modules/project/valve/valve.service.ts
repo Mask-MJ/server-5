@@ -1,4 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import {
   CreateValveDto,
   QueryValveChartDto,
@@ -116,15 +120,19 @@ export class ValveService {
 
   async findHistoryChartData(queryValveChartDto: QueryValveChartDto) {
     const { keywordId, valveId, beginTime, endTime } = queryValveChartDto;
-    const valveScore = await firstValueFrom(
-      this.httpService.post('http://localhost:5050/api/keywordPlot', {
-        keywordId,
-        valveId,
-        beginTime: dayjs(beginTime).format('YYYY-MM-DD'),
-        endTime: dayjs(endTime).format('YYYY-MM-DD'),
-      }),
-    );
-    return valveScore.data;
+    try {
+      const valveScore = await firstValueFrom(
+        this.httpService.post('http://localhost:5050/api/keywordPlot', {
+          keywordId,
+          valveId,
+          beginTime: dayjs(beginTime).format('YYYY-MM-DD'),
+          endTime: dayjs(endTime).format('YYYY-MM-DD'),
+        }),
+      );
+      return valveScore.data;
+    } catch (error) {
+      throw new InternalServerErrorException('获取数据失败, 请联系小宇');
+    }
   }
 
   async findScoreData(id: number) {

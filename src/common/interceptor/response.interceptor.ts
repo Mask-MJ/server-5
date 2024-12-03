@@ -50,7 +50,6 @@ export class FormatResponse implements NestInterceptor {
 
 function changeTime(data: any) {
   if (!data) return [];
-  console.log(data);
 
   for (const key in data) {
     if (data.hasOwnProperty(key)) {

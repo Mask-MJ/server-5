@@ -5,6 +5,8 @@ model Factory {
   name         String         @unique
   /// 工厂状态
   status       Boolean        @default(true)
+  /// 行业
+  industry     String?        @default("")
   /// 省份
   province     String?        @default("")
   /// 城市
