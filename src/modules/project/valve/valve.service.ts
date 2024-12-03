@@ -131,7 +131,7 @@ export class ValveService {
       );
       return valveScore.data;
     } catch (error) {
-      throw new InternalServerErrorException('获取数据失败, 请联系小宇');
+      throw new InternalServerErrorException('获取数据失败, 请联系技术人员');
     }
   }
 
