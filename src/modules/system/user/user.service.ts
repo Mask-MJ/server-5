@@ -81,10 +81,12 @@ export class UserService {
         };
       }),
     );
-
+    // 查询最新的10条操作日志
     const operationLog = (
       await this.prismaService.client.operationLog.findMany({
         where: { account: user.account, module: '分析任务' },
+        orderBy: { createdAt: 'desc' },
+        take: 10,
       })
     ).map((log) => {
       return {
@@ -94,7 +96,6 @@ export class UserService {
     });
 
     // 根据省份分组统计工厂数量
-    // await this.prismaService.client.factory.findMany({});
     const factoryProvinceGroup = (
       await this.prismaService.client.factory.groupBy({
         by: ['province'],
@@ -123,11 +124,11 @@ export class UserService {
     // 根据阀门型号分组统计阀门数量
     const valveModelGroup = (
       await this.prismaService.client.valve.groupBy({
-        by: ['valveType'],
+        by: ['valveSeries'],
         _count: true,
-        where: { NOT: { valveType: '' } },
+        where: { NOT: { valveSeries: '' } },
       })
-    ).map((item) => ({ name: item.valveType, value: item._count }));
+    ).map((item) => ({ name: item.valveSeries, value: item._count }));
 
     const positionerModelGroup = (
       await this.prismaService.client.valve.groupBy({

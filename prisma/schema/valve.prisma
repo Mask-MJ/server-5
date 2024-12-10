@@ -11,7 +11,7 @@ model Valve {
   tag                   String
   /// 投用时间 Since
   since                 DateTime?
-  /// 来源 hart, ff
+  /// 来源 hart, ff, serviceApp
   source                String?
   /// 装置 Unit
   unit                  String?
@@ -19,16 +19,16 @@ model Valve {
   serialNumber          String?
   /// 阀体品牌 Valve Brand
   valveBrand            String?
-  /// 阀体类型 
-  valveType             String?
-  /// 阀体口径 Valve Size
-  valveSize             String?
   /// 阀体系列 Valve Series
   valveSeries           String?
+  /// 阀体口径 Valve Size
+  valveSize             String?
+  /// 阀体磅级 Valve Rating
+  valveRating           String?
   /// 阀体连接形式 Valve End Connection
   valveEndConnection    String?
   /// 阀体阀杆尺寸 Valve Stem Size
-  ValveStemSize         String?
+  valveStemSize         String?
   /// 阀体阀体材质 Valve Body Material
   valveBodyMaterial     String?
   /// 阀盖形式 Valve Bonnet
@@ -41,8 +41,8 @@ model Valve {
   valveDescription      String?
   /// 执行机构品牌 Actuator Brand
   actuatorBrand         String?
-  /// 执行机构类型 Actuator Type
-  actuatorType          String?
+  /// 执行机构系列 Actuator Series
+  actuatorSeries        String?
   /// 执行机构尺寸 Actuator Size
   actuatorSize          String?
   /// 手轮 Handwheel
@@ -59,8 +59,6 @@ model Valve {
   positionerBrand       String?
   /// 定位器型号 POSITIONER MODEL
   positionerModel       String?
-  /// 定位器描述
-  positionerDescription String?
   /// 电磁阀品牌 SOV BRAND
   sovBrand              String?
   /// 电磁阀型号 SOV MODEL
@@ -77,8 +75,6 @@ model Valve {
   tripValveBrand        String?
   /// 保位阀型号 TRIP VALVE MODEL
   tripValveModel        String?
-  /// 保位阀数量 TRIP VALVE QTY
-  tripValveQty          Int?
   /// 放大器品牌 VB BRAND
   vbBrand               String?
   /// 放大器型号 VB MODEL
@@ -101,23 +97,7 @@ model Valve {
   signalComparatorBrand String?
   /// 信号比较器型号 SIGNAL COMPARATOR MODEL
   signalComparatorModel String?
-  /// 附件种类
-  accessory             String?
-  /// 附件品牌
-  accessoryBrand        String?
-  /// 附件类型
-  accessoryType         String?
-  /// 附件数量
-  accessoryQuantity     Int?
-  /// 附件描述
-  accessoryDescription  String?
-  /// 仪表品牌
-  instrumentBrand       String?
-  /// 仪表类型
-  instrumentType        String?
-  /// 仪表描述
-  instrumentDescription String?
-  remark                String?
+  parts                String?
   /// 工厂id
   factoryId             Int
   /// 关联装置id

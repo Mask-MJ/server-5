@@ -72,6 +72,13 @@ export class FactoryController {
     return this.factoryService.import(user, file, body);
   }
 
+  @Get('report/:id')
+  @ApiOperation({ summary: '生产工厂中所有阀门报告' })
+  @Permissions('project:factory:query')
+  findReport(@Param('id') id: number) {
+    return this.factoryService.findReport2(id);
+  }
+
   @Get('chart/:id')
   @ApiOperation({ summary: '获取工厂工作台详情' })
   @ApiOkResponse({ type: FactoryEntity })

@@ -88,7 +88,10 @@ export class ValveService {
   }
 
   async findOne(id: number) {
-    return this.prismaService.client.valve.findUnique({ where: { id } });
+    return this.prismaService.client.valve.findUnique({
+      where: { id },
+      include: { factory: true, device: true },
+    });
   }
 
   findRunInfo(id: number) {

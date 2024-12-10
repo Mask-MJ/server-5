@@ -32,9 +32,11 @@ export class ValveEntity implements Valve {
   /// 阀体系列
   valveSeries: string;
   /// 阀体类型
-  valveType: string;
+  // valveType: string;
   /// 阀体口径
   valveSize: string;
+  /// 阀体磅级
+  valveRating: string;
   /// 阀体连接形式
   valveEndConnection: string;
   /// 阀体阀体材质
@@ -49,42 +51,20 @@ export class ValveEntity implements Valve {
   valveDescription: string;
   /// 执行机构品牌
   actuatorBrand: string;
-  /// 执行机构类型
-  actuatorType: string;
+  /// 执行机构系列
+  actuatorSeries: string;
   /// 执行机构尺寸
   actuatorSize: string;
   /// 手轮
   handwheel: string;
   /// 执行机构描述
   actuatorDescription: string;
-  /// 定位器品牌
-  positionerBrand: string;
-  /// 定位器描述
-  positionerDescription: string;
-  /// 附件种类
-  accessory: string;
-  /// 附件品牌
-  accessoryBrand: string;
-  /// 附件类型
-  accessoryType: string;
-  /// 附件数量
-  accessoryQuantity: number;
-  accessoryDescription: string;
-  /// 仪表品牌
-  instrumentBrand: string;
-  /// 仪表类型
-  instrumentType: string;
-  /// 仪表描述
-  instrumentDescription: string;
-  remark: string;
-  /// 阀体阀杆尺寸 Valve Stem Size
-  ValveStemSize: string;
-  /// 行程 Stroke
-  stroke: string;
   /// 过滤减压阀品牌 REGULATOR BRAND
   regulatorBrand: string;
   /// 过滤减压阀型号 REGULATOR MODEL
   regulatorModel: string;
+  /// 定位器品牌
+  positionerBrand: string;
   /// 定位器型号 POSITIONER MODEL
   positionerModel: string;
   /// 电磁阀品牌 SOV BRAND
@@ -103,8 +83,6 @@ export class ValveEntity implements Valve {
   tripValveBrand: string;
   /// 保位阀型号 TRIP VALVE MODEL
   tripValveModel: string;
-  /// 保位阀数量 TRIP VALVE QTY
-  tripValveQty: number;
   /// 放大器品牌 VB BRAND
   vbBrand: string;
   /// 放大器型号 VB MODEL
@@ -123,12 +101,18 @@ export class ValveEntity implements Valve {
   pilotModel: string;
   /// 气控阀数量 PILOT QTY
   pilotQty: number;
+  /// 阀体阀杆尺寸 Valve Stem Size
+  valveStemSize: string;
+  /// 行程 Stroke
+  stroke: string;
   /// 信号比较器品牌 SIGNAL COMPARATOR BRAND
   signalComparatorBrand: string;
   /// 信号比较器型号 SIGNAL COMPARATOR MODEL
   signalComparatorModel: string;
   /// 关联装置id
   deviceId: number;
+  /// 备件
+  parts: string;
   /// 分析任务id
   analysisTaskId: number;
   factoryId: number;

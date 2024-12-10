@@ -101,7 +101,12 @@ export class CreateFactoryDto {
 
 export class QueryFactoryDto extends PartialType(
   IntersectionType(PickType(CreateFactoryDto, ['name']), TimeDto),
-) {}
+) {
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  filterId?: number;
+}
 
 export class UpdateFactoryDto extends PartialType(CreateFactoryDto) {
   @IsNumber()
