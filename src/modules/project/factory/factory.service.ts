@@ -16,12 +16,11 @@ import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.inte
 import { read, utils } from 'xlsx';
 import dayjs from 'dayjs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { readFileSync, writeFile } from 'fs';
-import path from 'path';
+import { readFileSync } from 'fs';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import echarts from 'echarts';
-import { ImageRun, IPatch, patchDocument, PatchType, TextRun } from 'docx';
+import * as echarts from 'echarts';
+import { ImageRun, patchDocument, PatchType, TextRun } from 'docx';
 
 @Injectable()
 export class FactoryService {
@@ -250,52 +249,8 @@ export class FactoryService {
       }));
       console.log(scoreDistribution);
       // 从 public 文件夹获取 docx 模板文件
-      const data = readFileSync(
-        path.resolve(
-          __dirname,
-          '../../../../../public/vcm_report_template_cn.docx',
-        ),
-        'binary',
-      );
-      const chart = echarts.init(null, null, {
-        renderer: 'svg', // 必须使用 SVG 模式
-        ssr: true, // 开启 SSR
-        width: 400, // 需要指明高和宽
-        height: 300,
-      });
-
-      // 像正常使用一样 setOption
-      chart.setOption({
-        title: {
-          text: '柱状图示例',
-        },
-        tooltip: {},
-        xAxis: {
-          data: ['A', 'B', 'C', 'D', 'E'],
-        },
-        yAxis: {},
-        series: [
-          {
-            name: '销量',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10],
-          },
-        ],
-      });
-
-      // 输出字符串
-      // const buffer = canvas.toBuffer('image/png');
-      // 转换为 buffer
-      const svgStr = chart.renderToSVGString();
-      console.log('111', svgStr);
-      // 如果不再需要图表，调用 dispose 以释放内存
-      // chart.dispose();
-      // chart = null;
-      // 把svgString转换为buffer
-      // console.log('111', this.generateChartImage());
-      // const svgBuffer = Buffer.from(this.generateChartImage(), 'utf-8');
-      // console.log(svgBuffer);
-      const buf = await patchDocument({
+      const data = readFileSync('public/vcm_report_template_cn.docx', 'binary');
+      const docBuffer = await patchDocument({
         outputType: 'nodebuffer',
         data,
         patches: {
@@ -307,23 +262,37 @@ export class FactoryService {
             type: PatchType.PARAGRAPH,
             children: [new TextRun({ text: factory.name })],
           },
-          // chart_valves_health_overview: {
-          //   type: PatchType.PARAGRAPH,
-          //   children: [
-          //     new ImageRun({
-          //       type: 'svg',
-          //       data: svgBuffer,
-          //       transformation: {
-          //         width: 200,
-          //         height: 200,
-          //       },
-          //       fallback: {
-          //         type: 'png',
-          //         data: readFileSync('./demo/images/linux-png.png'),
-          //       },
-          //     }),
-          //   ],
-          // },
+          chart_valves_health_overview: {
+            type: PatchType.PARAGRAPH,
+            children: [
+              new ImageRun({
+                type: 'svg',
+                data: this.chart_valves_health_overview(scoreDistribution),
+                transformation: { width: 250, height: 300 },
+                fallback: {
+                  type: 'png',
+                  data: readFileSync('public/linux-png.png'),
+                },
+              }),
+            ],
+          },
+          chart_values_alarm_overivew: {
+            type: PatchType.PARAGRAPH,
+            children: [
+              new ImageRun({
+                type: 'svg',
+                data: this.chart_values_alarm_overivew([
+                  { name: '正常', value: 100 },
+                  { name: '报警', value: 20 },
+                ]),
+                transformation: { width: 250, height: 300 },
+                fallback: {
+                  type: 'png',
+                  data: readFileSync('public/linux-png.png'),
+                },
+              }),
+            ],
+          },
         },
       });
 
@@ -333,53 +302,63 @@ export class FactoryService {
           `${dayjs().format('YYYY-MM-DD')} ${factory.name}阀门报告.docx`,
         )}`,
       };
-      return new StreamableFile(buf, streamOption);
+      return new StreamableFile(docBuffer, streamOption);
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException('获取数据失败, 请联系技术人员');
     }
   }
 
-  // 使用 ECharts 生成柱状图图片
-  generateChartImage() {
-    // const canvas = createCanvas(800, 600);
-    // 在 SSR 模式下第一个参数不需要再传入 DOM 对象
-    // let chart = echarts.init(canvas as any, null, { renderer: 'canvas' });
-    let chart = echarts.init(null, null, {
-      renderer: 'svg', // 必须使用 SVG 模式
-      ssr: true, // 开启 SSR
-      width: 400, // 需要指明高和宽
+  chart_valves_health_overview(data: { name: string; value: number }[]) {
+    const chart = echarts.init(null, null, {
+      renderer: 'svg',
+      ssr: true,
+      width: 250,
       height: 300,
     });
-
-    // 像正常使用一样 setOption
     chart.setOption({
-      title: {
-        text: '柱状图示例',
-      },
-      tooltip: {},
-      xAxis: {
-        data: ['A', 'B', 'C', 'D', 'E'],
-      },
-      yAxis: {},
+      legend: { top: '5%', left: 'center' },
       series: [
         {
-          name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10],
+          name: 'Access From',
+          type: 'pie',
+          radius: ['40%', '70%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: '#fff',
+            borderWidth: 2,
+          },
+          label: { show: false, position: 'center' },
+          labelLine: { show: false },
+          data,
         },
       ],
     });
+    return Buffer.from(chart.renderToSVGString(), 'utf-8');
+  }
 
-    // 输出字符串
-    // const buffer = canvas.toBuffer('image/png');
-    // 转换为 buffer
-    const svgStr = chart.renderToSVGString();
-    // 如果不再需要图表，调用 dispose 以释放内存
-    chart.dispose();
-    chart = null;
-    console.log('111', svgStr);
-    return svgStr;
+  chart_values_alarm_overivew(data: { name: string; value: number }[]) {
+    const chart = echarts.init(null, null, {
+      renderer: 'svg',
+      ssr: true,
+      width: 250,
+      height: 300,
+    });
+    chart.setOption({
+      legend: { top: '5%', left: 'center' },
+      series: [
+        {
+          name: 'Access From',
+          type: 'pie',
+          radius: '70%',
+          label: { show: false },
+          labelLine: { show: false },
+          data,
+        },
+      ],
+    });
+    return Buffer.from(chart.renderToSVGString(), 'utf-8');
   }
 
   findOne(id: number) {
