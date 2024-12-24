@@ -72,7 +72,7 @@ export class FactoryController {
     return this.factoryService.import(user, file, body);
   }
 
-  @Get('report/:id')
+  @Post('report/:id')
   @ApiOperation({ summary: '生成工厂中所有阀门报告' })
   @Permissions('project:factory:query')
   findReport(@Param('id') id: number) {

@@ -28,6 +28,7 @@ import {
   chart_valves_quarter,
   table_valves_health_month,
 } from './report.helper';
+import { MinioService } from 'src/common/minio/minio.service';
 
 @Injectable()
 export class FactoryService {
@@ -40,6 +41,8 @@ export class FactoryService {
 
     @Inject(HttpService)
     private readonly httpService: HttpService,
+
+    private readonly minioClient: MinioService,
   ) {}
   create(user: ActiveUserData, createFactoryDto: CreateFactoryDto) {
     return this.prismaService.client.factory.create({
@@ -287,7 +290,7 @@ export class FactoryService {
       });
 
       const streamOption = {
-        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document; charset=utf-8',
         disposition: `attachment; filename*=UTF-8''${encodeURIComponent(
           `${dayjs().format('YYYY-MM-DD')} ${factory.name}阀门报告.docx`,
         )}`,

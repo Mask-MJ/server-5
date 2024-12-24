@@ -226,47 +226,57 @@ export const table_valves_health_month = (
 ) => {
   return {
     type: PatchType.DOCUMENT,
-    children: data.map((item, index) => {
-      return new Table({
+    children: [
+      new Table({
         rows: [
           renderTableHeaderRow([
             '序号',
             '阀门位号',
-            ...item.data.map((i) => i.name),
+            ...data[0].data.map((i) => i.name),
           ]),
-          new TableRow({
-            children: [
-              new TableCell({
-                children: [
-                  new Paragraph({
-                    alignment: AlignmentType.CENTER,
-                    children: [new TextRun({ text: `${index + 1}` })],
-                  }),
-                ],
-              }),
-              new TableCell({
-                children: [new Paragraph({ text: item.tag })],
-              }),
-              ...item.data.map((i) => {
-                return new TableCell({
-                  shading: {
-                    fill: getTableCellStyle(i.value),
-                    type: ShadingType.SOLID,
-                    color: '#43545D',
-                  },
+          ...data.map((item, index) => {
+            return new TableRow({
+              children: [
+                new TableCell({
                   children: [
                     new Paragraph({
-                      children: [
-                        new TextRun({ text: `${index + 1}`, color: '#ffffff' }),
-                      ],
+                      alignment: AlignmentType.CENTER,
+                      children: [new TextRun({ text: `${index + 1}` })],
                     }),
                   ],
-                });
-              }),
-            ],
+                }),
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun({ text: item.tag })],
+                    }),
+                  ],
+                }),
+                ...item.data.map((i) => {
+                  return new TableCell({
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({
+                            text: `${i.value}`,
+                            color: '#ffffff',
+                          }),
+                        ],
+                      }),
+                    ],
+                    shading: {
+                      fill: 'b79c2f',
+                      type: ShadingType.SOLID,
+                      color: getTableCellStyle(i.value),
+                    },
+                  });
+                }),
+              ],
+            });
           }),
         ],
-      });
-    }),
+      }),
+    ],
   };
 };

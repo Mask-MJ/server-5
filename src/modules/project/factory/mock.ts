@@ -41,10 +41,6 @@ export const mockReport = {
       ],
     },
   ],
-  // valveQuarterPerformanceTrend: [
-  //   { tag: '20-FV-1001', name: '第一季度', value: 20 },
-  //   { tag: '20-FV-1001', name: '第二季度', value: 30 },
-  // ],
   newProblem: [
     { tag: '20-FV-1001', description: '警报记录已满', time: '2024年12月12日' },
     { tag: '20-FV-1003', description: '警报记录已满', time: '2024年12月12日' },
