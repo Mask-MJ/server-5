@@ -18,9 +18,16 @@ import dayjs from 'dayjs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { readFileSync } from 'fs';
 import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
-import * as echarts from 'echarts';
-import { ImageRun, patchDocument, PatchType, TextRun } from 'docx';
+// import { firstValueFrom } from 'rxjs';
+import { patchDocument, PatchType, TextRun } from 'docx';
+import { mockReport } from './mock';
+import {
+  table_alarm,
+  chart_valves_health_overview,
+  chart_values_alarm_overivew,
+  chart_valves_quarter,
+  table_valves_health_month,
+} from './report.helper';
 
 @Injectable()
 export class FactoryService {
@@ -236,20 +243,22 @@ export class FactoryService {
       where: { id },
     });
     try {
-      const scoreDistribution = (
-        await firstValueFrom(
-          this.httpService.post(
-            'http://39.105.100.190:5050/api/score_distribution',
-            {},
-          ),
-        )
-      ).data.detail.distribution.map((item: any) => ({
-        name: item.range,
-        value: item.amount,
-      }));
-      console.log(scoreDistribution);
+      // const scoreDistribution = (
+      //   await firstValueFrom(
+      //     this.httpService.post(
+      //       'http://39.105.100.190:5050/api/score_distribution',
+      //       {},
+      //     ),
+      //   )
+      // ).data.detail.distribution.map((item: any) => ({
+      //   name: item.range,
+      //   value: item.amount,
+      // }));
+      const result = mockReport;
+      // console.log(scoreDistribution);
       // 从 public 文件夹获取 docx 模板文件
       const data = readFileSync('public/vcm_report_template_cn.docx', 'binary');
+
       const docBuffer = await patchDocument({
         outputType: 'nodebuffer',
         data,
@@ -262,37 +271,18 @@ export class FactoryService {
             type: PatchType.PARAGRAPH,
             children: [new TextRun({ text: factory.name })],
           },
-          chart_valves_health_overview: {
-            type: PatchType.PARAGRAPH,
-            children: [
-              new ImageRun({
-                type: 'svg',
-                data: this.chart_valves_health_overview(scoreDistribution),
-                transformation: { width: 250, height: 300 },
-                fallback: {
-                  type: 'png',
-                  data: readFileSync('public/linux-png.png'),
-                },
-              }),
-            ],
-          },
-          chart_values_alarm_overivew: {
-            type: PatchType.PARAGRAPH,
-            children: [
-              new ImageRun({
-                type: 'svg',
-                data: this.chart_values_alarm_overivew([
-                  { name: '正常', value: 100 },
-                  { name: '报警', value: 20 },
-                ]),
-                transformation: { width: 250, height: 300 },
-                fallback: {
-                  type: 'png',
-                  data: readFileSync('public/linux-png.png'),
-                },
-              }),
-            ],
-          },
+          chart_valves_health_overview: chart_valves_health_overview(
+            result.scoreDistribution,
+          ),
+          chart_values_alarm_overivew: chart_values_alarm_overivew(
+            result.valveOverallStatus,
+          ),
+          table_alarm_new: table_alarm(result.newProblem),
+          table_alarm_known: table_alarm(result.oldProblem),
+          chart_valves_quarter: chart_valves_quarter(result.valveQuarterStatus),
+          table_valves_health_month: table_valves_health_month(
+            result.valveQuarterStatusTrend,
+          ),
         },
       });
 
@@ -307,58 +297,6 @@ export class FactoryService {
       console.log(error);
       throw new InternalServerErrorException('获取数据失败, 请联系技术人员');
     }
-  }
-
-  chart_valves_health_overview(data: { name: string; value: number }[]) {
-    const chart = echarts.init(null, null, {
-      renderer: 'svg',
-      ssr: true,
-      width: 250,
-      height: 300,
-    });
-    chart.setOption({
-      legend: { top: '5%', left: 'center' },
-      series: [
-        {
-          name: 'Access From',
-          type: 'pie',
-          radius: ['40%', '70%'],
-          avoidLabelOverlap: false,
-          itemStyle: {
-            borderRadius: 10,
-            borderColor: '#fff',
-            borderWidth: 2,
-          },
-          label: { show: false, position: 'center' },
-          labelLine: { show: false },
-          data,
-        },
-      ],
-    });
-    return Buffer.from(chart.renderToSVGString(), 'utf-8');
-  }
-
-  chart_values_alarm_overivew(data: { name: string; value: number }[]) {
-    const chart = echarts.init(null, null, {
-      renderer: 'svg',
-      ssr: true,
-      width: 250,
-      height: 300,
-    });
-    chart.setOption({
-      legend: { top: '5%', left: 'center' },
-      series: [
-        {
-          name: 'Access From',
-          type: 'pie',
-          radius: '70%',
-          label: { show: false },
-          labelLine: { show: false },
-          data,
-        },
-      ],
-    });
-    return Buffer.from(chart.renderToSVGString(), 'utf-8');
   }
 
   findOne(id: number) {

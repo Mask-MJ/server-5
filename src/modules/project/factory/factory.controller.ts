@@ -73,7 +73,7 @@ export class FactoryController {
   }
 
   @Get('report/:id')
-  @ApiOperation({ summary: '生产工厂中所有阀门报告' })
+  @ApiOperation({ summary: '生成工厂中所有阀门报告' })
   @Permissions('project:factory:query')
   findReport(@Param('id') id: number) {
     return this.factoryService.findReport(id);
