@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import {
   CreateAnalysisTaskDto,
   QueryAnalysisTaskDto,
@@ -94,11 +94,17 @@ export class AnalysisTaskService {
       ruleid: analysisTask.ruleId,
       factoryid: analysisTask.factoryId,
     };
-    const { data } = await firstValueFrom(
-      this.httpService.post('http://localhost:5050/api/frasepdf', params),
-    );
-    console.log(data);
-    return data;
+    try {
+      const { data } = await firstValueFrom(
+        this.httpService.post('http://localhost:5050/api/frasepdf', params),
+      );
+      return data;
+    } catch (error) {
+      throw new HttpException(
+        '分析任务执行错误，请联系工作人员',
+        HttpStatus.BAD_GATEWAY,
+      );
+    }
   }
 
   async clear() {
