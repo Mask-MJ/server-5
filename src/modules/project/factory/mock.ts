@@ -49,4 +49,24 @@ export const mockReport = {
     { tag: '20-FV-1002', description: '警报记录已满', time: '2022年1月1日' },
     { tag: '20-FV-1004', description: '警报记录已满', time: '2022年1月1日' },
   ],
+  valveDetails: [
+    {
+      tag: '20-FV-1001',
+      description: '警报记录已满',
+      risk: '当警报记录变“满”时，将不会记录新的潜在警报。',
+      measures: '请及时清空警报记录。',
+    },
+    {
+      tag: '20-FV-1002',
+      description: '警报记录已满',
+      risk: '当警报记录变“满”时，将不会记录新的潜在警报。',
+      measures: '请及时清空警报记录。',
+    },
+    {
+      tag: '20-FV-1003',
+      description: '警报记录已满',
+      risk: '当警报记录变“满”时，将不会记录新的潜在警报。',
+      measures: '请及时清空警报记录。',
+    },
+  ],
 };

@@ -20,6 +20,13 @@ interface ReportProblemTable {
   time: string;
 }
 
+interface ValveDetail {
+  tag: string;
+  description: string;
+  risk: string;
+  measures: string;
+}
+
 const renderTableHeaderRow = (data: string[]) => {
   const children = data.map((item) => {
     return new TableCell({
@@ -276,6 +283,42 @@ export const table_valves_health_month = (
             });
           }),
         ],
+      }),
+    ],
+  };
+};
+// 生成工厂中所有阀门问题详情列表
+export const detail_valves_alarm = (data: ValveDetail[]) => {
+  return {
+    type: PatchType.DOCUMENT,
+    children: [
+      ...data.map((item, index) => {
+        return new Paragraph({
+          children: [
+            new TextRun({ text: `问题${index + 1}：`, bold: true, break: 1 }),
+            new TextRun({ text: `阀门位号：${item.tag}`, break: 1 }),
+            new TextRun({ text: `问题描述：${item.description}`, break: 1 }),
+            new TextRun({ text: `潜在风险：${item.risk}`, break: 1 }),
+            new TextRun({ text: `建议措施：${item.measures}`, break: 1 }),
+            // new Paragraph({
+            //   children: [new TextRun({ text: `问题${index + 1}：` })],
+            // }),
+            // new Paragraph({
+            //   children: [new TextRun({ text: `阀门位号：${item.tag}` })],
+            // }),
+            // new Paragraph({
+            //   children: [
+            //     new TextRun({ text: `问题描述：${item.description}` }),
+            //   ],
+            // }),
+            // new Paragraph({
+            //   children: [new TextRun({ text: `潜在风险：${item.risk}` })],
+            // }),
+            // new Paragraph({
+            //   children: [new TextRun({ text: `建议措施：${item.measures}` })],
+            // }),
+          ],
+        });
       }),
     ],
   };

@@ -27,6 +27,7 @@ import {
   chart_values_alarm_overivew,
   chart_valves_quarter,
   table_valves_health_month,
+  detail_valves_alarm,
 } from './report.helper';
 import { MinioService } from 'src/common/minio/minio.service';
 
@@ -286,6 +287,7 @@ export class FactoryService {
           table_valves_health_month: table_valves_health_month(
             result.valveQuarterStatusTrend,
           ),
+          detail_valves_alarm: detail_valves_alarm(result.valveDetails),
         },
       });
 
