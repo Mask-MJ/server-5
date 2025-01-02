@@ -251,7 +251,7 @@ export class FactoryService {
         await firstValueFrom(
           this.httpService.post(
             'http://localhost:5050/api/report/factory_report',
-            {},
+            { factoryId: id },
           ),
         )
       ).data.detail;
