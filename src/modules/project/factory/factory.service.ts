@@ -250,7 +250,7 @@ export class FactoryService {
       const result = (
         await firstValueFrom(
           this.httpService.post(
-            'http://localhost:5050/api/score_distribution',
+            'http://localhost:5050/api/report/factory_report',
             {},
           ),
         )
