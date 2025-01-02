@@ -250,11 +250,12 @@ export class FactoryService {
       const result = (
         await firstValueFrom(
           this.httpService.post(
-            'http://39.105.100.190:5050/api/score_distribution',
+            'http://localhost:5050/api/score_distribution',
             {},
           ),
         )
       ).data.detail;
+      console.log(result);
       // const result = mockReport;
       // console.log(scoreDistribution);
       // 从 public 文件夹获取 docx 模板文件
