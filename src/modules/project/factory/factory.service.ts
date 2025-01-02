@@ -18,9 +18,9 @@ import dayjs from 'dayjs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { readFileSync } from 'fs';
 import { HttpService } from '@nestjs/axios';
-// import { firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { patchDocument, PatchType, TextRun } from 'docx';
-import { mockReport } from './mock';
+// import { mockReport } from './mock';
 import {
   table_alarm,
   chart_valves_health_overview,
@@ -247,18 +247,15 @@ export class FactoryService {
       where: { id },
     });
     try {
-      // const scoreDistribution = (
-      //   await firstValueFrom(
-      //     this.httpService.post(
-      //       'http://39.105.100.190:5050/api/score_distribution',
-      //       {},
-      //     ),
-      //   )
-      // ).data.detail.distribution.map((item: any) => ({
-      //   name: item.range,
-      //   value: item.amount,
-      // }));
-      const result = mockReport;
+      const result = (
+        await firstValueFrom(
+          this.httpService.post(
+            'http://39.105.100.190:5050/api/score_distribution',
+            {},
+          ),
+        )
+      ).data.detail;
+      // const result = mockReport;
       // console.log(scoreDistribution);
       // 从 public 文件夹获取 docx 模板文件
       const data = readFileSync('public/vcm_report_template_cn.docx', 'binary');
