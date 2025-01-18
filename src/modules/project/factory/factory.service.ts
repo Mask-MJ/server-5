@@ -30,6 +30,7 @@ import {
   detail_valves_alarm,
 } from './report.helper';
 import { MinioService } from 'src/common/minio/minio.service';
+import { Valve } from '@prisma/client';
 
 @Injectable()
 export class FactoryService {
@@ -114,12 +115,13 @@ export class FactoryService {
     body: importDto,
   ) {
     const workbook = read(file.buffer, { type: 'buffer' });
-    const xslx = utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+    const xlsx = utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+    xlsx.shift();
     const deviceNames: string[] = [];
-    xslx.forEach((item: any) => {
+    xlsx.forEach((item: Valve) => {
       // 获取所有的 装置 名称
-      if (item['装置'] && !deviceNames.includes(item['装置'])) {
-        deviceNames.push(item['装置']);
+      if (item.unit && !deviceNames.includes(item.unit)) {
+        deviceNames.push(item.unit);
       }
     });
     deviceNames.forEach(async (deviceName) => {
@@ -135,72 +137,21 @@ export class FactoryService {
           },
         });
       }
-      xslx
-        .filter((item: any) => item['装置'] === deviceName)
-        .forEach(async (item: any) => {
+      xlsx
+        .filter((item: Valve) => item.unit === deviceName)
+        .forEach(async (item: Valve) => {
           const valve = await this.prismaService.client.valve.findFirst({
-            where: { tag: item['Tag'], deviceId: device.id },
+            where: { tag: item.tag, deviceId: device.id },
           });
           const data = {
-            no: item['编码'],
-            fluidName: item['介质'],
-            criticalApplication: item['关键应用'],
-            tag: item['位号'],
+            ...item,
+            no: String(item.no),
             since:
-              item['投用时间'] && dayjs(item['投用时间'].slice(0, -1)).toDate(),
-            unit: item['装置'],
-            serialNumber: String(item['阀体序列号']),
-            valveBrand: item['阀体品牌'],
-            valveType: item['阀体类型'],
-            valveSize: String(item['阀体口径']),
-            valveSeries: item['阀体系列'],
-            valveEndConnection: item['阀体连接形式'],
-            ValveStemSize: item['阀体阀杆尺寸'],
-            valveBodyMaterial: item['阀体阀体材质'],
-            valveBonnet: item['阀盖形式'],
-            valveTrim: item['阀内件'],
-            valveSeatLeakage: item['阀体泄漏等级'],
-            valveDescription: item['阀体描述'],
-            actuatorBrand: item['执行机构品牌'],
-            actuatorType: item['执行机构类型'],
-            actuatorSize: item['执行机构尺寸'],
-            handwheel: item['手轮'],
-            stroke: item['行程'],
-            actuatorDescription: item['执行机构描述'],
-            regulatorBrand: item['过滤减压阀品牌'],
-            regulatorModel: item['过滤减压阀型号'],
-            positionerBrand: item['定位器品牌'],
-            positionerModel: item['定位器型号'],
-            positionerDescription: item['定位器描述'],
-            sovBrand: item['电磁阀品牌'],
-            sovModel: item['电磁阀型号'],
-            sovQty: item['电磁阀数量'],
-            lsBrand: item['限位开关品牌'],
-            lsModel: item['限位开关型号'],
-            lsQty: item['限位开关数量'],
-            tripValveBrand: item['保位阀型号'],
-            tripValveModel: item['保位阀数量'],
-            tripValveQty: item['保位阀数量'],
-            vbBrand: item['放大器品牌'],
-            vbModel: item['放大器型号'],
-            vbQty: item['放大器数量'],
-            qeBrand: item['快排阀品牌'],
-            qeModel: item['快排阀型号'],
-            qeQty: item['快排阀数量'],
-            pilotBrand: item['气控阀品牌'],
-            pilotModel: item['气控阀型号'],
-            pilotQty: item['气控阀数量'],
-            signalComparatorBrand: item['信号比较器品牌'],
-            signalComparatorModel: item['信号比较器型号'],
-            accessory: item['附件种类'],
-            accessoryBrand: item['附件品牌'],
-            accessoryType: item['附件类型'],
-            accessoryQuantity: item['附件数量'],
-            accessoryDescription: item['附件描述'],
-            instrumentBrand: item['仪表品牌'],
-            instrumentType: item['仪表类型'],
-            instrumentDescription: item['仪表描述'],
-            remark: item['备注'],
+              item.since &&
+              dayjs((item.since as unknown as string).slice(0, -1)).toDate(),
+            serialNumber: String(item.serialNumber),
+            valveSize: String(item.valveSize),
+            valveRating: String(item.valveRating),
             deviceId: device.id,
             factoryId: body.factoryId,
             updateBy: user.account,
