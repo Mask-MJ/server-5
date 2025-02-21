@@ -35,6 +35,8 @@ export class ValveEntity implements Valve {
   // valveType: string;
   /// 阀体口径
   valveSize: string;
+  /// 阀体流量系数
+  valveCv: string;
   /// 阀体磅级
   valveRating: string;
   /// 阀体连接形式
@@ -59,6 +61,8 @@ export class ValveEntity implements Valve {
   handwheel: string;
   /// 执行机构描述
   actuatorDescription: string;
+  /// 执行机构作用形式
+  actuatorActionForm: string;
   /// 过滤减压阀品牌 REGULATOR BRAND
   regulatorBrand: string;
   /// 过滤减压阀型号 REGULATOR MODEL

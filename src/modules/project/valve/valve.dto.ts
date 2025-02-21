@@ -95,6 +95,14 @@ export class CreateValveDto {
   valveSize?: string;
 
   /**
+   * 阀体流量系数
+   * @example 'DN50'
+   */
+  @IsString()
+  @IsOptional()
+  valveCv?: string;
+
+  /**
    * 阀体连接形式
    * @example '法兰'
    */
@@ -165,6 +173,14 @@ export class CreateValveDto {
   @IsString()
   @IsOptional()
   actuatorSize?: string;
+
+  /**
+   * 执行机构作用形式
+   * @example 'DN50'
+   */
+  @IsString()
+  @IsOptional()
+  actuatorActionForm?: string;
 
   /**
    * 手轮

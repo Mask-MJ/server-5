@@ -23,6 +23,8 @@ model Valve {
   valveSeries           String?
   /// 阀体口径 Valve Size
   valveSize             String?
+  /// 阀体流量系数 Valve Cv
+  valveCv               String?
   /// 阀体磅级 Valve Rating
   valveRating           String?
   /// 阀体连接形式 Valve End Connection
@@ -45,6 +47,8 @@ model Valve {
   actuatorSeries        String?
   /// 执行机构尺寸 Actuator Size
   actuatorSize          String?
+  /// 执行机构作用形式 Actuator Action Form
+  actuatorActionForm    String?
   /// 手轮 Handwheel
   handwheel             String?
   /// 行程 Stroke
