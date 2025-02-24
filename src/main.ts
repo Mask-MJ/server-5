@@ -17,24 +17,24 @@ import * as winston from 'winston';
 import 'winston-daily-rotate-file';
 
 async function bootstrap() {
+  const logger = WinstonModule.createLogger({
+    transports: [
+      new winston.transports.DailyRotateFile({
+        level: 'info',
+        dirname: 'logs',
+        filename: '%DATE%.log',
+        datePattern: 'YYYY-MM-DD-HH',
+      }),
+      new winston.transports.Console({
+        format: winston.format.combine(
+          winston.format.timestamp(),
+          nestWinstonModuleUtilities.format.nestLike(),
+        ),
+      }),
+    ],
+  });
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    // 日志
-    logger: WinstonModule.createLogger({
-      transports: [
-        new winston.transports.DailyRotateFile({
-          level: 'info',
-          dirname: 'logs',
-          filename: '%DATE%.log',
-          datePattern: 'YYYY-MM-DD-HH',
-        }),
-        new winston.transports.Console({
-          format: winston.format.combine(
-            winston.format.timestamp(),
-            nestWinstonModuleUtilities.format.nestLike(),
-          ),
-        }),
-      ],
-    }),
+    logger,
   });
   // 获取环境变量
   const config = app.get(ConfigService);
@@ -47,7 +47,7 @@ async function bootstrap() {
   app.setGlobalPrefix(PREFIX);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   // 全局异常过滤器
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter(logger));
   // 时区转换
   app.useGlobalInterceptors(new FormatResponse());
 
