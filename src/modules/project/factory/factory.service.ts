@@ -20,7 +20,7 @@ import { readFileSync } from 'fs';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { patchDocument, PatchType, TextRun } from 'docx';
-// import { mockReport } from './mock';
+import { mockReport } from './mock';
 import {
   table_alarm,
   chart_valves_health_overview,
@@ -28,6 +28,8 @@ import {
   chart_valves_quarter,
   table_valves_health_month,
   detail_valves_alarm,
+  table_dynamic_control_month,
+  table_valves_travel_month,
 } from './report.helper';
 import { MinioService } from 'src/common/minio/minio.service';
 import { Valve } from '@prisma/client';
@@ -198,16 +200,16 @@ export class FactoryService {
       where: { id },
     });
     try {
-      const result = (
-        await firstValueFrom(
-          this.httpService.post(
-            'http://localhost:5050/api/report/factory_report',
-            { factoryId: id },
-          ),
-        )
-      ).data.detail;
-      console.log(result);
-      // const result = mockReport;
+      // let result = (
+      //   await firstValueFrom(
+      //     this.httpService.post(
+      //       'http://localhost:5050/api/report/factory_report',
+      //       { factoryId: id },
+      //     ),
+      //   )
+      // ).data.detail;
+      // console.log(result);
+      const result = mockReport;
       // console.log(scoreDistribution);
       // 从 public 文件夹获取 docx 模板文件
       const data = readFileSync('public/vcm_report_template_cn.docx', 'binary');
@@ -237,6 +239,12 @@ export class FactoryService {
             result.valveQuarterStatusTrend,
           ),
           detail_valves_alarm: detail_valves_alarm(result.valveDetails),
+          table_dynamic_control_month: table_dynamic_control_month(
+            result.valveDynamicControl,
+          ),
+          table_valves_travel_month: table_valves_travel_month(
+            result.valveTravelHistoryRecord,
+          ),
         },
       });
 

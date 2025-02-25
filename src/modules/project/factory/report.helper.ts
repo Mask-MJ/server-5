@@ -13,6 +13,7 @@ import {
   WidthType,
 } from 'docx';
 import { readFileSync } from 'fs';
+import dayjs from 'dayjs';
 
 interface ReportProblemTable {
   tag: string;
@@ -25,6 +26,18 @@ interface ValveDetail {
   description: string;
   risk: string;
   measures: string;
+}
+
+interface ValveTravelHistoryRecord {
+  tag: string;
+  number: number;
+  travelLow: string;
+  travelHigh: string;
+  globeValve: string;
+  rotaryValve: string;
+  butteValve: string;
+  size: string;
+  description: string;
 }
 
 const renderTableHeaderRow = (data: string[]) => {
@@ -47,14 +60,30 @@ const renderTableHeaderRow = (data: string[]) => {
   return new TableRow({ children });
 };
 
-const getTableCellStyle = (value: number) => {
-  if (value >= 85) {
-    return '#62BB46';
-  } else if (value < 85 && value >= 60) {
-    return '#FFCF22';
-  } else {
-    return '#D31145';
+const getTableCellStyle = (value: number, type: number) => {
+  if (type === 1) {
+    if (value >= 85) {
+      return '#62BB46';
+    } else if (value < 85 && value >= 60) {
+      return '#FFCF22';
+    } else {
+      return '#D31145';
+    }
+  } else if (type === 2) {
+    if (value >= 80) {
+      return '#62BB46';
+    } else if (value < 80 && value >= 60) {
+      return '#FFCF22';
+    } else if (value < 60 && value > 0) {
+      return '#D31145';
+    } else {
+      return '#6E298D';
+    }
   }
+};
+
+const getTableCellStyleByTravel = (value: ValveTravelHistoryRecord) => {
+  if
 };
 
 // 生成工厂中所有阀门问题表格
@@ -275,7 +304,7 @@ export const table_valves_health_month = (
                     shading: {
                       fill: 'b79c2f',
                       type: ShadingType.SOLID,
-                      color: getTableCellStyle(i.value),
+                      color: getTableCellStyle(i.value, 1),
                     },
                   });
                 }),
@@ -319,6 +348,142 @@ export const detail_valves_alarm = (data: ValveDetail[]) => {
             // }),
           ],
         });
+      }),
+    ],
+  };
+};
+// 生成工厂中所有阀门动态控制 性能趋势
+export const table_dynamic_control_month = (
+  data: {
+    tag: string;
+    data: { time: string; score: number; description: string }[];
+  }[],
+) => {
+  const times = data[0].data.map((i) => dayjs(i.time).format('YYYY-MM-DD'));
+  console.log(times);
+  return {
+    type: PatchType.DOCUMENT,
+    children: [
+      new Table({
+        rows: [
+          renderTableHeaderRow(['序号', '阀门位号', ...times]),
+          ...data.map((item, index) => {
+            return new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [new TextRun({ text: `${index + 1}` })],
+                    }),
+                  ],
+                }),
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun({ text: item.tag })],
+                    }),
+                  ],
+                }),
+                ...item.data.map((i) => {
+                  return new TableCell({
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({
+                            text: `${i.description}`,
+                            color: '#ffffff',
+                          }),
+                        ],
+                      }),
+                    ],
+                    shading: {
+                      fill: 'b79c2f',
+                      type: ShadingType.SOLID,
+                      color: getTableCellStyle(i.score, 2),
+                    },
+                  });
+                }),
+              ],
+            });
+          }),
+        ],
+      }),
+    ],
+  };
+};
+
+// 生成工厂中所有阀门动态控制 性能趋势
+export const table_valves_travel_month = (data: ValveTravelHistoryRecord[]) => {
+  const tableHeaderRow = [
+    '序号',
+    '阀门位号',
+    '行程低值',
+    '行程高值',
+    'Globe Valve',
+    'Rotary Valve',
+    'Butterfly Valve',
+    '尺寸',
+    '说明',
+  ];
+  const keys = [
+    'travelLow',
+    'travelHigh',
+    'globeValve',
+    'rotaryValve',
+    'butteValve',
+    'size',
+    'description',
+  ];
+  return {
+    type: PatchType.DOCUMENT,
+    children: [
+      new Table({
+        rows: [
+          renderTableHeaderRow(tableHeaderRow),
+          ...data.map((item: any, index) => {
+            return new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [new TextRun({ text: `${index + 1}` })],
+                    }),
+                  ],
+                }),
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun({ text: item.tag })],
+                    }),
+                  ],
+                }),
+                ...keys.map((key) => {
+                  return new TableCell({
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({ text: item[key], color: '#ffffff' }),
+                        ],
+                      }),
+                    ],
+                    shading: {
+                      fill: 'b79c2f',
+                      type: ShadingType.SOLID,
+                      color: getTableCellStyle(i.score, 2),
+                    },
+                  });
+                }),
+                // ...item.map((i) => {
+
+                // }),
+              ],
+            });
+          }),
+        ],
       }),
     ],
   };

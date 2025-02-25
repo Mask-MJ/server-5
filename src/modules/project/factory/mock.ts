@@ -69,4 +69,75 @@ export const mockReport = {
       measures: '请及时清空警报记录。',
     },
   ],
+  valveDynamicControl: [
+    {
+      tag: 'tag1',
+      data: [
+        { time: '2019-01-01 00:00:00', score: 90, description: 'good' },
+        { time: '2019-01-01 00:00:01', score: 70, description: 'normal' },
+        { time: '2019-01-01 00:00:02', score: 30, description: 'bad' },
+      ],
+    },
+    {
+      tag: 'tag2',
+      data: [
+        { time: '2019-01-01 00:00:00', score: 90, description: 'good' },
+        { time: '2019-01-01 00:00:01', score: 70, description: 'normal' },
+        { time: '2019-01-01 00:00:02', score: 0, description: 'bad' },
+      ],
+    },
+  ],
+  valveTravelHistoryRecord: [
+    {
+      tag: 'tag1',
+      number: 2,
+      travelLow: '20%',
+      travelHigh: '80%',
+      globeValve: 'False',
+      rotaryValve: 'False',
+      butteValve: 'True',
+      size: '3 inch',
+      description: 'xxx',
+    },
+    {
+      tag: 'tag2',
+      number: 2,
+      travelLow: '20%',
+      travelHigh: '80%',
+      globeValve: 'False',
+      rotaryValve: 'False',
+      butteValve: 'True',
+      size: '3 inch',
+      description: 'xxx',
+    },
+  ],
+  cycleAccumulation: [
+    {
+      tag: 'tag1',
+      number: 1,
+      data: [
+        {
+          time: '2023年1月',
+          cycleCount: 200,
+          dailyMovementCount: 10,
+          travelAccumulator: 500,
+          amplitudePerAction: '5%',
+        },
+        {
+          time: '2023年2月',
+          cycleCount: 200,
+          dailyMovementCount: 10,
+          travelAccumulator: 500,
+          amplitudePerAction: '5%',
+        },
+        {
+          time: '2023年3月',
+          cycleCount: 200,
+          dailyMovementCount: 10,
+          travelAccumulator: 500,
+          amplitudePerAction: '5%',
+        },
+      ],
+    },
+  ],
 };
