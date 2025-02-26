@@ -88,28 +88,70 @@ export const mockReport = {
     },
   ],
   valveTravelHistoryRecord: [
-    {
-      tag: 'tag1',
-      number: 2,
-      travelLow: '20%',
-      travelHigh: '80%',
-      globeValve: 'False',
-      rotaryValve: 'False',
-      butteValve: 'True',
-      size: '3 inch',
-      description: 'xxx',
-    },
-    {
-      tag: 'tag2',
-      number: 2,
-      travelLow: '20%',
-      travelHigh: '80%',
-      globeValve: 'False',
-      rotaryValve: 'False',
-      butteValve: 'True',
-      size: '3 inch',
-      description: 'xxx',
-    },
+    [
+      {
+        key: 'number',
+        name: '序号',
+        value: 1,
+        style: '#ffcf22',
+      },
+      {
+        key: 'tag',
+        name: '阀门位号',
+        value: 'tag1',
+        style: null as string | null,
+      },
+      {
+        key: 'travelLow',
+        name: '行程低值',
+        value: '20%',
+        style: '#ffcf22',
+      },
+      {
+        key: 'travelLow',
+        name: '行程高值',
+        value: '80%',
+        style: '#ffcf22',
+      },
+      {
+        key: 'globeValve',
+        name: '20-FV-1001',
+        value: false,
+        style: null as string | null,
+      },
+    ],
+    [
+      {
+        key: 'tag',
+        name: '20-FV-1001',
+        value: 'tag1',
+        style: null as string | null,
+      },
+      {
+        key: 'number',
+        name: '序号',
+        value: 2,
+        style: null as string | null,
+      },
+      {
+        key: 'travelLow',
+        name: '行程低值',
+        value: '20%',
+        style: '#ffcf22',
+      },
+      {
+        key: 'travelLow',
+        name: '行程高值',
+        value: '80%',
+        style: '#ffcf22',
+      },
+      {
+        key: 'globeValve',
+        name: '20-FV-1001',
+        value: false,
+        style: null as string | null,
+      },
+    ],
   ],
   cycleAccumulation: [
     {

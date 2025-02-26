@@ -14,6 +14,7 @@ import {
 } from 'docx';
 import { readFileSync } from 'fs';
 import dayjs from 'dayjs';
+import { find } from 'lodash';
 
 interface ReportProblemTable {
   tag: string;
@@ -28,16 +29,11 @@ interface ValveDetail {
   measures: string;
 }
 
-interface ValveTravelHistoryRecord {
-  tag: string;
-  number: number;
-  travelLow: string;
-  travelHigh: string;
-  globeValve: string;
-  rotaryValve: string;
-  butteValve: string;
-  size: string;
-  description: string;
+export interface ValveTravelHistoryRecord {
+  key: string;
+  name: string;
+  value: string;
+  style: any;
 }
 
 const renderTableHeaderRow = (data: string[]) => {
@@ -80,10 +76,6 @@ const getTableCellStyle = (value: number, type: number) => {
       return '#6E298D';
     }
   }
-};
-
-const getTableCellStyleByTravel = (value: ValveTravelHistoryRecord) => {
-  if
 };
 
 // 生成工厂中所有阀门问题表格
@@ -415,73 +407,45 @@ export const table_dynamic_control_month = (
 };
 
 // 生成工厂中所有阀门动态控制 性能趋势
-export const table_valves_travel_month = (data: ValveTravelHistoryRecord[]) => {
-  const tableHeaderRow = [
-    '序号',
-    '阀门位号',
-    '行程低值',
-    '行程高值',
-    'Globe Valve',
-    'Rotary Valve',
-    'Butterfly Valve',
-    '尺寸',
-    '说明',
-  ];
-  const keys = [
-    'travelLow',
-    'travelHigh',
-    'globeValve',
-    'rotaryValve',
-    'butteValve',
-    'size',
-    'description',
-  ];
+export const table_valves_travel_month = (
+  data: ValveTravelHistoryRecord[][],
+) => {
+  const tableHeaderRow = data[0].map((i) => i.name);
   return {
     type: PatchType.DOCUMENT,
     children: [
       new Table({
         rows: [
           renderTableHeaderRow(tableHeaderRow),
-          ...data.map((item: any, index) => {
-            return new TableRow({
-              children: [
+          ...data.map((item) => {
+            const children: any[] = [];
+            for (let i = 0; i < item.length; i++) {
+              const cell = find(item, (o) => o.name === tableHeaderRow[i]);
+              if (!cell) {
+                continue;
+              }
+              children.push(
                 new TableCell({
                   children: [
                     new Paragraph({
                       alignment: AlignmentType.CENTER,
-                      children: [new TextRun({ text: `${index + 1}` })],
+                      children: [
+                        new TextRun({
+                          text: `${cell.value}`,
+                          color: cell.style ? '#ffffff' : '#000000',
+                        }),
+                      ],
                     }),
                   ],
+                  shading: {
+                    fill: 'b79c2f',
+                    type: ShadingType.SOLID,
+                    color: cell.style || '#ffffff',
+                  },
                 }),
-                new TableCell({
-                  children: [
-                    new Paragraph({
-                      children: [new TextRun({ text: item.tag })],
-                    }),
-                  ],
-                }),
-                ...keys.map((key) => {
-                  return new TableCell({
-                    children: [
-                      new Paragraph({
-                        alignment: AlignmentType.CENTER,
-                        children: [
-                          new TextRun({ text: item[key], color: '#ffffff' }),
-                        ],
-                      }),
-                    ],
-                    shading: {
-                      fill: 'b79c2f',
-                      type: ShadingType.SOLID,
-                      color: getTableCellStyle(i.score, 2),
-                    },
-                  });
-                }),
-                // ...item.map((i) => {
-
-                // }),
-              ],
-            });
+              );
+            }
+            return new TableRow({ children });
           }),
         ],
       }),
