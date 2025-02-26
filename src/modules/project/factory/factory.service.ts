@@ -31,6 +31,7 @@ import {
   // table_dynamic_control_month,
   table_valves_travel_month,
   ValveTravelHistoryRecord,
+  table_cyclecount_travelaccumulate,
 } from './report.helper';
 import { MinioService } from 'src/common/minio/minio.service';
 import { Valve } from '@prisma/client';
@@ -245,6 +246,9 @@ export class FactoryService {
           // ),
           table_valves_travel_month: table_valves_travel_month(
             result.valveTravelHistoryRecord as ValveTravelHistoryRecord[][],
+          ),
+          table_cyclecount_travelaccumulate: table_cyclecount_travelaccumulate(
+            result.cycleAccumulation,
           ),
         },
       });

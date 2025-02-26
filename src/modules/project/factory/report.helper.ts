@@ -28,6 +28,19 @@ interface ValveDetail {
   risk: string;
   measures: string;
 }
+interface CycleAccumulation {
+  number: number;
+  tag: string;
+  data: {
+    time: string;
+    cycleCount: { name: string; value: string | number; style: any };
+    dailyMovementCount: { name: string; value: string | number; style: any };
+    travelAccumulator: { name: string; value: string | number; style: any };
+    amplitudePerAction: { name: string; value: string | number; style: any };
+  }[];
+}
+
+type CycleAccumulationKeys = keyof CycleAccumulation['data'][0];
 
 export interface ValveTravelHistoryRecord {
   key: string;
@@ -78,7 +91,7 @@ const getTableCellStyle = (value: number, type: number) => {
   }
 };
 
-// 生成工厂中所有阀门问题表格
+// 问题表格
 export const table_alarm = (data: ReportProblemTable[]) => {
   return {
     type: PatchType.DOCUMENT,
@@ -119,7 +132,7 @@ export const table_alarm = (data: ReportProblemTable[]) => {
     ],
   };
 };
-// 生成工厂中所有阀门健康饼图
+// 健康饼图
 export const chart_valves_health_overview = (
   data: { name: string; value: number }[],
 ) => {
@@ -163,7 +176,7 @@ export const chart_valves_health_overview = (
     ],
   };
 };
-// 生成工厂中所有阀门告警饼图
+// 告警饼图
 export const chart_values_alarm_overivew = (
   data: { name: string; value: number }[],
 ) => {
@@ -201,7 +214,7 @@ export const chart_values_alarm_overivew = (
     ],
   };
 };
-// 生成工厂中所有阀门状况状态柱状图
+// 状况状态柱状图
 export const chart_valves_quarter = (
   data: { name: string; alert: number; normal: number }[],
 ) => {
@@ -248,7 +261,7 @@ export const chart_valves_quarter = (
     ],
   };
 };
-// 生成工厂中所有阀门月度状态趋势表格
+// 月度状态趋势表格
 export const table_valves_health_month = (
   data: { tag: string; data: { name: string; value: number }[] }[],
 ) => {
@@ -256,6 +269,10 @@ export const table_valves_health_month = (
     type: PatchType.DOCUMENT,
     children: [
       new Table({
+        width: {
+          size: 9000,
+          type: WidthType.DXA,
+        },
         rows: [
           renderTableHeaderRow([
             '序号',
@@ -308,7 +325,7 @@ export const table_valves_health_month = (
     ],
   };
 };
-// 生成工厂中所有阀门问题详情列表
+// 问题详情列表
 export const detail_valves_alarm = (data: ValveDetail[]) => {
   return {
     type: PatchType.DOCUMENT,
@@ -344,7 +361,7 @@ export const detail_valves_alarm = (data: ValveDetail[]) => {
     ],
   };
 };
-// 生成工厂中所有阀门动态控制 性能趋势
+// 动态控制 性能趋势
 export const table_dynamic_control_month = (
   data: {
     tag: string;
@@ -405,8 +422,7 @@ export const table_dynamic_control_month = (
     ],
   };
 };
-
-// 生成工厂中所有阀门动态控制 性能趋势
+// 季度阀门行程历史记录
 export const table_valves_travel_month = (
   data: ValveTravelHistoryRecord[][],
 ) => {
@@ -445,6 +461,157 @@ export const table_valves_travel_month = (
                 }),
               );
             }
+            return new TableRow({ children });
+          }),
+        ],
+      }),
+    ],
+  };
+};
+// 周期计数/行程百分比累积
+export const table_cyclecount_travelaccumulate = (
+  data: CycleAccumulation[],
+) => {
+  const times = data[0].data.map((i) => i.time);
+  const headerBase = ['序号', '阀门位号'];
+  const header = ['循环计数', '日动作次数', '行程累计器', '次动作幅度'];
+  // 根据时间生成表头
+  const row1 = new TableRow({
+    children: [
+      ...headerBase.map((item) => {
+        return new TableCell({
+          children: [
+            new Paragraph({
+              alignment: AlignmentType.CENTER,
+              children: [new TextRun({ text: item, color: '#ffffff' })],
+            }),
+          ],
+          verticalAlign: VerticalAlign.CENTER,
+          // columnSpan: 1,
+          // rowSpan: 2,
+          shading: {
+            fill: 'b79c2f',
+            type: ShadingType.SOLID,
+            color: '#43545D',
+          },
+        });
+      }),
+      ...header.map((item) => {
+        return new TableCell({
+          children: [
+            new Paragraph({
+              alignment: AlignmentType.CENTER,
+              children: [new TextRun({ text: item, color: '#ffffff' })],
+            }),
+          ],
+          verticalAlign: VerticalAlign.CENTER,
+          columnSpan: 3,
+          shading: {
+            fill: 'b79c2f',
+            type: ShadingType.SOLID,
+            color: '#43545D',
+          },
+        });
+      }),
+    ],
+  });
+  const timesRow = times.map((item) => {
+    return new TableCell({
+      children: [
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          children: [new TextRun({ text: item + '', color: '#ffffff' })],
+        }),
+      ],
+      verticalAlign: VerticalAlign.CENTER,
+      columnSpan: 1,
+      shading: {
+        fill: 'b79c2f',
+        type: ShadingType.SOLID,
+        color: '#43545D',
+      },
+    });
+  });
+
+  const timesRow2: any[] = [];
+  header.map(() => {
+    timesRow2.push(...timesRow);
+  });
+
+  // https://github.com/dolanmiu/docx/issues/695
+  return {
+    type: PatchType.DOCUMENT,
+    children: [
+      new Table({
+        width: { size: 100, type: WidthType.PERCENTAGE },
+        rows: [
+          row1,
+          new TableRow({
+            children: [
+              new TableCell({
+                children: [
+                  new Paragraph({
+                    alignment: AlignmentType.CENTER,
+                    children: [new TextRun({ text: '', color: '#ffffff' })],
+                  }),
+                ],
+              }),
+              new TableCell({
+                children: [
+                  new Paragraph({
+                    alignment: AlignmentType.CENTER,
+                    children: [new TextRun({ text: '', color: '#ffffff' })],
+                  }),
+                ],
+              }),
+              ...timesRow2,
+            ],
+          }),
+          ...data.map((item) => {
+            const children: any[] = [
+              new TableCell({
+                children: [
+                  new Paragraph({
+                    alignment: AlignmentType.CENTER,
+                    children: [new TextRun({ text: `${item.number}` })],
+                  }),
+                ],
+              }),
+              new TableCell({
+                children: [
+                  new Paragraph({
+                    children: [new TextRun({ text: item.tag })],
+                  }),
+                ],
+              }),
+            ];
+            item.data.forEach((i) => {
+              Object.keys(i).forEach((key: CycleAccumulationKeys) => {
+                if (key === 'time') {
+                  return;
+                }
+                children.push(
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({
+                            text: `${i[key].value}`,
+                            color: i[key].style ? '#ffffff' : '#000000',
+                          }),
+                        ],
+                      }),
+                    ],
+                    shading: {
+                      fill: 'b79c2f',
+                      type: ShadingType.SOLID,
+                      color: i[key].style || '#ffffff',
+                    },
+                  }),
+                );
+              });
+            });
             return new TableRow({ children });
           }),
         ],

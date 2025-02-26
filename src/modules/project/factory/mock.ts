@@ -93,7 +93,7 @@ export const mockReport = {
         key: 'number',
         name: '序号',
         value: 1,
-        style: '#ffcf22',
+        style: null as string | null,
       },
       {
         key: 'tag',
@@ -115,22 +115,46 @@ export const mockReport = {
       },
       {
         key: 'globeValve',
-        name: '20-FV-1001',
+        name: 'Globe Valve',
         value: false,
+        style: null as string | null,
+      },
+      {
+        key: 'rotaryValve',
+        name: 'Rotary Valve',
+        value: false,
+        style: null as string | null,
+      },
+      {
+        key: 'butteValve',
+        name: 'Butte Valve',
+        value: false,
+        style: null as string | null,
+      },
+      {
+        key: 'size',
+        name: '尺寸',
+        value: '80%',
+        style: null as string | null,
+      },
+      {
+        key: 'description',
+        name: '说明',
+        value: '80%',
         style: null as string | null,
       },
     ],
     [
       {
-        key: 'tag',
-        name: '20-FV-1001',
-        value: 'tag1',
-        style: null as string | null,
-      },
-      {
         key: 'number',
         name: '序号',
         value: 2,
+        style: null as string | null,
+      },
+      {
+        key: 'tag',
+        name: '阀门位号',
+        value: 'tag1',
         style: null as string | null,
       },
       {
@@ -147,37 +171,2134 @@ export const mockReport = {
       },
       {
         key: 'globeValve',
-        name: '20-FV-1001',
+        name: 'Globe Valve',
         value: false,
+        style: null as string | null,
+      },
+      {
+        key: 'rotaryValve',
+        name: 'Rotary Valve',
+        value: false,
+        style: null as string | null,
+      },
+      {
+        key: 'butteValve',
+        name: 'Butte Valve',
+        value: false,
+        style: null as string | null,
+      },
+      {
+        key: 'size',
+        name: '尺寸',
+        value: '80%',
+        style: null as string | null,
+      },
+      {
+        key: 'description',
+        name: '说明',
+        value: '80%',
         style: null as string | null,
       },
     ],
   ],
   cycleAccumulation: [
     {
-      tag: 'tag1',
       number: 1,
+      tag: 'tag1',
       data: [
         {
-          time: '2023年1月',
-          cycleCount: 200,
-          dailyMovementCount: 10,
-          travelAccumulator: 500,
-          amplitudePerAction: '5%',
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
         },
         {
-          time: '2023年2月',
-          cycleCount: 200,
-          dailyMovementCount: 10,
-          travelAccumulator: 500,
-          amplitudePerAction: '5%',
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
         },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
         {
           time: '2023年3月',
-          cycleCount: 200,
-          dailyMovementCount: 10,
-          travelAccumulator: 500,
-          amplitudePerAction: '5%',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+      ],
+    },
+    {
+      number: 2,
+      tag: 'tag2',
+      data: [
+        {
+          time: '2023年3月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年4月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
+        },
+        {
+          time: '2023年5月',
+          cycleCount: {
+            name: '循环计数',
+            value: 123456,
+            style: null as string | null,
+          },
+          dailyMovementCount: {
+            name: '日动作次数',
+            value: 1441,
+            style: '#ffcf22',
+          },
+          travelAccumulator: {
+            name: '行程累计器',
+            value: 1234,
+            style: null as string | null,
+          },
+          amplitudePerAction: {
+            name: '次动作幅度',
+            value: 1,
+            style: null as string | null,
+          },
         },
       ],
     },
