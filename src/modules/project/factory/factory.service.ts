@@ -209,7 +209,7 @@ export class FactoryService {
           ),
         )
       ).data.detail;
-      // console.log(result);
+      console.log(result);
       // const result = mockReport;
       // console.log(scoreDistribution);
       // 从 public 文件夹获取 docx 模板文件
