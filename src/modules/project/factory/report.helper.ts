@@ -91,6 +91,16 @@ const getTableCellStyle = (value: number, type: number) => {
 
 // 问题表格
 export const table_alarm = (data: ReportProblemTable[]) => {
+  if (data.length === 0) {
+    return {
+      type: PatchType.PARAGRAPH,
+      children: [
+        new Paragraph({
+          children: [new TextRun({ text: '' })],
+        }),
+      ],
+    };
+  }
   return {
     type: PatchType.DOCUMENT,
     children: [
