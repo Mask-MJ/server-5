@@ -40,8 +40,6 @@ interface CycleAccumulation {
   }[];
 }
 
-type CycleAccumulationKeys = keyof CycleAccumulation['data'][0];
-
 export interface ValveTravelHistoryRecord {
   key: string;
   name: string;
@@ -369,7 +367,6 @@ export const table_dynamic_control_month = (
   }[],
 ) => {
   const times = data[0].data.map((i) => dayjs(i.time).format('YYYY-MM-DD'));
-  console.log(times);
   return {
     type: PatchType.DOCUMENT,
     children: [
@@ -426,7 +423,6 @@ export const table_dynamic_control_month = (
 export const table_valves_travel_month = (
   data: ValveTravelHistoryRecord[][],
 ) => {
-  console.log(data);
   const tableHeaderRow = data[0].map((i) => i.name);
   return {
     type: PatchType.DOCUMENT,
@@ -441,6 +437,14 @@ export const table_valves_travel_month = (
               if (!cell) {
                 continue;
               }
+              const getCellValue = (cell: ValveTravelHistoryRecord) => {
+                if (
+                  ['globeValve', 'rotaryValve', 'butteValve'].includes(cell.key)
+                ) {
+                  return cell.value ? '✓' : '';
+                }
+                return cell.value || '';
+              };
               children.push(
                 new TableCell({
                   children: [
@@ -448,7 +452,7 @@ export const table_valves_travel_month = (
                       alignment: AlignmentType.CENTER,
                       children: [
                         new TextRun({
-                          text: `${cell.value}`,
+                          text: getCellValue(cell),
                           color: cell.style ? '#ffffff' : '#000000',
                         }),
                       ],
@@ -488,8 +492,6 @@ export const table_cyclecount_travelaccumulate = (
             }),
           ],
           verticalAlign: VerticalAlign.CENTER,
-          // columnSpan: 1,
-          // rowSpan: 2,
           shading: {
             fill: 'b79c2f',
             type: ShadingType.SOLID,
@@ -586,33 +588,47 @@ export const table_cyclecount_travelaccumulate = (
                 ],
               }),
             ];
-            item.data.forEach((i) => {
-              Object.keys(i).forEach((key: CycleAccumulationKeys) => {
-                if (key === 'time') {
-                  return;
-                }
-                children.push(
-                  new TableCell({
-                    children: [
-                      new Paragraph({
-                        alignment: AlignmentType.CENTER,
-                        children: [
-                          new TextRun({
-                            text: `${i[key].value}`,
-                            color: i[key].style ? '#ffffff' : '#000000',
-                          }),
-                        ],
-                      }),
-                    ],
-                    shading: {
-                      fill: 'b79c2f',
-                      type: ShadingType.SOLID,
-                      color: i[key].style || '#ffffff',
-                    },
-                  }),
-                );
-              });
-            });
+            // 获取阀门月份数组
+            const valveMonth = item.data.map((i) => i.time);
+            console.log(valveMonth);
+            const valveHeader = [
+              'cycleCount',
+              'dailyMovementCount',
+              'travelAccumulator',
+              'amplitudePerAction',
+            ];
+            // 查找 valveHeader 中 time 对应的数据
+            valveHeader.forEach(
+              (i: Exclude<keyof CycleAccumulation['data'][0], 'time'>) => {
+                // 根据顺序获取对应的月份数据
+                valveMonth.forEach((month) => {
+                  const cell = find(item.data, (o) => o.time === month);
+                  if (!cell) {
+                    return;
+                  }
+                  children.push(
+                    new TableCell({
+                      children: [
+                        new Paragraph({
+                          alignment: AlignmentType.CENTER,
+                          children: [
+                            new TextRun({
+                              text: `${cell[i].value || ''}`,
+                              color: cell[i].style ? '#ffffff' : '#000000',
+                            }),
+                          ],
+                        }),
+                      ],
+                      shading: {
+                        fill: 'b79c2f',
+                        type: ShadingType.SOLID,
+                        color: cell[i].style || '#ffffff',
+                      },
+                    }),
+                  );
+                });
+              },
+            );
             return new TableRow({ children });
           }),
         ],
