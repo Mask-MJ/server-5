@@ -426,6 +426,7 @@ export const table_dynamic_control_month = (
 export const table_valves_travel_month = (
   data: ValveTravelHistoryRecord[][],
 ) => {
+  console.log(data);
   const tableHeaderRow = data[0].map((i) => i.name);
   return {
     type: PatchType.DOCUMENT,
