@@ -444,7 +444,6 @@ export const table_valves_travel_month = (
             const children: any[] = [];
             for (let i = 0; i < item.length; i++) {
               const cell = find(item, (o) => o.name === tableHeaderRow[i]);
-              console.log(cell);
               if (!cell) {
                 continue;
               }
@@ -454,8 +453,7 @@ export const table_valves_travel_month = (
                 ) {
                   return cell.value ? '✓' : '';
                 }
-                console.log(cell);
-                return cell.value + '' || '';
+                return cell.value ? cell.value + '' : '';
               };
               children.push(
                 new TableCell({
@@ -500,7 +498,7 @@ export const table_cyclecount_travelaccumulate = (
           children: [
             new Paragraph({
               alignment: AlignmentType.CENTER,
-              children: [new TextRun({ text: item, color: '#ffffff' })],
+              children: [new TextRun({ text: item || '', color: '#ffffff' })],
             }),
           ],
           verticalAlign: VerticalAlign.CENTER,
@@ -516,7 +514,7 @@ export const table_cyclecount_travelaccumulate = (
           children: [
             new Paragraph({
               alignment: AlignmentType.CENTER,
-              children: [new TextRun({ text: item, color: '#ffffff' })],
+              children: [new TextRun({ text: item || '', color: '#ffffff' })],
             }),
           ],
           verticalAlign: VerticalAlign.CENTER,
@@ -595,7 +593,7 @@ export const table_cyclecount_travelaccumulate = (
               new TableCell({
                 children: [
                   new Paragraph({
-                    children: [new TextRun({ text: item.tag })],
+                    children: [new TextRun({ text: item.tag || '' })],
                   }),
                 ],
               }),
