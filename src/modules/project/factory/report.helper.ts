@@ -444,6 +444,7 @@ export const table_valves_travel_month = (
             const children: any[] = [];
             for (let i = 0; i < item.length; i++) {
               const cell = find(item, (o) => o.name === tableHeaderRow[i]);
+              console.log(cell);
               if (!cell) {
                 continue;
               }
@@ -453,7 +454,8 @@ export const table_valves_travel_month = (
                 ) {
                   return cell.value ? '✓' : '';
                 }
-                return cell.value || '';
+                console.log(cell);
+                return cell.value + '' || '';
               };
               children.push(
                 new TableCell({

@@ -259,7 +259,7 @@ export class FactoryService {
           `${dayjs().format('YYYY-MM-DD')} ${factory.name}阀门报告.docx`,
         )}`,
       };
-      return new StreamableFile(docBuffer, streamOption);
+      return new StreamableFile(docBuffer as any, streamOption);
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException('获取数据失败, 请联系技术人员');
