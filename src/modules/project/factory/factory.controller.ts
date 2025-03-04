@@ -87,6 +87,18 @@ export class FactoryController {
     return this.factoryService.findChartOne(id);
   }
 
+  // 全部删除
+  @Delete('removeAll')
+  @ApiOperation({ summary: '删除所有工厂' })
+  @Permissions('project:valve:delete')
+  removeAll(
+    @ActiveUser() user: ActiveUserData,
+    @Request() request: ExpRequest,
+    @Headers('X-Real-IP') ip: string,
+  ) {
+    return this.factoryService.removeAll(user, ip || request.ip);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: '获取工厂详情' })
   @ApiOkResponse({ type: FactoryEntity })

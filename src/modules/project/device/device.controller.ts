@@ -48,6 +48,13 @@ export class DeviceController {
     return this.deviceService.findAll(queryDeviceDto);
   }
 
+  // 全部删除
+  @Delete('removeAll')
+  @ApiOperation({ summary: '删除所有装置' })
+  removeAll() {
+    return this.deviceService.removeAll();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: '获取装置信息' })
   @ApiOkResponse({ type: DeviceEntity })

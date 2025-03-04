@@ -386,4 +386,8 @@ export class AnalysisTaskService {
       where: { id },
     });
   }
+
+  removeAll() {
+    return this.prismaService.client.analysisTask.deleteMany({});
+  }
 }

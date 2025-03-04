@@ -42,4 +42,8 @@ export class DeviceService {
   remove(id: number) {
     return this.prismaService.client.device.delete({ where: { id } });
   }
+
+  removeAll() {
+    return this.prismaService.client.device.deleteMany({});
+  }
 }

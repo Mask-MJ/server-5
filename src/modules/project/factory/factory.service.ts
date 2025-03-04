@@ -290,4 +290,16 @@ export class FactoryService {
     });
     return '删除成功';
   }
+
+  async removeAll(user: ActiveUserData, ip: string) {
+    await this.prismaService.client.valve.deleteMany({});
+    this.eventEmitter.emit('delete', {
+      title: `删除所有工厂`,
+      businessType: 2,
+      module: '工厂管理',
+      account: user.account,
+      ip,
+    });
+    return '删除成功';
+  }
 }

@@ -102,6 +102,13 @@ export class AnalysisTaskController {
     return this.analysisTaskService.result(id);
   }
 
+  // 全部删除
+  @Delete('removeAll')
+  @ApiOperation({ summary: '删除所有分析任务' })
+  removeAll() {
+    return this.analysisTaskService.removeAll();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: '获取分析任务详情' })
   @ApiOkResponse({ type: AnalysisTaskEntity })

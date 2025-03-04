@@ -187,4 +187,16 @@ export class ValveService {
     );
     return result;
   }
+
+  async removeAll(user: ActiveUserData, ip: string) {
+    await this.prismaService.client.valve.deleteMany({});
+    this.eventEmitter.emit('delete', {
+      title: `删除所有阀门`,
+      businessType: 2,
+      module: '阀门管理',
+      account: user.account,
+      ip,
+    });
+    return '删除成功';
+  }
 }

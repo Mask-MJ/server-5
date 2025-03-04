@@ -121,6 +121,17 @@ export class ValveController {
     return this.valveService.getTreeStructure();
   }
 
+  // 全部删除
+  @Delete('removeAll')
+  @ApiOperation({ summary: '删除所有阀门' })
+  removeAll(
+    @ActiveUser() user: ActiveUserData,
+    @Request() request: ExpRequest,
+    @Headers('X-Real-IP') ip: string,
+  ) {
+    return this.valveService.removeAll(user, ip || request.ip);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: '获取阀门信息' })
   @ApiOkResponse({ type: ValveEntity })
