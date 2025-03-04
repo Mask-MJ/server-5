@@ -292,7 +292,7 @@ export class FactoryService {
   }
 
   async removeAll(user: ActiveUserData, ip: string) {
-    await this.prismaService.client.valve.deleteMany({});
+    await this.prismaService.client.factory.deleteMany({});
     this.eventEmitter.emit('delete', {
       title: `删除所有工厂`,
       businessType: 2,

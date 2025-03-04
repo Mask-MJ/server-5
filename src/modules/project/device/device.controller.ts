@@ -51,6 +51,7 @@ export class DeviceController {
   // 全部删除
   @Delete('removeAll')
   @ApiOperation({ summary: '删除所有装置' })
+  @Permissions('project:device:delete')
   removeAll() {
     return this.deviceService.removeAll();
   }

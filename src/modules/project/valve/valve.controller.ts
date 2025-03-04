@@ -124,6 +124,7 @@ export class ValveController {
   // 全部删除
   @Delete('removeAll')
   @ApiOperation({ summary: '删除所有阀门' })
+  @Permissions('project:valve:delete')
   removeAll(
     @ActiveUser() user: ActiveUserData,
     @Request() request: ExpRequest,

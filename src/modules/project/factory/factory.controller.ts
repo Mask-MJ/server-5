@@ -90,7 +90,7 @@ export class FactoryController {
   // 全部删除
   @Delete('removeAll')
   @ApiOperation({ summary: '删除所有工厂' })
-  @Permissions('project:valve:delete')
+  @Permissions('project:factory:delete')
   removeAll(
     @ActiveUser() user: ActiveUserData,
     @Request() request: ExpRequest,

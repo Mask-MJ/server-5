@@ -105,6 +105,7 @@ export class AnalysisTaskController {
   // 全部删除
   @Delete('removeAll')
   @ApiOperation({ summary: '删除所有分析任务' })
+  @Permissions('project:analysisTask:delete')
   removeAll() {
     return this.analysisTaskService.removeAll();
   }
@@ -131,6 +132,7 @@ export class AnalysisTaskController {
 
   @Delete(':id')
   @ApiOperation({ summary: '删除分析任务' })
+  @Permissions('project:analysisTask:delete')
   remove(@Param('id') id: number) {
     return this.analysisTaskService.remove(id);
   }
