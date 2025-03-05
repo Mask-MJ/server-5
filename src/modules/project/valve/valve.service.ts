@@ -206,9 +206,9 @@ export class ValveService {
     console.log(valveId, page, pageSize);
     const valveHistoryScoreDto = await firstValueFrom(
       this.httpService.post('http://localhost:5050/api/historyscore', {
-        valveid: valveId,
+        valveId,
         page,
-        page_size: pageSize,
+        pageSize,
       }),
     );
     console.log(valveHistoryScoreDto);
