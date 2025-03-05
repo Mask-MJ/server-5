@@ -211,7 +211,6 @@ export class ValveService {
         pageSize,
       }),
     );
-    console.log(valveHistoryScoreDto);
     return valveHistoryScoreDto.data?.detail?.scores;
   }
 }
