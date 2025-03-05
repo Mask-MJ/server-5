@@ -345,6 +345,12 @@ export class QueryValveChartDto extends PartialType(TimeDto) {
   valveId: number;
 }
 
+export class ValveHistoryScoreDto extends BaseDto {
+  @IsNumber()
+  @Type(() => Number)
+  valveId: number;
+}
+
 export class UpdateValveDto extends PartialType(CreateValveDto) {
   @IsNumber()
   id: number;

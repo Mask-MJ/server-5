@@ -17,6 +17,7 @@ import {
   QueryValveDto,
   QueryValveHistoryListDto,
   UpdateValveDto,
+  ValveHistoryScoreDto,
 } from './valve.dto';
 import {
   ApiOperation,
@@ -131,6 +132,17 @@ export class ValveController {
     @Headers('X-Real-IP') ip: string,
   ) {
     return this.valveService.removeAll(user, ip || request.ip);
+  }
+
+  // 阀门历史评分
+  @Get('historyScore')
+  @ApiOperation({ summary: '获取阀门历史评分' })
+  @ApiOkResponse({ type: ValveHistoryEntity, isArray: true })
+  @Permissions('project:valve:query')
+  findHistoryScoreData(
+    @Query() queryValveHistoryScoreDto: ValveHistoryScoreDto,
+  ) {
+    return this.valveService.findHistoryScoreData(queryValveHistoryScoreDto);
   }
 
   @Get(':id')

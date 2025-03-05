@@ -9,6 +9,7 @@ import {
   QueryValveDto,
   QueryValveHistoryListDto,
   UpdateValveDto,
+  ValveHistoryScoreDto,
 } from './valve.dto';
 import { CustomPrismaService } from 'nestjs-prisma';
 import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
@@ -198,5 +199,19 @@ export class ValveService {
       ip,
     });
     return '删除成功';
+  }
+
+  async findHistoryScoreData(queryValveHistoryScoreDto: ValveHistoryScoreDto) {
+    const { valveId, page, pageSize } = queryValveHistoryScoreDto;
+    console.log(valveId, page, pageSize);
+    const valveHistoryScoreDto = await firstValueFrom(
+      this.httpService.post('http://localhost:5050/api/score', {
+        valveId,
+        page,
+        page_size: pageSize,
+      }),
+    );
+    console.log(valveHistoryScoreDto);
+    return valveHistoryScoreDto.data;
   }
 }
