@@ -137,11 +137,11 @@ export class ValveController {
   // 阀门历史评分
   @Get('historyScore')
   @ApiOperation({ summary: '获取阀门历史评分' })
-  @ApiOkResponse({ type: ValveHistoryEntity, isArray: true })
   @Permissions('project:valve:query')
   findHistoryScoreData(
     @Query() queryValveHistoryScoreDto: ValveHistoryScoreDto,
   ) {
+    console.log('queryValveHistoryScoreDto', queryValveHistoryScoreDto);
     return this.valveService.findHistoryScoreData(queryValveHistoryScoreDto);
   }
 
