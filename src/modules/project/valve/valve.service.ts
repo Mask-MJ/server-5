@@ -204,61 +204,61 @@ export class ValveService {
   async findHistoryScoreData(queryValveHistoryScoreDto: ValveHistoryScoreDto) {
     const { valveId, page, pageSize } = queryValveHistoryScoreDto;
     console.log(valveId, page, pageSize);
-    // const valveHistoryScoreDto = await firstValueFrom(
-    //   this.httpService.post('http://localhost:5050/api/historyscore', {
-    //     valveId,
-    //     page,
-    //     pageSize,
-    //   }),
-    // );
-    // return valveHistoryScoreDto.data?.detail?.scores;
-    return [
-      {
-        checkTime: '2019-01-01 00:00:01',
-        infor: {
-          ruleScore: [
-            {
-              name: '实际行程',
-              value: 80,
-            },
-            {
-              name: '报警',
-              value: 90,
-            },
-            {
-              name: '平均摩擦力',
-              value: 60,
-            },
-          ],
-          totalScore: 80,
-          trendScore: [] as any[],
-        },
-        scoreTime: '2020-01-01 00:00:01',
-        valveId: 1,
-      },
-      {
-        checkTime: '2019-02-01 00:00:01',
-        infor: {
-          ruleScore: [
-            {
-              name: '实际行程',
-              value: 50,
-            },
-            {
-              name: '报警',
-              value: 100,
-            },
-            {
-              name: '平均摩擦力',
-              value: 60,
-            },
-          ],
-          totalScore: 90,
-          trendScore: [] as any[],
-        },
-        scoreTime: '2020-01-01 00:00:01',
-        valveid: 2,
-      },
-    ];
+    const valveHistoryScoreDto = await firstValueFrom(
+      this.httpService.post('http://39.105.100.190:5050/api/historyscore', {
+        valveId,
+        page,
+        pageSize,
+      }),
+    );
+    return valveHistoryScoreDto.data?.detail;
+    // return [
+    //   {
+    //     checkTime: '2019-01-01 00:00:01',
+    //     infor: {
+    //       ruleScore: [
+    //         {
+    //           name: '实际行程',
+    //           value: 80,
+    //         },
+    //         {
+    //           name: '报警',
+    //           value: 90,
+    //         },
+    //         {
+    //           name: '平均摩擦力',
+    //           value: 60,
+    //         },
+    //       ],
+    //       totalScore: 80,
+    //       trendScore: [] as any[],
+    //     },
+    //     scoreTime: '2020-01-01 00:00:01',
+    //     valveId: 1,
+    //   },
+    //   {
+    //     checkTime: '2019-02-01 00:00:01',
+    //     infor: {
+    //       ruleScore: [
+    //         {
+    //           name: '实际行程',
+    //           value: 50,
+    //         },
+    //         {
+    //           name: '报警',
+    //           value: 100,
+    //         },
+    //         {
+    //           name: '平均摩擦力',
+    //           value: 60,
+    //         },
+    //       ],
+    //       totalScore: 90,
+    //       trendScore: [] as any[],
+    //     },
+    //     scoreTime: '2020-01-01 00:00:01',
+    //     valveid: 2,
+    //   },
+    // ];
   }
 }
