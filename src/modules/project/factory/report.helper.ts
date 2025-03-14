@@ -273,6 +273,7 @@ export const chart_valves_quarter = (
 export const table_valves_health_month = (
   data: { tag: string; data: { name: string; value: number }[] }[],
 ) => {
+  console.log(data[0].data);
   return {
     type: PatchType.DOCUMENT,
     children: [
