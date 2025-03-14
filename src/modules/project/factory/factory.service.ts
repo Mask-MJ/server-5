@@ -198,26 +198,41 @@ export class FactoryService {
     };
   }
 
-  async findReport(params: reportDto) {
+  async findReport(reportData: reportDto) {
     let name = '导入的';
-    if (params.factoryId) {
+    console.log(reportData);
+    let valveIdList: number[] = [];
+    if (reportData.valveTags.length) {
+      const valveIds = await this.prismaService.client.valve.findMany({
+        where: {
+          tag: { in: reportData.valveTags },
+          factoryId: reportData.factoryId,
+        },
+        select: { id: true },
+      });
+      valveIdList = valveIds.map((item) => item.id);
+    } else if (reportData.factoryId) {
       const factory = await this.prismaService.client.factory.findUnique({
-        where: { id: params.factoryId },
+        where: { id: reportData.factoryId },
       });
       name = factory.name;
-    } else if (params.analysisTaskId) {
+    } else if (reportData.analysisTaskId) {
       const analysisTask =
         await this.prismaService.client.analysisTask.findUnique({
-          where: { id: params.analysisTaskId },
+          where: { id: reportData.analysisTaskId },
         });
       name = analysisTask.name;
     }
     try {
+      const params = {
+        ...reportData,
+        valveIdList,
+      };
       const result = (
         await firstValueFrom(
           this.httpService.post(
-            // 'http://localhost:5050/api/report/factory_report',
-            'http://39.105.100.190:5050/api/report/factoryReport',
+            'http://localhost:5050/api/report/factory_report',
+            // 'http://39.105.100.190:5050/api/report/factoryReport',
             params,
           ),
         )
@@ -273,7 +288,7 @@ export class FactoryService {
       };
       return new StreamableFile(docBuffer as any, streamOption);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       throw new InternalServerErrorException('获取数据失败, 请联系技术人员');
     }
   }

@@ -158,8 +158,7 @@ export class reportDto {
    * 阀门ids
    * @example [1, 2, 3]
    */
-  @IsArray()
   @IsOptional()
-  @IsNumber({}, { each: true })
-  valveIdList?: number[];
+  @IsArray()
+  valveTags?: string[];
 }
