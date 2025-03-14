@@ -273,7 +273,16 @@ export const chart_valves_quarter = (
 export const table_valves_health_month = (
   data: { tag: string; data: { name: string; value: number }[] }[],
 ) => {
-  console.log(data[0].data);
+  if (data.length === 0) {
+    return {
+      type: PatchType.PARAGRAPH,
+      children: [
+        new Paragraph({
+          children: [new TextRun({ text: '' })],
+        }),
+      ],
+    };
+  }
   return {
     type: PatchType.DOCUMENT,
     children: [
@@ -377,6 +386,16 @@ export const table_dynamic_control_month = (
     data: { time: string; score: number; description: string }[];
   }[],
 ) => {
+  if (data.length === 0) {
+    return {
+      type: PatchType.PARAGRAPH,
+      children: [
+        new Paragraph({
+          children: [new TextRun({ text: '' })],
+        }),
+      ],
+    };
+  }
   const times = data[0].data.map((i) => dayjs(i.time).format('YYYY-MM-DD'));
   return {
     type: PatchType.DOCUMENT,
@@ -435,6 +454,16 @@ export const table_valves_travel_month = (
   data: ValveTravelHistoryRecord[][],
 ) => {
   console.log(data);
+  if (data.length === 0) {
+    return {
+      type: PatchType.PARAGRAPH,
+      children: [
+        new Paragraph({
+          children: [new TextRun({ text: '' })],
+        }),
+      ],
+    };
+  }
   const tableHeaderRow = data[0].map((i) => i.name);
   return {
     type: PatchType.DOCUMENT,
@@ -489,6 +518,16 @@ export const table_valves_travel_month = (
 export const table_cyclecount_travelaccumulate = (
   data: CycleAccumulation[],
 ) => {
+  if (data.length === 0) {
+    return {
+      type: PatchType.PARAGRAPH,
+      children: [
+        new Paragraph({
+          children: [new TextRun({ text: '' })],
+        }),
+      ],
+    };
+  }
   const times = data[0].data.map((i) => i.time);
   const headerBase = ['序号', '阀门位号'];
   const header = ['循环计数', '日动作次数', '行程累计器', '次动作幅度'];
