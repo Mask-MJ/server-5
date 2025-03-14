@@ -1,6 +1,12 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsString, IsOptional, IsBoolean, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsBoolean,
+  IsNumber,
+  IsArray,
+} from 'class-validator';
 import { TimeDto, uploadDto } from 'src/common/dto/base.dto';
 
 export class CreateFactoryDto {
@@ -117,4 +123,43 @@ export class importDto extends uploadDto {
   @IsNumber()
   @Type(() => Number)
   factoryId: number;
+
+  @IsString()
+  @IsOptional()
+  reportMode?: string;
+}
+
+export class reportDto {
+  /**
+   * 工厂id
+   * @example 1
+   */
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  factoryId?: number;
+  /**
+   * 分析任务id
+   * @example 1
+   */
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  analysisTaskId?: number;
+  /**
+   * 报告模式
+   * @example 'factory'
+   */
+  @IsString()
+  @IsOptional()
+  reportMode?: string;
+
+  /**
+   * 阀门ids
+   * @example [1, 2, 3]
+   */
+  @IsArray()
+  @IsOptional()
+  @IsNumber({}, { each: true })
+  valveIdList?: number[];
 }

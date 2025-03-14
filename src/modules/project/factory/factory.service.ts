@@ -8,6 +8,7 @@ import {
   CreateFactoryDto,
   importDto,
   QueryFactoryDto,
+  reportDto,
   UpdateFactoryDto,
 } from './factory.dto';
 import { CustomPrismaService } from 'nestjs-prisma';
@@ -197,19 +198,30 @@ export class FactoryService {
     };
   }
 
-  async findReport(id: number) {
-    const factory = await this.prismaService.client.factory.findUnique({
-      where: { id },
-    });
+  async findReport(params: reportDto) {
+    let name = '导入的';
+    if (params.factoryId) {
+      const factory = await this.prismaService.client.factory.findUnique({
+        where: { id: params.factoryId },
+      });
+      name = factory.name;
+    } else if (params.analysisTaskId) {
+      const analysisTask =
+        await this.prismaService.client.analysisTask.findUnique({
+          where: { id: params.analysisTaskId },
+        });
+      name = analysisTask.name;
+    }
     try {
       const result = (
         await firstValueFrom(
           this.httpService.post(
-            'http://localhost:5050/api/report/factory_report',
-            { factoryId: id },
+            // 'http://localhost:5050/api/report/factory_report',
+            'http://39.105.100.190:5050/api/report/factoryReport',
+            params,
           ),
         )
-      ).data.detail;
+      ).data;
       console.log(result);
       // const result = mockReport;
       // console.log(scoreDistribution);
@@ -226,7 +238,7 @@ export class FactoryService {
           },
           report_for: {
             type: PatchType.PARAGRAPH,
-            children: [new TextRun({ text: factory.name })],
+            children: [new TextRun({ text: name })],
           },
           chart_valves_health_overview: chart_valves_health_overview(
             result.scoreDistribution,
@@ -256,7 +268,7 @@ export class FactoryService {
       const streamOption = {
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document; charset=utf-8',
         disposition: `attachment; filename*=UTF-8''${encodeURIComponent(
-          `${dayjs().format('YYYY-MM-DD')} ${factory.name}阀门报告.docx`,
+          `${dayjs().format('YYYY-MM-DD')} ${name}阀门报告.docx`,
         )}`,
       };
       return new StreamableFile(docBuffer as any, streamOption);

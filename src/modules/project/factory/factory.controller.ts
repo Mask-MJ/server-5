@@ -17,6 +17,7 @@ import {
   CreateFactoryDto,
   importDto,
   QueryFactoryDto,
+  reportDto,
   UpdateFactoryDto,
 } from './factory.dto';
 import {
@@ -72,11 +73,11 @@ export class FactoryController {
     return this.factoryService.import(user, file, body);
   }
 
-  @Post('report/:id')
+  @Post('report')
   @ApiOperation({ summary: '生成工厂中所有阀门报告' })
   @Permissions('project:factory:query')
-  findReport(@Param('id') id: number) {
-    return this.factoryService.findReport(id);
+  findReport(@Body() body: reportDto) {
+    return this.factoryService.findReport(body);
   }
 
   @Get('chart/:id')
