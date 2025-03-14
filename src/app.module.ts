@@ -15,6 +15,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { BullModule } from '@nestjs/bullmq';
 import { UserConsumer } from './modules/system/user/user.processor';
 import { extendedPrismaClient } from 'src/common/pagination/prisma.extension';
+import { DtsModule } from './modules/dts/dts.module';
 
 @Module({
   imports: [
@@ -39,12 +40,14 @@ import { extendedPrismaClient } from 'src/common/pagination/prisma.extension';
       { path: 'project', module: ProjectModule },
       { path: 'system', module: SystemModule },
       { path: 'monitor', module: MonitorModule },
+      { path: 'dts', module: DtsModule },
     ]),
     EventEmitterModule.forRoot(),
     IamModule,
     SystemModule,
     MonitorModule,
     ProjectModule,
+    DtsModule,
   ],
   controllers: [],
   providers: [RedisStorage, UserConsumer, providePrismaClientExceptionFilter()],
