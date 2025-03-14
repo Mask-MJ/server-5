@@ -1,21 +1,21 @@
-import { IsNumber, IsObject, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsObject, IsString } from 'class-validator';
 
 export class CreateServiceAppDto {
   /**
    * 工单ID
-   * @example 1
+   * @example "1"
    */
-  @IsNumber()
-  id: number;
+  @IsString()
+  id: string;
   /**
    * 工单类型代码
-   * @example 1
+   * @example "1"
    */
   @IsNumber()
   type: number;
   /**
    * 工单类型名称
-   * @example '1'
+   * @example "现场服务"
    */
   @IsString()
   typeName: string;
@@ -23,8 +23,8 @@ export class CreateServiceAppDto {
    * 流水号
    * @example 1
    */
-  @IsNumber()
-  serial: number;
+  @IsString()
+  serial: string;
   /**
    * 服务报告文档URL
    * @example 'xxx'
@@ -39,10 +39,10 @@ export class CreateServiceAppDto {
   endUser: Record<string, any>;
   /**
    * 阀门信息
-   * @example '{}'
+   * @example [{valveId: 1, valveName: '阀门1'}]
    */
-  @IsObject()
-  valves: Record<string, any>;
+  @IsArray()
+  valves: Record<string, any>[];
   /**
    * 工单数据
    * @example '{}'
