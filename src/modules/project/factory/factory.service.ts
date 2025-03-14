@@ -236,9 +236,8 @@ export class FactoryService {
             params,
           ),
         )
-      ).data;
+      ).data.detail;
       console.log(result);
-      console.log('----', result.detail);
 
       // const result = mockReport;
       // console.log(scoreDistribution);
