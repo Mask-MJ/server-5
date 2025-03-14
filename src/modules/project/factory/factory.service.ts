@@ -202,7 +202,7 @@ export class FactoryService {
     let name = '导入的';
     console.log(reportData);
     let valveIdList: number[] = [];
-    if (reportData.valveTags.length) {
+    if (reportData.valveTags?.length) {
       const valveIds = await this.prismaService.client.valve.findMany({
         where: {
           tag: { in: reportData.valveTags },
