@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Post } from '@nestjs/common';
 import { ServiceAppService } from './service.service';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { CreateServiceAppDto } from './service.dto';
@@ -6,7 +6,6 @@ import { Auth } from 'src/modules/iam/authentication/decorators/auth.decorator';
 import { AuthType } from 'src/modules/iam/authentication/enums/auth-type.enum';
 
 @ApiTags('外部接口通讯')
-@Controller('dts')
 @Auth(AuthType.None)
 export class ServiceAppController {
   constructor(private readonly serviceAppService: ServiceAppService) {}
