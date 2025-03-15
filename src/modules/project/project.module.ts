@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 
 import { CustomPrismaModule } from 'nestjs-prisma';
 import { extendedPrismaClient } from 'src/common/pagination/prisma.extension';
@@ -17,6 +17,6 @@ import { projectControllers, projectProviders } from './index';
     }),
   ],
   controllers: projectControllers,
-  providers: [...projectProviders, MinioService],
+  providers: [...projectProviders, MinioService, Logger],
 })
 export class ProjectModule {}

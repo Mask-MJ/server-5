@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   StreamableFile,
+  Logger,
 } from '@nestjs/common';
 import {
   CreateFactoryDto,
@@ -50,6 +51,7 @@ export class FactoryService {
     private readonly httpService: HttpService,
 
     private readonly minioClient: MinioService,
+    private readonly logger: Logger,
   ) {}
   create(user: ActiveUserData, createFactoryDto: CreateFactoryDto) {
     return this.prismaService.client.factory.create({
@@ -237,8 +239,7 @@ export class FactoryService {
           ),
         )
       ).data.detail;
-      console.log(result);
-
+      this.logger.log('获取报告数据', result);
       // const result = mockReport;
       // console.log(scoreDistribution);
       // 从 public 文件夹获取 docx 模板文件
