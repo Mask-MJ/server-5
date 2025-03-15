@@ -94,11 +94,7 @@ export const table_alarm = (data: ReportProblemTable[]) => {
   if (data.length === 0) {
     return {
       type: PatchType.PARAGRAPH,
-      children: [
-        new Paragraph({
-          children: [new TextRun({ text: '' })],
-        }),
-      ],
+      children: [new TextRun({ text: ' ' })],
     };
   }
   return {
@@ -278,7 +274,7 @@ export const table_valves_health_month = (
       type: PatchType.PARAGRAPH,
       children: [
         new Paragraph({
-          children: [new TextRun({ text: '' })],
+          children: [new TextRun({ text: ' ' })],
         }),
       ],
     };
@@ -391,7 +387,7 @@ export const table_dynamic_control_month = (
       type: PatchType.PARAGRAPH,
       children: [
         new Paragraph({
-          children: [new TextRun({ text: '' })],
+          children: [new TextRun({ text: ' ' })],
         }),
       ],
     };
@@ -459,7 +455,7 @@ export const table_valves_travel_month = (
       type: PatchType.PARAGRAPH,
       children: [
         new Paragraph({
-          children: [new TextRun({ text: '' })],
+          children: [new TextRun({ text: ' ' })],
         }),
       ],
     };
@@ -523,7 +519,7 @@ export const table_cyclecount_travelaccumulate = (
       type: PatchType.PARAGRAPH,
       children: [
         new Paragraph({
-          children: [new TextRun({ text: '' })],
+          children: [new TextRun({ text: ' ' })],
         }),
       ],
     };

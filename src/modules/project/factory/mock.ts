@@ -311,3 +311,55 @@ export const mockReport = {
     },
   ],
 };
+
+export const mockReport2: any = {
+  cycleAccumulation: [],
+  newProblem: [],
+  oldProblem: [],
+  scoreDistribution: [
+    {
+      name: '0-60',
+      value: 0,
+    },
+    {
+      name: '100',
+      value: 0,
+    },
+    {
+      name: '60-70',
+      value: 0,
+    },
+    {
+      name: '70-80',
+      value: 0,
+    },
+    {
+      name: '80-90',
+      value: 0,
+    },
+    {
+      name: '90-100',
+      value: 0,
+    },
+  ],
+  valveDetails: [],
+  valveOverallStatus: [
+    {
+      name: '正常',
+      value: 0,
+    },
+    {
+      name: '报警',
+      value: 0,
+    },
+  ],
+  valveQuarterStatus: [
+    {
+      alert: 0,
+      name: '第一季度',
+      normal: 0,
+    },
+  ],
+  valveQuarterStatusTrend: [],
+  valveTravelHistoryRecord: [],
+};
