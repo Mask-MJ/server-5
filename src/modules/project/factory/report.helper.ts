@@ -272,11 +272,7 @@ export const table_valves_health_month = (
   if (data.length === 0) {
     return {
       type: PatchType.PARAGRAPH,
-      children: [
-        new Paragraph({
-          children: [new TextRun({ text: ' ' })],
-        }),
-      ],
+      children: [new TextRun({ text: ' ' })],
     };
   }
   return {
@@ -352,23 +348,6 @@ export const detail_valves_alarm = (data: ValveDetail[]) => {
             new TextRun({ text: `问题描述：${item.description}`, break: 1 }),
             new TextRun({ text: `潜在风险：${item.risk}`, break: 1 }),
             new TextRun({ text: `建议措施：${item.measures}`, break: 1 }),
-            // new Paragraph({
-            //   children: [new TextRun({ text: `问题${index + 1}：` })],
-            // }),
-            // new Paragraph({
-            //   children: [new TextRun({ text: `阀门位号：${item.tag}` })],
-            // }),
-            // new Paragraph({
-            //   children: [
-            //     new TextRun({ text: `问题描述：${item.description}` }),
-            //   ],
-            // }),
-            // new Paragraph({
-            //   children: [new TextRun({ text: `潜在风险：${item.risk}` })],
-            // }),
-            // new Paragraph({
-            //   children: [new TextRun({ text: `建议措施：${item.measures}` })],
-            // }),
           ],
         });
       }),
@@ -385,11 +364,7 @@ export const table_dynamic_control_month = (
   if (data.length === 0) {
     return {
       type: PatchType.PARAGRAPH,
-      children: [
-        new Paragraph({
-          children: [new TextRun({ text: ' ' })],
-        }),
-      ],
+      children: [new TextRun({ text: ' ' })],
     };
   }
   const times = data[0].data.map((i) => dayjs(i.time).format('YYYY-MM-DD'));
@@ -449,15 +424,10 @@ export const table_dynamic_control_month = (
 export const table_valves_travel_month = (
   data: ValveTravelHistoryRecord[][],
 ) => {
-  console.log(data);
   if (data.length === 0) {
     return {
       type: PatchType.PARAGRAPH,
-      children: [
-        new Paragraph({
-          children: [new TextRun({ text: ' ' })],
-        }),
-      ],
+      children: [new TextRun({ text: ' ' })],
     };
   }
   const tableHeaderRow = data[0].map((i) => i.name);
@@ -517,11 +487,7 @@ export const table_cyclecount_travelaccumulate = (
   if (data.length === 0) {
     return {
       type: PatchType.PARAGRAPH,
-      children: [
-        new Paragraph({
-          children: [new TextRun({ text: ' ' })],
-        }),
-      ],
+      children: [new TextRun({ text: ' ' })],
     };
   }
   const times = data[0].data.map((i) => i.time);
