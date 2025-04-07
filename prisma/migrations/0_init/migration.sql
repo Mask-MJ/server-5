@@ -1,6 +1,9 @@
 -- CreateSchema
 CREATE SCHEMA IF NOT EXISTS "flask_ocrt";
 
+-- CreateSchema
+CREATE SCHEMA IF NOT EXISTS "public";
+
 -- CreateTable
 CREATE TABLE "public"."AnalysisTask" (
     "id" SERIAL NOT NULL,
@@ -112,6 +115,13 @@ CREATE TABLE "public"."DictData" (
     "remark" TEXT NOT NULL DEFAULT '',
     "dictTypeId" INTEGER NOT NULL,
     "treeId" INTEGER,
+    "type" TEXT NOT NULL DEFAULT '0',
+    "cnTitle" TEXT,
+    "enTitle" TEXT,
+    "chartType" TEXT DEFAULT '0',
+    "isChart" BOOLEAN DEFAULT false,
+    "lowerLimit" TEXT,
+    "upperLimit" TEXT,
 
     CONSTRAINT "DictData_pkey" PRIMARY KEY ("id")
 );
@@ -128,6 +138,27 @@ CREATE TABLE "public"."DictDataTree" (
 );
 
 -- CreateTable
+CREATE TABLE "public"."WorkOrder" (
+    "id" SERIAL NOT NULL,
+    "typeName" TEXT NOT NULL,
+    "type" INTEGER NOT NULL,
+    "serial" TEXT NOT NULL,
+    "attachment" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "remark" TEXT NOT NULL DEFAULT '',
+    "serviceAppId" TEXT NOT NULL,
+    "factoryId" INTEGER NOT NULL,
+    "faultCategory" TEXT NOT NULL,
+    "possibleCauseAnalysis" TEXT NOT NULL,
+    "recommendation" TEXT NOT NULL,
+    "remedialActions" TEXT NOT NULL,
+    "taskDescription" TEXT NOT NULL,
+
+    CONSTRAINT "WorkOrder_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "public"."Factory" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -141,6 +172,11 @@ CREATE TABLE "public"."Factory" (
     "createBy" TEXT NOT NULL,
     "updateBy" TEXT,
     "parentId" INTEGER,
+    "city" TEXT DEFAULT '',
+    "county" TEXT DEFAULT '',
+    "province" TEXT DEFAULT '',
+    "code" TEXT DEFAULT '',
+    "industry" TEXT DEFAULT '',
 
     CONSTRAINT "Factory_pkey" PRIMARY KEY ("id")
 );
@@ -299,7 +335,6 @@ CREATE TABLE "public"."Valve" (
     "serialNumber" TEXT,
     "since" TIMESTAMP(3),
     "valveBrand" TEXT,
-    "valveType" TEXT,
     "valveSize" TEXT,
     "valveEndConnection" TEXT,
     "valveBodyMaterial" TEXT,
@@ -308,22 +343,10 @@ CREATE TABLE "public"."Valve" (
     "valveSeatLeakage" TEXT,
     "valveDescription" TEXT,
     "actuatorBrand" TEXT,
-    "actuatorType" TEXT,
     "actuatorSize" TEXT,
     "handwheel" TEXT,
     "actuatorDescription" TEXT,
     "positionerBrand" TEXT,
-    "positionerType" TEXT,
-    "positionerDescription" TEXT,
-    "accessory" TEXT,
-    "accessoryBrand" TEXT,
-    "accessoryType" TEXT,
-    "accessoryQuantity" INTEGER,
-    "accessoryDescription" TEXT,
-    "instrumentBrand" TEXT,
-    "instrumentType" TEXT,
-    "instrumentDescription" TEXT,
-    "remark" TEXT,
     "factoryId" INTEGER NOT NULL,
     "deviceId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -331,6 +354,47 @@ CREATE TABLE "public"."Valve" (
     "createBy" TEXT NOT NULL DEFAULT '',
     "updateBy" TEXT,
     "analysisTaskId" INTEGER,
+    "valveSeries" TEXT,
+    "source" TEXT,
+    "lsBrand" TEXT,
+    "lsModel" TEXT,
+    "lsQty" INTEGER,
+    "no" TEXT,
+    "pilotBrand" TEXT,
+    "pilotModel" TEXT,
+    "pilotQty" INTEGER,
+    "positionerModel" TEXT,
+    "qeBrand" TEXT,
+    "qeModel" TEXT,
+    "qeQty" INTEGER,
+    "regulatorBrand" TEXT,
+    "regulatorModel" TEXT,
+    "signalComparatorBrand" TEXT,
+    "signalComparatorModel" TEXT,
+    "sovBrand" TEXT,
+    "sovModel" TEXT,
+    "sovQty" INTEGER,
+    "stroke" TEXT,
+    "tripValveBrand" TEXT,
+    "tripValveModel" TEXT,
+    "vbBrand" TEXT,
+    "vbModel" TEXT,
+    "vbQty" INTEGER,
+    "actuatorSeries" TEXT,
+    "parts" TEXT,
+    "valveRating" TEXT,
+    "valveStemSize" TEXT,
+    "actuatorActionForm" TEXT,
+    "valveCv" TEXT,
+    "lsDescription" TEXT,
+    "pilotDescription" TEXT,
+    "positionerDescription" TEXT,
+    "qeDescription" TEXT,
+    "regulatorDescription" TEXT,
+    "signalComparatorDescription" TEXT,
+    "sovDescription" TEXT,
+    "tripValveDescription" TEXT,
+    "vbDescription" TEXT,
 
     CONSTRAINT "Valve_pkey" PRIMARY KEY ("id")
 );
@@ -343,6 +407,8 @@ CREATE TABLE "public"."ValveData" (
     "unit" TEXT,
     "valveId" INTEGER NOT NULL,
     "time" TIMESTAMP(3) NOT NULL,
+    "type" TEXT NOT NULL DEFAULT '0',
+    "treeId" INTEGER,
 
     CONSTRAINT "ValveData_pkey" PRIMARY KEY ("id")
 );
@@ -365,6 +431,8 @@ CREATE TABLE "public"."ValveHistoryData" (
     "unit" TEXT,
     "valveHistoryDataListId" INTEGER NOT NULL,
     "time" TIMESTAMP(3) NOT NULL,
+    "type" TEXT NOT NULL DEFAULT '0',
+    "treeId" INTEGER,
 
     CONSTRAINT "ValveHistoryData_pkey" PRIMARY KEY ("id")
 );
@@ -405,8 +473,17 @@ CREATE TABLE "public"."_RoleToUser" (
     "B" INTEGER NOT NULL
 );
 
+-- CreateTable
+CREATE TABLE "public"."_ValveToWorkOrder" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "AnalysisTaskResult_analysisTaskId_key" ON "public"."AnalysisTaskResult"("analysisTaskId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "WorkOrder_serial_key" ON "public"."WorkOrder"("serial");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Factory_name_key" ON "public"."Factory"("name");
@@ -468,11 +545,17 @@ CREATE UNIQUE INDEX "_RoleToUser_AB_unique" ON "public"."_RoleToUser"("A", "B");
 -- CreateIndex
 CREATE INDEX "_RoleToUser_B_index" ON "public"."_RoleToUser"("B");
 
--- AddForeignKey
-ALTER TABLE "public"."AnalysisTask" ADD CONSTRAINT "AnalysisTask_dictTypeId_fkey" FOREIGN KEY ("dictTypeId") REFERENCES "public"."DictType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "_ValveToWorkOrder_AB_unique" ON "public"."_ValveToWorkOrder"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_ValveToWorkOrder_B_index" ON "public"."_ValveToWorkOrder"("B");
 
 -- AddForeignKey
-ALTER TABLE "public"."AnalysisTask" ADD CONSTRAINT "AnalysisTask_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "public"."Factory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."AnalysisTask" ADD CONSTRAINT "AnalysisTask_dictTypeId_fkey" FOREIGN KEY ("dictTypeId") REFERENCES "public"."DictType"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."AnalysisTask" ADD CONSTRAINT "AnalysisTask_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "public"."Factory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."AnalysisTaskResult" ADD CONSTRAINT "AnalysisTaskResult_analysisTaskId_fkey" FOREIGN KEY ("analysisTaskId") REFERENCES "public"."AnalysisTask"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -493,6 +576,9 @@ ALTER TABLE "public"."DictData" ADD CONSTRAINT "DictData_treeId_fkey" FOREIGN KE
 ALTER TABLE "public"."DictDataTree" ADD CONSTRAINT "DictDataTree_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "public"."DictDataTree"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "public"."WorkOrder" ADD CONSTRAINT "WorkOrder_factoryId_fkey" FOREIGN KEY ("factoryId") REFERENCES "public"."Factory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "public"."Factory" ADD CONSTRAINT "Factory_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "public"."Factory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -511,7 +597,7 @@ ALTER TABLE "public"."Permission" ADD CONSTRAINT "Permission_menuId_fkey" FOREIG
 ALTER TABLE "public"."User" ADD CONSTRAINT "User_createBy_fkey" FOREIGN KEY ("createBy") REFERENCES "public"."User"("account") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Valve" ADD CONSTRAINT "Valve_analysisTaskId_fkey" FOREIGN KEY ("analysisTaskId") REFERENCES "public"."AnalysisTask"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "public"."Valve" ADD CONSTRAINT "Valve_analysisTaskId_fkey" FOREIGN KEY ("analysisTaskId") REFERENCES "public"."AnalysisTask"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."Valve" ADD CONSTRAINT "Valve_deviceId_fkey" FOREIGN KEY ("deviceId") REFERENCES "public"."Device"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -563,3 +649,10 @@ ALTER TABLE "public"."_RoleToUser" ADD CONSTRAINT "_RoleToUser_A_fkey" FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE "public"."_RoleToUser" ADD CONSTRAINT "_RoleToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."_ValveToWorkOrder" ADD CONSTRAINT "_ValveToWorkOrder_A_fkey" FOREIGN KEY ("A") REFERENCES "public"."Valve"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."_ValveToWorkOrder" ADD CONSTRAINT "_ValveToWorkOrder_B_fkey" FOREIGN KEY ("B") REFERENCES "public"."WorkOrder"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+

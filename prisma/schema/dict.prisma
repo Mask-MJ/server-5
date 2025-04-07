@@ -34,20 +34,6 @@ model DictData {
   sort       Int           @default(1)
   /// 状态
   status     Boolean       @default(true)
-  /// 字典类别 0:参数 1:运行数据 2: 阀门诊断数据
-  type       String        @default("0")
-  /// 中文标题
-  cnTitle    String?
-  /// 英文标题
-  enTitle    String?
-  /// 是否作为图表数据
-  isChart    Boolean?      @default(false)
-  /// 图表数据类型 0: 数值 1: 百分比
-  chartType  String?       @default("0") 
-  /// 上限值
-  upperLimit String?
-  /// 下限值
-  lowerLimit String? 
   /// 创建者
   createBy   String
   /// 更新者
@@ -61,8 +47,22 @@ model DictData {
   /// 字典类型
   dictTypeId Int
   treeId     Int?
-  dictType   DictType      @relation(fields: [dictTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  tree       DictDataTree? @relation(fields: [treeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  /// 字典类别 0:参数 1:运行数据 2: 阀门诊断数据
+  type       String        @default("0")
+  /// 中文标题
+  cnTitle    String?
+  /// 英文标题
+  enTitle    String?
+  /// 图表数据类型 0: 数值 1: 百分比
+  chartType  String?       @default("0")
+  /// 是否作为图表数据
+  isChart    Boolean?      @default(false)
+  /// 下限值
+  lowerLimit String?
+  /// 上限值
+  upperLimit String?
+  dictType   DictType      @relation(fields: [dictTypeId], references: [id], onDelete: Cascade)
+  tree       DictDataTree? @relation(fields: [treeId], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
@@ -74,7 +74,7 @@ model DictDataTree {
   remark   String?
   parentId Int?
   dictData DictData[]
-  parent   DictDataTree?  @relation("DictDataTreeToDictDataTree", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  parent   DictDataTree?  @relation("DictDataTreeToDictDataTree", fields: [parentId], references: [id], onDelete: Cascade)
   children DictDataTree[] @relation("DictDataTreeToDictDataTree")
 
   @@schema("public")

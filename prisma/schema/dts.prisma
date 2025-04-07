@@ -2,8 +2,6 @@
 model WorkOrder {
   /// 工单ID
   id                    Int      @id @default(autoincrement())
-  /// service-app ID
-  serviceAppId          String
   /// 工单类型名称
   typeName              String
   /// 工单类型
@@ -12,28 +10,28 @@ model WorkOrder {
   serial                String   @unique
   /// 服务报告文档URL
   attachment            String
-  /// 工厂id
-  factoryId             Int
-  /// 最终用户信息
-  factory               Factory  @relation(fields: [factoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  /// 关联阀门
-  valve                 Valve[]  @relation("ValveToWorkOrder")
-  /// 任务详述
-  taskDescription       String
-  /// 故障类别
-  faultCategory         String
-  /// 原因分析
-  possibleCauseAnalysis String
-  /// 处理措施
-  remedialActions       String
-  /// 建议措施
-  recommendation        String
   /// 创建时间
   createdAt             DateTime @default(now())
   /// 更新时间
   updatedAt             DateTime @updatedAt
   /// 备注
   remark                String   @default("")
+  /// service-app ID
+  serviceAppId          String
+  /// 工厂id
+  factoryId             Int
+  /// 故障类别
+  faultCategory         String
+  /// 原因分析
+  possibleCauseAnalysis String
+  /// 建议措施
+  recommendation        String
+  /// 处理措施
+  remedialActions       String
+  /// 任务详述
+  taskDescription       String
+  factory               Factory  @relation(fields: [factoryId], references: [id], onDelete: Cascade)
+  valve                 Valve[]  @relation("ValveToWorkOrder")
 
   @@schema("public")
 }
