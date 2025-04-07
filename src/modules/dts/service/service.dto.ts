@@ -1,5 +1,6 @@
 import { IsArray, IsNumber, IsObject, IsString } from 'class-validator';
-
+import { FactoryEntity } from '../../project/factory/factory.entity';
+import { CreateValveDto } from 'src/modules/project/valve/valve.dto';
 export class CreateServiceAppDto {
   /**
    * 工单ID
@@ -36,17 +37,23 @@ export class CreateServiceAppDto {
    * @example '{}'
    */
   @IsObject()
-  endUser: Record<string, any>;
+  endUser: FactoryEntity;
   /**
    * 阀门信息
    * @example [{valveId: 1, valveName: '阀门1'}]
    */
   @IsArray()
-  valves: Record<string, any>[];
+  valves: CreateValveDto[];
   /**
    * 工单数据
    * @example '{}'
    */
   @IsObject()
-  workSheet: Record<string, any>;
+  workSheet: {
+    taskDescription: string;
+    possibleCauseAnalysis: string;
+    faultCategory: string;
+    remedialActions: string;
+    recommendation: string;
+  };
 }

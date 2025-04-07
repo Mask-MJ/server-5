@@ -67,44 +67,60 @@ export class ValveEntity implements Valve {
   regulatorBrand: string;
   /// 过滤减压阀型号 REGULATOR MODEL
   regulatorModel: string;
+  /// 过滤减压阀描述
+  regulatorDescription: string;
   /// 定位器品牌
   positionerBrand: string;
   /// 定位器型号 POSITIONER MODEL
   positionerModel: string;
+  /// 定位器描述
+  positionerDescription: string;
   /// 电磁阀品牌 SOV BRAND
   sovBrand: string;
   /// 电磁阀型号 SOV MODEL
   sovModel: string;
   /// 电磁阀数量 SOV QTY
   sovQty: number;
+  /// 电磁阀描述
+  sovDescription: string;
   /// 限位开关品牌 LS BRAND
   lsBrand: string;
   /// 限位开关型号 LS MODEL
   lsModel: string;
   /// 限位开关数量 LS QTY
   lsQty: number;
+  /// 限位开关描述
+  lsDescription: string;
   /// 保位阀品牌 TRIP VALVE BRAND
   tripValveBrand: string;
   /// 保位阀型号 TRIP VALVE MODEL
   tripValveModel: string;
+  /// 保位阀描述
+  tripValveDescription: string;
   /// 放大器品牌 VB BRAND
   vbBrand: string;
   /// 放大器型号 VB MODEL
   vbModel: string;
   /// 放大器数量 VB QTY
   vbQty: number;
+  /// 放大器描述
+  vbDescription: string;
   /// 快排阀品牌 QE BRAND
   qeBrand: string;
   /// 快排阀型号 QE MODEL
   qeModel: string;
   /// 快排阀数量 QE QTY
   qeQty: number;
+  /// 快排阀描述
+  qeDescription: string;
   /// 气控阀品牌 PILOT BRAND
   pilotBrand: string;
   /// 气控阀型号 PILOT MODEL
   pilotModel: string;
   /// 气控阀数量 PILOT QTY
   pilotQty: number;
+  /// 气控阀描述
+  pilotDescription: string;
   /// 阀体阀杆尺寸 Valve Stem Size
   valveStemSize: string;
   /// 行程 Stroke
@@ -113,6 +129,8 @@ export class ValveEntity implements Valve {
   signalComparatorBrand: string;
   /// 信号比较器型号 SIGNAL COMPARATOR MODEL
   signalComparatorModel: string;
+  /// 信号比较器描述
+  signalComparatorDescription: string;
   /// 关联装置id
   deviceId: number;
   /// 备件

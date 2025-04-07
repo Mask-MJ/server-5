@@ -36,6 +36,7 @@ model Factory {
   children     Factory[]      @relation("FactoryToFactory")
   valve        Valve[]
   role         Role[]         @relation("FactoryToRole")
+  workOrder    WorkOrder[]
 
   @@schema("public")
 }
