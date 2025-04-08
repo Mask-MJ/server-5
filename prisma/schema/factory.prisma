@@ -35,7 +35,7 @@ model Factory {
   parent       Factory?       @relation("FactoryToFactory", fields: [parentId], references: [id], onDelete: Cascade)
   children     Factory[]      @relation("FactoryToFactory")
   valve        Valve[]
-  workOrder    WorkOrder[]
+  // workOrder    WorkOrder[]
   role         Role[]         @relation("FactoryToRole")
 
   @@schema("public")

@@ -90,10 +90,10 @@
   },
   "css.lint.hexColorLength": "ignore",
   "typescript.tsdk": "node_modules\\typescript\\lib",
-  "editor.formatOnSave": true,
-  "[prisma]": {
-    "editor.defaultFormatter": "Prisma.prisma"
-  },
+  // "editor.formatOnSave": true,
+  // "[prisma]": {
+  //   "editor.defaultFormatter": "Prisma.prisma"
+  // },
   "thunder-client.httpLibrary": "got",
   "thunder-client.saveToWorkspace": false,
   "thunder-client.workspaceRelativePath": ""

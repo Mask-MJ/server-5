@@ -114,29 +114,29 @@ model Valve {
   /// 阀体流量系数 Valve Cv
   valveCv                     String?
   /// 限位开关描述
-  lsDescription               String?
+  // lsDescription               String?
   /// 气控阀描述
-  pilotDescription            String?
+  // pilotDescription            String?
   /// 定位器描述
-  positionerDescription       String?
+  // positionerDescription       String?
   /// 快排阀描述
-  qeDescription               String?
+  // qeDescription               String?
   /// 过滤减压阀描述
-  regulatorDescription        String?
+  // regulatorDescription        String?
   /// 信号比较器描述
-  signalComparatorDescription String?
+  // signalComparatorDescription String?
   /// 电磁阀描述
-  sovDescription              String?
+  // sovDescription              String?
   /// 保位阀描述
-  tripValveDescription        String?
+  // tripValveDescription        String?
   /// 放大器描述
-  vbDescription               String?
+  // vbDescription               String?
   analysisTask                AnalysisTask?          @relation(fields: [analysisTaskId], references: [id], onDelete: Cascade)
   device                      Device?                @relation(fields: [deviceId], references: [id], onDelete: Cascade)
   factory                     Factory                @relation(fields: [factoryId], references: [id], onDelete: Cascade)
   valveData                   ValveData[]
   valveHistoryDataList        ValveHistoryDataList[]
-  workOrder                   WorkOrder[]            @relation("ValveToWorkOrder")
+  // workOrder                   WorkOrder[]            @relation("ValveToWorkOrder")
 
   @@schema("public")
 }
