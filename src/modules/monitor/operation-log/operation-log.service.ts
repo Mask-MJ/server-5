@@ -31,7 +31,7 @@ export class OperationLogService {
     const [rows, meta] = await this.prismaService.client.operationLog
       .paginate({
         where: {
-          account: { contains: account },
+          account: { contains: account, mode: 'insensitive' },
           businessType,
           createdAt: { gte: beginTime, lte: endTime },
         },

@@ -68,7 +68,7 @@ export class FactoryService {
     if (userData.isAdmin) {
       return this.prismaService.client.factory.findMany({
         where: {
-          name: { contains: name },
+          name: { contains: name, mode: 'insensitive' },
           parentId: !name ? null : undefined,
           NOT: { id: filterId },
           createdAt: { gte: beginTime, lte: endTime },
@@ -94,7 +94,7 @@ export class FactoryService {
             { createBy: user.account },
             { role: { some: { id: { in: roleIds } } } },
           ],
-          name: { contains: name },
+          name: { contains: name, mode: 'insensitive' },
           parentId: !name ? null : undefined,
           createdAt: { gte: beginTime, lte: endTime },
         },

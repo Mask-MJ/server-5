@@ -31,7 +31,10 @@ export class DictTypeService {
     const { name, value, page, pageSize } = queryDictTypeDto;
     const [rows, meta] = await this.prismaService.client.dictType
       .paginate({
-        where: { name: { contains: name }, value: { contains: value } },
+        where: {
+          name: { contains: name, mode: 'insensitive' },
+          value: { contains: value, mode: 'insensitive' },
+        },
       })
       .withPages({ page, limit: pageSize, includePageCount: true });
     return { rows, ...meta };

@@ -24,7 +24,7 @@ export class DictDataTreeService {
     const { name } = queryDictDataTreeDto;
     return this.prismaService.client.dictDataTree.findMany({
       where: {
-        name: { contains: name },
+        name: { contains: name, mode: 'insensitive' },
         parentId: !name ? null : undefined,
       },
       include: {

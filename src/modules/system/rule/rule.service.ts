@@ -24,7 +24,7 @@ export class RuleService {
     const { name, page, pageSize } = queryRuleDto;
     const [rows, meta] = await this.prismaService.client.rule
       .paginate({
-        where: { name: { contains: name } },
+        where: { name: { contains: name, mode: 'insensitive' } },
       })
       .withPages({ page, limit: pageSize, includePageCount: true });
 

@@ -21,7 +21,10 @@ export class PostService {
     const { name, code, page, pageSize } = queryPostDto;
     const [rows, meta] = await this.prismaService.client.post
       .paginate({
-        where: { name: { contains: name }, code: { contains: code } },
+        where: {
+          name: { contains: name, mode: 'insensitive' },
+          code: { contains: code, mode: 'insensitive' },
+        },
         orderBy: { sort: 'asc' },
       })
       .withPages({ page, limit: pageSize, includePageCount: true });

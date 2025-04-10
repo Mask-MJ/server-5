@@ -26,7 +26,10 @@ export class RoleService {
     const { name, value, page, pageSize } = queryRoleDto;
     const [rows, meta] = await this.prismaService.client.role
       .paginate({
-        where: { name: { contains: name }, value: { contains: value } },
+        where: {
+          name: { contains: name, mode: 'insensitive' },
+          value: { contains: value, mode: 'insensitive' },
+        },
         orderBy: { sort: 'asc' },
       })
       .withPages({ page, limit: pageSize, includePageCount: true });

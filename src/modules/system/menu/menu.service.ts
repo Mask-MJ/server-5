@@ -42,7 +42,7 @@ export class MenuService {
     if (userData.isAdmin) {
       return this.prismaService.client.menu.findMany({
         where: {
-          name: { contains: name },
+          name: { contains: name, mode: 'insensitive' },
           parentId: !name ? null : undefined,
         },
         include: {
@@ -55,7 +55,7 @@ export class MenuService {
       return this.prismaService.client.menu.findMany({
         where: {
           OR: [{ role: { some: { id: { in: roleIds } } } }],
-          name: { contains: name },
+          name: { contains: name, mode: 'insensitive' },
           parentId: !name ? null : undefined,
         },
         include: {

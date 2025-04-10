@@ -167,9 +167,9 @@ export class UserService {
     const [rows, meta] = await this.prismaService.client.user
       .paginate({
         where: {
-          account: { contains: account },
-          nickname: { contains: nickname },
-          email: { contains: email },
+          account: { contains: account, mode: 'insensitive' },
+          nickname: { contains: nickname, mode: 'insensitive' },
+          email: { contains: email, mode: 'insensitive' },
           phoneNumber: { contains: phoneNumber },
           createdAt: { gte: beginTime, lte: endTime },
         },

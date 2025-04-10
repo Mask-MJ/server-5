@@ -20,7 +20,10 @@ export class DeviceService {
     const { name, factoryId, page, pageSize } = queryDeviceDto;
     const [rows, meta] = await this.prismaService.client.device
       .paginate({
-        where: { name: { contains: name }, factoryId: factoryId },
+        where: {
+          name: { contains: name, mode: 'insensitive' },
+          factoryId: factoryId,
+        },
         include: { factory: true },
         orderBy: { createdAt: 'desc' },
       })

@@ -20,7 +20,10 @@ export class UnitService {
     const { name, value, page, pageSize } = queryUnitDto;
     const [rows, meta] = await this.prismaService.client.unit
       .paginate({
-        where: { name: { contains: name }, value: { contains: value } },
+        where: {
+          name: { contains: name, mode: 'insensitive' },
+          value: { contains: value },
+        },
       })
       .withPages({ page, limit: pageSize, includePageCount: true });
 

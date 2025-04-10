@@ -30,8 +30,8 @@ export class DictDataService {
     const [rows, meta] = await this.prismaService.client.dictData
       .paginate({
         where: {
-          name: { contains: name },
-          value: { contains: value },
+          name: { contains: name, mode: 'insensitive' },
+          value: { contains: value, mode: 'insensitive' },
           dictTypeId: dictTypeId,
           // dictType: { value: { contains: dictTypeValue } },
         },
