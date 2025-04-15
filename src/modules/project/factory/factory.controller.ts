@@ -81,11 +81,11 @@ export class FactoryController {
   }
 
   @Get('chart/:id')
-  @ApiOperation({ summary: '获取工厂工作台详情' })
+  @ApiOperation({ summary: '获取工厂工作台图表详情' })
   @ApiOkResponse({ type: FactoryEntity })
   @Permissions('project:factory:query')
-  findChartOne(@Param('id') id: number) {
-    return this.factoryService.findChartOne(id);
+  getChartData(@Param('id') id: number) {
+    return this.factoryService.getChartData(id);
   }
 
   // 全部删除
