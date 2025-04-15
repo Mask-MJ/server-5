@@ -191,7 +191,7 @@ export class UserService {
     );
 
     // 获取30天内创建的维修工单
-    const maintenanceWorkOrderList =
+    const maintenanceWorkOrderList = (
       await this.prismaService.client.workOrder.findMany({
         where: {
           type: 1,
@@ -200,9 +200,17 @@ export class UserService {
             lte: dayjs().toISOString(),
           },
         },
-      });
+        include: { factory: true, valve: true },
+      })
+    ).map((item) => {
+      return {
+        ...item,
+        createdAt: dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+        updatedAt: dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+      };
+    });
     // 获取30天内创建的现场工单
-    const serviceWorkOrderList =
+    const serviceWorkOrderList = (
       await this.prismaService.client.workOrder.findMany({
         where: {
           type: 0,
@@ -211,15 +219,32 @@ export class UserService {
             lte: dayjs().toISOString(),
           },
         },
-      });
+        include: { factory: true, valve: true },
+      })
+    ).map((item) => {
+      return {
+        ...item,
+        createdAt: dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+        updatedAt: dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+      };
+    });
     // 获取30天内创建的分析任务
-    const taskList = await this.prismaService.client.analysisTask.findMany({
-      where: {
-        createdAt: {
-          gte: dayjs().subtract(30, 'day').toISOString(),
-          lte: dayjs().toISOString(),
+    const taskList = (
+      await this.prismaService.client.analysisTask.findMany({
+        where: {
+          createdAt: {
+            gte: dayjs().subtract(30, 'day').toISOString(),
+            lte: dayjs().toISOString(),
+          },
         },
-      },
+        include: { factory: true },
+      })
+    ).map((item) => {
+      return {
+        ...item,
+        createdAt: dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+        updatedAt: dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+      };
     });
 
     return {
