@@ -37,7 +37,7 @@ export class ServiceAppService {
       // 判断该工厂是否存在阀门 如果存在则更新,否则创建
       valves.forEach(async (valve) => {
         const existingValve = await this.prismaService.client.valve.findFirst({
-          where: { tag: valve.tag },
+          where: { factoryId: existingFactory.id, tag: valve.tag },
         });
         if (existingValve) {
           // 更新阀门

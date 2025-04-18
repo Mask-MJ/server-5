@@ -148,7 +148,7 @@ export class FactoryService {
         .filter((item: Valve) => item.unit === deviceName)
         .forEach(async (item: Valve) => {
           const valve = await this.prismaService.client.valve.findFirst({
-            where: { tag: item.tag, deviceId: device.id },
+            where: { tag: item.tag, factoryId: body.factoryId },
           });
           const data = {
             ...item,
