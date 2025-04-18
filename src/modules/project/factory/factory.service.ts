@@ -177,7 +177,7 @@ export class FactoryService {
     return { success: true };
   }
 
-  async findChartOne(id: number) {
+  async getChartData(id: number) {
     const valveBrandGroup = (
       await this.prismaService.client.valve.groupBy({
         by: ['valveBrand'],

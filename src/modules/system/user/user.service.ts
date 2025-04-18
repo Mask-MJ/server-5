@@ -68,7 +68,6 @@ export class UserService {
     const weekDays = Array.from({ length: 7 }).map((_, index) => {
       return dayjs().startOf('isoWeek').add(index, 'day').toISOString();
     });
-    console.log(weekDays);
     const taskCount = await Promise.all(
       weekDays.map(async (day) => {
         const analysisTask =
@@ -138,6 +137,116 @@ export class UserService {
       })
     ).map((item) => ({ name: item.positionerModel, value: item._count }));
 
+    function getLast12Months(): {
+      start: string;
+      end: string;
+      label: string;
+    }[] {
+      const months = [];
+      const currentMonth = dayjs();
+      for (let i = 0; i < 12; i++) {
+        const month = currentMonth.subtract(i, 'month');
+        months.push({
+          start: month.startOf('month').toISOString(),
+          end: month.endOf('month').toISOString(),
+          label: month.format('YYYY-MM'),
+        });
+      }
+      return months.reverse(); // 按时间顺序排列
+    }
+
+    //  根据月份分组统计分析任务数量
+    const taskGroupByYear = await Promise.all(
+      getLast12Months().map(async ({ start, end, label }) => ({
+        name: label,
+        value: await this.prismaService.client.analysisTask.count({
+          where: { createdAt: { gte: start, lte: end } },
+        }),
+      })),
+    );
+
+    // 根据月份分组统计维修工单数量
+    const maintenanceWorkOrderGroupByYear = await Promise.all(
+      getLast12Months().map(async ({ start, end, label }) => ({
+        name: label,
+        value: await this.prismaService.client.workOrder.count({
+          where: {
+            type: 1,
+            createdAt: { gte: start, lte: end },
+          },
+        }),
+      })),
+    );
+    // 根据月份分组统计服务工单数量
+    const serviceWorkOrderGroupByYear = await Promise.all(
+      getLast12Months().map(async ({ start, end, label }) => ({
+        name: label,
+        value: await this.prismaService.client.workOrder.count({
+          where: {
+            type: 0,
+            createdAt: { gte: start, lte: end },
+          },
+        }),
+      })),
+    );
+
+    // 获取30天内创建的维修工单
+    const maintenanceWorkOrderList = (
+      await this.prismaService.client.workOrder.findMany({
+        where: {
+          type: 1,
+          createdAt: {
+            gte: dayjs().subtract(30, 'day').toISOString(),
+            lte: dayjs().toISOString(),
+          },
+        },
+        include: { factory: true, valve: true },
+      })
+    ).map((item) => {
+      return {
+        ...item,
+        createdAt: dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+        updatedAt: dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+      };
+    });
+    // 获取30天内创建的现场工单
+    const serviceWorkOrderList = (
+      await this.prismaService.client.workOrder.findMany({
+        where: {
+          type: 0,
+          createdAt: {
+            gte: dayjs().subtract(30, 'day').toISOString(),
+            lte: dayjs().toISOString(),
+          },
+        },
+        include: { factory: true, valve: true },
+      })
+    ).map((item) => {
+      return {
+        ...item,
+        createdAt: dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+        updatedAt: dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+      };
+    });
+    // 获取30天内创建的分析任务
+    const taskList = (
+      await this.prismaService.client.analysisTask.findMany({
+        where: {
+          createdAt: {
+            gte: dayjs().subtract(30, 'day').toISOString(),
+            lte: dayjs().toISOString(),
+          },
+        },
+        include: { factory: true },
+      })
+    ).map((item) => {
+      return {
+        ...item,
+        createdAt: dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+        updatedAt: dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+      };
+    });
+
     return {
       factoryTotal,
       factoryProvinceGroup,
@@ -149,6 +258,12 @@ export class UserService {
       taskTotal,
       taskCount,
       operationLog,
+      taskGroupByYear,
+      maintenanceWorkOrderGroupByYear,
+      serviceWorkOrderGroupByYear,
+      maintenanceWorkOrderList,
+      serviceWorkOrderList,
+      taskList,
     };
   }
 
