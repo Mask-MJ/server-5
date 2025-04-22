@@ -37,6 +37,7 @@ import {
 } from './report.helper';
 import { MinioService } from 'src/common/minio/minio.service';
 import { Valve } from '@prisma/client';
+import { getLast12Months } from 'src/common/utils';
 
 @Injectable()
 export class FactoryService {
@@ -194,9 +195,112 @@ export class FactoryService {
       })
     ).map((item) => ({ name: item.positionerModel, value: item._count }));
 
+    //  根据月份分组统计分析任务数量
+    const taskGroupByYear = await Promise.all(
+      getLast12Months().map(async ({ start, end, label }) => ({
+        name: label,
+        value: await this.prismaService.client.analysisTask.count({
+          where: { factoryId: id, createdAt: { gte: start, lte: end } },
+        }),
+      })),
+    );
+
+    // 根据月份分组统计维修工单数量
+    const maintenanceWorkOrderGroupByYear = await Promise.all(
+      getLast12Months().map(async ({ start, end, label }) => ({
+        name: label,
+        value: await this.prismaService.client.workOrder.count({
+          where: {
+            factoryId: id,
+            type: 1,
+            createdAt: { gte: start, lte: end },
+          },
+        }),
+      })),
+    );
+    // 根据月份分组统计服务工单数量
+    const serviceWorkOrderGroupByYear = await Promise.all(
+      getLast12Months().map(async ({ start, end, label }) => ({
+        name: label,
+        value: await this.prismaService.client.workOrder.count({
+          where: {
+            factoryId: id,
+            type: 0,
+            createdAt: { gte: start, lte: end },
+          },
+        }),
+      })),
+    );
+
+    // 获取30天内创建的维修工单
+    const maintenanceWorkOrderList = (
+      await this.prismaService.client.workOrder.findMany({
+        where: {
+          factoryId: id,
+          type: 1,
+          createdAt: {
+            gte: dayjs().subtract(30, 'day').toISOString(),
+            lte: dayjs().toISOString(),
+          },
+        },
+        include: { factory: true, valve: true },
+      })
+    ).map((item) => {
+      return {
+        ...item,
+        createdAt: dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+        updatedAt: dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+      };
+    });
+    // 获取30天内创建的现场工单
+    const serviceWorkOrderList = (
+      await this.prismaService.client.workOrder.findMany({
+        where: {
+          factoryId: id,
+          type: 0,
+          createdAt: {
+            gte: dayjs().subtract(30, 'day').toISOString(),
+            lte: dayjs().toISOString(),
+          },
+        },
+        include: { factory: true, valve: true },
+      })
+    ).map((item) => {
+      return {
+        ...item,
+        createdAt: dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+        updatedAt: dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+      };
+    });
+    // 获取30天内创建的分析任务
+    const taskList = (
+      await this.prismaService.client.analysisTask.findMany({
+        where: {
+          factoryId: id,
+          createdAt: {
+            gte: dayjs().subtract(30, 'day').toISOString(),
+            lte: dayjs().toISOString(),
+          },
+        },
+        include: { factory: true },
+      })
+    ).map((item) => {
+      return {
+        ...item,
+        createdAt: dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+        updatedAt: dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+      };
+    });
+
     return {
       valveBrandGroup,
       positionerModelGroup,
+      taskGroupByYear,
+      maintenanceWorkOrderGroupByYear,
+      serviceWorkOrderGroupByYear,
+      maintenanceWorkOrderList,
+      serviceWorkOrderList,
+      taskList,
     };
   }
 

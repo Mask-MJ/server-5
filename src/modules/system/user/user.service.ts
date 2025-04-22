@@ -10,6 +10,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import isoWeek from 'dayjs/plugin/isoWeek';
+import { getLast12Months } from 'src/common/utils';
 
 @Injectable()
 export class UserService {
@@ -136,24 +137,6 @@ export class UserService {
         where: { NOT: { positionerModel: '' } },
       })
     ).map((item) => ({ name: item.positionerModel, value: item._count }));
-
-    function getLast12Months(): {
-      start: string;
-      end: string;
-      label: string;
-    }[] {
-      const months = [];
-      const currentMonth = dayjs();
-      for (let i = 0; i < 12; i++) {
-        const month = currentMonth.subtract(i, 'month');
-        months.push({
-          start: month.startOf('month').toISOString(),
-          end: month.endOf('month').toISOString(),
-          label: month.format('YYYY-MM'),
-        });
-      }
-      return months.reverse(); // 按时间顺序排列
-    }
 
     //  根据月份分组统计分析任务数量
     const taskGroupByYear = await Promise.all(
