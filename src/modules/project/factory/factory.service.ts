@@ -186,6 +186,7 @@ export class FactoryService {
         where: { NOT: { valveBrand: '' }, factoryId: id },
       })
     ).map((item) => ({ name: item.valveBrand, value: item._count }));
+    const valveTotal = await this.prismaService.client.valve.count();
 
     const positionerModelGroup = (
       await this.prismaService.client.valve.groupBy({
@@ -293,6 +294,7 @@ export class FactoryService {
     });
 
     return {
+      valveTotal,
       valveBrandGroup,
       positionerModelGroup,
       taskGroupByYear,
