@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateServiceAppDto } from './service.dto';
 import { CustomPrismaService } from 'nestjs-prisma';
 import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
+import { WorkOrder } from '@prisma/client';
 
 @Injectable()
 export class ServiceAppService {
@@ -18,6 +19,7 @@ export class ServiceAppService {
         await this.prismaService.client.workOrder.findFirst({
           where: { serial: createServiceAppDto.serial },
         });
+
       // 判断是否存在 endUser 名称相同的 factory 如果存在则更新,否则创建
       let existingFactory = await this.prismaService.client.factory.findFirst({
         where: { name: endUser.name },
@@ -34,33 +36,16 @@ export class ServiceAppService {
           data: { ...endUser, createBy: 'serviceApp' },
         });
       }
-      // 判断该工厂是否存在阀门 如果存在则更新,否则创建
-      valves.forEach(async (valve) => {
-        const existingValve = await this.prismaService.client.valve.findFirst({
-          where: { factoryId: existingFactory.id, tag: valve.tag },
-        });
-        if (existingValve) {
-          // 更新阀门
-          await this.prismaService.client.valve.update({
-            where: { id: existingValve.id },
-            data: { ...valve, factoryId: existingFactory.id },
-          });
-        } else {
-          // 创建阀门
-          await this.prismaService.client.valve.create({
-            data: { ...valve, factoryId: existingFactory.id },
-          });
-        }
-      });
+      let workOrder: WorkOrder;
       if (existingWorkOrder) {
         // 更新工单
-        await this.prismaService.client.workOrder.update({
+        workOrder = await this.prismaService.client.workOrder.update({
           where: { id: existingWorkOrder.id },
           data: { ...rest, serviceAppId: id },
         });
       } else {
         // 创建工单
-        await this.prismaService.client.workOrder.create({
+        workOrder = await this.prismaService.client.workOrder.create({
           data: {
             serviceAppId: id,
             ...rest,
@@ -73,6 +58,33 @@ export class ServiceAppService {
           },
         });
       }
+      // 判断该工厂是否存在阀门 如果存在则更新,否则创建
+      valves.forEach(async (data) => {
+        const existingValve = await this.prismaService.client.valve.findFirst({
+          where: { factoryId: existingFactory.id, tag: data.tag },
+        });
+        if (existingValve) {
+          // 更新阀门
+          await this.prismaService.client.valve.update({
+            where: { id: existingValve.id },
+            data: {
+              ...data,
+              factoryId: existingFactory.id,
+              workOrder: { connect: workOrder },
+            },
+          });
+        } else {
+          // 创建阀门
+          await this.prismaService.client.valve.create({
+            data: {
+              ...data,
+              factoryId: existingFactory.id,
+              workOrder: { connect: workOrder },
+            },
+          });
+        }
+      });
+
       return 'success';
     } catch (error) {
       console.log(error);
