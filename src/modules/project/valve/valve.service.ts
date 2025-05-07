@@ -223,10 +223,11 @@ export class ValveService {
   }
 
   async findWorkOrder(queryValveWorkOrderDto: QueryValveWorkOrderDto) {
-    const { valveId, typeName } = queryValveWorkOrderDto;
+    const { valveId, typeName, type } = queryValveWorkOrderDto;
     return this.prismaService.client.workOrder.findMany({
       where: {
         typeName: { contains: typeName, mode: 'insensitive' },
+        type,
         valve: {
           some: { id: valveId },
         },

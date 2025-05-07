@@ -370,4 +370,9 @@ export class QueryValveWorkOrderDto extends PartialType(
   @IsString()
   @IsOptional()
   typeName?: string;
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  type?: number;
 }
