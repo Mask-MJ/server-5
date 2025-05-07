@@ -16,6 +16,7 @@ import {
   QueryValveChartDto,
   QueryValveDto,
   QueryValveHistoryListDto,
+  QueryValveWorkOrderDto,
   UpdateValveDto,
   ValveHistoryScoreDto,
 } from './valve.dto';
@@ -143,6 +144,15 @@ export class ValveController {
   ) {
     console.log('queryValveHistoryScoreDto', queryValveHistoryScoreDto);
     return this.valveService.findHistoryScoreData(queryValveHistoryScoreDto);
+  }
+
+  // 获取阀门关联的工单
+  @Get('workOrder')
+  @ApiOperation({ summary: '获取阀门关联的工单' })
+  @ApiOkResponse({ type: ValveEntity, isArray: true })
+  @Permissions('project:valve:query')
+  findWorkOrder(@Query() queryValveWorkOrderDto: QueryValveWorkOrderDto) {
+    return this.valveService.findWorkOrder(queryValveWorkOrderDto);
   }
 
   @Get(':id')

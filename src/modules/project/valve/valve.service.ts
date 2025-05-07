@@ -8,6 +8,7 @@ import {
   QueryValveChartDto,
   QueryValveDto,
   QueryValveHistoryListDto,
+  QueryValveWorkOrderDto,
   UpdateValveDto,
   ValveHistoryScoreDto,
 } from './valve.dto';
@@ -91,7 +92,14 @@ export class ValveService {
   async findOne(id: number) {
     return this.prismaService.client.valve.findUnique({
       where: { id },
-      include: { factory: true, device: true, workOrder: true },
+      include: {
+        factory: true,
+        device: true,
+        workOrder: {
+          include: { factory: true, valve: true },
+        },
+        analysisTask: true,
+      },
     });
   }
 
@@ -212,5 +220,19 @@ export class ValveService {
       }),
     );
     return valveHistoryScoreDto.data?.detail;
+  }
+
+  async findWorkOrder(queryValveWorkOrderDto: QueryValveWorkOrderDto) {
+    const { valveId, typeName } = queryValveWorkOrderDto;
+    return this.prismaService.client.workOrder.findMany({
+      where: {
+        typeName: { contains: typeName, mode: 'insensitive' },
+        valve: {
+          some: { id: valveId },
+        },
+      },
+      include: { factory: true, valve: true },
+      orderBy: { updatedAt: 'desc' },
+    });
   }
 }

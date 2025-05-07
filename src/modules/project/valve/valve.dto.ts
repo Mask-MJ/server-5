@@ -363,3 +363,11 @@ export class ValveDto {
 export class QueryValveHistoryListDto extends PartialType(
   IntersectionType(ValveDto, BaseDto),
 ) {}
+
+export class QueryValveWorkOrderDto extends PartialType(
+  IntersectionType(ValveDto, BaseDto),
+) {
+  @IsString()
+  @IsOptional()
+  typeName?: string;
+}
