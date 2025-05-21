@@ -162,3 +162,36 @@ export class reportDto {
   @IsArray()
   valveTags?: string[];
 }
+
+export class chartDto {
+  /**
+   * 工厂id
+   * @example 1
+   */
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  factoryId?: number;
+  /**
+   * 装置id
+   * @example 1
+   */
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  deviceId?: number;
+  /**
+   * 阀门品牌
+   * @example '品牌 1'
+   */
+  @IsString()
+  @IsOptional()
+  valveBrand?: string;
+  /**
+   * 定位器型号
+   * @example 'vls'
+   */
+  @IsString()
+  @IsOptional()
+  positionerModel?: string;
+}

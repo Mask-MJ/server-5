@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import { FactoryService } from './factory.service';
 import {
+  chartDto,
   CreateFactoryDto,
   importDto,
   QueryFactoryDto,
@@ -86,6 +87,14 @@ export class FactoryController {
   @Permissions('project:factory:query')
   getChartData(@Param('id') id: number) {
     return this.factoryService.getChartData(id);
+  }
+
+  @Post('chart2')
+  @ApiOperation({ summary: '获取工厂工作台图表 报警详情' })
+  @ApiOkResponse({ type: FactoryEntity })
+  @Permissions('project:factory:query')
+  getChartData2(@Body() body: chartDto) {
+    return this.factoryService.getChartData2(body);
   }
 
   // 全部删除

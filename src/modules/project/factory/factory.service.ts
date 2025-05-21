@@ -6,6 +6,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import {
+  chartDto,
   CreateFactoryDto,
   importDto,
   QueryFactoryDto,
@@ -306,6 +307,18 @@ export class FactoryService {
       serviceWorkOrderList,
       taskList,
     };
+  }
+
+  async getChartData2(body: chartDto) {
+    const result = (
+      await firstValueFrom(
+        this.httpService.post(
+          'http://localhost:5050/api/report/valveCategoricalStatistics',
+          body,
+        ),
+      )
+    ).data.detail;
+    return result;
   }
 
   async findReport(reportData: reportDto) {
