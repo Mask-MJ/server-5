@@ -39,6 +39,7 @@ import {
 import { MinioService } from 'src/common/minio/minio.service';
 import { Valve } from '@prisma/client';
 import { getLast12Months } from 'src/common/utils';
+// import { mockValve } from './mock';
 
 @Injectable()
 export class FactoryService {
@@ -310,6 +311,12 @@ export class FactoryService {
   }
 
   async getChartData2(body: chartDto) {
+    // const { deviceId } = body;
+    // const result = mockValve.detail;
+    // console.log(deviceId);
+    // if (deviceId === 1) {
+    //   result.alertIndicator = [];
+    // }
     const result = (
       await firstValueFrom(
         this.httpService.post(

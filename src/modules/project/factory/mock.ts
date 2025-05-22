@@ -363,3 +363,44 @@ export const mockReport2: any = {
   valveQuarterStatusTrend: [],
   valveTravelHistoryRecord: [],
 };
+
+export const mockValve = {
+  detail: {
+    healthIndicator: [
+      {
+        name: '0-60',
+        value: 10,
+      },
+      {
+        name: '100',
+        value: 20,
+      },
+      {
+        name: '60-70',
+        value: 30,
+      },
+      {
+        name: '70-80',
+        value: 40,
+      },
+      {
+        name: '80-90',
+        value: 50,
+      },
+      {
+        name: '90-100',
+        value: 60,
+      },
+    ],
+    alertIndicator: [
+      {
+        name: 'normal',
+        value: 10,
+      },
+      {
+        name: 'alert',
+        value: 20,
+      },
+    ],
+  },
+};
