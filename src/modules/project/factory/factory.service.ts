@@ -283,6 +283,7 @@ export class FactoryService {
           },
         },
         include: { factory: true, valve: true },
+        orderBy: { createdAt: 'desc' },
       })
     ).map((item) => {
       return {

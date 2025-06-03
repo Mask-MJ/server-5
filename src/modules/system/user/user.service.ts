@@ -183,6 +183,7 @@ export class UserService {
             lte: dayjs().toISOString(),
           },
         },
+        orderBy: { createdAt: 'desc' },
         include: { factory: true, valve: true },
       })
     ).map((item) => {
