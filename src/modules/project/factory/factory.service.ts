@@ -119,6 +119,26 @@ export class FactoryService {
     }
   }
 
+  async findAllList(user: ActiveUserData) {
+    const userData = await this.prismaService.client.user.findUnique({
+      where: { id: user.sub },
+      include: { role: true },
+    });
+    if (userData.isAdmin) {
+      return this.prismaService.client.factory.findMany();
+    } else {
+      const roleIds = userData.role.map((item) => item.id);
+      return this.prismaService.client.factory.findMany({
+        where: {
+          OR: [
+            { createBy: user.account },
+            { role: { some: { id: { in: roleIds } } } },
+          ],
+        },
+      });
+    }
+  }
+
   async import(
     user: ActiveUserData,
     file: Express.Multer.File,

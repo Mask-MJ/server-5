@@ -63,6 +63,14 @@ export class FactoryController {
     return this.factoryService.findAll(user, queryFactoryDto);
   }
 
+  @Get('all')
+  @ApiOperation({ summary: '获取工厂列表' })
+  @ApiPaginatedResponse(FactoryEntity)
+  @Permissions('project:factory:query')
+  findAllList(@ActiveUser() user: ActiveUserData) {
+    return this.factoryService.findAllList(user);
+  }
+
   @Post('import')
   @ApiOperation({ summary: '导入阀门数据' })
   @UseInterceptors(FileInterceptor('file'))
