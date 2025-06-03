@@ -125,15 +125,29 @@ export class FactoryService {
       include: { role: true },
     });
     if (userData.isAdmin) {
-      return this.prismaService.client.factory.findMany();
+      // 如果是管理员，返回所有工厂
+      // 并且返回工厂下所有阀门的数量
+      return this.prismaService.client.factory.findMany({
+        include: {
+          _count: {
+            select: { valve: true },
+          },
+        },
+      });
     } else {
       const roleIds = userData.role.map((item) => item.id);
+
       return this.prismaService.client.factory.findMany({
         where: {
           OR: [
             { createBy: user.account },
             { role: { some: { id: { in: roleIds } } } },
           ],
+        },
+        include: {
+          _count: {
+            select: { valve: true },
+          },
         },
       });
     }
