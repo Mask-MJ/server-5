@@ -10,6 +10,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import isoWeek from 'dayjs/plugin/isoWeek';
+import isBetween from 'dayjs/plugin/isBetween';
 import { getLast12Months } from 'src/common/utils';
 
 @Injectable()
@@ -66,9 +67,16 @@ export class UserService {
     // 获取用户本周的创建的任务数量， 从周一开始，到周日结束
     // 根据当前时间获取本周周一到周日所有的日期
     dayjs.extend(isoWeek);
+    dayjs.extend(isBetween);
     const weekDays = Array.from({ length: 7 }).map((_, index) => {
       return dayjs().startOf('isoWeek').add(index, 'day').toISOString();
     });
+    const beginTime = dayjs()
+      .subtract(11, 'month')
+      .startOf('month')
+      .toISOString();
+    const endTime = dayjs().endOf('month').toISOString();
+
     const taskCount = await Promise.all(
       weekDays.map(async (day) => {
         const analysisTask =
@@ -138,39 +146,42 @@ export class UserService {
       })
     ).map((item) => ({ name: item.positionerModel, value: item._count }));
 
-    //  根据月份分组统计分析任务数量
-    const taskGroupByYear = await Promise.all(
-      getLast12Months().map(async ({ start, end, label }) => ({
-        name: label,
-        value: await this.prismaService.client.analysisTask.count({
-          where: { createdAt: { gte: start, lte: end } },
-        }),
-      })),
-    );
+    const analysisTaskList =
+      await this.prismaService.client.analysisTask.findMany({
+        where: { createdAt: { gte: beginTime, lte: endTime } },
+      });
+    // 根据月份分组统计分析任务数量
+    const taskGroupByYear = getLast12Months().map(({ start, end, label }) => {
+      const count = analysisTaskList.filter((item) =>
+        dayjs(item.createdAt).isBetween(start, end, null, '[]'),
+      ).length;
+      return { name: label, value: count };
+    });
 
+    const workOrderList = await this.prismaService.client.workOrder.findMany({
+      where: { createdAt: { gte: beginTime, lte: endTime } },
+    });
     // 根据月份分组统计维修工单数量
-    const maintenanceWorkOrderGroupByYear = await Promise.all(
-      getLast12Months().map(async ({ start, end, label }) => ({
-        name: label,
-        value: await this.prismaService.client.workOrder.count({
-          where: {
-            type: 1,
-            createdAt: { gte: start, lte: end },
-          },
-        }),
-      })),
+    const maintenanceWorkOrderGroupByYear = getLast12Months().map(
+      ({ start, end, label }) => {
+        const count = workOrderList.filter(
+          (item) =>
+            item.type === 1 &&
+            dayjs(item.createdAt).isBetween(start, end, null, '[]'),
+        ).length;
+        return { name: label, value: count };
+      },
     );
     // 根据月份分组统计服务工单数量
-    const serviceWorkOrderGroupByYear = await Promise.all(
-      getLast12Months().map(async ({ start, end, label }) => ({
-        name: label,
-        value: await this.prismaService.client.workOrder.count({
-          where: {
-            type: 0,
-            createdAt: { gte: start, lte: end },
-          },
-        }),
-      })),
+    const serviceWorkOrderGroupByYear = getLast12Months().map(
+      ({ start, end, label }) => {
+        const count = workOrderList.filter(
+          (item) =>
+            item.type === 0 &&
+            dayjs(item.createdAt).isBetween(start, end, null, '[]'),
+        ).length;
+        return { name: label, value: count };
+      },
     );
 
     // 获取30天内创建的维修工单
