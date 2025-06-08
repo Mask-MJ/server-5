@@ -395,8 +395,14 @@ export const detail_valves_alarm = (data: ValveDetail[]) => {
     type: PatchType.DOCUMENT,
     children: [
       ...data.map((item, index) => {
-        let chart: echarts.ECharts | undefined;
-        if (item.plot && item.plot.times && item.plot.dataLine) {
+        let chart: echarts.ECharts | undefined = undefined;
+        // item.plot 不是空对象
+        if (
+          item.plot &&
+          Object.keys(item.plot).length > 0 &&
+          item.plot.times &&
+          item.plot.dataLine
+        ) {
           const max = Math.max(
             ...item.plot.dataLine,
             item.plot.upperLimit || 0,
