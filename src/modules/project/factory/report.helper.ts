@@ -27,6 +27,18 @@ interface ValveDetail {
   description: string;
   risk: string;
   measures: string;
+  plot?: {
+    times: string[];
+    upperLimit: number;
+    lowerLimit: number;
+    dataLine: number[];
+    predictionLine: {
+      linearRegression: number[];
+    };
+    auxiliaryLine: {
+      averageValue: number[];
+    };
+  };
 }
 interface CycleAccumulation {
   number: number;
@@ -159,7 +171,12 @@ export const chart_valves_health_overview = (
           borderColor: '#fff',
           borderWidth: 2,
         },
-        label: { show: false, position: 'center' },
+        label: {
+          position: 'inner',
+          fontSize: 14,
+          color: '#000000',
+          formatter: '{c}',
+        },
         labelLine: { show: false },
         data,
       },
@@ -197,9 +214,22 @@ export const chart_values_alarm_overivew = (
         name: 'Access From',
         type: 'pie',
         radius: '70%',
-        label: { show: false },
+        label: {
+          position: 'inner',
+          fontSize: 14,
+          color: '#000000',
+          formatter: '{b}: {c}',
+        },
         labelLine: { show: false },
-        data,
+        data: data.map((item) => {
+          return {
+            name: item.name,
+            value: item.value,
+            itemStyle: {
+              color: item.name === '正常' ? '#00FF00' : '#FF0000',
+            },
+          };
+        }),
       },
     ],
   });
@@ -246,8 +276,32 @@ export const chart_valves_quarter = (
     xAxis: [{ type: 'category', data: names }],
     yAxis: [{ type: 'value' }],
     series: [
-      { name: '正常', type: 'bar', stack: 'Ad', data: normals },
-      { name: '告警', type: 'bar', stack: 'Ad', data: alerts },
+      {
+        name: '正常',
+        type: 'bar',
+        stack: 'Ad',
+        label: {
+          show: true,
+          position: 'inside',
+          color: '#000000',
+          formatter: '{c}',
+        },
+        itemStyle: { color: '#00FF00' },
+        data: normals,
+      },
+      {
+        name: '告警',
+        type: 'bar',
+        stack: 'Ad',
+        label: {
+          show: true,
+          position: 'inside',
+          color: '#000000',
+          formatter: '{c}',
+        },
+        itemStyle: { color: '#FF0000' },
+        data: alerts,
+      },
     ],
   });
   return {
@@ -341,6 +395,63 @@ export const detail_valves_alarm = (data: ValveDetail[]) => {
     type: PatchType.DOCUMENT,
     children: [
       ...data.map((item, index) => {
+        let chart: echarts.ECharts | undefined;
+        if (item.plot && item.plot.times && item.plot.dataLine) {
+          const max = Math.max(
+            ...item.plot.dataLine,
+            item.plot.upperLimit || 0,
+          );
+          const min = Math.min(
+            ...item.plot.dataLine,
+            item.plot.lowerLimit || 0,
+          );
+          const lowerLimit = Number(item.plot.lowerLimit || 0);
+          const upperLimit = Number(item.plot.upperLimit || 0);
+          chart = echarts.init(null, null, {
+            renderer: 'svg',
+            ssr: true,
+            width: 250,
+            height: 300,
+          });
+          chart.setOption({
+            legend: { data: ['数据线', '预测线', '辅助线', '标准线'] },
+            tooltip: { trigger: 'axis' },
+            xAxis: { type: 'category', data: item.plot.times },
+            yAxis: { type: 'value', max, min },
+            series: [
+              {
+                type: 'line',
+                name: '数据线',
+                data: item.plot.dataLine,
+                label: { show: true, position: 'top', color: '#000000' },
+              },
+              {
+                type: 'line',
+                name: '预测线',
+                data: item.plot.predictionLine.linearRegression,
+                label: { show: true, position: 'top', color: '#000000' },
+              },
+              {
+                type: 'line',
+                name: '辅助线',
+                data: item.plot.auxiliaryLine.averageValue,
+                label: { show: true, position: 'top', color: '#000000' },
+              },
+              {
+                type: 'line',
+                name: '标准线',
+                label: { show: true, position: 'top', color: '#000000' },
+                markLine: {
+                  lineStyle: { color: 'red' },
+                  data: [
+                    { name: '下限值', yAxis: lowerLimit },
+                    { name: '上限值', yAxis: upperLimit },
+                  ],
+                },
+              },
+            ],
+          });
+        }
         return new Paragraph({
           children: [
             new TextRun({ text: `问题${index + 1}：`, bold: true, break: 1 }),
@@ -348,6 +459,16 @@ export const detail_valves_alarm = (data: ValveDetail[]) => {
             new TextRun({ text: `问题描述：${item.description}`, break: 1 }),
             new TextRun({ text: `潜在风险：${item.risk}`, break: 1 }),
             new TextRun({ text: `建议措施：${item.measures}`, break: 1 }),
+            chart &&
+              new ImageRun({
+                type: 'svg',
+                data: Buffer.from(chart.renderToSVGString(), 'utf-8'),
+                transformation: { width: 600, height: 400 },
+                fallback: {
+                  type: 'png',
+                  data: readFileSync('public/linux-png.png'),
+                },
+              }),
           ],
         });
       }),

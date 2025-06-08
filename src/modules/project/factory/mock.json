@@ -146,7 +146,28 @@
       "tag": "20-FV-1001",
       "description": "警报记录已满",
       "risk": "当警报记录变“满”时，将不会记录新的潜在警报。",
-      "measures": "请及时清空警报记录。"
+      "measures": "请及时清空警报记录。",
+      "plot": {
+        "lowerLimit": 0,
+        "upperLimit": 100,
+        "keywordName": "最高温度记录",
+        "keywordId": 1796,
+        "valveId": 2113,
+        "dataLine": [
+          30.27777777777783
+        ],
+        "auxiliaryLine": {
+          "averageValue": [
+            30.28
+          ]
+        },
+        "predictionLine": {
+          "linearRegression": []
+        },
+        "times": [
+          "2025-03-07 00: 00: 00"
+        ]
+      }
     },
     {
       "tag": "20-FV-1002",

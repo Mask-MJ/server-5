@@ -103,6 +103,22 @@ export class CreateValveDto {
   valveCv?: string;
 
   /**
+   * 阀体磅级
+   * @example 'DN50'
+   */
+  @IsString()
+  @IsOptional()
+  valveRating?: string;
+
+  /**
+   * 阀体阀杆尺寸
+   * @example 'DN50'
+   */
+  @IsString()
+  @IsOptional()
+  valveStemSize?: string;
+
+  /**
    * 阀体连接形式
    * @example '法兰'
    */
@@ -223,6 +239,243 @@ export class CreateValveDto {
   positionerDescription?: string;
 
   /**
+   * 限位开关品牌
+   * @example 'LS BRAND'
+   */
+  @IsString()
+  @IsOptional()
+  lsBrand?: string;
+
+  /**
+   * 限位开关型号
+   * @example 'LS MODEL'
+   */
+  @IsString()
+  @IsOptional()
+  lsModel?: string;
+
+  /**
+   * 限位开关数量
+   * @example 10
+   */
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  lsQty?: number;
+
+  /**
+   * 限位开关描述
+   * @example '...'
+   */
+  @IsString()
+  @IsOptional()
+  lsDescription?: string;
+
+  /**
+   * 气控阀品牌
+   * @example 'PILOT BRAND'
+   */
+  @IsString()
+  @IsOptional()
+  pilotBrand?: string;
+
+  /**
+   * 气控阀型号
+   * @example 'PILOT MODEL'
+   */
+  @IsString()
+  @IsOptional()
+  pilotModel?: string;
+
+  /**
+   * 气控阀数量
+   * @example 10
+   */
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  pilotQty?: number;
+
+  /**
+   * 气控阀描述
+   * @example '...'
+   */
+  @IsString()
+  @IsOptional()
+  pilotDescription?: string;
+
+  /**
+   * 快排阀品牌
+   * @example 'QE BRAND'
+   */
+  @IsString()
+  @IsOptional()
+  qeBrand?: string;
+
+  /**
+   * 快排阀型号
+   * @example 'QE MODEL'
+   */
+  @IsString()
+  @IsOptional()
+  qeModel?: string;
+
+  /**
+   * 快排阀数量
+   * @example 10
+   */
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  qeQty?: number;
+
+  /**
+   * 快排阀描述
+   * @example '...'
+   */
+  @IsString()
+  @IsOptional()
+  qeDescription?: string;
+
+  /**
+   * 过滤减压阀品牌
+   * @example 'REGULATOR BRAND'
+   */
+  @IsString()
+  @IsOptional()
+  regulatorBrand?: string;
+
+  /**
+   * 过滤减压阀型号
+   * @example 'REGULATOR MODEL'
+   */
+  @IsString()
+  @IsOptional()
+  regulatorModel?: string;
+
+  /**
+   * 过滤减压阀描述
+   * @example '...'
+   */
+  @IsString()
+  @IsOptional()
+  regulatorDescription?: string;
+
+  /**
+   * 信号比较器品牌
+   * @example 'SIGNAL COMPARATOR BRAND'
+   */
+  @IsString()
+  @IsOptional()
+  signalComparatorBrand?: string;
+
+  /**
+   * 信号比较器型号
+   * @example 'SIGNAL COMPARATOR MODEL'
+   */
+  @IsString()
+  @IsOptional()
+  signalComparatorModel?: string;
+
+  /**
+   * 信号比较器描述
+   * @example '...'
+   */
+  @IsString()
+  @IsOptional()
+  signalComparatorDescription?: string;
+
+  /**
+   * 电磁阀品牌
+   * @example 'SOV BRAND'
+   */
+  @IsString()
+  @IsOptional()
+  sovBrand?: string;
+
+  /**
+   * 电磁阀型号
+   * @example 'SOV MODEL'
+   */
+  @IsString()
+  @IsOptional()
+  sovModel?: string;
+
+  /**
+   * 电磁阀数量
+   * @example 10
+   */
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  sovQty?: number;
+
+  /**
+   * 电磁阀描述
+   * @example '...'
+   */
+  @IsString()
+  @IsOptional()
+  sovDescription?: string;
+
+  /**
+   * 保位阀品牌
+   * @example 'TRIP VALVE BRAND'
+   */
+  @IsString()
+  @IsOptional()
+  tripValveBrand?: string;
+
+  /**
+   * 保位阀型号
+   * @example 'TRIP VALVE MODEL'
+   */
+  @IsString()
+  @IsOptional()
+  tripValveModel?: string;
+
+  /**
+   * 保位阀描述
+   * @example '...'
+   */
+  @IsString()
+  @IsOptional()
+  tripValveDescription?: string;
+
+  /**
+   * 放大器品牌
+   * @example 'VB BRAND'
+   */
+  @IsString()
+  @IsOptional()
+  vbBrand?: string;
+
+  /**
+   * 放大器型号
+   * @example 'VB MODEL'
+   */
+  @IsString()
+  @IsOptional()
+  vbModel?: string;
+
+  /**
+   * 放大器数量
+   * @example 10
+   */
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  vbQty?: number;
+
+  /**
+   * 放大器描述
+   * @example '...'
+   */
+  @IsString()
+  @IsOptional()
+  vbDescription?: string;
+
+  /**
    * 附件种类
    * @example '...'
    */
@@ -262,30 +515,6 @@ export class CreateValveDto {
   @IsString()
   @IsOptional()
   accessoryDescription?: string;
-
-  /**
-   * 仪表品牌
-   * @example '...'
-   */
-  @IsString()
-  @IsOptional()
-  instrumentBrand?: string;
-
-  /**
-   * 仪表类型
-   * @example '...'
-   */
-  @IsString()
-  @IsOptional()
-  instrumentType?: string;
-
-  /**
-   * 仪表描述
-   * @example '...'
-   */
-  @IsString()
-  @IsOptional()
-  instrumentDescription?: string;
 
   /**
    * 备注
