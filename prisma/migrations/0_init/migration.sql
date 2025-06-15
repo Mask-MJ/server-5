@@ -353,6 +353,7 @@ CREATE TABLE "public"."Valve" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "createBy" TEXT NOT NULL DEFAULT '',
     "updateBy" TEXT,
+    "analysisTaskId" INTEGER,
     "valveSeries" TEXT,
     "source" TEXT,
     "lsBrand" TEXT,
@@ -437,12 +438,6 @@ CREATE TABLE "public"."ValveHistoryData" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."_AnalysisTaskToValve" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
-);
-
--- CreateTable
 CREATE TABLE "public"."_DeptToUser" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
@@ -513,12 +508,6 @@ CREATE UNIQUE INDEX "Role_name_key" ON "public"."Role"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Role_value_key" ON "public"."Role"("value");
-
--- CreateIndex
-CREATE UNIQUE INDEX "_AnalysisTaskToValve_AB_unique" ON "public"."_AnalysisTaskToValve"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_AnalysisTaskToValve_B_index" ON "public"."_AnalysisTaskToValve"("B");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_DeptToUser_AB_unique" ON "public"."_DeptToUser"("A", "B");
@@ -608,6 +597,9 @@ ALTER TABLE "public"."Permission" ADD CONSTRAINT "Permission_menuId_fkey" FOREIG
 ALTER TABLE "public"."User" ADD CONSTRAINT "User_createBy_fkey" FOREIGN KEY ("createBy") REFERENCES "public"."User"("account") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "public"."Valve" ADD CONSTRAINT "Valve_analysisTaskId_fkey" FOREIGN KEY ("analysisTaskId") REFERENCES "public"."AnalysisTask"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "public"."Valve" ADD CONSTRAINT "Valve_deviceId_fkey" FOREIGN KEY ("deviceId") REFERENCES "public"."Device"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -621,12 +613,6 @@ ALTER TABLE "public"."ValveHistoryDataList" ADD CONSTRAINT "ValveHistoryDataList
 
 -- AddForeignKey
 ALTER TABLE "public"."ValveHistoryData" ADD CONSTRAINT "ValveHistoryData_valveHistoryDataListId_fkey" FOREIGN KEY ("valveHistoryDataListId") REFERENCES "public"."ValveHistoryDataList"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "public"."_AnalysisTaskToValve" ADD CONSTRAINT "_AnalysisTaskToValve_A_fkey" FOREIGN KEY ("A") REFERENCES "public"."AnalysisTask"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "public"."_AnalysisTaskToValve" ADD CONSTRAINT "_AnalysisTaskToValve_B_fkey" FOREIGN KEY ("B") REFERENCES "public"."Valve"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."_DeptToUser" ADD CONSTRAINT "_DeptToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "public"."Dept"("id") ON DELETE CASCADE ON UPDATE CASCADE;
