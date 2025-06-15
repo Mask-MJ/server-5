@@ -294,7 +294,6 @@ export class AnalysisTaskService {
           data: {
             factoryId: analysisTask.factoryId,
             tag,
-            analysisTaskId: analysisTask.id,
             valveData: { createMany: { data: valveData } },
             valveHistoryDataList: {
               create: {

@@ -147,7 +147,6 @@ export class ValveService {
       tag,
       factoryId,
       deviceId,
-      analysisTaskId,
       valveSeries,
       serialNumber,
       page,
@@ -159,7 +158,6 @@ export class ValveService {
           tag: { contains: tag, mode: 'insensitive' },
           factoryId,
           deviceId,
-          analysisTaskId,
           serialNumber: { contains: serialNumber, mode: 'insensitive' },
           valveSeries: { contains: valveSeries, mode: 'insensitive' },
         },
@@ -171,20 +169,13 @@ export class ValveService {
   }
 
   async findAllExport(queryValveDto: QueryValveDto) {
-    const {
-      tag,
-      factoryId,
-      deviceId,
-      analysisTaskId,
-      valveSeries,
-      serialNumber,
-    } = queryValveDto;
+    const { tag, factoryId, deviceId, valveSeries, serialNumber } =
+      queryValveDto;
     return this.prismaService.client.valve.findMany({
       where: {
         tag: { contains: tag, mode: 'insensitive' },
         factoryId,
         deviceId,
-        analysisTaskId,
         serialNumber: { contains: serialNumber, mode: 'insensitive' },
         valveSeries: { contains: valveSeries, mode: 'insensitive' },
       },

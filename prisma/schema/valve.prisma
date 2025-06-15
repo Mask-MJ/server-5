@@ -48,8 +48,6 @@ model Valve {
   createBy                    String                 @default("")
   /// 更新者
   updateBy                    String?
-  /// 分析任务id
-  analysisTaskId              Int?
   /// 阀体系列 Valve Series
   valveSeries                 String?
   /// 来源 hart, ff, serviceApp
@@ -131,7 +129,7 @@ model Valve {
   tripValveDescription        String?
   /// 放大器描述
   vbDescription               String?
-  analysisTask                AnalysisTask?          @relation(fields: [analysisTaskId], references: [id], onDelete: Cascade)
+  analysisTask                AnalysisTask[]
   device                      Device?                @relation(fields: [deviceId], references: [id], onDelete: Cascade)
   factory                     Factory                @relation(fields: [factoryId], references: [id], onDelete: Cascade)
   valveData                   ValveData[]
