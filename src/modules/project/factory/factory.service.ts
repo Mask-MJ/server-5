@@ -393,6 +393,7 @@ export class FactoryService {
         ...reportData,
         valveIdList,
       };
+      this.logger.log('获取报告数据参数', JSON.stringify(params));
       const result = (
         await firstValueFrom(
           this.httpService.post(

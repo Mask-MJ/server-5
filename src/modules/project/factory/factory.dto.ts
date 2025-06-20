@@ -161,6 +161,15 @@ export class reportDto {
   @IsOptional()
   @IsArray()
   valveTags?: string[];
+
+  @IsString()
+  @IsOptional()
+  endDate?: string;
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  cycle?: number;
 }
 
 export class chartDto {
