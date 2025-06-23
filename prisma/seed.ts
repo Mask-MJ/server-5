@@ -4630,7 +4630,7 @@ async function main() {
                         children: {
                           create: [
                             {
-                              name: '其他直通式阀内件选项',
+                              name: '其他直通式流量特性选项',
                               value: 'Extra Sliding Stem Valve Trim Options',
                               dictData: {
                                 create: [],

@@ -45,7 +45,7 @@ export class ValveEntity implements Valve {
   valveBodyMaterial: string;
   /// 阀盖形式
   valveBonnet: string;
-  /// 阀内件
+  /// 流量特性
   valveTrim: string;
   /// 阀体泄漏等级
   valveSeatLeakage: string;
@@ -61,8 +61,8 @@ export class ValveEntity implements Valve {
   handwheel: string;
   /// 执行机构描述
   actuatorDescription: string;
-  /// 执行机构作用形式
-  actuatorActionForm: string;
+  /// 故障位置
+  failurePosition: string;
   /// 过滤减压阀品牌 REGULATOR BRAND
   regulatorBrand: string;
   /// 过滤减压阀型号 REGULATOR MODEL

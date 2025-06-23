@@ -76,6 +76,7 @@ export class FactoryService {
           NOT: { id: filterId },
           createdAt: { gte: beginTime, lte: endTime },
         },
+        orderBy: { createdAt: 'desc' },
         include: {
           children: {
             where: { NOT: { id: filterId } },
@@ -85,6 +86,7 @@ export class FactoryService {
                 include: { children: { where: { NOT: { id: filterId } } } },
               },
             },
+            orderBy: { createdAt: 'desc' },
           },
         },
       });
@@ -104,6 +106,7 @@ export class FactoryService {
         include: {
           children: {
             where: { NOT: { id: filterId } },
+            orderBy: { createdAt: 'desc' },
             include: {
               children: {
                 where: { NOT: { id: filterId } },
@@ -133,6 +136,7 @@ export class FactoryService {
             select: { valve: true },
           },
         },
+        orderBy: { createdAt: 'desc' },
       });
     } else {
       const roleIds = userData.role.map((item) => item.id);
@@ -144,6 +148,7 @@ export class FactoryService {
             { role: { some: { id: { in: roleIds } } } },
           ],
         },
+        orderBy: { createdAt: 'desc' },
         include: {
           _count: {
             select: { valve: true },
@@ -304,6 +309,7 @@ export class FactoryService {
           },
         },
         include: { factory: true, valve: true },
+        orderBy: { createdAt: 'desc' },
       })
     ).map((item) => {
       return {
@@ -323,6 +329,7 @@ export class FactoryService {
           },
         },
         include: { factory: true },
+        orderBy: { createdAt: 'desc' },
       })
     ).map((item) => {
       return {

@@ -143,7 +143,7 @@ export class CreateValveDto {
   valveBonnet?: string;
 
   /**
-   * 阀内件
+   * 流量特性
    * @example '316'
    */
   @IsString()
@@ -191,12 +191,12 @@ export class CreateValveDto {
   actuatorSize?: string;
 
   /**
-   * 执行机构作用形式
+   * 故障位置
    * @example 'DN50'
    */
   @IsString()
   @IsOptional()
-  actuatorActionForm?: string;
+  failurePosition?: string;
 
   /**
    * 手轮

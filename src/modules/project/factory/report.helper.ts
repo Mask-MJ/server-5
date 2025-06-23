@@ -416,7 +416,7 @@ export const detail_valves_alarm = (data: ValveDetail[]) => {
           chart = echarts.init(null, null, {
             renderer: 'svg',
             ssr: true,
-            width: 250,
+            width: 400,
             height: 300,
           });
           chart.setOption({
@@ -424,6 +424,9 @@ export const detail_valves_alarm = (data: ValveDetail[]) => {
             tooltip: { trigger: 'axis' },
             xAxis: { type: 'category', data: item.plot.times },
             yAxis: { type: 'value', max, min },
+            label: {
+              fontSize: 14,
+            },
             series: [
               {
                 type: 'line',

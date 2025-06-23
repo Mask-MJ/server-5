@@ -23,7 +23,7 @@ model Valve {
   valveBodyMaterial           String?
   /// 阀盖形式 Valve Bonnet
   valveBonnet                 String?
-  /// 阀内件 Valve Trim
+  /// 流量特性 Valve Trim
   valveTrim                   String?
   /// 阀体泄漏等级 Valve Seat Leakage
   valveSeatLeakage            String?
@@ -107,8 +107,8 @@ model Valve {
   valveRating                 String?
   /// 阀体阀杆尺寸 Valve Stem Size
   valveStemSize               String?
-  /// 执行机构作用形式 Actuator Action Form
-  actuatorActionForm          String?
+  /// 故障位置 FAILURE POSITION
+  failurePosition             String?
   /// 阀体流量系数 Valve Cv
   valveCv                     String?
   /// 限位开关描述

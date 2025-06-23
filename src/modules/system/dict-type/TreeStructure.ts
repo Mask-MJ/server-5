@@ -1615,7 +1615,7 @@ export const data: dictDataTree[] = [
   },
   {
     id: 177,
-    name_ZH: '其他直通式阀内件选项',
+    name_ZH: '其他直通式流量特性选项',
     name_EN: 'Extra Sliding Stem Valve Trim Options',
     parent_id: 176,
     remark: null,
