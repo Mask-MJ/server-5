@@ -3,13 +3,17 @@ model Menu {
   /// 角色ID
   id         Int          @id @default(autoincrement())
   /// 菜单名称
-  name       String       @unique
+  name       String       @default("")
   /// 显示顺序
   sort       Int          @default(1)
   /// 菜单路径
-  path       String       @unique
+  path       String?      
   /// 菜单图标
   icon       String       @default("")
+  /// 菜单类别 C:目录 M:菜单 B:按钮
+  type       String       @default("C")
+  /// 权限标识
+  permission String       @default("")
   /// 是否隐藏
   hidden     Boolean      @default(false)
   /// 状态
@@ -28,26 +32,8 @@ model Menu {
   parentId   Int?
   parent     Menu?        @relation("MenuToMenu", fields: [parentId], references: [id])
   children   Menu[]       @relation("MenuToMenu")
-  permission Permission[]
   role       Role[]       @relation("MenuToRole")
   user       User[]       @relation("MenuToUser")
-
-  @@schema("public")
-}
-
-/// 权限模型表
-model Permission {
-  id        Int      @id @default(autoincrement())
-  /// 权限名称
-  name      String
-  /// 权限值
-  value     String
-  remark    String   @default("")
-  /// 绑定菜单id
-  menuId    Int?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  menu      Menu?    @relation(fields: [menuId], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }

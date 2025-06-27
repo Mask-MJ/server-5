@@ -43,12 +43,21 @@ export class MenuController {
   @Get()
   @ApiOperation({ summary: '获取菜单列表' })
   @ApiPaginatedResponse(MenuEntity)
-  @Permissions('system:menu:query')
   findAll(
     @ActiveUser() user: ActiveUserData,
     @Query() queryMenuDto: QueryMenuDto,
   ) {
     return this.menuService.findAll(user, queryMenuDto);
+  }
+
+  @Get('all')
+  @ApiOperation({ summary: '获取菜单权限列表' })
+  @ApiPaginatedResponse(MenuEntity)
+  findAllWithPermission(
+    @ActiveUser() user: ActiveUserData,
+    @Query() queryMenuDto: QueryMenuDto,
+  ) {
+    return this.menuService.findAllWithPermission(user, queryMenuDto);
   }
 
   @Get(':id')

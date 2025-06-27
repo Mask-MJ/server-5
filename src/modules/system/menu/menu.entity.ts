@@ -5,6 +5,8 @@ export class MenuEntity implements Menu {
   name: string;
   path: string;
   icon: string;
+  type: string;
+  permission: string | null;
   hidden: boolean;
   status: boolean;
   sort: number;

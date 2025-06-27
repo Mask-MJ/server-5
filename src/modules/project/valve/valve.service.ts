@@ -94,7 +94,7 @@ export class ValveService {
     const actuatorDescription =
       createValveDto.actuatorDescription ||
       actuatorBrand + actuatorType + actuatorSize + failurePosition;
-    //定位器描述
+    // 定位器描述
     const positionerDescription =
       createValveDto.positionerDescription || positionerBrand + positionerModel;
     // 限位开关描述

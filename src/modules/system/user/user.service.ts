@@ -55,7 +55,7 @@ export class UserService {
     return this.prismaService.client.user.findUniqueOrThrow({
       where: { id },
       include: {
-        role: { include: { menu: { include: { permission: true } } } },
+        role: { include: { menu: true } },
       },
     });
   }

@@ -18,6 +18,21 @@ export class CreateMenuDto {
   path: string;
 
   /**
+   * 菜单类别 C:目录 M:菜单 B:按钮
+   * @example '/system'
+   */
+  @IsString()
+  type: string;
+
+  /**
+   * 菜单类别 C:目录 M:菜单 B:按钮
+   * @example '/system'
+   */
+  @IsString()
+  @IsOptional()
+  permission?: string;
+
+  /**
    * 菜单图标
    * @example 'i-line-md:external-link'
    */

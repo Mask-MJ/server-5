@@ -70,7 +70,7 @@ export class AuthenticationService {
     const user = await this.prisma.user.findUnique({
       where: { account: signInDto.account },
       include: {
-        role: { include: { menu: { include: { permission: true } } } },
+        role: { include: { menu: true } },
       },
     });
     if (!user) {

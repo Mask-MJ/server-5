@@ -53,13 +53,14 @@ export class RoleService {
 
   update(id: number, user: ActiveUserData, updateRoleDto: UpdateRoleDto) {
     const { menuIds, factoryIds, ...rest } = updateRoleDto;
+    console.log(menuIds);
     return this.prismaService.client.role.update({
       where: { id },
       data: {
         ...rest,
         updateBy: user.account,
-        menu: { connect: menuIds.map((id) => ({ id })) },
-        factory: { connect: factoryIds.map((id) => ({ id })) },
+        menu: { set: menuIds.map((id) => ({ id })) },
+        factory: { set: factoryIds.map((id) => ({ id })) },
       },
     });
   }
