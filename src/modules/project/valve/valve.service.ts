@@ -48,7 +48,7 @@ export class ValveService {
       valveBonnet,
       valveTrim,
       actuatorBrand,
-      actuatorType,
+      actuatorSeries,
       actuatorSize,
       failurePosition,
       positionerBrand,
@@ -93,7 +93,7 @@ export class ValveService {
     // 执行机构描述
     const actuatorDescription =
       createValveDto.actuatorDescription ||
-      actuatorBrand + actuatorType + actuatorSize + failurePosition;
+      actuatorBrand + actuatorSeries + actuatorSize + failurePosition;
     // 定位器描述
     const positionerDescription =
       createValveDto.positionerDescription || positionerBrand + positionerModel;

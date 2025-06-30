@@ -75,8 +75,8 @@ importers:
         specifier: ^9.1.0
         version: 9.1.0
       echarts:
-        specifier: ^5.4.3
-        version: 5.4.3
+        specifier: ^5.6.0
+        version: 5.6.0
       helmet:
         specifier: ^7.1.0
         version: 7.1.0
@@ -1700,8 +1700,8 @@ packages:
   ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
 
-  echarts@5.4.3:
-    resolution: {integrity: sha512-mYKxLxhzy6zyTi/FaEbJMOZU1ULGEQHaeIeuMR5L+JnJTpz+YR03mnnpBhbR4+UYJAgiXgpyTVLffPAjOTLkZA==}
+  echarts@5.6.0:
+    resolution: {integrity: sha512-oTbVTsXfKuEhxftHqL5xprgLoc0k7uScAwtryCgWF6hPYFLRwOUHiFmHGCBKP5NPFNkDVopOieyUqYGH8Fa3kA==}
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
@@ -3941,8 +3941,8 @@ packages:
   zlibjs@0.3.1:
     resolution: {integrity: sha512-+J9RrgTKOmlxFSDHo0pI1xM6BLVUv+o0ZT9ANtCxGkjIVCCUdx9alUF8Gm+dGLKbkkkidWIHFDZHDMpfITt4+w==}
 
-  zrender@5.4.4:
-    resolution: {integrity: sha512-0VxCNJ7AGOMCWeHVyTrGzUgrK4asT4ml9PEkeGirAkKNYXYzoPJCLvmyfdoOXcjTHPs10OZVMfD1Rwg16AZyYw==}
+  zrender@5.6.1:
+    resolution: {integrity: sha512-OFXkDJKcrlx5su2XbzJvj/34Q3m6PvyCZkVPHGYpcCJ52ek4U/ymZyfuV1nKE23AyBJ51E/6Yr0mhZ7xGTO4ag==}
 
 snapshots:
 
@@ -5719,10 +5719,10 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  echarts@5.4.3:
+  echarts@5.6.0:
     dependencies:
       tslib: 2.3.0
-      zrender: 5.4.4
+      zrender: 5.6.1
 
   ee-first@1.1.1: {}
 
@@ -8162,6 +8162,6 @@ snapshots:
 
   zlibjs@0.3.1: {}
 
-  zrender@5.4.4:
+  zrender@5.6.1:
     dependencies:
       tslib: 2.3.0

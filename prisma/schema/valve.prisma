@@ -33,12 +33,18 @@ model Valve {
   actuatorBrand               String?
   /// 执行机构尺寸 Actuator Size
   actuatorSize                String?
+  /// 执行机构系列 Actuator Series
+  actuatorSeries              String?
   /// 手轮 Handwheel
   handwheel                   String?
   /// 执行机构描述 Actuator Description
   actuatorDescription         String?
   /// 定位器品牌 POSITIONER BRAND
   positionerBrand             String?
+  /// 定位器型号 POSITIONER MODEL
+  positionerModel             String?
+  /// 定位器描述
+  positionerDescription       String?
   /// 工厂id
   factoryId                   Int
   /// 关联装置id
@@ -66,8 +72,7 @@ model Valve {
   pilotModel                  String?
   /// 气控阀数量 PILOT QTY
   pilotQty                    Int?
-  /// 定位器型号 POSITIONER MODEL
-  positionerModel             String?
+
   /// 快排阀品牌 QE BRAND
   qeBrand                     String?
   /// 快排阀型号 QE MODEL
@@ -100,8 +105,7 @@ model Valve {
   vbModel                     String?
   /// 放大器数量 VB QTY
   vbQty                       Int?
-  /// 执行机构系列 Actuator Series
-  actuatorSeries              String?
+
   parts                       String?
   /// 阀体磅级 Valve Rating
   valveRating                 String?
@@ -115,8 +119,7 @@ model Valve {
   lsDescription               String?
   /// 气控阀描述
   pilotDescription            String?
-  /// 定位器描述
-  positionerDescription       String?
+
   /// 快排阀描述
   qeDescription               String?
   /// 过滤减压阀描述

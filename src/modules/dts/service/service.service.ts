@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CreateServiceAppDto } from './service.dto';
 import { CustomPrismaService } from 'nestjs-prisma';
 import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
@@ -9,9 +9,13 @@ export class ServiceAppService {
   constructor(
     @Inject('PrismaService')
     private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
+    private readonly logger: Logger,
   ) {}
   async create(createServiceAppDto: CreateServiceAppDto) {
-    console.log(createServiceAppDto);
+    this.logger.log(
+      '获取ServiceApp传入参数',
+      JSON.stringify(createServiceAppDto),
+    );
     const { id, endUser, valves, workSheet, ...rest } = createServiceAppDto;
     try {
       // 判断是否存在 serial 相同的工单 如果存在则更新,否则创建

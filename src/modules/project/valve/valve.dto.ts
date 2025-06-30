@@ -175,12 +175,12 @@ export class CreateValveDto {
   actuatorBrand?: string;
 
   /**
-   * 执行机构类型
-   * @example '气动'
+   * 执行机构系列
+   * @example '系列1'
    */
   @IsString()
   @IsOptional()
-  actuatorType?: string;
+  actuatorSeries?: string;
 
   /**
    * 执行机构尺寸
