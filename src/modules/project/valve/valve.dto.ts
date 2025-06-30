@@ -196,7 +196,7 @@ export class CreateValveDto {
    */
   @IsString()
   @IsOptional()
-  failurePosition?: string;
+  actuatorFailurePosition?: string;
 
   /**
    * 手轮

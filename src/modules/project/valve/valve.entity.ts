@@ -62,7 +62,7 @@ export class ValveEntity implements Valve {
   /// 执行机构描述
   actuatorDescription: string;
   /// 故障位置
-  failurePosition: string;
+  actuatorFailurePosition: string;
   /// 过滤减压阀品牌 REGULATOR BRAND
   regulatorBrand: string;
   /// 过滤减压阀型号 REGULATOR MODEL

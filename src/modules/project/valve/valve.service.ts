@@ -50,7 +50,7 @@ export class ValveService {
       actuatorBrand,
       actuatorSeries,
       actuatorSize,
-      failurePosition,
+      actuatorFailurePosition,
       positionerBrand,
       positionerModel,
       lsBrand,
@@ -93,7 +93,7 @@ export class ValveService {
     // 执行机构描述
     const actuatorDescription =
       createValveDto.actuatorDescription ||
-      actuatorBrand + actuatorSeries + actuatorSize + failurePosition;
+      actuatorBrand + actuatorSeries + actuatorSize + actuatorFailurePosition;
     // 定位器描述
     const positionerDescription =
       createValveDto.positionerDescription || positionerBrand + positionerModel;

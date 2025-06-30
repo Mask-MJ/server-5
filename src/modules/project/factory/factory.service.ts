@@ -237,7 +237,7 @@ export class FactoryService {
               item.actuatorBrand +
                 item.actuatorSeries +
                 item.actuatorSize +
-                item.failurePosition,
+                item.actuatorFailurePosition,
             positionerBrand: String(item.positionerBrand),
             positionerModel: String(item.positionerModel),
             positionerDescription:

@@ -112,7 +112,7 @@ model Valve {
   /// 阀体阀杆尺寸 Valve Stem Size
   valveStemSize               String?
   /// 故障位置 FAILURE POSITION
-  failurePosition             String?
+  actuatorFailurePosition     String?
   /// 阀体流量系数 Valve Cv
   valveCv                     String?
   /// 限位开关描述
