@@ -72,6 +72,7 @@ export class MenuService {
         type: { not: 'B' }, // 排除按钮类型的菜单
         role: userData.isAdmin ? undefined : { some: { id: { in: roleIds } } },
       },
+      orderBy: { sort: 'asc' },
     });
     return transformationTree(menus, null);
   }
