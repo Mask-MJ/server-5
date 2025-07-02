@@ -60,6 +60,14 @@ export class MenuController {
     return this.menuService.findAllWithPermission(user, queryMenuDto);
   }
 
+  @Get('reset')
+  @ApiOperation({ summary: '重置菜单' })
+  @ApiOkResponse({ type: MenuEntity })
+  @Permissions('system:menu:create')
+  reset() {
+    return this.menuService.reset();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: '获取菜单详情' })
   @ApiOkResponse({ type: MenuEntity })
