@@ -65,6 +65,7 @@ export const menuProjectSeed = {
           type: 'M',
           path: '/project/device',
           createBy: 'admin',
+          hidden: true,
           children: {
             create: [
               {
