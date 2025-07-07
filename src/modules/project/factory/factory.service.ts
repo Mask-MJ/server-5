@@ -217,6 +217,7 @@ export class FactoryService {
             valveDescription = '',
             actuatorBrand = '',
             actuatorSize = '',
+            actuatorSeries = '',
             handwheel = '',
             actuatorDescription = '',
             actuatorFailurePosition = '',
@@ -242,6 +243,8 @@ export class FactoryService {
             qeModel = '',
             qeQty = null,
             qeDescription = '',
+            regulatorBrand = '',
+            regulatorModel = '',
             pilotBrand = '',
             pilotModel = '',
             pilotQty = null,
@@ -264,13 +267,17 @@ export class FactoryService {
               (since &&
                 dayjs((since as unknown as string).slice(0, -1)).toDate()) ||
               null,
+            source: 'import',
             valveBrand,
             valveSize,
             valveEndConnection,
             valveBodyMaterial,
             valveBonnet,
             valveTrim,
+            valveSeries,
             valveSeatLeakage,
+            valveStemSize,
+            valveCv,
             valveDescription:
               valveDescription ||
               serialNumber +
@@ -287,11 +294,13 @@ export class FactoryService {
                 valveCv,
             actuatorBrand,
             actuatorSize,
+            actuatorSeries,
             handwheel,
             actuatorDescription:
               actuatorDescription ||
               actuatorBrand +
                 actuatorSize +
+                actuatorSeries +
                 actuatorFailurePosition +
                 handwheel,
             positionerBrand,
@@ -322,13 +331,15 @@ export class FactoryService {
             qeQty: qeQty ? Number(qeQty) : null,
             qeDescription:
               qeDescription || qeBrand + qeModel + (qeQty ? qeQty : ''),
+            regulatorBrand,
+            regulatorModel,
+            regulatorDescription: regulatorBrand + regulatorModel,
             pilotBrand,
             pilotModel,
             pilotQty: pilotQty ? Number(pilotQty) : null,
             pilotDescription:
               pilotDescription ||
               pilotBrand + pilotModel + (pilotQty ? pilotQty : ''),
-            valveStemSize,
             stroke,
             signalComparatorBrand,
             signalComparatorModel,
