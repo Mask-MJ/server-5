@@ -142,7 +142,7 @@ export class ValveService {
     });
   }
 
-  async findAll(queryValveDto: QueryValveDto) {
+  async findAll(user: ActiveUserData, queryValveDto: QueryValveDto) {
     const {
       tag,
       factoryId,
@@ -152,20 +152,52 @@ export class ValveService {
       page,
       pageSize,
     } = queryValveDto;
-    const [rows, meta] = await this.prismaService.client.valve
-      .paginate({
+    const userData = await this.prismaService.client.user.findUnique({
+      where: { id: user.sub },
+      include: { role: true },
+    });
+    if (userData.isAdmin) {
+      const [rows, meta] = await this.prismaService.client.valve
+        .paginate({
+          where: {
+            tag: { contains: tag, mode: 'insensitive' },
+            factoryId,
+            deviceId,
+            serialNumber: { contains: serialNumber, mode: 'insensitive' },
+            valveSeries: { contains: valveSeries, mode: 'insensitive' },
+          },
+          include: { factory: true, device: true },
+          orderBy: { updatedAt: 'desc' },
+        })
+        .withPages({ page, limit: pageSize, includePageCount: true });
+      return { rows, ...meta };
+    } else {
+      const roleIds = userData.role.map((item) => item.id);
+      const factoryIds = await this.prismaService.client.factory.findMany({
         where: {
-          tag: { contains: tag, mode: 'insensitive' },
-          factoryId,
-          deviceId,
-          serialNumber: { contains: serialNumber, mode: 'insensitive' },
-          valveSeries: { contains: valveSeries, mode: 'insensitive' },
+          role: {
+            some: {
+              id: { in: roleIds },
+            },
+          },
         },
-        include: { factory: true, device: true },
-        orderBy: { updatedAt: 'desc' },
-      })
-      .withPages({ page, limit: pageSize, includePageCount: true });
-    return { rows, ...meta };
+        select: { id: true },
+      });
+      const [rows, meta] = await this.prismaService.client.valve
+        .paginate({
+          where: {
+            tag: { contains: tag, mode: 'insensitive' },
+            factoryId: factoryId || { in: factoryIds.map((item) => item.id) },
+            deviceId,
+            serialNumber: { contains: serialNumber, mode: 'insensitive' },
+            valveSeries: { contains: valveSeries, mode: 'insensitive' },
+          },
+          include: { factory: true, device: true },
+          orderBy: { updatedAt: 'desc' },
+        })
+        .withPages({ page, limit: pageSize, includePageCount: true });
+      return { rows, ...meta };
+    }
   }
 
   async findAllExport(queryValveDto: QueryValveDto) {

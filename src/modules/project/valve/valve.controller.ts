@@ -60,8 +60,11 @@ export class ValveController {
   @ApiOperation({ summary: '获取阀门列表' })
   @ApiPaginatedResponse(ValveEntity)
   @Permissions('project:valve:query')
-  findAll(@Query() queryValveDto: QueryValveDto) {
-    return this.valveService.findAll(queryValveDto);
+  findAll(
+    @ActiveUser() user: ActiveUserData,
+    @Query() queryValveDto: QueryValveDto,
+  ) {
+    return this.valveService.findAll(user, queryValveDto);
   }
 
   @Get('all')
