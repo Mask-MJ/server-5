@@ -195,98 +195,148 @@ export class FactoryService {
           const valve = await this.prismaService.client.valve.findFirst({
             where: { tag: item.tag, factoryId: body.factoryId },
           });
+          const {
+            no = '',
+            tag = '',
+            unit = '',
+            fluidName = '',
+            criticalApplication = '',
+            serialNumber = '',
+            since,
+            valveBrand = '',
+            valveSize = '',
+            valveEndConnection = '',
+            valveBodyMaterial = '',
+            valveBonnet = '',
+            valveTrim = '',
+            valveSeatLeakage = '',
+            valveSeries = '',
+            valveRating = '',
+            valveStemSize = '',
+            valveCv = '',
+            valveDescription = '',
+            actuatorBrand = '',
+            actuatorSize = '',
+            handwheel = '',
+            actuatorDescription = '',
+            actuatorFailurePosition = '',
+            positionerBrand = '',
+            positionerModel = '',
+            positionerDescription = '',
+            sovBrand = '',
+            sovModel = '',
+            sovQty = null,
+            sovDescription = '',
+            lsBrand = '',
+            lsModel = '',
+            lsQty = null,
+            lsDescription = '',
+            tripValveBrand = '',
+            tripValveModel = '',
+            tripValveDescription = '',
+            vbBrand = '',
+            vbModel = '',
+            vbQty = null,
+            vbDescription = '',
+            qeBrand = '',
+            qeModel = '',
+            qeQty = null,
+            qeDescription = '',
+            pilotBrand = '',
+            pilotModel = '',
+            pilotQty = null,
+            pilotDescription = '',
+            stroke = '',
+            signalComparatorBrand = '',
+            signalComparatorModel = '',
+            signalComparatorDescription = '',
+            parts = '',
+          } = item; // 解构 item 以避免未使用的变量警告
+
           const data = {
-            no: String(item.no),
-            tag: String(item.tag),
-            unit: String(item.unit),
-            fluidName: String(item.fluidName),
-            criticalApplication: String(item.criticalApplication),
-            serialNumber: String(item.serialNumber),
+            no: String(no),
+            tag,
+            unit,
+            fluidName,
+            criticalApplication,
+            serialNumber: String(serialNumber),
             since:
-              (item.since &&
-                dayjs(
-                  (item.since as unknown as string).slice(0, -1),
-                ).toDate()) ||
+              (since &&
+                dayjs((since as unknown as string).slice(0, -1)).toDate()) ||
               null,
-            valveBrand: String(item.valveBrand),
-            valveSize: String(item.valveSize),
-            valveEndConnection: String(item.valveEndConnection),
-            valveBodyMaterial: String(item.valveBodyMaterial),
-            valveBonnet: String(item.valveBonnet),
-            valveTrim: String(item.valveTrim),
-            valveSeatLeakage: String(item.valveSeatLeakage),
+            valveBrand,
+            valveSize,
+            valveEndConnection,
+            valveBodyMaterial,
+            valveBonnet,
+            valveTrim,
+            valveSeatLeakage,
             valveDescription:
-              String(item.valveDescription) ||
-              item.serialNumber +
-                item.valveSize +
-                item.valveBrand +
-                item.valveEndConnection +
-                item.valveBonnet +
-                item.valveTrim +
-                item.valveBodyMaterial +
-                item.valveSeatLeakage +
-                item.valveSeries +
-                item.valveRating +
-                item.valveStemSize +
-                item.valveCv,
-            actuatorBrand: String(item.actuatorBrand),
-            actuatorSize: String(item.actuatorSize),
-            handwheel: String(item.handwheel),
+              valveDescription ||
+              serialNumber +
+                valveSize +
+                valveBrand +
+                valveEndConnection +
+                valveBonnet +
+                valveTrim +
+                valveBodyMaterial +
+                valveSeatLeakage +
+                valveSeries +
+                valveRating +
+                valveStemSize +
+                valveCv,
+            actuatorBrand,
+            actuatorSize,
+            handwheel,
             actuatorDescription:
-              String(item.actuatorDescription) ||
-              item.actuatorBrand +
-                item.actuatorSeries +
-                item.actuatorSize +
-                item.actuatorFailurePosition,
-            positionerBrand: String(item.positionerBrand),
-            positionerModel: String(item.positionerModel),
+              actuatorDescription ||
+              actuatorBrand +
+                actuatorSize +
+                actuatorFailurePosition +
+                handwheel,
+            positionerBrand,
+            positionerModel,
             positionerDescription:
-              String(item.positionerDescription) ||
-              item.positionerBrand + item.positionerModel,
-            sovBrand: String(item.sovBrand),
-            sovModel: String(item.sovModel),
-            sovQty: item.sovQty ? Number(item.sovQty) : null,
+              positionerDescription || positionerBrand + positionerModel,
+            sovBrand,
+            sovModel,
+            sovQty: sovQty ? Number(sovQty) : null,
             sovDescription:
-              String(item.sovDescription) ||
-              item.sovBrand + item.sovModel + item.sovQty,
-            lsBrand: String(item.lsBrand),
-            lsModel: String(item.lsModel),
-            lsQty: item.lsQty ? Number(item.lsQty) : null,
+              sovDescription || sovBrand + sovModel + (sovQty ? sovQty : ''),
+            lsBrand,
+            lsModel,
+            lsQty: lsQty ? Number(lsQty) : null,
             lsDescription:
-              String(item.lsDescription) ||
-              item.lsBrand + item.lsModel + item.lsQty,
-            tripValveBrand: String(item.tripValveBrand),
-            tripValveModel: String(item.tripValveModel),
+              lsDescription || lsBrand + lsModel + (lsQty ? lsQty : ''),
+            tripValveBrand,
+            tripValveModel,
             tripValveDescription:
-              String(item.tripValveDescription) ||
-              item.tripValveBrand + item.tripValveModel,
-            vbBrand: String(item.vbBrand),
-            vbModel: String(item.vbModel),
-            vbQty: item.vbQty ? Number(item.vbQty) : null,
+              tripValveDescription || tripValveBrand + tripValveModel,
+            vbBrand,
+            vbModel,
+            vbQty: vbQty ? Number(vbQty) : null,
             vbDescription:
-              String(item.vbDescription) ||
-              item.vbBrand + item.vbModel + item.vbQty,
-            qeBrand: String(item.qeBrand),
-            qeModel: String(item.qeModel),
-            qeQty: item.qeQty ? Number(item.qeQty) : null,
+              vbDescription || vbBrand + vbModel + (vbQty ? vbQty : ''),
+            qeBrand,
+            qeModel,
+            qeQty: qeQty ? Number(qeQty) : null,
             qeDescription:
-              String(item.qeDescription) ||
-              item.qeBrand + item.qeModel + item.qeQty,
-            pilotBrand: String(item.pilotBrand),
-            pilotModel: String(item.pilotModel),
-            pilotQty: item.pilotQty ? Number(item.pilotQty) : null,
+              qeDescription || qeBrand + qeModel + (qeQty ? qeQty : ''),
+            pilotBrand,
+            pilotModel,
+            pilotQty: pilotQty ? Number(pilotQty) : null,
             pilotDescription:
-              String(item.pilotDescription) ||
-              item.pilotBrand + item.pilotModel + item.pilotQty,
-            valveStemSize: String(item.valveStemSize),
-            stroke: String(item.stroke),
-            signalComparatorBrand: String(item.signalComparatorBrand),
-            signalComparatorModel: String(item.signalComparatorModel),
+              pilotDescription ||
+              pilotBrand + pilotModel + (pilotQty ? pilotQty : ''),
+            valveStemSize,
+            stroke,
+            signalComparatorBrand,
+            signalComparatorModel,
             signalComparatorDescription:
-              String(item.signalComparatorDescription) ||
-              item.signalComparatorBrand + item.signalComparatorModel,
-            parts: String(item.parts),
-            valveRating: String(item.valveRating),
+              signalComparatorDescription ||
+              signalComparatorBrand + signalComparatorModel,
+            parts,
+            valveRating,
             deviceId: device.id,
             factoryId: body.factoryId,
             updateBy: user.account,
