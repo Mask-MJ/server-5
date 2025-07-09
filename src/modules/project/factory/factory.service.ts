@@ -296,6 +296,7 @@ export class FactoryService {
             actuatorSize,
             actuatorSeries,
             handwheel,
+            actuatorFailurePosition,
             actuatorDescription:
               actuatorDescription ||
               actuatorBrand +
