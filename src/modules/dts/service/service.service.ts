@@ -64,6 +64,18 @@ export class ServiceAppService {
       }
       // 判断该工厂是否存在阀门 如果存在则更新,否则创建
       valves.forEach(async (data) => {
+        let device = await this.prismaService.client.device.findFirst({
+          where: { factoryId: existingFactory.id, name: data.unit },
+        });
+        if (!device) {
+          device = await this.prismaService.client.device.create({
+            data: {
+              name: data.unit,
+              factoryId: existingFactory.id,
+              createBy: 'serviceApp',
+            },
+          });
+        }
         const existingValve = await this.prismaService.client.valve.findFirst({
           where: { factoryId: existingFactory.id, tag: data.tag },
         });
@@ -73,6 +85,7 @@ export class ServiceAppService {
             where: { id: existingValve.id },
             data: {
               ...data,
+              deviceId: device.id,
               factoryId: existingFactory.id,
               workOrder: { connect: workOrder },
             },
@@ -82,6 +95,7 @@ export class ServiceAppService {
           await this.prismaService.client.valve.create({
             data: {
               ...data,
+              deviceId: device.id,
               factoryId: existingFactory.id,
               workOrder: { connect: workOrder },
             },
