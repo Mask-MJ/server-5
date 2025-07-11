@@ -82,7 +82,9 @@ export function createValveDescription(
         valveTrim,
         valveSeatLeakage,
         valveCv,
-      ].join('-'),
+      ]
+        .filter((item) => item !== null && item !== undefined && item !== '')
+        .join('-'),
     actuatorDescription:
       actuatorDescription ||
       [
@@ -92,21 +94,53 @@ export function createValveDescription(
         actuatorFailurePosition,
         handwheel,
         stroke,
-      ].join('-'),
+      ]
+        .filter((item) => item !== null && item !== undefined && item !== '')
+        .join('-'),
     positionerDescription:
-      positionerDescription || [positionerBrand, positionerModel].join('-'),
-    lsDescription: lsDescription || [lsBrand, lsModel, lsQty].join('-'),
+      positionerDescription ||
+      [positionerBrand, positionerModel]
+        .filter((item) => item !== null && item !== undefined && item !== '')
+        .join('-'),
+    lsDescription:
+      lsDescription ||
+      [lsBrand, lsModel, lsQty]
+        .filter((item) => item !== null && item !== undefined && item !== '')
+        .join('-'),
     pilotDescription:
-      pilotDescription || [pilotBrand, pilotModel, pilotQty].join('-'),
-    qeDescription: qeDescription || [qeBrand, qeModel, qeQty].join('-'),
+      pilotDescription ||
+      [pilotBrand, pilotModel, pilotQty]
+        .filter((item) => item !== null && item !== undefined && item !== '')
+        .join('-'),
+    qeDescription:
+      qeDescription ||
+      [qeBrand, qeModel, qeQty]
+        .filter((item) => item !== null && item !== undefined && item !== '')
+        .join('-'),
     regulatorDescription:
-      regulatorDescription || [regulatorBrand, regulatorModel].join('-'),
+      regulatorDescription ||
+      [regulatorBrand, regulatorModel]
+        .filter((item) => item !== null && item !== undefined && item !== '')
+        .join('-'),
     signalComparatorDescription:
       signalComparatorDescription ||
-      [signalComparatorBrand, signalComparatorModel].join('-'),
-    sovDescription: sovDescription || [sovBrand, sovModel, sovQty].join('-'),
+      [signalComparatorBrand, signalComparatorModel]
+        .filter((item) => item !== null && item !== undefined && item !== '')
+        .join('-'),
+    sovDescription:
+      sovDescription ||
+      [sovBrand, sovModel, sovQty]
+        .filter((item) => item !== null && item !== undefined && item !== '')
+        .join('-'),
     tripValveDescription:
-      tripValveDescription || [tripValveBrand, tripValveModel].join('-'),
-    vbDescription: vbDescription || [vbBrand, vbModel, vbQty].join('-'),
+      tripValveDescription ||
+      [tripValveBrand, tripValveModel]
+        .filter((item) => item !== null && item !== undefined && item !== '')
+        .join('-'),
+    vbDescription:
+      vbDescription ||
+      [vbBrand, vbModel, vbQty]
+        .filter((item) => item !== null && item !== undefined && item !== '')
+        .join('-'),
   };
 }

@@ -268,7 +268,6 @@ export class FactoryService {
               (since &&
                 dayjs((since as unknown as string).slice(0, -1)).toDate()) ||
               null,
-            source: 'import',
             valveBrand,
             valveSize,
             valveEndConnection,
@@ -293,7 +292,11 @@ export class FactoryService {
                 valveTrim,
                 valveSeatLeakage,
                 valveCv,
-              ].join('-'),
+              ]
+                .filter(
+                  (item) => item !== null && item !== undefined && item !== '',
+                )
+                .join('-'),
             actuatorBrand,
             actuatorSize,
             actuatorSeries,
@@ -308,12 +311,20 @@ export class FactoryService {
                 actuatorFailurePosition,
                 handwheel,
                 stroke,
-              ].join('-'),
+              ]
+                .filter(
+                  (item) => item !== null && item !== undefined && item !== '',
+                )
+                .join('-'),
             positionerBrand,
             positionerModel,
             positionerDescription:
               positionerDescription ||
-              [positionerBrand, positionerModel].join('-'),
+              [positionerBrand, positionerModel]
+                .filter(
+                  (item) => item !== null && item !== undefined && item !== '',
+                )
+                .join('-'),
             sovBrand,
             sovModel,
             sovQty: sovQty ? Number(sovQty) : null,
@@ -321,6 +332,9 @@ export class FactoryService {
               sovDescription ||
               [sovBrand, sovModel, sovQty]
                 .filter((item) => item !== null)
+                .filter(
+                  (item) => item !== null && item !== undefined && item !== '',
+                )
                 .join('-'),
             lsBrand,
             lsModel,
@@ -329,12 +343,19 @@ export class FactoryService {
               lsDescription ||
               [lsBrand, lsModel, lsQty]
                 .filter((item) => item !== null)
+                .filter(
+                  (item) => item !== null && item !== undefined && item !== '',
+                )
                 .join('-'),
             tripValveBrand,
             tripValveModel,
             tripValveDescription:
               tripValveDescription ||
-              [tripValveBrand, tripValveModel].join('-'),
+              [tripValveBrand, tripValveModel]
+                .filter(
+                  (item) => item !== null && item !== undefined && item !== '',
+                )
+                .join('-'),
             vbBrand,
             vbModel,
             vbQty: vbQty ? Number(vbQty) : null,
@@ -342,6 +363,9 @@ export class FactoryService {
               vbDescription ||
               [vbBrand, vbModel, vbQty]
                 .filter((item) => item !== null)
+                .filter(
+                  (item) => item !== null && item !== undefined && item !== '',
+                )
                 .join('-'),
             qeBrand,
             qeModel,
@@ -350,12 +374,19 @@ export class FactoryService {
               qeDescription ||
               [qeBrand, qeModel, qeQty]
                 .filter((item) => item !== null)
+                .filter(
+                  (item) => item !== null && item !== undefined && item !== '',
+                )
                 .join('-'),
             regulatorBrand,
             regulatorModel,
             regulatorDescription:
               regulatorDescription ||
-              [regulatorBrand, regulatorModel].join('-'),
+              [regulatorBrand, regulatorModel]
+                .filter(
+                  (item) => item !== null && item !== undefined && item !== '',
+                )
+                .join('-'),
             pilotBrand,
             pilotModel,
             pilotQty: pilotQty ? Number(pilotQty) : null,
@@ -363,13 +394,20 @@ export class FactoryService {
               pilotDescription ||
               [pilotBrand, pilotModel, pilotQty]
                 .filter((item) => item !== null)
+                .filter(
+                  (item) => item !== null && item !== undefined && item !== '',
+                )
                 .join('-'),
             stroke,
             signalComparatorBrand,
             signalComparatorModel,
             signalComparatorDescription:
               signalComparatorDescription ||
-              [signalComparatorBrand, signalComparatorModel].join('-'),
+              [signalComparatorBrand, signalComparatorModel]
+                .filter(
+                  (item) => item !== null && item !== undefined && item !== '',
+                )
+                .join('-'),
             parts,
             valveRating,
             deviceId: device.id,
