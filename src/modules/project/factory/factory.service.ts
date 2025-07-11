@@ -245,6 +245,7 @@ export class FactoryService {
             qeDescription = '',
             regulatorBrand = '',
             regulatorModel = '',
+            regulatorDescription = '',
             pilotBrand = '',
             pilotModel = '',
             pilotQty = null,
@@ -280,18 +281,19 @@ export class FactoryService {
             valveCv,
             valveDescription:
               valveDescription ||
-              serialNumber +
-                valveSize +
-                valveBrand +
-                valveEndConnection +
-                valveBonnet +
-                valveTrim +
-                valveBodyMaterial +
-                valveSeatLeakage +
-                valveSeries +
-                valveRating +
-                valveStemSize +
+              [
+                valveBrand,
+                valveSeries,
+                valveSize,
+                valveRating,
+                valveEndConnection,
+                valveStemSize,
+                valveBodyMaterial,
+                valveBonnet,
+                valveTrim,
+                valveSeatLeakage,
                 valveCv,
+              ].join('-'),
             actuatorBrand,
             actuatorSize,
             actuatorSeries,
@@ -299,54 +301,75 @@ export class FactoryService {
             actuatorFailurePosition,
             actuatorDescription:
               actuatorDescription ||
-              actuatorBrand +
-                actuatorSize +
-                actuatorSeries +
-                actuatorFailurePosition +
+              [
+                actuatorBrand,
+                actuatorSeries,
+                actuatorSize,
+                actuatorFailurePosition,
                 handwheel,
+                stroke,
+              ].join('-'),
             positionerBrand,
             positionerModel,
             positionerDescription:
-              positionerDescription || positionerBrand + positionerModel,
+              positionerDescription ||
+              [positionerBrand, positionerModel].join('-'),
             sovBrand,
             sovModel,
             sovQty: sovQty ? Number(sovQty) : null,
             sovDescription:
-              sovDescription || sovBrand + sovModel + (sovQty ? sovQty : ''),
+              sovDescription ||
+              [sovBrand, sovModel, sovQty]
+                .filter((item) => item !== null)
+                .join('-'),
             lsBrand,
             lsModel,
             lsQty: lsQty ? Number(lsQty) : null,
             lsDescription:
-              lsDescription || lsBrand + lsModel + (lsQty ? lsQty : ''),
+              lsDescription ||
+              [lsBrand, lsModel, lsQty]
+                .filter((item) => item !== null)
+                .join('-'),
             tripValveBrand,
             tripValveModel,
             tripValveDescription:
-              tripValveDescription || tripValveBrand + tripValveModel,
+              tripValveDescription ||
+              [tripValveBrand, tripValveModel].join('-'),
             vbBrand,
             vbModel,
             vbQty: vbQty ? Number(vbQty) : null,
             vbDescription:
-              vbDescription || vbBrand + vbModel + (vbQty ? vbQty : ''),
+              vbDescription ||
+              [vbBrand, vbModel, vbQty]
+                .filter((item) => item !== null)
+                .join('-'),
             qeBrand,
             qeModel,
             qeQty: qeQty ? Number(qeQty) : null,
             qeDescription:
-              qeDescription || qeBrand + qeModel + (qeQty ? qeQty : ''),
+              qeDescription ||
+              [qeBrand, qeModel, qeQty]
+                .filter((item) => item !== null)
+                .join('-'),
             regulatorBrand,
             regulatorModel,
-            regulatorDescription: regulatorBrand + regulatorModel,
+            regulatorDescription:
+              regulatorDescription ||
+              [regulatorBrand, regulatorModel].join('-'),
             pilotBrand,
             pilotModel,
             pilotQty: pilotQty ? Number(pilotQty) : null,
             pilotDescription:
               pilotDescription ||
-              pilotBrand + pilotModel + (pilotQty ? pilotQty : ''),
+              [pilotBrand, pilotModel, pilotQty]
+                .filter((item) => item !== null)
+                .join('-'),
             stroke,
             signalComparatorBrand,
             signalComparatorModel,
             signalComparatorDescription:
               signalComparatorDescription ||
-              signalComparatorBrand + signalComparatorModel,
+              [signalComparatorBrand, signalComparatorModel].join('-'),
             parts,
             valveRating,
             deviceId: device.id,

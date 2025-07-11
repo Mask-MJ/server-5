@@ -61,7 +61,7 @@ export class CreateValveDto {
     toClassOnly: true,
   })
   since?: Date;
-
+  // ----- 阀体信息 -----
   /**
    * 阀体品牌
    * @example 'Fisher'
@@ -79,28 +79,12 @@ export class CreateValveDto {
   valveSeries?: string;
 
   /**
-   * 阀体类型
-   * @example '球阀'
-   */
-  @IsString()
-  @IsOptional()
-  valveType?: string;
-
-  /**
    * 阀体口径
    * @example 'DN50'
    */
   @IsString()
   @IsOptional()
   valveSize?: string;
-
-  /**
-   * 阀体流量系数
-   * @example 'DN50'
-   */
-  @IsString()
-  @IsOptional()
-  valveCv?: string;
 
   /**
    * 阀体磅级
@@ -111,20 +95,20 @@ export class CreateValveDto {
   valveRating?: string;
 
   /**
-   * 阀体阀杆尺寸
-   * @example 'DN50'
-   */
-  @IsString()
-  @IsOptional()
-  valveStemSize?: string;
-
-  /**
    * 阀体连接形式
    * @example '法兰'
    */
   @IsString()
   @IsOptional()
   valveEndConnection?: string;
+
+  /**
+   * 阀体阀杆尺寸
+   * @example 'DN50'
+   */
+  @IsString()
+  @IsOptional()
+  valveStemSize?: string;
 
   /**
    * 阀体阀体材质
@@ -159,12 +143,22 @@ export class CreateValveDto {
   valveSeatLeakage?: string;
 
   /**
+   * 阀体流量系数
+   * @example 'DN50'
+   */
+  @IsString()
+  @IsOptional()
+  valveCv?: string;
+
+  /**
    * 阀体描述
    * @example '...'
    */
   @IsString()
   @IsOptional()
   valveDescription?: string;
+
+  // ----- 执行机构信息 -----
 
   /**
    * 执行机构品牌
@@ -207,12 +201,22 @@ export class CreateValveDto {
   handwheel?: string;
 
   /**
+   * 行程
+   * @example '100mm'
+   */
+  @IsString()
+  @IsOptional()
+  stroke?: string;
+
+  /**
    * 执行机构描述
    * @example '...'
    */
   @IsString()
   @IsOptional()
   actuatorDescription?: string;
+
+  // ----- 定位器信息 -----
 
   /**
    * 定位器品牌
@@ -237,6 +241,8 @@ export class CreateValveDto {
   @IsString()
   @IsOptional()
   positionerDescription?: string;
+
+  // ----- 限位开关信息 -----
 
   /**
    * 限位开关品牌
@@ -271,6 +277,8 @@ export class CreateValveDto {
   @IsOptional()
   lsDescription?: string;
 
+  // ----- 气控阀信息 -----
+
   /**
    * 气控阀品牌
    * @example 'PILOT BRAND'
@@ -303,6 +311,8 @@ export class CreateValveDto {
   @IsString()
   @IsOptional()
   pilotDescription?: string;
+
+  // ----- 快排阀信息 -----
 
   /**
    * 快排阀品牌
@@ -337,6 +347,8 @@ export class CreateValveDto {
   @IsOptional()
   qeDescription?: string;
 
+  // ----- 过滤减压阀信息 -----
+
   /**
    * 过滤减压阀品牌
    * @example 'REGULATOR BRAND'
@@ -361,6 +373,8 @@ export class CreateValveDto {
   @IsOptional()
   regulatorDescription?: string;
 
+  // ----- 信号比较器信息 -----
+
   /**
    * 信号比较器品牌
    * @example 'SIGNAL COMPARATOR BRAND'
@@ -384,6 +398,8 @@ export class CreateValveDto {
   @IsString()
   @IsOptional()
   signalComparatorDescription?: string;
+
+  // ----- 电磁阀信息 -----
 
   /**
    * 电磁阀品牌
@@ -418,6 +434,8 @@ export class CreateValveDto {
   @IsOptional()
   sovDescription?: string;
 
+  // ----- 保位阀信息 -----
+
   /**
    * 保位阀品牌
    * @example 'TRIP VALVE BRAND'
@@ -441,6 +459,8 @@ export class CreateValveDto {
   @IsString()
   @IsOptional()
   tripValveDescription?: string;
+
+  // ----- 放大器信息 -----
 
   /**
    * 放大器品牌
@@ -474,47 +494,6 @@ export class CreateValveDto {
   @IsString()
   @IsOptional()
   vbDescription?: string;
-
-  /**
-   * 附件种类
-   * @example '...'
-   */
-  @IsString()
-  @IsOptional()
-  accessory?: string;
-
-  /**
-   * 附件品牌
-   * @example '...'
-   */
-  @IsString()
-  @IsOptional()
-  accessoryBrand?: string;
-
-  /**
-   * 附件类型
-   * @example '...'
-   */
-  @IsString()
-  @IsOptional()
-  accessoryType?: string;
-
-  /**
-   * 附件数量
-   * @example 1
-   */
-  @IsNumber()
-  @Type(() => Number)
-  @IsOptional()
-  accessoryQuantity?: number;
-
-  /**
-   * 附件描述
-   * @example '...'
-   */
-  @IsString()
-  @IsOptional()
-  accessoryDescription?: string;
 
   /**
    * 备注

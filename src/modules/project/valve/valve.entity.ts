@@ -31,8 +31,6 @@ export class ValveEntity implements Valve {
   valveBrand: string;
   /// 阀体系列
   valveSeries: string;
-  /// 阀体类型
-  // valveType: string;
   /// 阀体口径
   valveSize: string;
   /// 阀体流量系数

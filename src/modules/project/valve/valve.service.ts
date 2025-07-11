@@ -21,6 +21,7 @@ import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import dayjs from 'dayjs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { createValveDescription } from './valve.helper';
 
 @Injectable()
 export class ValveService {
@@ -34,111 +35,9 @@ export class ValveService {
   ) {}
 
   create(user: ActiveUserData, createValveDto: CreateValveDto) {
-    const {
-      serialNumber,
-      valveBrand,
-      valveSize,
-      valveEndConnection,
-      valveBodyMaterial,
-      valveSeatLeakage,
-      valveSeries,
-      valveRating,
-      valveStemSize,
-      valveCv,
-      valveBonnet,
-      valveTrim,
-      actuatorBrand,
-      actuatorSeries,
-      actuatorSize,
-      actuatorFailurePosition,
-      positionerBrand,
-      positionerModel,
-      lsBrand,
-      lsModel,
-      lsQty,
-      pilotBrand,
-      pilotModel,
-      pilotQty,
-      qeBrand,
-      qeModel,
-      qeQty,
-      regulatorBrand,
-      regulatorModel,
-      signalComparatorBrand,
-      signalComparatorModel,
-      sovBrand,
-      sovModel,
-      sovQty,
-      tripValveBrand,
-      tripValveModel,
-      vbBrand,
-      vbModel,
-      vbQty,
-    } = createValveDto;
-    // 阀体描述
-    const valveDescription =
-      createValveDto.valveDescription ||
-      serialNumber +
-        valveBrand +
-        valveSize +
-        valveEndConnection +
-        valveBonnet +
-        valveTrim +
-        valveBodyMaterial +
-        valveSeatLeakage +
-        valveSeries +
-        valveRating +
-        valveStemSize +
-        valveCv;
-    // 执行机构描述
-    const actuatorDescription =
-      createValveDto.actuatorDescription ||
-      actuatorBrand + actuatorSeries + actuatorSize + actuatorFailurePosition;
-    // 定位器描述
-    const positionerDescription =
-      createValveDto.positionerDescription || positionerBrand + positionerModel;
-    // 限位开关描述
-    const lsDescription =
-      createValveDto.lsDescription || lsBrand + lsModel + lsQty;
-    // 气控阀描述
-    const pilotDescription =
-      createValveDto.pilotDescription || pilotBrand + pilotModel + pilotQty;
-    // 快排阀描述
-    const qeDescription =
-      createValveDto.qeDescription || qeBrand + qeModel + qeQty;
-    // 过滤减压阀描述
-    const regulatorDescription =
-      createValveDto.regulatorDescription || regulatorBrand + regulatorModel;
-    // 信号比较器描述
-    const signalComparatorDescription =
-      createValveDto.signalComparatorDescription ||
-      signalComparatorBrand + signalComparatorModel;
-    // 电磁阀描述
-    const sovDescription =
-      createValveDto.sovDescription || sovBrand + sovModel + sovQty;
-    // 保位阀描述
-    const tripValveDescription =
-      createValveDto.tripValveDescription || tripValveBrand + tripValveModel;
-    // 放大器描述
-    const vbDescription =
-      createValveDto.vbDescription || vbBrand + vbModel + vbQty;
-    // 创建阀门
+    const data = createValveDescription(createValveDto);
     return this.prismaService.client.valve.create({
-      data: {
-        ...createValveDto,
-        valveDescription,
-        actuatorDescription,
-        positionerDescription,
-        lsDescription,
-        pilotDescription,
-        qeDescription,
-        regulatorDescription,
-        signalComparatorDescription,
-        sovDescription,
-        tripValveDescription,
-        vbDescription,
-        createBy: user.account,
-      },
+      data: { ...data, createBy: user.account },
     });
   }
 
