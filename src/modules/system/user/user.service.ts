@@ -340,7 +340,7 @@ export class UserService {
       where: { id },
       data: {
         ...rest,
-        role: { connect: roleIds?.map((id) => ({ id })) },
+        role: { set: roleIds?.map((id) => ({ id })) },
       },
     });
   }

@@ -63,7 +63,9 @@ export class ValveService {
             tag: { contains: tag, mode: 'insensitive' },
             factoryId,
             deviceId,
-            analysisTask: { some: { id: analysisTaskId } },
+            analysisTask: analysisTaskId
+              ? { some: { id: analysisTaskId } }
+              : undefined,
             serialNumber: { contains: serialNumber, mode: 'insensitive' },
             valveSeries: { contains: valveSeries, mode: 'insensitive' },
           },
@@ -75,13 +77,7 @@ export class ValveService {
     } else {
       const roleIds = userData.role.map((item) => item.id);
       const factoryIds = await this.prismaService.client.factory.findMany({
-        where: {
-          role: {
-            some: {
-              id: { in: roleIds },
-            },
-          },
-        },
+        where: { role: { some: { id: { in: roleIds } } } },
         select: { id: true },
       });
       const [rows, meta] = await this.prismaService.client.valve
@@ -90,7 +86,9 @@ export class ValveService {
             tag: { contains: tag, mode: 'insensitive' },
             factoryId: factoryId || { in: factoryIds.map((item) => item.id) },
             deviceId,
-            analysisTask: { some: { id: analysisTaskId } },
+            analysisTask: analysisTaskId
+              ? { some: { id: analysisTaskId } }
+              : undefined,
             serialNumber: { contains: serialNumber, mode: 'insensitive' },
             valveSeries: { contains: valveSeries, mode: 'insensitive' },
           },
