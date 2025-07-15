@@ -1,6 +1,12 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
-import { IsArray, IsEnum, IsNumber, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 
 export class CreateAnalysisTaskDto {
@@ -38,6 +44,7 @@ export class CreateAnalysisTaskDto {
   @IsNumber()
   @Type(() => Number)
   factoryId: number;
+
   /**
    * 规则ID
    * @example 1
@@ -58,7 +65,16 @@ export class QueryAnalysisTaskDto extends PartialType(
     PickType(CreateAnalysisTaskDto, ['name', 'status', 'factoryId']),
     BaseDto,
   ),
-) {}
+) {
+  /**
+   * 阀门ID
+   * @example 1
+   */
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  valveId: number;
+}
 
 export class UpdateAnalysisTaskDto extends PartialType(CreateAnalysisTaskDto) {
   @IsNumber()

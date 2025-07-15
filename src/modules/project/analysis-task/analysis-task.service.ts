@@ -62,10 +62,14 @@ export class AnalysisTaskService {
   }
 
   async findAll(queryAnalysisTaskDto: QueryAnalysisTaskDto) {
-    const { name, factoryId, page, pageSize } = queryAnalysisTaskDto;
+    const { name, factoryId, valveId, page, pageSize } = queryAnalysisTaskDto;
     const [rows, meta] = await this.prismaService.client.analysisTask
       .paginate({
-        where: { name: { contains: name, mode: 'insensitive' }, factoryId },
+        where: {
+          name: { contains: name, mode: 'insensitive' },
+          factoryId,
+          valve: valveId ? { some: { id: valveId } } : undefined,
+        },
         include: { factory: true, dict: true },
         orderBy: { createdAt: 'desc' },
       })
@@ -94,6 +98,26 @@ export class AnalysisTaskService {
       ruleid: analysisTask.ruleId,
       factoryid: analysisTask.factoryId,
     };
+
+    // await this.prismaService.client.valve.update({
+    //   where: { id: 60 },
+    //   data: {
+    //     analysisTask: {
+    //       connect: { id: analysisTask.id },
+    //     },
+    //   },
+    // });
+
+    // await this.prismaService.client.valve.create({
+    //   data: {
+    //     tag: 'test4',
+    //     factoryId: analysisTask.factoryId,
+    //     analysisTask: {
+    //       connect: { id: analysisTask.id },
+    //     },
+    //   },
+    // });
+
     try {
       const { data } = await firstValueFrom(
         this.httpService.post('http://localhost:5050/api/frasepdf', params),

@@ -541,7 +541,12 @@ export class QueryValveDto extends PartialType(
     ]),
     BaseDto,
   ),
-) {}
+) {
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
+  analysisTaskId?: number;
+}
 
 export class QueryValveChartDto extends PartialType(TimeDto) {
   @IsNumber()

@@ -46,6 +46,7 @@ export class ValveService {
       tag,
       factoryId,
       deviceId,
+      analysisTaskId,
       valveSeries,
       serialNumber,
       page,
@@ -62,10 +63,11 @@ export class ValveService {
             tag: { contains: tag, mode: 'insensitive' },
             factoryId,
             deviceId,
+            analysisTask: { some: { id: analysisTaskId } },
             serialNumber: { contains: serialNumber, mode: 'insensitive' },
             valveSeries: { contains: valveSeries, mode: 'insensitive' },
           },
-          include: { factory: true, device: true },
+          include: { factory: true, device: true, analysisTask: true },
           orderBy: { updatedAt: 'desc' },
         })
         .withPages({ page, limit: pageSize, includePageCount: true });
@@ -88,10 +90,11 @@ export class ValveService {
             tag: { contains: tag, mode: 'insensitive' },
             factoryId: factoryId || { in: factoryIds.map((item) => item.id) },
             deviceId,
+            analysisTask: { some: { id: analysisTaskId } },
             serialNumber: { contains: serialNumber, mode: 'insensitive' },
             valveSeries: { contains: valveSeries, mode: 'insensitive' },
           },
-          include: { factory: true, device: true },
+          include: { factory: true, device: true, analysisTask: true },
           orderBy: { updatedAt: 'desc' },
         })
         .withPages({ page, limit: pageSize, includePageCount: true });
