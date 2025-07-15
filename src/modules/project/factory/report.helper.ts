@@ -18,6 +18,7 @@ import { find } from 'lodash';
 
 interface ReportProblemTable {
   tag: string;
+  name: string;
   description: string;
   time: string;
 }
@@ -27,6 +28,7 @@ interface ValveDetail {
   description: string;
   risk: string;
   measures: string;
+  name: string;
   plot?: {
     times: string[];
     upperLimit: number;
@@ -135,7 +137,7 @@ export const table_alarm = (data: ReportProblemTable[]) => {
                 }),
                 new TableCell({
                   width: { size: 4000, type: WidthType.DXA },
-                  children: [new Paragraph({ text: item.description })],
+                  children: [new Paragraph({ text: item.name })],
                 }),
                 new TableCell({
                   children: [new Paragraph({ text: item.time })],
@@ -463,7 +465,11 @@ export const detail_valves_alarm = (data: ValveDetail[]) => {
         }
         return new Paragraph({
           children: [
-            new TextRun({ text: `问题${index + 1}：`, bold: true, break: 1 }),
+            new TextRun({
+              text: `问题${index + 1}： ${item.name || ''}`,
+              bold: true,
+              break: 1,
+            }),
             new TextRun({ text: `阀门位号：${item.tag}`, break: 1 }),
             new TextRun({ text: `问题描述：${item.description}`, break: 1 }),
             new TextRun({ text: `潜在风险：${item.risk}`, break: 1 }),
