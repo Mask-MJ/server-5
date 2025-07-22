@@ -89,6 +89,8 @@ const getTableCellStyle = (value: number, type: number) => {
       return '#ffff00';
     } else if (value < 73 && value > 0) {
       return '#ff0000';
+    } else {
+      return '#ffffff';
     }
   } else if (type === 2) {
     if (value >= 80) {
