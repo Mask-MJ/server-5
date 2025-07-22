@@ -94,6 +94,14 @@ export class ValveController {
     return this.valveService.findAllHistoryDataList(queryValveHistoryListDto);
   }
 
+  @Get('HealthScoreTrendPlot/:id')
+  @ApiOperation({ summary: '获取阀门健康评分趋势图' })
+  @ApiPaginatedResponse(ValveHistoryEntity)
+  @Permissions('project:valve:query')
+  findHealthScoreTrendPlot(@Param('id') id: number) {
+    return this.valveService.findHealthScoreTrendPlot(id);
+  }
+
   @Get('history/:id')
   @ApiOperation({ summary: '获取阀门历史数据列表详情' })
   @ApiPaginatedResponse(ValveHistoryEntity)

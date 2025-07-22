@@ -156,6 +156,16 @@ export class ValveService {
     });
   }
 
+  async findHealthScoreTrendPlot(id: number) {
+    const valveScore = await firstValueFrom(
+      this.httpService.post(
+        'http://localhost:5050/api/report/HealthScoreTrendPlot',
+        { valveId: id },
+      ),
+    );
+    return valveScore.data?.detail;
+  }
+
   async findHistoryChartData(queryValveChartDto: QueryValveChartDto) {
     const { keywordId, valveId, beginTime, endTime } = queryValveChartDto;
     try {

@@ -42,15 +42,36 @@ export const mockReport = {
     },
   ],
   newProblem: [
-    { tag: '20-FV-1001', description: '警报记录已满', time: '2024年12月12日' },
-    { tag: '20-FV-1003', description: '警报记录已满', time: '2024年12月12日' },
+    {
+      name: '阀门1',
+      tag: '20-FV-1001',
+      description: '警报记录已满',
+      time: '2024年12月12日',
+    },
+    {
+      name: '阀门2',
+      tag: '20-FV-1003',
+      description: '警报记录已满',
+      time: '2024年12月12日',
+    },
   ],
   oldProblem: [
-    { tag: '20-FV-1002', description: '警报记录已满', time: '2022年1月1日' },
-    { tag: '20-FV-1004', description: '警报记录已满', time: '2022年1月1日' },
+    {
+      name: '阀门1',
+      tag: '20-FV-1002',
+      description: '警报记录已满',
+      time: '2022年1月1日',
+    },
+    {
+      name: '阀门2',
+      tag: '20-FV-1004',
+      description: '警报记录已满',
+      time: '2022年1月1日',
+    },
   ],
   valveDetails: [
     {
+      name: '阀门1',
       tag: '20-FV-1001',
       description: '警报记录已满',
       risk: '当警报记录变“满”时，将不会记录新的潜在警报。',
@@ -89,12 +110,14 @@ export const mockReport = {
       },
     },
     {
+      name: '阀门2',
       tag: '20-FV-1002',
       description: '警报记录已满',
       risk: '当警报记录变“满”时，将不会记录新的潜在警报。',
       measures: '请及时清空警报记录。',
     },
     {
+      name: '阀门3',
       tag: '20-FV-1003',
       description: '警报记录已满',
       risk: '当警报记录变“满”时，将不会记录新的潜在警报。',
@@ -137,13 +160,13 @@ export const mockReport = {
         key: 'travelLow',
         name: '行程低值',
         value: '20%',
-        style: '#ffcf22',
+        style: '#ffff00',
       },
       {
         key: 'travelLow',
         name: '行程高值',
         value: '80%',
-        style: '#ffcf22',
+        style: '#ffff00',
       },
       {
         key: 'globeValve',
@@ -193,13 +216,13 @@ export const mockReport = {
         key: 'travelLow',
         name: '行程低值',
         value: '20%',
-        style: '#ffcf22',
+        style: '#ffff00',
       },
       {
         key: 'travelLow',
         name: '行程高值',
         value: '80%',
-        style: '#ffcf22',
+        style: '#ffff00',
       },
       {
         key: 'globeValve',
@@ -248,7 +271,7 @@ export const mockReport = {
           dailyMovementCount: {
             name: '日动作次数',
             value: 11,
-            style: '#ffcf22',
+            style: '#ffff00',
           },
           travelAccumulator: {
             name: '行程累计器',
@@ -271,7 +294,7 @@ export const mockReport = {
           dailyMovementCount: {
             name: '日动作次数',
             value: null,
-            style: '#ffcf22',
+            style: '#ffff00',
           },
           travelAccumulator: {
             name: '行程累计器',
@@ -294,7 +317,7 @@ export const mockReport = {
           dailyMovementCount: {
             name: '日动作次数',
             value: 33,
-            style: '#ffcf22',
+            style: '#ffff00',
           },
           travelAccumulator: {
             name: '行程累计器',

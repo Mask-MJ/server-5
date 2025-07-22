@@ -23,7 +23,7 @@ import { readFileSync } from 'fs';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { patchDocument, PatchType, TextRun } from 'docx';
-// import { mockReport } from './mock';
+import { mockReport } from './mock';
 import {
   table_alarm,
   chart_valves_health_overview,
@@ -610,17 +610,17 @@ export class FactoryService {
         valveIdList,
       };
       this.logger.log('获取报告数据参数', JSON.stringify(params));
-      const result = (
-        await firstValueFrom(
-          this.httpService.post(
-            'http://localhost:5050/api/report/factoryReport',
-            // 'http://39.105.100.190:5050/api/report/factoryReport',
-            params,
-          ),
-        )
-      ).data.detail;
-      this.logger.log('获取报告数据', result);
-      // const result = mockReport;
+      // let result = (
+      //   await firstValueFrom(
+      //     this.httpService.post(
+      //       'http://localhost:5050/api/report/factoryReport',
+      //       // 'http://39.105.100.190:5050/api/report/factoryReport',
+      //       params,
+      //     ),
+      //   )
+      // ).data.detail;
+      // this.logger.log('获取报告数据', result);
+      const result = mockReport;
       // console.log(scoreDistribution);
       // 从 public 文件夹获取 docx 模板文件
       const data = readFileSync('public/vcm_report_template_cn.docx', 'binary');

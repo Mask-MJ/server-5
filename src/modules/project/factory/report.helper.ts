@@ -84,21 +84,21 @@ const renderTableHeaderRow = (data: string[]) => {
 const getTableCellStyle = (value: number, type: number) => {
   if (type === 1) {
     if (value >= 85) {
-      return '#62BB46';
-    } else if (value < 85 && value >= 60) {
-      return '#FFCF22';
+      return '#00b050';
+    } else if (value < 85 && value >= 73) {
+      return '#ffff00';
     } else {
-      return '#D31145';
+      return '#ff0000';
     }
   } else if (type === 2) {
     if (value >= 80) {
-      return '#62BB46';
-    } else if (value < 80 && value >= 60) {
-      return '#FFCF22';
-    } else if (value < 60 && value > 0) {
-      return '#D31145';
+      return '#00b050';
+    } else if (value < 80 && value >= 73) {
+      return '#ffff00';
+    } else if (value < 73 && value > 0) {
+      return '#ff0000';
     } else {
-      return '#6E298D';
+      return '#6e298d';
     }
   }
 };
@@ -161,6 +161,7 @@ export const chart_valves_health_overview = (
     height: 300,
   });
   chart.setOption({
+    color: ['#ff0000', '#ffff00', '#6e298d', '#00b050', '#00b050', '#00b050'],
     legend: { top: '5%', left: 'center' },
     series: [
       {
@@ -210,6 +211,7 @@ export const chart_values_alarm_overivew = (
     height: 300,
   });
   chart.setOption({
+    color: ['#00b050', '#ff0000'],
     legend: { top: '5%', left: 'center' },
     series: [
       {
@@ -228,7 +230,7 @@ export const chart_values_alarm_overivew = (
             name: item.name,
             value: item.value,
             itemStyle: {
-              color: item.name === '正常' ? '#00FF00' : '#FF0000',
+              color: item.name === '正常' ? '#00b050' : '#ff0000',
             },
           };
         }),
@@ -260,10 +262,11 @@ export const chart_valves_quarter = (
   const chart = echarts.init(null, null, {
     renderer: 'svg',
     ssr: true,
-    width: 600,
-    height: 400,
+    width: 500,
+    height: 300,
   });
   chart.setOption({
+    color: ['#00b050', '#ff0000'],
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
@@ -288,7 +291,7 @@ export const chart_valves_quarter = (
           color: '#000000',
           formatter: '{c}',
         },
-        itemStyle: { color: '#00FF00' },
+        itemStyle: { color: '#00b050' },
         data: normals,
       },
       {
@@ -301,7 +304,7 @@ export const chart_valves_quarter = (
           color: '#000000',
           formatter: '{c}',
         },
-        itemStyle: { color: '#FF0000' },
+        itemStyle: { color: '#ff0000' },
         data: alerts,
       },
     ],
@@ -309,10 +312,11 @@ export const chart_valves_quarter = (
   return {
     type: PatchType.PARAGRAPH,
     children: [
+      new TextRun({ text: ` `, break: 1 }),
       new ImageRun({
         type: 'svg',
         data: Buffer.from(chart.renderToSVGString(), 'utf-8'),
-        transformation: { width: 600, height: 400 },
+        transformation: { width: 500, height: 300 },
         fallback: {
           type: 'png',
           data: readFileSync('public/linux-png.png'),
@@ -371,7 +375,7 @@ export const table_valves_health_month = (
                         children: [
                           new TextRun({
                             text: `${i.value}`,
-                            color: '#ffffff',
+                            color: '#000000',
                           }),
                         ],
                       }),
@@ -422,6 +426,7 @@ export const detail_valves_alarm = (data: ValveDetail[]) => {
             height: 300,
           });
           chart.setOption({
+            color: ['#00b050', '#6e298d', '#ffff00', '#ff0000'],
             legend: { data: ['数据线', '预测线', '辅助线', '标准线'] },
             tooltip: { trigger: 'axis' },
             xAxis: { type: 'category', data: item.plot.times },
@@ -474,11 +479,13 @@ export const detail_valves_alarm = (data: ValveDetail[]) => {
             new TextRun({ text: `问题描述：${item.description}`, break: 1 }),
             new TextRun({ text: `潜在风险：${item.risk}`, break: 1 }),
             new TextRun({ text: `建议措施：${item.measures}`, break: 1 }),
+            new TextRun({ text: ` `, break: 1 }),
+
             chart &&
               new ImageRun({
                 type: 'svg',
                 data: Buffer.from(chart.renderToSVGString(), 'utf-8'),
-                transformation: { width: 600, height: 400 },
+                transformation: { width: 500, height: 300 },
                 fallback: {
                   type: 'png',
                   data: readFileSync('public/linux-png.png'),
@@ -596,7 +603,7 @@ export const table_valves_travel_month = (
                       children: [
                         new TextRun({
                           text: getCellValue(cell),
-                          color: cell.style ? '#ffffff' : '#000000',
+                          color: cell.style ? '#000000' : '#000000',
                         }),
                       ],
                     }),
@@ -637,7 +644,7 @@ export const table_cyclecount_travelaccumulate = (
           children: [
             new Paragraph({
               alignment: AlignmentType.CENTER,
-              children: [new TextRun({ text: item || '', color: '#ffffff' })],
+              children: [new TextRun({ text: item || '', color: '#000000' })],
             }),
           ],
           verticalAlign: VerticalAlign.CENTER,
@@ -763,7 +770,7 @@ export const table_cyclecount_travelaccumulate = (
                           children: [
                             new TextRun({
                               text: `${cell[i].value || ''}`,
-                              color: cell[i].style ? '#ffffff' : '#000000',
+                              color: cell[i].style ? '#000000' : '#000000',
                             }),
                           ],
                         }),
