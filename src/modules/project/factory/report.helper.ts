@@ -87,8 +87,10 @@ const getTableCellStyle = (value: number, type: number) => {
       return '#00b050';
     } else if (value < 85 && value >= 73) {
       return '#ffff00';
-    } else {
+    } else if (value < 73 && value > 0) {
       return '#ff0000';
+    } else {
+      return '#6e298d';
     }
   } else if (type === 2) {
     if (value >= 80) {
@@ -325,7 +327,7 @@ export const chart_valves_quarter = (
     ],
   };
 };
-// 月度状态趋势表格
+// 阀门健康趋势
 export const table_valves_health_month = (
   data: { tag: string; data: { name: string; value: number }[] }[],
 ) => {
