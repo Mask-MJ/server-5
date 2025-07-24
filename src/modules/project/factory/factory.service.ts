@@ -612,7 +612,7 @@ export class FactoryService {
       this.logger.log('获取报告数据参数', JSON.stringify(params));
       let result: any;
       // 如果是 watch 模式，则使用 mock 数据
-      if (process.env.npm_lifecycle_script.includes('watch')) {
+      if (process.env.npm_lifecycle_script?.includes('watch')) {
         result = mockReport;
       } else {
         result = (
