@@ -23,7 +23,7 @@ import { readFileSync } from 'fs';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { patchDocument, PatchType, TextRun } from 'docx';
-// import { mockReport } from './mock';
+import { mockReport } from './mock';
 import {
   table_alarm,
   chart_valves_health_overview,
@@ -610,65 +610,80 @@ export class FactoryService {
         valveIdList,
       };
       this.logger.log('获取报告数据参数', JSON.stringify(params));
-      const result = (
-        await firstValueFrom(
-          this.httpService.post(
-            'http://localhost:5050/api/report/factoryReport',
-            // 'http://39.105.100.190:5050/api/report/factoryReport',
-            params,
-          ),
-        )
-      ).data.detail;
-      this.logger.log('获取报告数据', result);
-      // const result = mockReport;
+      let result: any;
+      // 如果是 watch 模式，则使用 mock 数据
+      if (process.env.npm_lifecycle_script.includes('watch')) {
+        result = mockReport;
+      } else {
+        result = (
+          await firstValueFrom(
+            this.httpService.post(
+              'http://localhost:5050/api/report/factoryReport',
+              params,
+            ),
+          )
+        ).data.detail;
+        this.logger.log('获取报告数据', result);
+      }
       // console.log(scoreDistribution);
       // 从 public 文件夹获取 docx 模板文件
-      const data = readFileSync('public/vcm_report_template_cn.docx', 'binary');
-
-      const docBuffer = await patchDocument({
-        outputType: 'nodebuffer',
-        data,
-        patches: {
-          report_time: {
-            type: PatchType.PARAGRAPH,
-            children: [new TextRun({ text: dayjs().format('YYYY年MM月DD日') })],
+      if (reportData.type === 1) {
+        const data = readFileSync(
+          'public/vcm_report_template_cn.docx',
+          'binary',
+        );
+        const docBuffer = await patchDocument({
+          outputType: 'nodebuffer',
+          data,
+          patches: {
+            report_time: {
+              type: PatchType.PARAGRAPH,
+              children: [
+                new TextRun({ text: dayjs().format('YYYY年MM月DD日') }),
+              ],
+            },
+            report_for: {
+              type: PatchType.PARAGRAPH,
+              children: [new TextRun({ text: name })],
+            },
+            chart_valves_health_overview: chart_valves_health_overview(
+              result.scoreDistribution,
+            ),
+            chart_values_alarm_overivew: chart_values_alarm_overivew(
+              result.valveOverallStatus,
+            ),
+            table_alarm_new: table_alarm(result.newProblem),
+            table_alarm_known: table_alarm(result.oldProblem),
+            chart_valves_quarter: chart_valves_quarter(
+              result.valveQuarterStatus,
+            ),
+            table_valves_health_month: table_valves_health_month(
+              result.valveQuarterStatusTrend,
+            ),
+            detail_valves_alarm: detail_valves_alarm(result.valveDetails),
+            // table_dynamic_control_month: table_dynamic_control_month(
+            //   result.valveDynamicControl,
+            // ),
+            table_valves_travel_month: table_valves_travel_month(
+              result.valveTravelHistoryRecord as ValveTravelHistoryRecord[][],
+            ),
+            table_cyclecount_travelaccumulate:
+              table_cyclecount_travelaccumulate(result.cycleAccumulation),
           },
-          report_for: {
-            type: PatchType.PARAGRAPH,
-            children: [new TextRun({ text: name })],
-          },
-          chart_valves_health_overview: chart_valves_health_overview(
-            result.scoreDistribution,
-          ),
-          chart_values_alarm_overivew: chart_values_alarm_overivew(
-            result.valveOverallStatus,
-          ),
-          table_alarm_new: table_alarm(result.newProblem),
-          table_alarm_known: table_alarm(result.oldProblem),
-          chart_valves_quarter: chart_valves_quarter(result.valveQuarterStatus),
-          table_valves_health_month: table_valves_health_month(
-            result.valveQuarterStatusTrend,
-          ),
-          detail_valves_alarm: detail_valves_alarm(result.valveDetails),
-          // table_dynamic_control_month: table_dynamic_control_month(
-          //   result.valveDynamicControl,
-          // ),
-          table_valves_travel_month: table_valves_travel_month(
-            result.valveTravelHistoryRecord as ValveTravelHistoryRecord[][],
-          ),
-          table_cyclecount_travelaccumulate: table_cyclecount_travelaccumulate(
-            result.cycleAccumulation,
-          ),
-        },
-      });
+        });
 
-      const streamOption = {
-        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document; charset=utf-8',
-        disposition: `attachment; filename*=UTF-8''${encodeURIComponent(
-          `${dayjs().format('YYYY-MM-DD')} ${name}阀门报告.docx`,
-        )}`,
-      };
-      return new StreamableFile(docBuffer as any, streamOption);
+        const streamOption = {
+          type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document; charset=utf-8',
+          disposition: `attachment; filename*=UTF-8''${encodeURIComponent(
+            `${dayjs().format('YYYY-MM-DD')} ${name}阀门报告.docx`,
+          )}`,
+        };
+        console.log('导出报告', streamOption, docBuffer);
+        return new StreamableFile(docBuffer as any, streamOption);
+      } else if (reportData.type === 2) {
+        console.log('导出问题数据详情', result.valveDetails);
+        return result.valveDetails;
+      }
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException('获取数据失败, 请联系技术人员');

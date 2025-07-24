@@ -170,6 +170,15 @@ export class reportDto {
   @IsOptional()
   @Type(() => Number)
   cycle?: number;
+
+  /**
+   * 报告类型 1: 报告 2: 问题数据
+   * @example 1
+   */
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  type?: number;
 }
 
 export class chartDto {
