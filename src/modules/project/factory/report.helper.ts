@@ -163,7 +163,7 @@ export const chart_valves_health_overview = (
     height: 300,
   });
   chart.setOption({
-    color: ['#ff0000', '#ffff00', '#6e298d', '#00b050', '#00b050', '#00b050'],
+    color: ['#ff0000', '#ffff00', '#00b050', '#00b050', '#00b050'],
     legend: { top: '5%', left: 'center' },
     series: [
       {
@@ -219,7 +219,7 @@ export const chart_values_alarm_overivew = (
       {
         name: 'Access From',
         type: 'pie',
-        radius: '70%',
+        radius: ['40%', '70%'],
         label: {
           position: 'inner',
           fontSize: 14,
