@@ -40,6 +40,7 @@ import { MinioService } from 'src/common/minio/minio.service';
 import { Valve } from '@prisma/client';
 import { getLast12Months } from 'src/common/utils';
 import { ValveService } from '../valve/valve.service';
+import { transformationTree } from 'src/common/utils/transformationTree';
 // import { mockValve } from './mock';
 
 @Injectable()
@@ -72,56 +73,35 @@ export class FactoryService {
       include: { role: true },
     });
     if (userData.isAdmin) {
-      return this.prismaService.client.factory.findMany({
+      const factories = await this.prismaService.client.factory.findMany({
         where: {
           name: { contains: name, mode: 'insensitive' },
-          parentId: !name ? null : undefined,
-          NOT: { id: filterId },
+          NOT: { id: filterId, parentId: filterId },
           createdAt: { gte: beginTime, lte: endTime },
         },
         orderBy: { createdAt: 'desc' },
-        include: {
-          children: {
-            where: { NOT: { id: filterId } },
-            include: {
-              children: {
-                where: { NOT: { id: filterId } },
-                include: { children: { where: { NOT: { id: filterId } } } },
-              },
-            },
-            orderBy: { createdAt: 'desc' },
-          },
-        },
       });
+      console.log(factories.length, '工厂数量');
+      return {
+        totalCount: factories.length,
+        rows: transformationTree(factories, null),
+      };
     } else {
       const roleIds = userData.role.map((item) => item.id);
-      return this.prismaService.client.factory.findMany({
+      const factories = await this.prismaService.client.factory.findMany({
         where: {
-          NOT: { id: filterId },
-          OR: [
-            { createBy: user.account },
-            { role: { some: { id: { in: roleIds } } } },
-          ],
           name: { contains: name, mode: 'insensitive' },
-          parentId: !name ? null : undefined,
+          NOT: { id: filterId, parentId: filterId },
           createdAt: { gte: beginTime, lte: endTime },
+          role: { some: { id: { in: roleIds } } },
         },
-        include: {
-          children: {
-            where: { NOT: { id: filterId } },
-            orderBy: { createdAt: 'desc' },
-            include: {
-              children: {
-                where: { NOT: { id: filterId } },
-                include: {
-                  children: { where: { NOT: { id: filterId } } },
-                },
-              },
-            },
-          },
-        },
+        include: { role: true },
         orderBy: { createdAt: 'desc' },
       });
+      return {
+        totalCount: factories.length,
+        rows: transformationTree(factories, null),
+      };
     }
   }
 

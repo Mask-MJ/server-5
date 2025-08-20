@@ -227,6 +227,11 @@ export const chart_values_alarm_overivew = (
           formatter: '{b}: {c}',
         },
         labelLine: { show: false },
+        itemStyle: {
+          borderRadius: 10,
+          borderColor: '#fff',
+          borderWidth: 2,
+        },
         data: data.map((item) => {
           return {
             name: item.name,
