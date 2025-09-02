@@ -234,6 +234,7 @@ export class UserService {
           },
         },
         include: { factory: true },
+        orderBy: { createdAt: 'desc' },
       })
     ).map((item) => {
       return {
