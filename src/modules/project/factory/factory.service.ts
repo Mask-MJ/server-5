@@ -35,6 +35,8 @@ import {
   table_valves_travel_month,
   ValveTravelHistoryRecord,
   table_cyclecount_travelaccumulate,
+  ValveDetail,
+  ValveDetailItem,
 } from './report.helper';
 import { MinioService } from 'src/common/minio/minio.service';
 import { Valve } from '@prisma/client';
@@ -662,7 +664,11 @@ export class FactoryService {
         return new StreamableFile(docBuffer as any, streamOption);
       } else if (reportData.type === 2) {
         console.log('导出问题数据详情', result.valveDetails);
-        return result.valveDetails;
+        const des: ValveDetailItem[] = [];
+        result.valveDetails.map((item: ValveDetail) => {
+          des.push(...item.items);
+        });
+        return des;
       }
     } catch (error) {
       console.log(error);

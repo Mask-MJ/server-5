@@ -22,11 +22,11 @@ interface ReportProblemTable {
   description: string;
   time: string;
 }
-interface ValveDetail {
+export interface ValveDetail {
   tag: string;
   items: ValveDetailItem[];
 }
-interface ValveDetailItem {
+export interface ValveDetailItem {
   sort: string;
   tag: string;
   description: string;
