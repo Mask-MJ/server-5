@@ -22,8 +22,12 @@ interface ReportProblemTable {
   description: string;
   time: string;
 }
-
 interface ValveDetail {
+  tag: string;
+  items: ValveDetailItem[];
+}
+interface ValveDetailItem {
+  sort: string;
   tag: string;
   description: string;
   risk: string;
@@ -53,8 +57,11 @@ interface CycleAccumulation {
     amplitudePerAction: { name: string; value: string | number; style: any };
   }[];
 }
-
 export interface ValveTravelHistoryRecord {
+  records: Record[];
+  descriptions: string[];
+}
+export interface Record {
   key: string;
   name: string;
   value: string;
@@ -404,102 +411,118 @@ export const table_valves_health_month = (
 };
 // 问题详情列表
 export const detail_valves_alarm = (data: ValveDetail[]) => {
+  const renderArray = data.map((list, index) => {
+    const r = list.items.map((item) => {
+      let chart: echarts.ECharts | undefined = undefined;
+      // item.plot 不是空对象
+      if (
+        item.plot &&
+        Object.keys(item.plot).length > 0 &&
+        item.plot.times &&
+        item.plot.dataLine
+      ) {
+        const max = Math.max(...item.plot.dataLine, item.plot.upperLimit || 0);
+        const min = Math.min(...item.plot.dataLine, item.plot.lowerLimit || 0);
+        const lowerLimit = Number(item.plot.lowerLimit || 0);
+        const upperLimit = Number(item.plot.upperLimit || 0);
+        chart = echarts.init(null, null, {
+          renderer: 'svg',
+          ssr: true,
+          width: 400,
+          height: 300,
+        });
+        chart.setOption({
+          color: ['#00b050', '#6e298d', '#ffff00', '#ff0000'],
+          legend: { data: ['数据线', '预测线', '辅助线', '标准线'] },
+          tooltip: { trigger: 'axis' },
+          xAxis: { type: 'category', data: item.plot.times },
+          yAxis: { type: 'value', max, min },
+          label: {
+            fontSize: 14,
+          },
+          series: [
+            {
+              type: 'line',
+              name: '数据线',
+              data: item.plot.dataLine,
+              label: { show: true, position: 'top', color: '#000000' },
+            },
+            {
+              type: 'line',
+              name: '预测线',
+              data: item.plot.predictionLine.linearRegression,
+              label: { show: true, position: 'top', color: '#000000' },
+            },
+            {
+              type: 'line',
+              name: '辅助线',
+              data: item.plot.auxiliaryLine.averageValue,
+              label: { show: true, position: 'top', color: '#000000' },
+            },
+            {
+              type: 'line',
+              name: '标准线',
+              label: { show: true, position: 'top', color: '#000000' },
+              markLine: {
+                lineStyle: { color: 'red' },
+                data: [
+                  { name: '下限值', yAxis: lowerLimit },
+                  { name: '上限值', yAxis: upperLimit },
+                ],
+              },
+            },
+          ],
+        });
+
+        return [
+          new TextRun({
+            text: `${item.sort}：`,
+            bold: true,
+            break: 1,
+          }),
+          new TextRun({ text: `阀门位号：${item.tag}`, break: 1 }),
+          new TextRun({
+            text: `问题描述：${item.description}`,
+            break: 1,
+          }),
+          new TextRun({ text: `潜在风险：${item.risk}`, break: 1 }),
+          new TextRun({ text: `建议措施：${item.measures}`, break: 1 }),
+          new TextRun({ text: ` `, break: 1 }),
+
+          chart &&
+            new ImageRun({
+              type: 'svg',
+              data: Buffer.from(chart.renderToSVGString(), 'utf-8'),
+              transformation: { width: 500, height: 300 },
+              fallback: {
+                type: 'png',
+                data: readFileSync('public/linux-png.png'),
+              },
+            }),
+        ];
+      }
+    });
+    const flattenedR = r.flat();
+    return [
+      new TextRun({
+        text: `阀门${index + 1}： ${list.tag || ''}`,
+        bold: true,
+        size: 28,
+        break: 1,
+      }),
+      ...flattenedR,
+      new TextRun({ text: ` `, break: 1 }),
+    ];
+  });
+  const flattenedRenderArray = renderArray.flat();
   return {
     type: PatchType.DOCUMENT,
     children: [
-      ...data.map((item, index) => {
-        let chart: echarts.ECharts | undefined = undefined;
-        // item.plot 不是空对象
-        if (
-          item.plot &&
-          Object.keys(item.plot).length > 0 &&
-          item.plot.times &&
-          item.plot.dataLine
-        ) {
-          const max = Math.max(
-            ...item.plot.dataLine,
-            item.plot.upperLimit || 0,
-          );
-          const min = Math.min(
-            ...item.plot.dataLine,
-            item.plot.lowerLimit || 0,
-          );
-          const lowerLimit = Number(item.plot.lowerLimit || 0);
-          const upperLimit = Number(item.plot.upperLimit || 0);
-          chart = echarts.init(null, null, {
-            renderer: 'svg',
-            ssr: true,
-            width: 400,
-            height: 300,
-          });
-          chart.setOption({
-            color: ['#00b050', '#6e298d', '#ffff00', '#ff0000'],
-            legend: { data: ['数据线', '预测线', '辅助线', '标准线'] },
-            tooltip: { trigger: 'axis' },
-            xAxis: { type: 'category', data: item.plot.times },
-            yAxis: { type: 'value', max, min },
-            label: {
-              fontSize: 14,
-            },
-            series: [
-              {
-                type: 'line',
-                name: '数据线',
-                data: item.plot.dataLine,
-                label: { show: true, position: 'top', color: '#000000' },
-              },
-              {
-                type: 'line',
-                name: '预测线',
-                data: item.plot.predictionLine.linearRegression,
-                label: { show: true, position: 'top', color: '#000000' },
-              },
-              {
-                type: 'line',
-                name: '辅助线',
-                data: item.plot.auxiliaryLine.averageValue,
-                label: { show: true, position: 'top', color: '#000000' },
-              },
-              {
-                type: 'line',
-                name: '标准线',
-                label: { show: true, position: 'top', color: '#000000' },
-                markLine: {
-                  lineStyle: { color: 'red' },
-                  data: [
-                    { name: '下限值', yAxis: lowerLimit },
-                    { name: '上限值', yAxis: upperLimit },
-                  ],
-                },
-              },
-            ],
-          });
-        }
-        return new Paragraph({
-          children: [
-            new TextRun({
-              text: `问题${index + 1}： ${item.name || ''}`,
-              bold: true,
-              break: 1,
-            }),
-            new TextRun({ text: `阀门位号：${item.tag}`, break: 1 }),
-            new TextRun({ text: `问题描述：${item.description}`, break: 1 }),
-            new TextRun({ text: `潜在风险：${item.risk}`, break: 1 }),
-            new TextRun({ text: `建议措施：${item.measures}`, break: 1 }),
-            new TextRun({ text: ` `, break: 1 }),
-
-            chart &&
-              new ImageRun({
-                type: 'svg',
-                data: Buffer.from(chart.renderToSVGString(), 'utf-8'),
-                transformation: { width: 500, height: 300 },
-                fallback: {
-                  type: 'png',
-                  data: readFileSync('public/linux-png.png'),
-                },
-              }),
-          ],
-        });
+      new Paragraph({
+        children: [
+          ...flattenedRenderArray,
+          new TextRun({ text: ` `, break: 1 }),
+        ],
       }),
     ],
   };
@@ -571,16 +594,21 @@ export const table_dynamic_control_month = (
   };
 };
 // 季度阀门行程历史记录
-export const table_valves_travel_month = (
-  data: ValveTravelHistoryRecord[][],
-) => {
+export const table_valves_travel_month = (data: ValveTravelHistoryRecord[]) => {
   if (data.length === 0) {
     return {
       type: PatchType.PARAGRAPH,
       children: [new TextRun({ text: ' ' })],
     };
   }
-  const tableHeaderRow = data[0].map((i) => i.name);
+  const tableHeaderRow = data[0].records.map((i) => i.name);
+  const renderArray = data.map((item) => {
+    const children = item.descriptions.map((desc) => {
+      return new TextRun({ text: desc, break: 1 });
+    });
+    return children;
+  });
+  const flattenedRenderArray = renderArray.flat();
   return {
     type: PatchType.DOCUMENT,
     children: [
@@ -589,12 +617,15 @@ export const table_valves_travel_month = (
           renderTableHeaderRow(tableHeaderRow),
           ...data.map((item) => {
             const children: any[] = [];
-            for (let i = 0; i < item.length; i++) {
-              const cell = find(item, (o) => o.name === tableHeaderRow[i]);
+            for (let i = 0; i < item.records.length; i++) {
+              const cell = find(
+                item.records,
+                (o) => o.name === tableHeaderRow[i],
+              );
               if (!cell) {
                 continue;
               }
-              const getCellValue = (cell: ValveTravelHistoryRecord) => {
+              const getCellValue = (cell: Record) => {
                 if (
                   ['globeValve', 'rotaryValve', 'butteValve'].includes(cell.key)
                 ) {
@@ -626,6 +657,10 @@ export const table_valves_travel_month = (
             return new TableRow({ children });
           }),
         ],
+      }),
+
+      new Paragraph({
+        children: [...flattenedRenderArray],
       }),
     ],
   };

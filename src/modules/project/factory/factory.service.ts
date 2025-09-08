@@ -598,7 +598,7 @@ export class FactoryService {
         result = (
           await firstValueFrom(
             this.httpService.post(
-              'http://localhost:5050/api/report/factoryReport',
+              'http://localhost:5050/api/factoryReport',
               params,
             ),
           )
@@ -645,7 +645,7 @@ export class FactoryService {
             //   result.valveDynamicControl,
             // ),
             table_valves_travel_month: table_valves_travel_month(
-              result.valveTravelHistoryRecord as ValveTravelHistoryRecord[][],
+              result.valveTravelHistoryRecord as ValveTravelHistoryRecord[],
             ),
             table_cyclecount_travelaccumulate:
               table_cyclecount_travelaccumulate(result.cycleAccumulation),
