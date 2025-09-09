@@ -647,7 +647,7 @@ export class FactoryService {
             //   result.valveDynamicControl,
             // ),
             table_valves_travel_month: table_valves_travel_month(
-              result.valveTravelHistoryRecord as ValveTravelHistoryRecord[],
+              result.valveTravelHistoryRecord as ValveTravelHistoryRecord,
             ),
             table_cyclecount_travelaccumulate:
               table_cyclecount_travelaccumulate(result.cycleAccumulation),

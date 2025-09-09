@@ -362,9 +362,9 @@ export const mockReport = {
       ],
     },
   ],
-  valveTravelHistoryRecord: [
-    {
-      records: [
+  valveTravelHistoryRecord: {
+    records: [
+      [
         {
           key: 'number',
           name: '序号',
@@ -420,80 +420,72 @@ export const mockReport = {
           style: null as string | null,
         },
       ],
-      descriptions: [
-        '问题1: xxx',
-        '问题2: xxx',
-        '问题3: xxx',
-        '问题4: xxx',
-        '问题5: xxx',
-      ],
-    },
-    {
-      records: [
+      [
         {
           key: 'number',
           name: '序号',
           value: 2,
-          style: null as string | null,
+          style: null,
         },
         {
           key: 'tag',
           name: '阀门位号',
-          value: 'tag1',
-          style: null as string | null,
+          value: 'FV-4032',
+          style: null,
         },
         {
           key: 'travelLow',
           name: '行程低值',
-          value: '20%',
-          style: '#ffff00',
+          value: '-0.13%',
+          style: '#6E298D',
         },
         {
-          key: 'travelLow',
+          key: 'travelHigh',
           name: '行程高值',
-          value: '80%',
-          style: '#ffff00',
+          value: '83.11%',
+          style: '#FF0000',
         },
         {
           key: 'globeValve',
           name: 'Globe Valve',
           value: false,
-          style: null as string | null,
+          style: null,
         },
         {
           key: 'rotaryValve',
           name: 'Rotary Valve',
           value: false,
-          style: null as string | null,
+          style: null,
         },
         {
           key: 'butteValve',
-          name: 'Butte Valve',
-          value: false,
-          style: null as string | null,
+          name: 'Butterfly Valve',
+          value: true,
+          style: null,
         },
         {
           key: 'size',
           name: '尺寸',
-          value: '80%',
-          style: null as string | null,
+          value: '8 inch',
+          style: null,
         },
         {
           key: 'description',
           name: '说明',
-          value: '80%',
-          style: null as string | null,
+          value: '问题1',
+          style: null,
         },
       ],
-      descriptions: [
-        '问题1: xxx',
-        '问题5: xxx',
-        '问题6: xxx',
-        '问题7: xxx',
-        '问题8: xxx',
-      ],
-    },
-  ],
+    ],
+    descriptions: [
+      '问题1: xxx',
+      '问题2: xxx',
+      '问题3: xxx',
+      '问题4: xxx',
+      '问题5: xxx',
+    ],
+  },
+
   cycleAccumulation: [
     {
       number: 1,
