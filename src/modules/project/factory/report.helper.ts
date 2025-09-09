@@ -58,7 +58,7 @@ interface CycleAccumulation {
   }[];
 }
 export interface ValveTravelHistoryRecord {
-  records: Record[];
+  records: Record[][];
   descriptions: string[];
 }
 export interface Record {
@@ -594,34 +594,27 @@ export const table_dynamic_control_month = (
   };
 };
 // 季度阀门行程历史记录
-export const table_valves_travel_month = (data: ValveTravelHistoryRecord[]) => {
-  if (data.length === 0) {
+export const table_valves_travel_month = (data: ValveTravelHistoryRecord) => {
+  if (data.records.length === 0) {
     return {
       type: PatchType.PARAGRAPH,
       children: [new TextRun({ text: ' ' })],
     };
   }
-  const tableHeaderRow = data[0].records.map((i) => i.name);
-  const renderArray = data.map((item) => {
-    const children = item.descriptions.map((desc) => {
-      return new TextRun({ text: desc, break: 1 });
-    });
-    return children;
+  const tableHeaderRow = data.records[0].map((i) => i.name);
+  const renderArray = data.descriptions.map((item) => {
+    return new TextRun({ text: item, break: 1 });
   });
-  const flattenedRenderArray = renderArray.flat();
   return {
     type: PatchType.DOCUMENT,
     children: [
       new Table({
         rows: [
           renderTableHeaderRow(tableHeaderRow),
-          ...data.map((item) => {
+          ...data.records.map((item) => {
             const children: any[] = [];
-            for (let i = 0; i < item.records.length; i++) {
-              const cell = find(
-                item.records,
-                (o) => o.name === tableHeaderRow[i],
-              );
+            for (let i = 0; i < item.length; i++) {
+              const cell = find(item, (o) => o.name === tableHeaderRow[i]);
               if (!cell) {
                 continue;
               }
@@ -660,7 +653,7 @@ export const table_valves_travel_month = (data: ValveTravelHistoryRecord[]) => {
       }),
 
       new Paragraph({
-        children: [...flattenedRenderArray],
+        children: renderArray,
       }),
     ],
   };
