@@ -474,7 +474,7 @@ export class FactoryService {
           factoryId: id,
           type: 1,
           createdAt: {
-            gte: dayjs().subtract(30, 'day').toISOString(),
+            gte: dayjs().subtract(365, 'day').toISOString(),
             lte: dayjs().toISOString(),
           },
         },
@@ -495,7 +495,7 @@ export class FactoryService {
           factoryId: id,
           type: 0,
           createdAt: {
-            gte: dayjs().subtract(30, 'day').toISOString(),
+            gte: dayjs().subtract(365, 'day').toISOString(),
             lte: dayjs().toISOString(),
           },
         },
@@ -515,7 +515,7 @@ export class FactoryService {
         where: {
           factoryId: id,
           createdAt: {
-            gte: dayjs().subtract(30, 'day').toISOString(),
+            gte: dayjs().subtract(365, 'day').toISOString(),
             lte: dayjs().toISOString(),
           },
         },

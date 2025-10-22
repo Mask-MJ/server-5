@@ -190,7 +190,7 @@ export class UserService {
         where: {
           type: 1,
           createdAt: {
-            gte: dayjs().subtract(30, 'day').toISOString(),
+            gte: dayjs().subtract(365, 'day').toISOString(),
             lte: dayjs().toISOString(),
           },
         },
@@ -210,7 +210,7 @@ export class UserService {
         where: {
           type: 0,
           createdAt: {
-            gte: dayjs().subtract(30, 'day').toISOString(),
+            gte: dayjs().subtract(365, 'day').toISOString(),
             lte: dayjs().toISOString(),
           },
         },
@@ -229,7 +229,7 @@ export class UserService {
       await this.prismaService.client.analysisTask.findMany({
         where: {
           createdAt: {
-            gte: dayjs().subtract(30, 'day').toISOString(),
+            gte: dayjs().subtract(365, 'day').toISOString(),
             lte: dayjs().toISOString(),
           },
         },
