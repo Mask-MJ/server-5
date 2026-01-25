@@ -18,6 +18,10 @@ model WorkOrder {
   remark                String   @default("")
   /// service-app ID
   serviceAppId          String
+  /// 业务类型
+  businessType          String   @default("")
+  /// 故障详情
+  faultDetail           String   @default("")
   /// 工厂id
   factoryId             Int
   /// 故障类别

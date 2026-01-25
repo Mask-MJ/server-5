@@ -59,6 +59,7 @@ export class ServiceAppService {
             faultCategory: workSheet.faultCategory,
             remedialActions: workSheet.remedialActions,
             recommendation: workSheet.recommendation,
+            faultDetail: workSheet.faultDetail,
           },
         });
       }

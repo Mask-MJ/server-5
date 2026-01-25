@@ -33,6 +33,12 @@ export class CreateServiceAppDto {
   @IsString()
   attachment: string;
   /**
+   * 业务类型
+   * @example "1"
+   */
+  @IsString()
+  businessType: string;
+  /**
    * 最终用户信息
    * @example '{}'
    */
@@ -55,5 +61,6 @@ export class CreateServiceAppDto {
     faultCategory: string;
     remedialActions: string;
     recommendation: string;
+    faultDetail: string;
   };
 }
