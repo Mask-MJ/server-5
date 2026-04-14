@@ -4,7 +4,7 @@ import { CustomPrismaService } from 'nestjs-prisma';
 import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { WorkOrder } from '@prisma/client';
 
-interface SyncResponse {
+export interface SyncResponse {
   code: number;
   message: string;
 }

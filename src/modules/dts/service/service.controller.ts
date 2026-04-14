@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ServiceAppService } from './service.service';
+import { ServiceAppService, SyncResponse } from './service.service';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { CreateServiceAppDto } from './service.dto';
 import { Auth } from 'src/modules/iam/authentication/decorators/auth.decorator';
@@ -13,7 +13,9 @@ export class ServiceAppController {
 
   @Post()
   @ApiOperation({ summary: '数据同步' })
-  create(@Body() createServiceAppDto: CreateServiceAppDto) {
+  create(
+    @Body() createServiceAppDto: CreateServiceAppDto,
+  ): Promise<SyncResponse> {
     return this.serviceAppService.create(createServiceAppDto);
   }
 }
