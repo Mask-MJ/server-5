@@ -4,6 +4,11 @@ import { CustomPrismaService } from 'nestjs-prisma';
 import { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { WorkOrder } from '@prisma/client';
 
+interface SyncResponse {
+  code: number;
+  message: string;
+}
+
 @Injectable()
 export class ServiceAppService {
   constructor(
@@ -11,7 +16,9 @@ export class ServiceAppService {
     private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
     private readonly logger: Logger,
   ) {}
-  async create(createServiceAppDto: CreateServiceAppDto) {
+  async create(
+    createServiceAppDto: CreateServiceAppDto,
+  ): Promise<SyncResponse> {
     this.logger.log(
       '获取ServiceApp传入参数',
       JSON.stringify(createServiceAppDto),
@@ -64,50 +71,58 @@ export class ServiceAppService {
         });
       }
       // 判断该工厂是否存在阀门 如果存在则更新,否则创建
-      valves.forEach(async (data) => {
-        let device = await this.prismaService.client.device.findFirst({
-          where: { factoryId: existingFactory.id, name: data.unit },
-        });
-        if (!device) {
-          device = await this.prismaService.client.device.create({
-            data: {
-              name: data.unit,
-              factoryId: existingFactory.id,
-              createBy: 'serviceApp',
-            },
+      await Promise.all(
+        valves.map(async (data) => {
+          let device = await this.prismaService.client.device.findFirst({
+            where: { factoryId: existingFactory.id, name: data.unit },
           });
-        }
-        const existingValve = await this.prismaService.client.valve.findFirst({
-          where: { factoryId: existingFactory.id, tag: data.tag },
-        });
-        if (existingValve) {
-          // 更新阀门
-          await this.prismaService.client.valve.update({
-            where: { id: existingValve.id },
-            data: {
-              ...data,
-              deviceId: device.id,
-              factoryId: existingFactory.id,
-              workOrder: { connect: workOrder },
+          if (!device) {
+            device = await this.prismaService.client.device.create({
+              data: {
+                name: data.unit,
+                factoryId: existingFactory.id,
+                createBy: 'serviceApp',
+              },
+            });
+          }
+          const existingValve = await this.prismaService.client.valve.findFirst(
+            {
+              where: { factoryId: existingFactory.id, tag: data.tag },
             },
-          });
-        } else {
-          // 创建阀门
-          await this.prismaService.client.valve.create({
-            data: {
-              ...data,
-              deviceId: device.id,
-              factoryId: existingFactory.id,
-              workOrder: { connect: workOrder },
-            },
-          });
-        }
-      });
+          );
+          if (existingValve) {
+            // 更新阀门
+            await this.prismaService.client.valve.update({
+              where: { id: existingValve.id },
+              data: {
+                ...data,
+                deviceId: device.id,
+                factoryId: existingFactory.id,
+                workOrder: { connect: workOrder },
+              },
+            });
+          } else {
+            // 创建阀门
+            await this.prismaService.client.valve.create({
+              data: {
+                ...data,
+                deviceId: device.id,
+                factoryId: existingFactory.id,
+                workOrder: { connect: workOrder },
+              },
+            });
+          }
+        }),
+      );
 
-      return 'success';
+      return { code: 200, message: 'success' };
     } catch (error) {
-      console.log(error);
-      return new Error('error', error);
+      const message = error instanceof Error ? error.message : 'error';
+      this.logger.error(
+        'ServiceApp 数据同步失败',
+        error instanceof Error ? error.stack : String(error),
+      );
+      return { code: 500, message };
     }
   }
 }
