@@ -39,3 +39,28 @@ model WorkOrder {
 
   @@schema("public")
 }
+
+/// ServiceApp 推送同步日志: 每次推送的原始 payload 快照, 成功/失败都留档
+model ServiceAppPushLog {
+  id           Int      @id @default(autoincrement())
+  /// 推送方工单 ID (payload.id)
+  serviceAppId String?
+  /// 工单流水号
+  serial       String?
+  /// 最终用户名称
+  endUserName  String?
+  /// 原始 payload
+  payload      Json
+  /// 同步状态: pending / success / failed
+  status       String   @default("pending")
+  /// 失败原因 (成功为 null)
+  errorMessage String?
+  /// 收到推送的时间
+  receivedAt   DateTime @default(now())
+
+  @@index([serviceAppId])
+  @@index([serial])
+  @@index([endUserName])
+  @@index([receivedAt])
+  @@schema("public")
+}
