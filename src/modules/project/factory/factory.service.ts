@@ -83,7 +83,6 @@ export class FactoryService {
         },
         orderBy: { createdAt: 'desc' },
       });
-      console.log(factories.length, '工厂数量');
       return {
         totalCount: factories.length,
         rows: transformationTree(factories, null),
