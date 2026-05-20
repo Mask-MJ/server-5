@@ -1,4 +1,9 @@
-import { PartialType, IntersectionType, PickType } from '@nestjs/swagger';
+import {
+  PartialType,
+  IntersectionType,
+  PickType,
+  OmitType,
+} from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import {
   IsString,
@@ -137,7 +142,9 @@ export class QueryUserDto extends PartialType(
   ),
 ) {}
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {
+export class UpdateUserDto extends PartialType(
+  OmitType(CreateUserDto, ['password'] as const),
+) {
   @IsNumber()
   id: number;
 }

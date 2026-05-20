@@ -78,9 +78,10 @@ export class UserController {
   @ApiOperation({ summary: '修改密码' })
   @ApiOkResponse({ type: UserEntity })
   async changePassword(
+    @ActiveUser() activeUser: ActiveUserData,
     @Body() { id, oldPassword, password }: ChangePasswordDto,
   ) {
-    return this.userService.changePassword(id, password, oldPassword);
+    return this.userService.changePassword(activeUser, id, password, oldPassword);
   }
 
   @Post('uploadAvatar')
