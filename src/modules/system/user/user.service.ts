@@ -1,4 +1,9 @@
-import { ConflictException, Inject, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { CustomPrismaService } from 'nestjs-prisma';
 import type { ExtendedPrismaClient } from 'src/common/pagination/prisma.extension';
 import { CreateUserDto, UpdateUserDto, QueryUserDto } from './user.dto';
@@ -307,30 +312,45 @@ export class UserService {
     };
   }
 
-  async changePassword(id: number, password: string, oldPassword: string) {
-    const user = await this.prismaService.client.user.findUnique({
-      where: { id },
+  async changePassword(
+    activeUser: ActiveUserData,
+    targetId: number,
+    password: string,
+    oldPassword: string,
+  ) {
+    const isSelf = activeUser.sub === targetId;
+
+    // 改他人密码必须是管理员（操作者）
+    if (!isSelf) {
+      const operator = await this.prismaService.client.user.findUnique({
+        where: { id: activeUser.sub },
+      });
+      if (!operator?.isAdmin) {
+        throw new ForbiddenException('无权修改他人密码');
+      }
+    }
+
+    const target = await this.prismaService.client.user.findUnique({
+      where: { id: targetId },
     });
-    if (!user) {
+    if (!target) {
       throw new ConflictException('用户不存在');
     }
-    // 判断是否是管理员权限 如果是管理员权限则不需要验证原密码
-    if (user.isAdmin) {
-      return this.prismaService.client.user.update({
-        where: { id },
-        data: { password: await this.hashingService.hash(password) },
-      });
+
+    // 改自己密码必须校验原密码；管理员重置他人密码免校验
+    if (isSelf) {
+      const isPasswordValid = await this.hashingService.compare(
+        oldPassword,
+        target.password,
+      );
+      if (!isPasswordValid) {
+        throw new ConflictException('原密码错误');
+      }
     }
-    const isPasswordValid = await this.hashingService.compare(
-      oldPassword,
-      user.password,
-    );
-    if (!isPasswordValid) {
-      throw new ConflictException('原密码错误');
-    }
+
     const newPassword = await this.hashingService.hash(password);
     return this.prismaService.client.user.update({
-      where: { id },
+      where: { id: targetId },
       data: { password: newPassword },
     });
   }
