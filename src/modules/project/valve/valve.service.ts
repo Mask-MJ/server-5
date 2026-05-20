@@ -22,6 +22,7 @@ import { ConfigService } from '@nestjs/config';
 import dayjs from 'dayjs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { createValveDescription } from './valve.helper';
+import { getAccessibleFactoryIds } from 'src/common/utils/user-factory-scope';
 
 @Injectable()
 export class ValveService {
@@ -56,48 +57,33 @@ export class ValveService {
       where: { id: user.sub },
       include: { role: true },
     });
-    if (userData.isAdmin) {
-      const [rows, meta] = await this.prismaService.client.valve
-        .paginate({
-          where: {
-            tag: { contains: tag, mode: 'insensitive' },
-            factoryId,
-            deviceId,
-            analysisTask: analysisTaskId
-              ? { some: { id: analysisTaskId } }
-              : undefined,
-            serialNumber: { contains: serialNumber, mode: 'insensitive' },
-            valveSeries: { contains: valveSeries, mode: 'insensitive' },
-          },
-          include: { factory: true, device: true, analysisTask: true },
-          orderBy: { updatedAt: 'desc' },
-        })
-        .withPages({ page, limit: pageSize, includePageCount: true });
-      return { rows, ...meta };
-    } else {
-      const roleIds = userData.role.map((item) => item.id);
-      const factoryIds = await this.prismaService.client.factory.findMany({
-        where: { role: { some: { id: { in: roleIds } } } },
-        select: { id: true },
-      });
-      const [rows, meta] = await this.prismaService.client.valve
-        .paginate({
-          where: {
-            tag: { contains: tag, mode: 'insensitive' },
-            factoryId: factoryId || { in: factoryIds.map((item) => item.id) },
-            deviceId,
-            analysisTask: analysisTaskId
-              ? { some: { id: analysisTaskId } }
-              : undefined,
-            serialNumber: { contains: serialNumber, mode: 'insensitive' },
-            valveSeries: { contains: valveSeries, mode: 'insensitive' },
-          },
-          include: { factory: true, device: true, analysisTask: true },
-          orderBy: { updatedAt: 'desc' },
-        })
-        .withPages({ page, limit: pageSize, includePageCount: true });
-      return { rows, ...meta };
-    }
+    const accessibleIds = await getAccessibleFactoryIds(
+      this.prismaService,
+      userData,
+    );
+    const factoryIdFilter =
+      factoryId !== undefined
+        ? factoryId
+        : accessibleIds === null
+          ? undefined
+          : { in: accessibleIds };
+    const [rows, meta] = await this.prismaService.client.valve
+      .paginate({
+        where: {
+          tag: { contains: tag, mode: 'insensitive' },
+          factoryId: factoryIdFilter,
+          deviceId,
+          analysisTask: analysisTaskId
+            ? { some: { id: analysisTaskId } }
+            : undefined,
+          serialNumber: { contains: serialNumber, mode: 'insensitive' },
+          valveSeries: { contains: valveSeries, mode: 'insensitive' },
+        },
+        include: { factory: true, device: true, analysisTask: true },
+        orderBy: { updatedAt: 'desc' },
+      })
+      .withPages({ page, limit: pageSize, includePageCount: true });
+    return { rows, ...meta };
   }
 
   async findAllExport(queryValveDto: QueryValveDto) {
