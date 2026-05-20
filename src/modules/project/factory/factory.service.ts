@@ -41,6 +41,7 @@ import {
 import { MinioService } from 'src/common/minio/minio.service';
 import { Valve } from '@prisma/client';
 import { getLast12Months } from 'src/common/utils';
+import { hasAllFactoryScope } from 'src/common/utils/user-factory-scope';
 import { ValveService } from '../valve/valve.service';
 import { transformationTree } from 'src/common/utils/transformationTree';
 // import { mockValve } from './mock';
@@ -74,29 +75,14 @@ export class FactoryService {
       where: { id: user.sub },
       include: { role: true },
     });
-    if (userData.isAdmin) {
+    const baseWhere = {
+      name: { contains: name, mode: 'insensitive' as const },
+      NOT: { id: filterId, parentId: filterId },
+      createdAt: { gte: beginTime, lte: endTime },
+    };
+    if (hasAllFactoryScope(userData)) {
       const factories = await this.prismaService.client.factory.findMany({
-        where: {
-          name: { contains: name, mode: 'insensitive' },
-          NOT: { id: filterId, parentId: filterId },
-          createdAt: { gte: beginTime, lte: endTime },
-        },
-        orderBy: { createdAt: 'desc' },
-      });
-      return {
-        totalCount: factories.length,
-        rows: transformationTree(factories, null),
-      };
-    } else {
-      const roleIds = userData.role.map((item) => item.id);
-      const factories = await this.prismaService.client.factory.findMany({
-        where: {
-          name: { contains: name, mode: 'insensitive' },
-          NOT: { id: filterId, parentId: filterId },
-          createdAt: { gte: beginTime, lte: endTime },
-          role: { some: { id: { in: roleIds } } },
-        },
-        include: { role: true },
+        where: baseWhere,
         orderBy: { createdAt: 'desc' },
       });
       return {
@@ -104,6 +90,19 @@ export class FactoryService {
         rows: transformationTree(factories, null),
       };
     }
+    const roleIds = userData.role.map((item) => item.id);
+    const factories = await this.prismaService.client.factory.findMany({
+      where: {
+        ...baseWhere,
+        role: { some: { id: { in: roleIds } } },
+      },
+      include: { role: true },
+      orderBy: { createdAt: 'desc' },
+    });
+    return {
+      totalCount: factories.length,
+      rows: transformationTree(factories, null),
+    };
   }
 
   async findAllList(user: ActiveUserData) {
