@@ -1,5 +1,7 @@
 # 「全部工厂授权」手工集成验证
 
+> ⚠️ **本脚本会修改 DB（创建/更新/删除角色、用户、工厂），仅可在 dev/staging 环境运行；生产环境严禁执行。**
+
 > 适用：vls/server 在 dev 或 staging 环境部署后，验证 `grantAllFactories` 角色字段端到端工作。
 >
 > 前置：已通过 `prisma migrate deploy` 应用 migration `20260520143701_add_role_grant_all_factories`。
@@ -16,13 +18,14 @@
 ```bash
 export BASE="http://localhost:3000/api"   # 按实际部署调整 PREFIX
 
-# 用 admin 账号登录拿 token
+# 用 admin 账号登录拿 token（密码交互输入，不入 shell history）
+read -rsp "admin password: " ADMIN_PWD; echo
 ADMIN_TOKEN=$(curl -s -X POST "$BASE/authentication/sign-in" \
   -H "Content-Type: application/json" \
-  -d '{"account":"admin","password":"<admin-pwd>"}' \
+  -d "$(jq -nc --arg p "$ADMIN_PWD" '{account:"admin",password:$p}')" \
   | jq -r '.accessToken')
-
-echo "$ADMIN_TOKEN"  # 应为有效 JWT
+unset ADMIN_PWD
+[[ -n "$ADMIN_TOKEN" && "$ADMIN_TOKEN" != "null" ]] || { echo "admin login failed"; exit 1; }
 ```
 
 > sign-in 返回顶层 `{ accessToken, refreshToken }`，故 jq 取 `.accessToken`（不是 `.data.accessToken`）。
@@ -81,12 +84,12 @@ echo "F-A=$F_A  F-B=$F_B"
 ## 4. 用 leader1 登录拿 token
 
 ```bash
+# leader1 密码已知（Test1234），保持原样但加 token 断言
 LEADER_TOKEN=$(curl -s -X POST "$BASE/authentication/sign-in" \
   -H "Content-Type: application/json" \
   -d '{"account":"leader1","password":"Test1234"}' \
   | jq -r '.accessToken')
-
-echo "$LEADER_TOKEN"
+[[ -n "$LEADER_TOKEN" && "$LEADER_TOKEN" != "null" ]] || { echo "leader1 login failed"; exit 1; }
 ```
 
 ## 5. 验证：leader1 能看到所有工厂
