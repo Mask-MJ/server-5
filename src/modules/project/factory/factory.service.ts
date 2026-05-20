@@ -148,16 +148,22 @@ export class FactoryService {
     body: importDto,
   ) {
     const workbook = read(file.buffer, { type: 'buffer' });
-    const xlsx = utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+    const xlsx = utils.sheet_to_json<Valve>(
+      workbook.Sheets[workbook.SheetNames[0]],
+    );
     xlsx.shift();
-    const deviceNames: string[] = [];
-    xlsx.forEach((item: Valve) => {
-      // 获取所有的 装置 名称
-      if (item.unit && !deviceNames.includes(item.unit)) {
-        deviceNames.push(item.unit);
-      }
-    });
-    deviceNames.forEach(async (deviceName) => {
+
+    const deviceNames = Array.from(
+      new Set(
+        xlsx
+          .map((item) => item.unit)
+          .filter((unit): unit is string => Boolean(unit)),
+      ),
+    );
+
+    // 串行 upsert 装置，建立 unit → deviceId 映射
+    const deviceMap = new Map<string, number>();
+    for (const deviceName of deviceNames) {
       let device = await this.prismaService.client.device.findFirst({
         where: { name: deviceName, factoryId: body.factoryId },
       });
@@ -170,243 +176,272 @@ export class FactoryService {
           },
         });
       }
-      xlsx
-        .filter((item: Valve) => item.unit === deviceName)
-        .forEach(async (item: Valve) => {
-          const valve = await this.prismaService.client.valve.findFirst({
-            where: { tag: item.tag, factoryId: body.factoryId },
-          });
-          const {
-            no = '',
-            tag = '',
-            unit = '',
-            fluidName = '',
-            criticalApplication = '',
-            serialNumber = '',
-            since,
-            valveBrand = '',
-            valveSize = '',
-            valveEndConnection = '',
-            valveBodyMaterial = '',
-            valveBonnet = '',
-            valveTrim = '',
-            valveSeatLeakage = '',
-            valveSeries = '',
-            valveRating = '',
-            valveStemSize = '',
-            valveCv = '',
-            valveDescription = '',
-            actuatorBrand = '',
-            actuatorSize = '',
-            actuatorSeries = '',
-            handwheel = '',
-            actuatorDescription = '',
-            actuatorFailurePosition = '',
-            positionerBrand = '',
-            positionerModel = '',
-            positionerDescription = '',
-            sovBrand = '',
-            sovModel = '',
-            sovQty = null,
-            sovDescription = '',
-            lsBrand = '',
-            lsModel = '',
-            lsQty = null,
-            lsDescription = '',
-            tripValveBrand = '',
-            tripValveModel = '',
-            tripValveDescription = '',
-            vbBrand = '',
-            vbModel = '',
-            vbQty = null,
-            vbDescription = '',
-            qeBrand = '',
-            qeModel = '',
-            qeQty = null,
-            qeDescription = '',
-            regulatorBrand = '',
-            regulatorModel = '',
-            regulatorDescription = '',
-            pilotBrand = '',
-            pilotModel = '',
-            pilotQty = null,
-            pilotDescription = '',
-            stroke = '',
-            signalComparatorBrand = '',
-            signalComparatorModel = '',
-            signalComparatorDescription = '',
-            parts = '',
-          } = item; // 解构 item 以避免未使用的变量警告
+      deviceMap.set(deviceName, device.id);
+    }
 
-          const data = {
-            no: String(no),
-            tag,
-            unit,
-            fluidName,
-            criticalApplication,
-            serialNumber: String(serialNumber),
-            since:
-              (since &&
-                dayjs((since as unknown as string).slice(0, -1)).toDate()) ||
-              null,
+    // 阀门按 (factoryId, serialNumber) 串行 upsert
+    // Why: 一个 tag/位号可能对应多台阀（如主+冗余），唯一身份是 serialNumber；
+    //      forEach(async) 并行写库会与 findFirst 形成竞态，导致部分行被覆盖
+    let created = 0;
+    let updated = 0;
+    const skipped: Array<{ row: number; reason: string }> = [];
+
+    for (let idx = 0; idx < xlsx.length; idx += 1) {
+      const item = xlsx[idx];
+      const rowNumber = idx + 3; // 表头2行 + 1-based
+
+      const deviceId = item.unit ? deviceMap.get(item.unit) : undefined;
+      if (!deviceId) {
+        skipped.push({ row: rowNumber, reason: 'missing-unit' });
+        continue;
+      }
+      const serial = item.serialNumber ? String(item.serialNumber).trim() : '';
+      if (!serial) {
+        skipped.push({ row: rowNumber, reason: 'missing-serialNumber' });
+        continue;
+      }
+
+      const existing = await this.prismaService.client.valve.findFirst({
+        where: { serialNumber: serial, factoryId: body.factoryId },
+      });
+      const {
+        no = '',
+        tag = '',
+        unit = '',
+        fluidName = '',
+        criticalApplication = '',
+        since,
+        valveBrand = '',
+        valveSize = '',
+        valveEndConnection = '',
+        valveBodyMaterial = '',
+        valveBonnet = '',
+        valveTrim = '',
+        valveSeatLeakage = '',
+        valveSeries = '',
+        valveRating = '',
+        valveStemSize = '',
+        valveCv = '',
+        valveDescription = '',
+        actuatorBrand = '',
+        actuatorSize = '',
+        actuatorSeries = '',
+        handwheel = '',
+        actuatorDescription = '',
+        actuatorFailurePosition = '',
+        positionerBrand = '',
+        positionerModel = '',
+        positionerDescription = '',
+        sovBrand = '',
+        sovModel = '',
+        sovQty = null,
+        sovDescription = '',
+        lsBrand = '',
+        lsModel = '',
+        lsQty = null,
+        lsDescription = '',
+        tripValveBrand = '',
+        tripValveModel = '',
+        tripValveDescription = '',
+        vbBrand = '',
+        vbModel = '',
+        vbQty = null,
+        vbDescription = '',
+        qeBrand = '',
+        qeModel = '',
+        qeQty = null,
+        qeDescription = '',
+        regulatorBrand = '',
+        regulatorModel = '',
+        regulatorDescription = '',
+        pilotBrand = '',
+        pilotModel = '',
+        pilotQty = null,
+        pilotDescription = '',
+        stroke = '',
+        signalComparatorBrand = '',
+        signalComparatorModel = '',
+        signalComparatorDescription = '',
+        parts = '',
+      } = item;
+
+      const data = {
+        no: String(no),
+        tag,
+        unit,
+        fluidName,
+        criticalApplication,
+        serialNumber: serial,
+        since:
+          (since &&
+            dayjs((since as unknown as string).slice(0, -1)).toDate()) ||
+          null,
+        valveBrand,
+        valveSize,
+        valveEndConnection,
+        valveBodyMaterial,
+        valveBonnet,
+        valveTrim,
+        valveSeries,
+        valveSeatLeakage,
+        valveStemSize,
+        valveCv,
+        valveDescription:
+          valveDescription ||
+          [
             valveBrand,
+            valveSeries,
             valveSize,
+            valveRating,
             valveEndConnection,
+            valveStemSize,
             valveBodyMaterial,
             valveBonnet,
             valveTrim,
-            valveSeries,
             valveSeatLeakage,
-            valveStemSize,
             valveCv,
-            valveDescription:
-              valveDescription ||
-              [
-                valveBrand,
-                valveSeries,
-                valveSize,
-                valveRating,
-                valveEndConnection,
-                valveStemSize,
-                valveBodyMaterial,
-                valveBonnet,
-                valveTrim,
-                valveSeatLeakage,
-                valveCv,
-              ]
-                .filter(
-                  (item) => item !== null && item !== undefined && item !== '',
-                )
-                .join('-'),
+          ]
+            .filter(
+              (item) => item !== null && item !== undefined && item !== '',
+            )
+            .join('-'),
+        actuatorBrand,
+        actuatorSize,
+        actuatorSeries,
+        handwheel,
+        actuatorFailurePosition,
+        actuatorDescription:
+          actuatorDescription ||
+          [
             actuatorBrand,
-            actuatorSize,
             actuatorSeries,
-            handwheel,
+            actuatorSize,
             actuatorFailurePosition,
-            actuatorDescription:
-              actuatorDescription ||
-              [
-                actuatorBrand,
-                actuatorSeries,
-                actuatorSize,
-                actuatorFailurePosition,
-                handwheel,
-                stroke,
-              ]
-                .filter(
-                  (item) => item !== null && item !== undefined && item !== '',
-                )
-                .join('-'),
-            positionerBrand,
-            positionerModel,
-            positionerDescription:
-              positionerDescription ||
-              [positionerBrand, positionerModel]
-                .filter(
-                  (item) => item !== null && item !== undefined && item !== '',
-                )
-                .join('-'),
-            sovBrand,
-            sovModel,
-            sovQty: sovQty ? Number(sovQty) : null,
-            sovDescription:
-              sovDescription ||
-              [sovBrand, sovModel, sovQty]
-                .filter((item) => item !== null)
-                .filter(
-                  (item) => item !== null && item !== undefined && item !== '',
-                )
-                .join('-'),
-            lsBrand,
-            lsModel,
-            lsQty: lsQty ? Number(lsQty) : null,
-            lsDescription:
-              lsDescription ||
-              [lsBrand, lsModel, lsQty]
-                .filter((item) => item !== null)
-                .filter(
-                  (item) => item !== null && item !== undefined && item !== '',
-                )
-                .join('-'),
-            tripValveBrand,
-            tripValveModel,
-            tripValveDescription:
-              tripValveDescription ||
-              [tripValveBrand, tripValveModel]
-                .filter(
-                  (item) => item !== null && item !== undefined && item !== '',
-                )
-                .join('-'),
-            vbBrand,
-            vbModel,
-            vbQty: vbQty ? Number(vbQty) : null,
-            vbDescription:
-              vbDescription ||
-              [vbBrand, vbModel, vbQty]
-                .filter((item) => item !== null)
-                .filter(
-                  (item) => item !== null && item !== undefined && item !== '',
-                )
-                .join('-'),
-            qeBrand,
-            qeModel,
-            qeQty: qeQty ? Number(qeQty) : null,
-            qeDescription:
-              qeDescription ||
-              [qeBrand, qeModel, qeQty]
-                .filter((item) => item !== null)
-                .filter(
-                  (item) => item !== null && item !== undefined && item !== '',
-                )
-                .join('-'),
-            regulatorBrand,
-            regulatorModel,
-            regulatorDescription:
-              regulatorDescription ||
-              [regulatorBrand, regulatorModel]
-                .filter(
-                  (item) => item !== null && item !== undefined && item !== '',
-                )
-                .join('-'),
-            pilotBrand,
-            pilotModel,
-            pilotQty: pilotQty ? Number(pilotQty) : null,
-            pilotDescription:
-              pilotDescription ||
-              [pilotBrand, pilotModel, pilotQty]
-                .filter((item) => item !== null)
-                .filter(
-                  (item) => item !== null && item !== undefined && item !== '',
-                )
-                .join('-'),
+            handwheel,
             stroke,
-            signalComparatorBrand,
-            signalComparatorModel,
-            signalComparatorDescription:
-              signalComparatorDescription ||
-              [signalComparatorBrand, signalComparatorModel]
-                .filter(
-                  (item) => item !== null && item !== undefined && item !== '',
-                )
-                .join('-'),
-            parts,
-            valveRating,
-            deviceId: device.id,
-            factoryId: body.factoryId,
-            updateBy: user.account,
-          };
-          if (valve) {
-            await this.prismaService.client.valve.update({
-              where: { id: valve.id },
-              data,
-            });
-            // 记录有多少个阀门被更新
-          } else {
-            await this.prismaService.client.valve.create({ data });
-          }
+          ]
+            .filter(
+              (item) => item !== null && item !== undefined && item !== '',
+            )
+            .join('-'),
+        positionerBrand,
+        positionerModel,
+        positionerDescription:
+          positionerDescription ||
+          [positionerBrand, positionerModel]
+            .filter(
+              (item) => item !== null && item !== undefined && item !== '',
+            )
+            .join('-'),
+        sovBrand,
+        sovModel,
+        sovQty: sovQty ? Number(sovQty) : null,
+        sovDescription:
+          sovDescription ||
+          [sovBrand, sovModel, sovQty]
+            .filter((item) => item !== null)
+            .filter(
+              (item) => item !== null && item !== undefined && item !== '',
+            )
+            .join('-'),
+        lsBrand,
+        lsModel,
+        lsQty: lsQty ? Number(lsQty) : null,
+        lsDescription:
+          lsDescription ||
+          [lsBrand, lsModel, lsQty]
+            .filter((item) => item !== null)
+            .filter(
+              (item) => item !== null && item !== undefined && item !== '',
+            )
+            .join('-'),
+        tripValveBrand,
+        tripValveModel,
+        tripValveDescription:
+          tripValveDescription ||
+          [tripValveBrand, tripValveModel]
+            .filter(
+              (item) => item !== null && item !== undefined && item !== '',
+            )
+            .join('-'),
+        vbBrand,
+        vbModel,
+        vbQty: vbQty ? Number(vbQty) : null,
+        vbDescription:
+          vbDescription ||
+          [vbBrand, vbModel, vbQty]
+            .filter((item) => item !== null)
+            .filter(
+              (item) => item !== null && item !== undefined && item !== '',
+            )
+            .join('-'),
+        qeBrand,
+        qeModel,
+        qeQty: qeQty ? Number(qeQty) : null,
+        qeDescription:
+          qeDescription ||
+          [qeBrand, qeModel, qeQty]
+            .filter((item) => item !== null)
+            .filter(
+              (item) => item !== null && item !== undefined && item !== '',
+            )
+            .join('-'),
+        regulatorBrand,
+        regulatorModel,
+        regulatorDescription:
+          regulatorDescription ||
+          [regulatorBrand, regulatorModel]
+            .filter(
+              (item) => item !== null && item !== undefined && item !== '',
+            )
+            .join('-'),
+        pilotBrand,
+        pilotModel,
+        pilotQty: pilotQty ? Number(pilotQty) : null,
+        pilotDescription:
+          pilotDescription ||
+          [pilotBrand, pilotModel, pilotQty]
+            .filter((item) => item !== null)
+            .filter(
+              (item) => item !== null && item !== undefined && item !== '',
+            )
+            .join('-'),
+        stroke,
+        signalComparatorBrand,
+        signalComparatorModel,
+        signalComparatorDescription:
+          signalComparatorDescription ||
+          [signalComparatorBrand, signalComparatorModel]
+            .filter(
+              (item) => item !== null && item !== undefined && item !== '',
+            )
+            .join('-'),
+        parts,
+        valveRating,
+        deviceId,
+        factoryId: body.factoryId,
+        updateBy: user.account,
+      };
+      if (existing) {
+        await this.prismaService.client.valve.update({
+          where: { id: existing.id },
+          data,
         });
-    });
-    return { success: true };
+        updated += 1;
+      } else {
+        await this.prismaService.client.valve.create({ data });
+        created += 1;
+      }
+    }
+
+    return {
+      success: true,
+      total: xlsx.length,
+      created,
+      updated,
+      skipped: skipped.length,
+      skippedRows: skipped,
+    };
   }
 
   async getChartData(id: number) {
