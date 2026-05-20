@@ -74,20 +74,28 @@ export class ServiceAppService {
           });
 
           // 2. 工单: 按 serial 唯一键 upsert
+          // workSheet 字段在 create / update 两边都要写,否则二次推送对工单内容的修改不会落库
+          const workSheetFields = {
+            taskDescription: workSheet.taskDescription,
+            possibleCauseAnalysis: workSheet.possibleCauseAnalysis,
+            faultCategory: workSheet.faultCategory,
+            remedialActions: workSheet.remedialActions,
+            recommendation: workSheet.recommendation,
+            faultDetail: workSheet.faultDetail,
+          };
           const workOrder: WorkOrder = await tx.workOrder.upsert({
             where: { serial: createServiceAppDto.serial },
             create: {
               serviceAppId: id,
               ...rest,
               factoryId: factory.id,
-              taskDescription: workSheet.taskDescription,
-              possibleCauseAnalysis: workSheet.possibleCauseAnalysis,
-              faultCategory: workSheet.faultCategory,
-              remedialActions: workSheet.remedialActions,
-              recommendation: workSheet.recommendation,
-              faultDetail: workSheet.faultDetail,
+              ...workSheetFields,
             },
-            update: { ...rest, serviceAppId: id },
+            update: {
+              ...rest,
+              serviceAppId: id,
+              ...workSheetFields,
+            },
           });
 
           // 3. 装置/阀门: 没有数据库唯一键,事务内顺序处理 findFirst→create/update
