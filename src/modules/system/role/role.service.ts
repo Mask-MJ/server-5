@@ -11,10 +11,11 @@ export class RoleService {
     private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
   ) {}
   create(user: ActiveUserData, createRoleDto: CreateRoleDto) {
-    const { menuIds, factoryIds, ...rest } = createRoleDto;
+    const { menuIds, factoryIds, grantAllFactories, ...rest } = createRoleDto;
     return this.prismaService.client.role.create({
       data: {
         ...rest,
+        grantAllFactories: grantAllFactories ?? false,
         createBy: user.account,
         menu: { connect: menuIds.map((id) => ({ id })) },
         factory: { connect: factoryIds.map((id) => ({ id })) },
@@ -52,12 +53,12 @@ export class RoleService {
   }
 
   update(id: number, user: ActiveUserData, updateRoleDto: UpdateRoleDto) {
-    const { menuIds, factoryIds, ...rest } = updateRoleDto;
-    console.log(menuIds);
+    const { menuIds, factoryIds, grantAllFactories, ...rest } = updateRoleDto;
     return this.prismaService.client.role.update({
       where: { id },
       data: {
         ...rest,
+        ...(grantAllFactories !== undefined && { grantAllFactories }),
         updateBy: user.account,
         menu: { set: menuIds.map((id) => ({ id })) },
         factory: { set: factoryIds.map((id) => ({ id })) },

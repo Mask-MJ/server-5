@@ -1,6 +1,6 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 import { BaseDto } from 'src/common/dto/base.dto';
 
 export class CreateRoleDto {
@@ -46,6 +46,13 @@ export class CreateRoleDto {
   @IsNumber({}, { each: true })
   @IsOptional()
   factoryIds: number[] = [];
+  /**
+   * 是否授权全部工厂（含后续新增）
+   * @example false
+   */
+  @IsBoolean()
+  @IsOptional()
+  grantAllFactories?: boolean;
 }
 export class QueryRoleDto extends PartialType(
   IntersectionType(PickType(CreateRoleDto, ['name', 'value']), BaseDto),
