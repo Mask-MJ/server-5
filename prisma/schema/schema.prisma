@@ -69,6 +69,8 @@ model Role {
   updatedAt DateTime  @updatedAt
   /// 备注
   remark    String    @default("")
+  /// 是否授权全部工厂（含后续新增）
+  grantAllFactories Boolean @default(false)
   factory   Factory[] @relation("FactoryToRole")
   menu      Menu[]    @relation("MenuToRole")
   user      User[]    @relation("RoleToUser")

@@ -41,6 +41,7 @@ import {
 import { MinioService } from 'src/common/minio/minio.service';
 import { Valve } from '@prisma/client';
 import { getLast12Months } from 'src/common/utils';
+import { hasAllFactoryScope } from 'src/common/utils/user-factory-scope';
 import { ValveService } from '../valve/valve.service';
 import { transformationTree } from 'src/common/utils/transformationTree';
 // import { mockValve } from './mock';
@@ -74,29 +75,14 @@ export class FactoryService {
       where: { id: user.sub },
       include: { role: true },
     });
-    if (userData.isAdmin) {
+    const baseWhere = {
+      name: { contains: name, mode: 'insensitive' as const },
+      NOT: { id: filterId, parentId: filterId },
+      createdAt: { gte: beginTime, lte: endTime },
+    };
+    if (hasAllFactoryScope(userData)) {
       const factories = await this.prismaService.client.factory.findMany({
-        where: {
-          name: { contains: name, mode: 'insensitive' },
-          NOT: { id: filterId, parentId: filterId },
-          createdAt: { gte: beginTime, lte: endTime },
-        },
-        orderBy: { createdAt: 'desc' },
-      });
-      return {
-        totalCount: factories.length,
-        rows: transformationTree(factories, null),
-      };
-    } else {
-      const roleIds = userData.role.map((item) => item.id);
-      const factories = await this.prismaService.client.factory.findMany({
-        where: {
-          name: { contains: name, mode: 'insensitive' },
-          NOT: { id: filterId, parentId: filterId },
-          createdAt: { gte: beginTime, lte: endTime },
-          role: { some: { id: { in: roleIds } } },
-        },
-        include: { role: true },
+        where: baseWhere,
         orderBy: { createdAt: 'desc' },
       });
       return {
@@ -104,6 +90,19 @@ export class FactoryService {
         rows: transformationTree(factories, null),
       };
     }
+    const roleIds = userData.role.map((item) => item.id);
+    const factories = await this.prismaService.client.factory.findMany({
+      where: {
+        ...baseWhere,
+        role: { some: { id: { in: roleIds } } },
+      },
+      include: { role: true },
+      orderBy: { createdAt: 'desc' },
+    });
+    return {
+      totalCount: factories.length,
+      rows: transformationTree(factories, null),
+    };
   }
 
   async findAllList(user: ActiveUserData) {
@@ -111,35 +110,24 @@ export class FactoryService {
       where: { id: user.sub },
       include: { role: true },
     });
-    if (userData.isAdmin) {
-      // 如果是管理员，返回所有工厂
-      // 并且返回工厂下所有阀门的数量
+    const include = { _count: { select: { valve: true } } } as const;
+    if (hasAllFactoryScope(userData)) {
       return this.prismaService.client.factory.findMany({
-        include: {
-          _count: {
-            select: { valve: true },
-          },
-        },
+        include,
         orderBy: { createdAt: 'desc' },
-      });
-    } else {
-      const roleIds = userData.role.map((item) => item.id);
-
-      return this.prismaService.client.factory.findMany({
-        where: {
-          OR: [
-            { createBy: user.account },
-            { role: { some: { id: { in: roleIds } } } },
-          ],
-        },
-        orderBy: { createdAt: 'desc' },
-        include: {
-          _count: {
-            select: { valve: true },
-          },
-        },
       });
     }
+    const roleIds = userData.role.map((item) => item.id);
+    return this.prismaService.client.factory.findMany({
+      where: {
+        OR: [
+          { createBy: user.account },
+          { role: { some: { id: { in: roleIds } } } },
+        ],
+      },
+      orderBy: { createdAt: 'desc' },
+      include,
+    });
   }
 
   async import(

@@ -6,6 +6,7 @@ export class RoleEntity implements Role {
   value: string;
   sort: number;
   remark: string;
+  grantAllFactories: boolean;
   createBy: string;
   updateBy: string;
   createdAt: Date;
