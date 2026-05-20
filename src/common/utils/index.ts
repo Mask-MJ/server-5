@@ -17,3 +17,5 @@ export function getLast12Months(): {
   }
   return months.reverse(); // 按时间顺序排列
 }
+
+export * from './user-factory-scope';
