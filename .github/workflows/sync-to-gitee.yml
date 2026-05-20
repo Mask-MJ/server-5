@@ -1,0 +1,23 @@
+name: Sync to Gitee
+
+on:
+  push:
+    branches: ['**']
+    tags: ['**']
+  delete:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror GitHub to Gitee
+        uses: Yikun/hub-mirror-action@master
+        with:
+          src: github/Mask-MJ
+          dst: gitee/moyaojun
+          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+          dst_token: ${{ secrets.GITEE_TOKEN }}
+          static_list: 'vls-server'
+          force_update: true
+          debug: true
