@@ -409,6 +409,70 @@ export const table_valves_health_month = (
     ],
   };
 };
+// 阀门细节图 ECharts option 构造（纯函数，便于单元测试）
+// series 顺序 = 绘制顺序，后绘制在上层：标准线 → 平均值 → 预测线 → 数据线（数据线最上）
+// 颜色绑在 series 上而非顶层 color 数组，避免 series 重排时颜色错位
+export function buildAlarmChartOption(
+  plot: NonNullable<ValveDetailItem['plot']>,
+) {
+  const lowerLimit = Number(plot.lowerLimit || 0);
+  const upperLimit = Number(plot.upperLimit || 0);
+  const rawMax = Math.max(...plot.dataLine, upperLimit);
+  const rawMin = Math.min(...plot.dataLine, lowerLimit);
+  const labelTop = { show: true, position: 'top' as const, color: '#000000' };
+  return {
+    legend: { data: ['数据线', '预测线', '平均值', '标准线'] },
+    tooltip: { trigger: 'axis' as const },
+    xAxis: { type: 'category' as const, data: plot.times },
+    yAxis: {
+      type: 'value' as const,
+      max: Math.ceil(rawMax),
+      min: Math.floor(rawMin),
+    },
+    label: { fontSize: 14 },
+    series: [
+      {
+        type: 'line' as const,
+        name: '标准线',
+        itemStyle: { color: '#ff0000' },
+        lineStyle: { color: '#ff0000' },
+        label: labelTop,
+        markLine: {
+          lineStyle: { color: '#ff0000' },
+          data: [
+            { name: '下限值', yAxis: lowerLimit },
+            { name: '上限值', yAxis: upperLimit },
+          ],
+        },
+      },
+      {
+        type: 'line' as const,
+        name: '平均值',
+        itemStyle: { color: '#ffff00' },
+        lineStyle: { color: '#ffff00' },
+        data: plot.auxiliaryLine.averageValue,
+        label: labelTop,
+      },
+      {
+        type: 'line' as const,
+        name: '预测线',
+        itemStyle: { color: '#6e298d' },
+        lineStyle: { color: '#6e298d' },
+        data: plot.predictionLine.linearRegression,
+        label: labelTop,
+      },
+      {
+        type: 'line' as const,
+        name: '数据线',
+        itemStyle: { color: '#00b050' },
+        lineStyle: { color: '#00b050' },
+        data: plot.dataLine,
+        label: labelTop,
+      },
+    ],
+  };
+}
+
 // 问题详情列表
 export const detail_valves_alarm = (data: ValveDetail[]) => {
   const renderArray = data.map((list, index) => {
@@ -421,58 +485,13 @@ export const detail_valves_alarm = (data: ValveDetail[]) => {
         item.plot.times &&
         item.plot.dataLine
       ) {
-        const max = Math.max(...item.plot.dataLine, item.plot.upperLimit || 0);
-        const min = Math.min(...item.plot.dataLine, item.plot.lowerLimit || 0);
-        const lowerLimit = Number(item.plot.lowerLimit || 0);
-        const upperLimit = Number(item.plot.upperLimit || 0);
         chart = echarts.init(null, null, {
           renderer: 'svg',
           ssr: true,
           width: 400,
           height: 300,
         });
-        chart.setOption({
-          color: ['#00b050', '#6e298d', '#ffff00', '#ff0000'],
-          legend: { data: ['数据线', '预测线', '辅助线', '标准线'] },
-          tooltip: { trigger: 'axis' },
-          xAxis: { type: 'category', data: item.plot.times },
-          yAxis: { type: 'value', max, min },
-          label: {
-            fontSize: 14,
-          },
-          series: [
-            {
-              type: 'line',
-              name: '数据线',
-              data: item.plot.dataLine,
-              label: { show: true, position: 'top', color: '#000000' },
-            },
-            {
-              type: 'line',
-              name: '预测线',
-              data: item.plot.predictionLine.linearRegression,
-              label: { show: true, position: 'top', color: '#000000' },
-            },
-            {
-              type: 'line',
-              name: '辅助线',
-              data: item.plot.auxiliaryLine.averageValue,
-              label: { show: true, position: 'top', color: '#000000' },
-            },
-            {
-              type: 'line',
-              name: '标准线',
-              label: { show: true, position: 'top', color: '#000000' },
-              markLine: {
-                lineStyle: { color: 'red' },
-                data: [
-                  { name: '下限值', yAxis: lowerLimit },
-                  { name: '上限值', yAxis: upperLimit },
-                ],
-              },
-            },
-          ],
-        });
+        chart.setOption(buildAlarmChartOption(item.plot));
 
         return [
           new TextRun({
@@ -493,7 +512,8 @@ export const detail_valves_alarm = (data: ValveDetail[]) => {
             new ImageRun({
               type: 'svg',
               data: Buffer.from(chart.renderToSVGString(), 'utf-8'),
-              transformation: { width: 500, height: 300 },
+              // Why: 与 chart 渲染尺寸一致，避免 500x300 拉伸 400x300 数据图变形
+              transformation: { width: 400, height: 300 },
               fallback: {
                 type: 'png',
                 data: readFileSync('public/linux-png.png'),
@@ -598,7 +618,11 @@ export const table_valves_travel_month = (data: ValveTravelHistoryRecord) => {
   if (data.records.length === 0) {
     return {
       type: PatchType.PARAGRAPH,
-      children: [new TextRun({ text: ' ' })],
+      children: [
+        new TextRun({
+          text: '本次报告，未发现阀门超出有效Cv操作区间问题。',
+        }),
+      ],
     };
   }
   const tableHeaderRow = data.records[0].map((i) => i.name);
