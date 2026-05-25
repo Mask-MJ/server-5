@@ -51,7 +51,10 @@ describe('buildAlarmChartOption', () => {
     expect(legend.data).not.toContain('辅助线');
   });
 
-  it('data line uses green, prediction line uses purple, average yellow, standard red', () => {
+  it('series colors match frontend ECharts default palette by name (B7)', () => {
+    // 前端 (client) ChartModal/workTable 不设 color, 用 ECharts 默认调色板,
+    // 按前端 series 顺序 [数据线, 预测线, 辅助线, 标准线] = [蓝, 绿, 黄, 红]
+    // PDF 这边 series 重排 (B8 为让数据线在最上层), 因此必须按 name 显式绑色
     const opt = buildAlarmChartOption(basePlot);
     const series = opt.series as Array<{
       name: string;
@@ -59,9 +62,10 @@ describe('buildAlarmChartOption', () => {
       lineStyle?: { color: string };
     }>;
     const byName = Object.fromEntries(series.map((s) => [s.name, s]));
-    expect(byName['数据线'].itemStyle?.color).toBe('#00b050');
-    expect(byName['预测线'].itemStyle?.color).toBe('#6e298d');
-    expect(byName['平均值'].itemStyle?.color).toBe('#ffff00');
+    expect(byName['数据线'].itemStyle?.color).toBe('#5470c6'); // ECharts 默认 [0] 蓝
+    expect(byName['预测线'].itemStyle?.color).toBe('#91cc75'); // ECharts 默认 [1] 绿
+    expect(byName['平均值'].itemStyle?.color).toBe('#fac858'); // ECharts 默认 [2] 黄
+    expect(byName['标准线'].itemStyle?.color).toBe('#ee6666'); // ECharts 默认 [3] 红
   });
 });
 
