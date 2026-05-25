@@ -411,7 +411,16 @@ export const table_valves_health_month = (
 };
 // 阀门细节图 ECharts option 构造（纯函数，便于单元测试）
 // series 顺序 = 绘制顺序，后绘制在上层：标准线 → 平均值 → 预测线 → 数据线（数据线最上）
-// 颜色绑在 series 上而非顶层 color 数组，避免 series 重排时颜色错位
+// 颜色与前端 (client) ChartModal/workTable 默认 ECharts 调色板对齐：
+//   数据线=蓝 / 预测线=绿 / 平均值=黄 / 标准线=红。
+// 前端无 itemStyle.color，PDF 这边因 series 顺序重排（B8），必须按 name 显式绑色。
+const CHART_COLORS = {
+  dataLine: '#5470c6', // ECharts 默认 [0] 蓝
+  predictionLine: '#91cc75', // ECharts 默认 [1] 绿
+  averageLine: '#fac858', // ECharts 默认 [2] 黄
+  standardLine: '#ee6666', // ECharts 默认 [3] 红
+} as const;
+
 export function buildAlarmChartOption(
   plot: NonNullable<ValveDetailItem['plot']>,
 ) {
@@ -434,11 +443,11 @@ export function buildAlarmChartOption(
       {
         type: 'line' as const,
         name: '标准线',
-        itemStyle: { color: '#ff0000' },
-        lineStyle: { color: '#ff0000' },
+        itemStyle: { color: CHART_COLORS.standardLine },
+        lineStyle: { color: CHART_COLORS.standardLine },
         label: labelTop,
         markLine: {
-          lineStyle: { color: '#ff0000' },
+          lineStyle: { color: CHART_COLORS.standardLine },
           data: [
             { name: '下限值', yAxis: lowerLimit },
             { name: '上限值', yAxis: upperLimit },
@@ -448,24 +457,24 @@ export function buildAlarmChartOption(
       {
         type: 'line' as const,
         name: '平均值',
-        itemStyle: { color: '#ffff00' },
-        lineStyle: { color: '#ffff00' },
+        itemStyle: { color: CHART_COLORS.averageLine },
+        lineStyle: { color: CHART_COLORS.averageLine },
         data: plot.auxiliaryLine.averageValue,
         label: labelTop,
       },
       {
         type: 'line' as const,
         name: '预测线',
-        itemStyle: { color: '#6e298d' },
-        lineStyle: { color: '#6e298d' },
+        itemStyle: { color: CHART_COLORS.predictionLine },
+        lineStyle: { color: CHART_COLORS.predictionLine },
         data: plot.predictionLine.linearRegression,
         label: labelTop,
       },
       {
         type: 'line' as const,
         name: '数据线',
-        itemStyle: { color: '#00b050' },
-        lineStyle: { color: '#00b050' },
+        itemStyle: { color: CHART_COLORS.dataLine },
+        lineStyle: { color: CHART_COLORS.dataLine },
         data: plot.dataLine,
         label: labelTop,
       },
