@@ -10,6 +10,7 @@ import {
   TableRow,
   TextRun,
   VerticalAlign,
+  VerticalMergeType,
   WidthType,
 } from 'docx';
 import { readFileSync } from 'fs';
@@ -112,7 +113,26 @@ const getTableCellStyle = (value: number, type: number) => {
   }
 };
 
-// 问题表格
+export interface AlarmRowGroup {
+  tag: string;
+  time: string;
+  problems: string[];
+}
+
+// 把多条 (tag, time, name) 按"同位号同日期"折叠成组，保留首次出现顺序
+export function groupAlarmRows(data: ReportProblemTable[]): AlarmRowGroup[] {
+  const groups = new Map<string, AlarmRowGroup>();
+  for (const r of data) {
+    const key = `${r.tag}|${r.time}`;
+    if (!groups.has(key)) {
+      groups.set(key, { tag: r.tag, time: r.time, problems: [] });
+    }
+    groups.get(key)!.problems.push(r.name);
+  }
+  return Array.from(groups.values());
+}
+
+// 问题表格 — 同一阀门同一日期的多个问题：序号/位号/日期 cell vMerge，问题描述每个独占一行
 export const table_alarm = (data: ReportProblemTable[]) => {
   if (data.length === 0) {
     return {
@@ -120,40 +140,63 @@ export const table_alarm = (data: ReportProblemTable[]) => {
       children: [new TextRun({ text: ' ' })],
     };
   }
+  const groups = groupAlarmRows(data);
+  const rows: TableRow[] = [];
+  groups.forEach((group, groupIdx) => {
+    group.problems.forEach((problem, problemIdx) => {
+      const isFirst = problemIdx === 0;
+      const vMerge = isFirst
+        ? VerticalMergeType.RESTART
+        : VerticalMergeType.CONTINUE;
+      rows.push(
+        new TableRow({
+          children: [
+            new TableCell({
+              verticalMerge: vMerge,
+              verticalAlign: VerticalAlign.CENTER,
+              children: [
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [
+                    new TextRun({ text: isFirst ? `${groupIdx + 1}` : '' }),
+                  ],
+                }),
+              ],
+            }),
+            new TableCell({
+              verticalMerge: vMerge,
+              verticalAlign: VerticalAlign.CENTER,
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: isFirst ? group.tag : '' })],
+                }),
+              ],
+            }),
+            new TableCell({
+              width: { size: 4000, type: WidthType.DXA },
+              children: [new Paragraph({ text: problem })],
+            }),
+            new TableCell({
+              verticalMerge: vMerge,
+              verticalAlign: VerticalAlign.CENTER,
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: isFirst ? group.time : '' })],
+                }),
+              ],
+            }),
+          ],
+        }),
+      );
+    });
+  });
   return {
     type: PatchType.DOCUMENT,
     children: [
       new Table({
         rows: [
           renderTableHeaderRow(['序号', '阀门位号', '问题描述', '报告日期']),
-          ...data.map((item, index) => {
-            return new TableRow({
-              children: [
-                new TableCell({
-                  children: [
-                    new Paragraph({
-                      alignment: AlignmentType.CENTER,
-                      children: [new TextRun({ text: `${index + 1}` })],
-                    }),
-                  ],
-                }),
-                new TableCell({
-                  children: [
-                    new Paragraph({
-                      children: [new TextRun({ text: item.tag })],
-                    }),
-                  ],
-                }),
-                new TableCell({
-                  width: { size: 4000, type: WidthType.DXA },
-                  children: [new Paragraph({ text: item.name })],
-                }),
-                new TableCell({
-                  children: [new Paragraph({ text: item.time })],
-                }),
-              ],
-            });
-          }),
+          ...rows,
         ],
       }),
     ],
