@@ -1,5 +1,8 @@
+import { PatchType, TableRow } from 'docx';
 import {
   buildAlarmChartOption,
+  groupAlarmRows,
+  table_alarm,
   table_valves_travel_month,
 } from './report.helper';
 import type { ValveDetailItem } from './report.helper';
@@ -59,6 +62,55 @@ describe('buildAlarmChartOption', () => {
     expect(byName['数据线'].itemStyle?.color).toBe('#00b050');
     expect(byName['预测线'].itemStyle?.color).toBe('#6e298d');
     expect(byName['平均值'].itemStyle?.color).toBe('#ffff00');
+  });
+});
+
+describe('groupAlarmRows (B1)', () => {
+  it('groups rows with same tag + same time into one group, preserving order', () => {
+    const groups = groupAlarmRows([
+      { tag: 'FV-3301-1', name: '问题A', description: '', time: '2025-05-15' },
+      { tag: 'FV-3301-1', name: '问题B', description: '', time: '2025-05-15' },
+      { tag: 'FV-3302', name: '问题C', description: '', time: '2025-05-15' },
+      { tag: 'FV-3301-1', name: '问题D', description: '', time: '2025-06-15' },
+    ]);
+    expect(groups).toEqual([
+      { tag: 'FV-3301-1', time: '2025-05-15', problems: ['问题A', '问题B'] },
+      { tag: 'FV-3302', time: '2025-05-15', problems: ['问题C'] },
+      { tag: 'FV-3301-1', time: '2025-06-15', problems: ['问题D'] },
+    ]);
+  });
+
+  it('returns empty array for empty input', () => {
+    expect(groupAlarmRows([])).toEqual([]);
+  });
+});
+
+describe('table_alarm (B1)', () => {
+  it('returns DOCUMENT patch when input has rows', () => {
+    const result = table_alarm([
+      { tag: 'FV-3301-1', name: '问题A', description: '', time: '2025-05-15' },
+      { tag: 'FV-3301-1', name: '问题B', description: '', time: '2025-05-15' },
+      { tag: 'FV-3302', name: '问题C', description: '', time: '2025-05-15' },
+    ]);
+    expect(result.type).toBe(PatchType.DOCUMENT);
+    // 1 Table 实例（与 children 数组里实例数一致）
+    expect((result.children as unknown[]).length).toBe(1);
+  });
+
+  it('produces N table rows = total problems + 1 header (3 problems → 4 rows)', () => {
+    const result = table_alarm([
+      { tag: 'FV-3301-1', name: '问题A', description: '', time: '2025-05-15' },
+      { tag: 'FV-3301-1', name: '问题B', description: '', time: '2025-05-15' },
+      { tag: 'FV-3302', name: '问题C', description: '', time: '2025-05-15' },
+    ]);
+    const table = (result.children as unknown[])[0] as { root: unknown[] };
+    const rowCount = table.root.filter((r) => r instanceof TableRow).length;
+    expect(rowCount).toBe(4); // 1 header + 3 problems
+  });
+
+  it('falls back to PARAGRAPH when input is empty', () => {
+    const result = table_alarm([]);
+    expect(result.type).toBe(PatchType.PARAGRAPH);
   });
 });
 
