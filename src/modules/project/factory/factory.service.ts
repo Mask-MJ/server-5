@@ -19,6 +19,10 @@ import { ActiveUserData } from 'src/modules/iam/interfaces/active-user-data.inte
 import { read, utils } from 'xlsx';
 import dayjs from 'dayjs';
 import { parseExcelDate } from 'src/common/utils/parse-excel-date';
+import {
+  toStr,
+  toIntOrNull,
+} from 'src/common/utils/normalize-xlsx-value';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { readFileSync } from 'fs';
 import { HttpService } from '@nestjs/axios';
@@ -194,217 +198,202 @@ export class FactoryService {
         const existing = await this.prismaService.client.valve.findFirst({
           where: { serialNumber: serial, factoryId: body.factoryId },
         });
-        const {
-          no = '',
-          tag = '',
-          unit = '',
-          fluidName = '',
-          criticalApplication = '',
-          since,
-          valveBrand = '',
-          valveSize = '',
-          valveEndConnection = '',
-          valveBodyMaterial = '',
-          valveBonnet = '',
-          valveTrim = '',
-          valveSeatLeakage = '',
-          valveSeries = '',
-          valveRating = '',
-          valveStemSize = '',
-          valveCv = '',
-          valveDescription = '',
-          actuatorBrand = '',
-          actuatorSize = '',
-          actuatorSeries = '',
-          handwheel = '',
-          actuatorDescription = '',
-          actuatorFailurePosition = '',
-          positionerBrand = '',
-          positionerModel = '',
-          positionerDescription = '',
-          sovBrand = '',
-          sovModel = '',
-          sovQty = null,
-          sovDescription = '',
-          lsBrand = '',
-          lsModel = '',
-          lsQty = null,
-          lsDescription = '',
-          tripValveBrand = '',
-          tripValveModel = '',
-          tripValveDescription = '',
-          vbBrand = '',
-          vbModel = '',
-          vbQty = null,
-          vbDescription = '',
-          qeBrand = '',
-          qeModel = '',
-          qeQty = null,
-          qeDescription = '',
-          regulatorBrand = '',
-          regulatorModel = '',
-          regulatorDescription = '',
-          pilotBrand = '',
-          pilotModel = '',
-          pilotQty = null,
-          pilotDescription = '',
-          stroke = '',
-          signalComparatorBrand = '',
-          signalComparatorModel = '',
-          signalComparatorDescription = '',
-          parts = '',
-        } = item;
+
+        // Why: xlsx 单元格若被填表人设成"数字"格式(如 actuatorSize=30、valveSize=4),
+        // SheetJS 解析为 number 而非 string。Prisma schema 里这批列都是 String?,
+        // 直接喂 number → PrismaClientValidationError → 整行 skip。卡博特蓝星化工 xlsx
+        // 接口实测复现(62/62 全部 skipped)。此处统一在边界归一化,不再信任 xlsx 类型。
+        //
+        // 归一化策略:
+        //   - 所有 Prisma String? 列 → toStr(): null/undef → '',其它 → String(v)
+        //   - 5 个 Prisma Int? qty 列 → toIntOrNull(): 空串/'-'/'/'/'无'/NaN → null,
+        //     '10'/10/10.7 → 10。同时修复旧代码 `qty ? Number(qty) : null` 把 0 错当 null 的 bug。
+        const n = {
+          no: toStr(item.no),
+          tag: toStr(item.tag),
+          unit: toStr(item.unit),
+          fluidName: toStr(item.fluidName),
+          criticalApplication: toStr(item.criticalApplication),
+          valveBrand: toStr(item.valveBrand),
+          valveSize: toStr(item.valveSize),
+          valveEndConnection: toStr(item.valveEndConnection),
+          valveBodyMaterial: toStr(item.valveBodyMaterial),
+          valveBonnet: toStr(item.valveBonnet),
+          valveTrim: toStr(item.valveTrim),
+          valveSeatLeakage: toStr(item.valveSeatLeakage),
+          valveSeries: toStr(item.valveSeries),
+          valveRating: toStr(item.valveRating),
+          valveStemSize: toStr(item.valveStemSize),
+          valveCv: toStr(item.valveCv),
+          valveDescription: toStr(item.valveDescription),
+          actuatorBrand: toStr(item.actuatorBrand),
+          actuatorSize: toStr(item.actuatorSize),
+          actuatorSeries: toStr(item.actuatorSeries),
+          handwheel: toStr(item.handwheel),
+          actuatorDescription: toStr(item.actuatorDescription),
+          actuatorFailurePosition: toStr(item.actuatorFailurePosition),
+          positionerBrand: toStr(item.positionerBrand),
+          positionerModel: toStr(item.positionerModel),
+          positionerDescription: toStr(item.positionerDescription),
+          sovBrand: toStr(item.sovBrand),
+          sovModel: toStr(item.sovModel),
+          sovQty: toIntOrNull(item.sovQty),
+          sovDescription: toStr(item.sovDescription),
+          lsBrand: toStr(item.lsBrand),
+          lsModel: toStr(item.lsModel),
+          lsQty: toIntOrNull(item.lsQty),
+          lsDescription: toStr(item.lsDescription),
+          tripValveBrand: toStr(item.tripValveBrand),
+          tripValveModel: toStr(item.tripValveModel),
+          tripValveDescription: toStr(item.tripValveDescription),
+          vbBrand: toStr(item.vbBrand),
+          vbModel: toStr(item.vbModel),
+          vbQty: toIntOrNull(item.vbQty),
+          vbDescription: toStr(item.vbDescription),
+          qeBrand: toStr(item.qeBrand),
+          qeModel: toStr(item.qeModel),
+          qeQty: toIntOrNull(item.qeQty),
+          qeDescription: toStr(item.qeDescription),
+          regulatorBrand: toStr(item.regulatorBrand),
+          regulatorModel: toStr(item.regulatorModel),
+          regulatorDescription: toStr(item.regulatorDescription),
+          pilotBrand: toStr(item.pilotBrand),
+          pilotModel: toStr(item.pilotModel),
+          pilotQty: toIntOrNull(item.pilotQty),
+          pilotDescription: toStr(item.pilotDescription),
+          stroke: toStr(item.stroke),
+          signalComparatorBrand: toStr(item.signalComparatorBrand),
+          signalComparatorModel: toStr(item.signalComparatorModel),
+          signalComparatorDescription: toStr(item.signalComparatorDescription),
+          parts: toStr(item.parts),
+        };
+
+        // description 列空缺时,从已归一化的字段拼成 "-" 分隔串。
+        // qty 用 toStr 再过滤,避免 null 进 join。
+        const joinNonEmpty = (parts: Array<string | null>) =>
+          parts.filter((p) => p !== null && p !== '').join('-');
 
         const data = {
-          no: String(no),
-          tag,
-          unit,
-          fluidName,
-          criticalApplication,
+          no: n.no,
+          tag: n.tag,
+          unit: n.unit,
+          fluidName: n.fluidName,
+          criticalApplication: n.criticalApplication,
           serialNumber: serial,
-          since: parseExcelDate(since),
-          valveBrand,
-          valveSize,
-          valveEndConnection,
-          valveBodyMaterial,
-          valveBonnet,
-          valveTrim,
-          valveSeries,
-          valveSeatLeakage,
-          valveStemSize,
-          valveCv,
+          since: parseExcelDate(item.since),
+          valveBrand: n.valveBrand,
+          valveSize: n.valveSize,
+          valveEndConnection: n.valveEndConnection,
+          valveBodyMaterial: n.valveBodyMaterial,
+          valveBonnet: n.valveBonnet,
+          valveTrim: n.valveTrim,
+          valveSeries: n.valveSeries,
+          valveSeatLeakage: n.valveSeatLeakage,
+          valveStemSize: n.valveStemSize,
+          valveCv: n.valveCv,
           valveDescription:
-            valveDescription ||
-            [
-              valveBrand,
-              valveSeries,
-              valveSize,
-              valveRating,
-              valveEndConnection,
-              valveStemSize,
-              valveBodyMaterial,
-              valveBonnet,
-              valveTrim,
-              valveSeatLeakage,
-              valveCv,
-            ]
-              .filter(
-                (item) => item !== null && item !== undefined && item !== '',
-              )
-              .join('-'),
-          actuatorBrand,
-          actuatorSize,
-          actuatorSeries,
-          handwheel,
-          actuatorFailurePosition,
+            n.valveDescription ||
+            joinNonEmpty([
+              n.valveBrand,
+              n.valveSeries,
+              n.valveSize,
+              n.valveRating,
+              n.valveEndConnection,
+              n.valveStemSize,
+              n.valveBodyMaterial,
+              n.valveBonnet,
+              n.valveTrim,
+              n.valveSeatLeakage,
+              n.valveCv,
+            ]),
+          actuatorBrand: n.actuatorBrand,
+          actuatorSize: n.actuatorSize,
+          actuatorSeries: n.actuatorSeries,
+          handwheel: n.handwheel,
+          actuatorFailurePosition: n.actuatorFailurePosition,
           actuatorDescription:
-            actuatorDescription ||
-            [
-              actuatorBrand,
-              actuatorSeries,
-              actuatorSize,
-              actuatorFailurePosition,
-              handwheel,
-              stroke,
-            ]
-              .filter(
-                (item) => item !== null && item !== undefined && item !== '',
-              )
-              .join('-'),
-          positionerBrand,
-          positionerModel,
+            n.actuatorDescription ||
+            joinNonEmpty([
+              n.actuatorBrand,
+              n.actuatorSeries,
+              n.actuatorSize,
+              n.actuatorFailurePosition,
+              n.handwheel,
+              n.stroke,
+            ]),
+          positionerBrand: n.positionerBrand,
+          positionerModel: n.positionerModel,
           positionerDescription:
-            positionerDescription ||
-            [positionerBrand, positionerModel]
-              .filter(
-                (item) => item !== null && item !== undefined && item !== '',
-              )
-              .join('-'),
-          sovBrand,
-          sovModel,
-          sovQty: sovQty ? Number(sovQty) : null,
+            n.positionerDescription ||
+            joinNonEmpty([n.positionerBrand, n.positionerModel]),
+          sovBrand: n.sovBrand,
+          sovModel: n.sovModel,
+          sovQty: n.sovQty,
           sovDescription:
-            sovDescription ||
-            [sovBrand, sovModel, sovQty]
-              .filter((item) => item !== null)
-              .filter(
-                (item) => item !== null && item !== undefined && item !== '',
-              )
-              .join('-'),
-          lsBrand,
-          lsModel,
-          lsQty: lsQty ? Number(lsQty) : null,
+            n.sovDescription ||
+            joinNonEmpty([
+              n.sovBrand,
+              n.sovModel,
+              n.sovQty === null ? '' : String(n.sovQty),
+            ]),
+          lsBrand: n.lsBrand,
+          lsModel: n.lsModel,
+          lsQty: n.lsQty,
           lsDescription:
-            lsDescription ||
-            [lsBrand, lsModel, lsQty]
-              .filter((item) => item !== null)
-              .filter(
-                (item) => item !== null && item !== undefined && item !== '',
-              )
-              .join('-'),
-          tripValveBrand,
-          tripValveModel,
+            n.lsDescription ||
+            joinNonEmpty([
+              n.lsBrand,
+              n.lsModel,
+              n.lsQty === null ? '' : String(n.lsQty),
+            ]),
+          tripValveBrand: n.tripValveBrand,
+          tripValveModel: n.tripValveModel,
           tripValveDescription:
-            tripValveDescription ||
-            [tripValveBrand, tripValveModel]
-              .filter(
-                (item) => item !== null && item !== undefined && item !== '',
-              )
-              .join('-'),
-          vbBrand,
-          vbModel,
-          vbQty: vbQty ? Number(vbQty) : null,
+            n.tripValveDescription ||
+            joinNonEmpty([n.tripValveBrand, n.tripValveModel]),
+          vbBrand: n.vbBrand,
+          vbModel: n.vbModel,
+          vbQty: n.vbQty,
           vbDescription:
-            vbDescription ||
-            [vbBrand, vbModel, vbQty]
-              .filter((item) => item !== null)
-              .filter(
-                (item) => item !== null && item !== undefined && item !== '',
-              )
-              .join('-'),
-          qeBrand,
-          qeModel,
-          qeQty: qeQty ? Number(qeQty) : null,
+            n.vbDescription ||
+            joinNonEmpty([
+              n.vbBrand,
+              n.vbModel,
+              n.vbQty === null ? '' : String(n.vbQty),
+            ]),
+          qeBrand: n.qeBrand,
+          qeModel: n.qeModel,
+          qeQty: n.qeQty,
           qeDescription:
-            qeDescription ||
-            [qeBrand, qeModel, qeQty]
-              .filter((item) => item !== null)
-              .filter(
-                (item) => item !== null && item !== undefined && item !== '',
-              )
-              .join('-'),
-          regulatorBrand,
-          regulatorModel,
+            n.qeDescription ||
+            joinNonEmpty([
+              n.qeBrand,
+              n.qeModel,
+              n.qeQty === null ? '' : String(n.qeQty),
+            ]),
+          regulatorBrand: n.regulatorBrand,
+          regulatorModel: n.regulatorModel,
           regulatorDescription:
-            regulatorDescription ||
-            [regulatorBrand, regulatorModel]
-              .filter(
-                (item) => item !== null && item !== undefined && item !== '',
-              )
-              .join('-'),
-          pilotBrand,
-          pilotModel,
-          pilotQty: pilotQty ? Number(pilotQty) : null,
+            n.regulatorDescription ||
+            joinNonEmpty([n.regulatorBrand, n.regulatorModel]),
+          pilotBrand: n.pilotBrand,
+          pilotModel: n.pilotModel,
+          pilotQty: n.pilotQty,
           pilotDescription:
-            pilotDescription ||
-            [pilotBrand, pilotModel, pilotQty]
-              .filter((item) => item !== null)
-              .filter(
-                (item) => item !== null && item !== undefined && item !== '',
-              )
-              .join('-'),
-          stroke,
-          signalComparatorBrand,
-          signalComparatorModel,
+            n.pilotDescription ||
+            joinNonEmpty([
+              n.pilotBrand,
+              n.pilotModel,
+              n.pilotQty === null ? '' : String(n.pilotQty),
+            ]),
+          stroke: n.stroke,
+          signalComparatorBrand: n.signalComparatorBrand,
+          signalComparatorModel: n.signalComparatorModel,
           signalComparatorDescription:
-            signalComparatorDescription ||
-            [signalComparatorBrand, signalComparatorModel]
-              .filter(
-                (item) => item !== null && item !== undefined && item !== '',
-              )
-              .join('-'),
-          parts,
-          valveRating,
+            n.signalComparatorDescription ||
+            joinNonEmpty([n.signalComparatorBrand, n.signalComparatorModel]),
+          parts: n.parts,
+          valveRating: n.valveRating,
           deviceId,
           factoryId: body.factoryId,
           updateBy: user.account,

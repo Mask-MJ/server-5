@@ -62,6 +62,35 @@ describe('FactoryService - import resilience', () => {
     return { buffer } as Express.Multer.File;
   };
 
+  // 与卡博特 xlsx 一致:actuatorSize/Series 列被设成"数字"格式 → number 进 SheetJS。
+  // 同时覆盖 5 个 qty 字段:空串/0/数字 → toIntOrNull 行为。
+  const buildFileFullSchema = (
+    dataRows: Record<string, unknown>[],
+  ): Express.Multer.File => {
+    const headers = [
+      'no',
+      'unit',
+      'serialNumber',
+      'tag',
+      'since',
+      'valveBrand',
+      'valveSize',
+      'actuatorSize',
+      'actuatorSeries',
+      'sovQty',
+      'lsQty',
+      'vbQty',
+      'qeQty',
+      'pilotQty',
+    ];
+    const buffer = buildXlsxBuffer([
+      headers,
+      headers.map(() => 'cn'),
+      ...dataRows.map((r) => headers.map((h) => (h in r ? r[h] : ''))),
+    ]);
+    return { buffer } as Express.Multer.File;
+  };
+
   beforeEach(async () => {
     deviceFindFirst = jest.fn().mockResolvedValue(null);
     deviceCreate = jest
@@ -220,6 +249,71 @@ describe('FactoryService - import resilience', () => {
     expect(loggerWarn).toHaveBeenCalledWith(
       expect.stringContaining('missing-unit'),
     );
+  });
+
+  it('number-typed xlsx cells (actuatorSize=30, actuatorSeries=667) are normalized to string before prisma.create', async () => {
+    // 卡博特 xlsx 现场复现:这两列被填表人设成"数字"格式 → SheetJS 解析为 number →
+    // 旧代码直接喂 Prisma String? → ValidationError → 全部 skipped。新代码 toStr() 拦截。
+    const file = buildFileFullSchema([
+      {
+        no: 1,
+        unit: '除氯',
+        serialNumber: '20948863',
+        tag: 'FV-3301-1',
+        since: '2012-01-01',
+        valveBrand: 'Fisher',
+        valveSize: 4, // 也可能是 number
+        actuatorSize: 30, // ⭐ 卡博特原样
+        actuatorSeries: 667, // ⭐ 卡博特原样
+      },
+    ]);
+
+    const result = await service.import(buildUser(), file, {
+      factoryId: 1,
+    } as never);
+
+    expect(result.created).toBe(1);
+    const data = valveCreate.mock.calls[0][0].data;
+    expect(data.actuatorSize).toBe('30');
+    expect(typeof data.actuatorSize).toBe('string');
+    expect(data.actuatorSeries).toBe('667');
+    expect(typeof data.actuatorSeries).toBe('string');
+    expect(data.valveSize).toBe('4');
+    expect(typeof data.valveSize).toBe('string');
+    // actuatorDescription fallback 也用归一化后的字符串
+    expect(typeof data.actuatorDescription).toBe('string');
+    expect(data.actuatorDescription).toContain('667');
+    expect(data.actuatorDescription).toContain('30');
+  });
+
+  it('qty fields: "" → null, 0 → 0, "10" → 10, number 5 → 5 (also fixes "0 → null" legacy bug)', async () => {
+    const file = buildFileFullSchema([
+      {
+        no: 1,
+        unit: '除氯',
+        serialNumber: 'S-A',
+        tag: 'T-A',
+        since: '2012-01-01',
+        valveBrand: 'Fisher',
+        sovQty: '', // 空串 → null
+        lsQty: 0, // 0 → 0 (旧 code `qty ? Number(qty) : null` 错把 0 当 null)
+        vbQty: '10', // 字符串数字 → 10
+        qeQty: 5, // number → 5
+        pilotQty: '-', // 占位符 → null
+      },
+    ]);
+
+    const result = await service.import(buildUser(), file, {
+      factoryId: 1,
+    } as never);
+
+    expect(result.created).toBe(1);
+    const data = valveCreate.mock.calls[0][0].data;
+    expect(data.sovQty).toBeNull();
+    expect(data.lsQty).toBe(0);
+    expect(data.vbQty).toBe(10);
+    expect(data.qeQty).toBe(5);
+    expect(data.pilotQty).toBeNull();
   });
 
   it('does not warn when no rows are skipped', async () => {
