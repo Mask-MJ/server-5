@@ -427,6 +427,19 @@ export class FactoryService {
       }
     }
 
+    // Why: 旧实现把每行 valve 写入失败静默吞进 skipped + 前端只看 HTTP 201 → 用户看到
+    // "导入成功" 但 valve 表实际为空(卡博特 xlsx 现场复现)。后端不打日志的话生产侧无从排查,
+    // 这里强制把每次 import 的摘要 + skipped 原因落 winston 日志,便于线上 grep 定位。
+    this.logger.log(
+      `[factory.import] factoryId=${body.factoryId} total=${xlsx.length} created=${created} updated=${updated} skipped=${skipped.length}`,
+    );
+    if (skipped.length > 0) {
+      // slice 100 兜底:防止超大文件全部失败时日志爆炸
+      this.logger.warn(
+        `[factory.import] factoryId=${body.factoryId} skippedRows=${JSON.stringify(skipped.slice(0, 100))}`,
+      );
+    }
+
     return {
       success: true,
       total: xlsx.length,

@@ -16,6 +16,8 @@ describe('FactoryService - import resilience', () => {
   let valveFindFirst: jest.Mock;
   let valveCreate: jest.Mock;
   let valveUpdate: jest.Mock;
+  let loggerLog: jest.Mock;
+  let loggerWarn: jest.Mock;
 
   const buildUser = (): ActiveUserData => ({
     sub: 1,
@@ -70,6 +72,8 @@ describe('FactoryService - import resilience', () => {
     valveFindFirst = jest.fn().mockResolvedValue(null);
     valveCreate = jest.fn().mockResolvedValue({ id: 1 });
     valveUpdate = jest.fn().mockResolvedValue({ id: 1 });
+    loggerLog = jest.fn();
+    loggerWarn = jest.fn();
 
     const prismaMock = {
       client: {
@@ -89,7 +93,10 @@ describe('FactoryService - import resilience', () => {
         { provide: EventEmitter2, useValue: { emit: jest.fn() } },
         { provide: HttpService, useValue: {} },
         { provide: MinioService, useValue: {} },
-        { provide: Logger, useValue: { log: jest.fn(), error: jest.fn() } },
+        {
+          provide: Logger,
+          useValue: { log: loggerLog, warn: loggerWarn, error: jest.fn() },
+        },
         { provide: ValveService, useValue: {} },
       ],
     }).compile();
@@ -179,5 +186,57 @@ describe('FactoryService - import resilience', () => {
       row: 3,
       reason: expect.stringContaining('unique constraint'),
     });
+  });
+
+  it('always logs an import summary; logs warn with skipped reasons when any row skipped', async () => {
+    const file = buildFile([
+      {
+        no: 1,
+        unit: '除氯',
+        serialNumber: '20948863',
+        tag: 'FV-3301-1',
+        since: '2012-01-01',
+        valveBrand: 'Fisher',
+      },
+      {
+        // 故意缺 unit → 进 skipped
+        no: 2,
+        unit: '',
+        serialNumber: '20948864',
+        tag: 'FV-3305-1',
+        since: '2012-01-01',
+        valveBrand: 'Fisher',
+      },
+    ]);
+
+    await service.import(buildUser(), file, { factoryId: 7 } as never);
+
+    expect(loggerLog).toHaveBeenCalledWith(
+      expect.stringContaining('factoryId=7'),
+    );
+    expect(loggerLog).toHaveBeenCalledWith(
+      expect.stringMatching(/created=1.*skipped=1/),
+    );
+    expect(loggerWarn).toHaveBeenCalledWith(
+      expect.stringContaining('missing-unit'),
+    );
+  });
+
+  it('does not warn when no rows are skipped', async () => {
+    const file = buildFile([
+      {
+        no: 1,
+        unit: '除氯',
+        serialNumber: '20948863',
+        tag: 'FV-3301-1',
+        since: '2012-01-01',
+        valveBrand: 'Fisher',
+      },
+    ]);
+
+    await service.import(buildUser(), file, { factoryId: 7 } as never);
+
+    expect(loggerLog).toHaveBeenCalled();
+    expect(loggerWarn).not.toHaveBeenCalled();
   });
 });
